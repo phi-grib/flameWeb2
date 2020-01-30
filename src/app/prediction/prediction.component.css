@@ -5,7 +5,7 @@
     color: #22577A;
 }
 .table td {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    /*font-family: Verdana, Geneva, Tahoma, sans-serif;*/
 }
 .table td, .table th {
     border-top: 4px solid rgba(0,0,0,.06);

@@ -23,7 +23,7 @@ i {
 .table td {
     padding-left: 1px;
     padding-right: 1px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    /*font-family: Verdana, Geneva, Tahoma, sans-serif;*/
     border-bottom: 2px solid #B8DCED;
 }
 tr {

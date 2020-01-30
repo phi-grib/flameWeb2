@@ -90,6 +90,7 @@
             <th>Index</th>
             <th data-toggle="tooltip" data-placement="top" data-html="true" title="<span>Query column name from query test set</span>">Query name</th>
             <th data-toggle="tooltip" data-placement="top" data-html="true" title="<span>Query molecule from query test set</span>">Query molecule</th>
+              <th data-toggle="tooltip" data-placement="top" data-html="true" title="<span>Reference column ID from Reference training set</span>">Reference ID</th>
             <th data-toggle="tooltip" data-placement="top" data-html="true" title="<span>Reference column name from Reference training set</span>">Reference name</th>
             <th data-toggle="tooltip" data-placement="top" data-html="true"  title="<span>Reference molecule column from Reference training set</span>">Reference molecule</th>
             <th data-toggle="tooltip" data-placement="top" data-html="true"  title="<span>Similarity distance score: Tanimoto for binary descriptors and Euclidean for continues ones</span>">Similarity</th>
@@ -102,6 +103,7 @@
               <td class="align-middle" >{{this.nameSrc[i]}}</td>
               <td class="align-middle"><canvas #cmp id="{{'query_' + i + '_' + j}}" width="300" height="150">{{this.smileSrc[i]}}</canvas></td>
               <td class="align-middle">{{this.result[i].ids[j]}}</td>
+              <td class="align-middle">{{this.result[i].names[j]}}</td>
               <td class="align-middle"><canvas #cmp id="{{'ref_' + i + '_' + j}}" width="300" height="150">{{this.result[i].SMILES[j]}}</canvas></td>
               <td class="align-middle">{{this.result[i].distances[j].toFixed(3)}}</td>
             </tr>
