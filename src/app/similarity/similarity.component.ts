@@ -3,6 +3,9 @@ import { Similarity } from '../Globals';
 import { SimilarityService} from './similarity.service';
 import * as SmilesDrawer from 'smiles-drawer';
 import { ToastrService } from 'ngx-toastr';
+import 'jquery';
+// import 'datatables.net-bs4';
+declare var $: any;
 
 @Component({
   selector: 'app-similarity',
@@ -22,8 +25,8 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
   objectKeys = Object.keys;
   fileContent: any;
   spaces: {};
-  space: string;
-  version: string;
+  space: string = undefined;
+  version: string = undefined;
   predicting = false;
   result = [];
   smileSrc = [];
@@ -135,6 +138,12 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
                 console.log(err);
               });
           });
+          $('#simlarityTable').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        } );
         }
     });
   }

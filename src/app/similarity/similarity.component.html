@@ -68,10 +68,11 @@
   </div>
   <div class="row justify-content-end">
     <div class="col">
-      <button class="btn btn-outline-primary" role="button" id="search" (click) = "search()" >Search</button>
+      <button type="button" class="btn btn-outline-primary" 
+      [ngClass]="{'disabled': this.similarity.file === undefined || this.space === undefined || this.version === undefined }"
+     (click) = "search()" >Search</button>
     </div>
   </div>
-
 
   <div class="text-center mt-5" *ngIf= "this.result.length == 0 && predicting">
     <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
@@ -84,16 +85,16 @@
       <h4>Similarity Results</h4>
     </div>
     <div class="col-12" *ngIf = "this.result.length > 0">
-      <table class="table table-fixed table-bordered table-striped" id="data-table">
+      <table id="simlarityTable" class="table table-fixed table-bordered table-striped">
         <thead>
           <tr>
             <th>Index</th>
-            <th data-toggle="tooltip" data-placement="top" data-html="true" title="<span>Query column name from query test set</span>">Query name</th>
-            <th data-toggle="tooltip" data-placement="top" data-html="true" title="<span>Query molecule from query test set</span>">Query molecule</th>
-              <th data-toggle="tooltip" data-placement="top" data-html="true" title="<span>Reference column ID from Reference training set</span>">Reference ID</th>
-            <th data-toggle="tooltip" data-placement="top" data-html="true" title="<span>Reference column name from Reference training set</span>">Reference name</th>
-            <th data-toggle="tooltip" data-placement="top" data-html="true"  title="<span>Reference molecule column from Reference training set</span>">Reference molecule</th>
-            <th data-toggle="tooltip" data-placement="top" data-html="true"  title="<span>Similarity distance score: Tanimoto for binary descriptors and Euclidean for continues ones</span>">Similarity</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true" title="Query column name from query test set">Query name</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true" title="Query molecule from query test set">Query molecule</th>
+              <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column ID from Reference training set">Reference ID</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column name from Reference training set">Reference name</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true"  title="Reference molecule column from Reference training set">Reference molecule</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true"  title="Similarity distance score: Tanimoto for binary descriptors and Euclidean for continues ones">Similarity</th>
           </tr>
         </thead>
         <tbody>

@@ -20,10 +20,10 @@ i {
     background: #B8DCED;
     color:#0076a3;
 }
+
 .table td {
-    padding-left: 1px;
-    padding-right: 1px;
-    /*font-family: Verdana, Geneva, Tahoma, sans-serif;*/
+    padding: 5px;
+    font-family: 'Barlow Semi Condensed', sans-serif;
     border-bottom: 2px solid #B8DCED;
 }
 tr {
@@ -37,12 +37,7 @@ tr.selected {
 .table tbody tr:hover {
     background: #f7f9ea;
 }
-tr.version td {
-    border: none
-}
 td {
-    padding-left: 4px;
-    padding-right: 4px;
     padding: 4px;
     vertical-align: middle;
 }

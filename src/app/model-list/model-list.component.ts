@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit } from '@angular/core';
 import { CommonService } from '../common.service';
 import { ModelListService } from './model-list.service';
 import { Model } from '../Globals';
@@ -10,7 +10,7 @@ import { ValidationsComponent} from '../validations/validations.component';
   templateUrl: './model-list.component.html',
   styleUrls: ['./model-list.component.css']
 })
-export class ModelListComponent implements OnInit {
+export class ModelListComponent implements OnInit, AfterViewInit {
 
   constructor(private service: ModelListService,
     private commonService: CommonService,
@@ -19,7 +19,7 @@ export class ModelListComponent implements OnInit {
 
   models: Array<any>;
   objectKeys = Object.keys;
-
+  tableVisible = false;
   ngOnInit() {
     this.getModelList();
   }
@@ -30,7 +30,7 @@ export class ModelListComponent implements OnInit {
   }
 
   getModelList() {
-
+    this.tableVisible = false;
     this.commonService.getModelList().subscribe(
         result => {
           // result = JSON.parse(result[1]);
@@ -72,6 +72,16 @@ export class ModelListComponent implements OnInit {
     );
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      const table = $('#dataTableModels').DataTable();
+      $('#dataTableModels tbody').on( 'click', 'tr', function () {
+        $('tr').removeClass('selected'); // removes all highlights from tr's
+        $(this).addClass('selected'); // adds the highlight to this row
+      });
+      this.tableVisible = true;
+    }, 500);
+  }
 
   selectModel(name: string, version: string, trained: boolean, type: string) {
 
