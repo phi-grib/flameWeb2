@@ -32,7 +32,7 @@ export class ManagePredictionsComponent implements OnInit {
   }
 
   deletePrediction() {
-    const table = $('#dataTable').DataTable();
+    const table = $('#dataTablePredictions').DataTable();
     table.row('.selected').remove().draw(false);
 
     this.service.deletePrediction(this.prediction.name).subscribe(

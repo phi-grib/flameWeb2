@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ModelListComponent } from './model-list/model-list.component';
 import { CommonModule } from '@angular/common';
-import { TrainingSeriesComponent } from './training-series/training-series.component';
 import { ValidationsComponent } from './validations/validations.component';
 import { PredictionComponent } from './prediction/prediction.component';
 import { SimilarityComponent, } from './similarity/similarity.component';
@@ -11,21 +10,16 @@ import { PredictionListComponent } from './prediction-list/prediction-list.compo
 import { PredictorComponent } from './predictor/predictor.component';
 
 const routes: Routes = [
-  /*{
-    path: 'training-series',
-    component: TrainingSeriesComponent
-  },*/
 
-
-  { path: 'modeling/predictions', component: PredictionListComponent },
-  { path: 'modeling/models', component: ModelListComponent },
-  { path: 'trainigseries', component: TrainingSeriesComponent },
-  { path: 'validation', component: ValidationsComponent },
+  { path: 'predictions', component: PredictionListComponent},
+  { path: 'models', component: ModelListComponent},
+  { path: 'similarity', component: SimilarityComponent },
   { path: 'predictor', component: PredictorComponent },
   { path: 'builder', component: BuilderComponent },
+  { path: 'validation', component: ValidationsComponent },
   { path: 'prediction', component: PredictionComponent },
-  { path: 'similarity', component: SimilarityComponent },
-  { path: '', redirectTo: '/modeling/predictions', pathMatch: 'full'},
+  { path: '', redirectTo: '/predictions', pathMatch: 'full'},
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

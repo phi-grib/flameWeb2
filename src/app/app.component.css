@@ -1,7 +1,4 @@
-.sidebar {
-    /*min-height: 95vh;*/
-    /*background-color:#0076a3;*/
-    /*background: linear-gradient(to left, #F7F7F7 0%, #F7F7F7 100%);*/
-    /*background: #0076a3;*/
-    
+.info {
+    background-color: #FAFAFA;
+    min-height: 100vh;   
 }

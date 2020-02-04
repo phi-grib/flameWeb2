@@ -104,7 +104,7 @@ export class BuilderComponent implements OnInit {
         this.getModelList();
       }
     );
-    this.router.navigate(['/modeling/models']);
+    this.router.navigate(['/models']);
   }
 
 

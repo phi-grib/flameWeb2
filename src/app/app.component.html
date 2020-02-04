@@ -19,21 +19,22 @@
     </div>
 </div>-->
 
-
-
-<div class="row h-100">
-  <div class="col-12 sidebar p-0">
-      <app-modeling-sidebar></app-modeling-sidebar>
-  </div>
+<div class="row">
+    <div class="col p-0">
+        <div class="">
+            <app-sidebar></app-sidebar>
+        </div>
+        <div class="">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <div class="col-6 border-left info v-100" *ngIf="(this.prediction.name != undefined && this.model.name == undefined)">
+        <app-prediction [predictionName]=this.prediction.name></app-prediction>
+    </div>
+    <div class="col-6 border-left info  v-100" *ngIf="(this.model.name != undefined && this.prediction.name == undefined)">
+        <app-validations [name] = this.model.name [version] = this.model.version></app-validations>
+    </div>
 </div>
-  <!-- Main content -->
-<div class="row h-100">
-  <div class="col-12 main">
-     <router-outlet></router-outlet>
-  </div>
-</div>
-<!--<div class="tab-content" id="myTabContent">
- 
-   <router-outlet></router-outlet>
 
-</div>-->
+
+

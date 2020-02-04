@@ -1,11 +1,15 @@
 <hr class="my-0">
 
 <app-manage-predictions></app-manage-predictions>
-<div class="ml-3 mr-3" *ngIf="this.prediction.predictions  !== undefined">
-  <table class="table" id="dataTable" width="100%" cellspacing="0">
+<div class ="text-center spinner" *ngIf = "!this.tableVisible">
+  <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<div class="ml-3 mr-3"  [hidden] = "!this.tableVisible">
+  <table class="table" id="dataTablePredictions" width="100%" cellspacing="0">
     <thead>
       <tr>
-        <th></th>
         <th>Name</th>
         <th>Models</th>
         <th>Version</th>
@@ -15,7 +19,6 @@
     </thead>
     <tfoot>
       <tr>
-        <th></th>
         <th>Name</th>
         <th>Models</th>
         <th>Version</th>
@@ -35,11 +38,6 @@
             <td>-</td>         
           </tr>
       <tr *ngFor="let info of this.prediction.predictions" (click)= "selectPrediction(info[0])">
-        <td>
-           <button class="btn" (click)="openPredcition(info[0])">
-                <i class="far fa-chart-bar fa-lg" title="Prediction" ></i>
-            </button>
-        </td>
         <td>{{info[0]}}</td>
         <td>{{info[1]}}</td>
         <td>{{info[2]}}</td>

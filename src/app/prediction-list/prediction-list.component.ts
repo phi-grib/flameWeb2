@@ -1,10 +1,9 @@
-import { Component, OnInit, AfterViewInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { CommonService } from '../common.service';
-import { Prediction } from '../Globals';
+import { Model, Prediction } from '../Globals';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { PredictionComponent } from '../prediction/prediction.component';
-import { Router } from '@angular/router';
 import 'jquery';
+import { AlertPromise } from 'selenium-webdriver';
 // import 'datatables.net-bs4';
 declare var $: any;
 
@@ -16,35 +15,33 @@ declare var $: any;
 export class PredictionListComponent implements OnInit {
 
   objectKeys = Object.keys;
+  tableVisible = false;
 
   constructor(private commonService: CommonService,
               public prediction: Prediction,
-              private modalService: NgbModal) {}
+              private model: Model) {}
 
     ngOnInit() {
+      this.prediction.name = undefined;
+      this.model.name = undefined;
       this.getPredictionList();
     }
-
     selectPrediction(name: string) {
       this.prediction.name = name;
-
-    }
-
-    openPredcition(predictionName: string) {
-      const modalRef = this.modalService.open(PredictionComponent, {windowClass : 'modalClass'});
-      modalRef.componentInstance.predictionName = predictionName;
     }
 
     getPredictionList() {
+      this.tableVisible = false;
       this.commonService.getPredictionList().subscribe(
           result => {
             this.prediction.predictions = result;
             setTimeout(() => {
-              const table = $('#dataTable').DataTable();
-              $('#dataTable tbody').on( 'click', 'tr', function () {
+              const table = $('#dataTablePredictions').DataTable();
+              $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
                 $('tr').removeClass('selected'); // removes all highlights from tr's
                 $(this).addClass('selected'); // adds the highlight to this row
               });
+              this.tableVisible = true;
             }, 100);
           },
           error => {

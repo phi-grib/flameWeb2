@@ -138,19 +138,10 @@ export class QuantitNoConformalComponent implements OnInit {
   getValidation() {
     this.service.getValidation(this.model.name, this.model.version).subscribe(
       result => {
-          console.log(result);
           const info = result;
-          for (const modelInfo of info['model_build_info']) {
-            if (typeof modelInfo[2] === 'number') {
-              modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
-              // do something
-            }
-            this.modelBuildInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
-          }
           for (const modelInfo of info['model_valid_info']) {
             if (typeof modelInfo[2] === 'number') {
               modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
-              // do something
             }
             if (typeof modelInfo[2] !== 'object') {
               this.modelValidationInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];

@@ -1,9 +1,12 @@
 import { Component, OnInit,AfterViewInit } from '@angular/core';
 import { CommonService } from '../common.service';
 import { ModelListService } from './model-list.service';
-import { Model } from '../Globals';
+import { Model, Prediction } from '../Globals';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ValidationsComponent} from '../validations/validations.component';
+import 'jquery';
+// import 'datatables.net-bs4';
+declare var $: any;
 
 @Component({
   selector: 'app-model-list',
@@ -15,16 +18,19 @@ export class ModelListComponent implements OnInit, AfterViewInit {
   constructor(private service: ModelListService,
     private commonService: CommonService,
     public model: Model,
+    public prediction: Prediction,
     private modalService: NgbModal) {}
 
   models: Array<any>;
   objectKeys = Object.keys;
   tableVisible = false;
   ngOnInit() {
+    this.prediction.name = undefined;
+    this.model.name = undefined;
     this.getModelList();
   }
   openValidation(name: string, version: string){
-    const modalRef = this.modalService.open(ValidationsComponent, {windowClass : "modalClass"});
+    const modalRef = this.modalService.open(ValidationsComponent, {windowClass : 'modalClass'});
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.version = version;
   }

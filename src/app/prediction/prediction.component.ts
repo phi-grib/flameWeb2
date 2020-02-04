@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList, ElementRef, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges } from '@angular/core';
 import { Prediction} from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { SingleDataSet, Label } from 'ng2-charts';
@@ -21,7 +21,7 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./prediction.component.css']/*,
   encapsulation: ViewEncapsulation.ShadowDom*/
 })
-export class PredictionComponent implements OnInit, AfterViewInit {
+export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
 
   @Input() predictionName;
   objectKeys = Object.keys;
@@ -64,10 +64,18 @@ export class PredictionComponent implements OnInit, AfterViewInit {
 
 
   constructor(public prediction: Prediction,
-              public service: PredictionService,
-              public activeModal: NgbActiveModal) { }
+              public service: PredictionService) { }
 
   ngOnInit() {
+    this.getPrediction();
+  }
+
+  ngOnChanges(): void {
+    this.getPrediction();
+  }
+
+
+  getPrediction() {
 
     this.service.getPrediction(this.predictionName).subscribe(
       result => {
@@ -86,7 +94,7 @@ export class PredictionComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
           if (this.components !== undefined) {
             this.components.forEach((child) => {
-              const options = {'width': 300, 'height': 150};
+              const options = {'width': 150, 'height': 75};
               const smilesDrawer = new SmilesDrawer.Drawer(options);
               SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
                 smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
@@ -105,6 +113,7 @@ export class PredictionComponent implements OnInit, AfterViewInit {
     );
   }
 
+ 
 
   existKey(obj: {}, key: string) {
 

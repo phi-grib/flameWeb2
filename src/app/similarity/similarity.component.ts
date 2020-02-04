@@ -34,6 +34,7 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
+    alert('Similarity');
     this.spaces = {};
     this.service.getSpaces().subscribe(
       result => {
