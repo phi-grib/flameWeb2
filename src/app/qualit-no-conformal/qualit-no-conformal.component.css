@@ -14,3 +14,17 @@
     background: #B8DCED;
     background-color: #B8DCED;
 }
+#matrix * {
+  padding: 0px;
+  text-align: center;
+}
+
+.rotate > span {
+  transform: rotate(-90deg);
+  position:absolute;
+  left:10;
+  right:0;
+  top: 10px;
+  margin:auto;
+  
+}

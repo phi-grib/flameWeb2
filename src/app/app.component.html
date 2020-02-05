@@ -31,7 +31,7 @@
     <div class="col-6 border-left info v-100" *ngIf="(this.prediction.name != undefined && this.model.name == undefined)">
         <app-prediction [predictionName]=this.prediction.name></app-prediction>
     </div>
-    <div class="col-6 border-left info  v-100" *ngIf="(this.model.name != undefined && this.prediction.name == undefined)">
+    <div class="col-6 border-left info  v-100" *ngIf="(this.model.name != undefined && this.model.trained && this.prediction.name == undefined)">
         <app-validations [name] = this.model.name [version] = this.model.version></app-validations>
     </div>
 </div>
