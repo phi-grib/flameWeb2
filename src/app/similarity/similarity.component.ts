@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChildren, QueryList, ElementRef, AfterViewInit} 
 import { Similarity } from '../Globals';
 import { SimilarityService} from './similarity.service';
 import * as SmilesDrawer from 'smiles-drawer';
-import { ToastrService } from 'ngx-toastr';
+import { Model, Prediction } from '../Globals';
 import 'jquery';
 // import 'datatables.net-bs4';
 declare var $: any;
@@ -19,7 +19,8 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
 
   constructor(public similarity: Similarity,
     private service: SimilarityService,
-    private toastr: ToastrService) { }
+    public prediction: Prediction,
+    private model: Model) { }
 
   @ViewChildren('cmp') components: QueryList<ElementRef>;
   objectKeys = Object.keys;
@@ -33,8 +34,11 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
   nameSrc = [];
 
   ngOnInit() {
+    this.prediction.name = undefined;
+    this.model.name = undefined;
+    this.model.version = undefined;
+    this.model.trained = false;
 
-    alert('Similarity');
     this.spaces = {};
     this.service.getSpaces().subscribe(
       result => {
@@ -127,6 +131,7 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    alert('Afterview');
     this.components.changes.subscribe(
       () => {
         if (this.components !== undefined) {

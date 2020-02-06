@@ -30,6 +30,7 @@ export class ValidationsComponent implements OnInit, OnChanges {
         this.model.parameters = result;
       },
       error => {
+        alert('get paramaeters validation');
         alert(error.status + ' : ' + error.statusText);
       }
     );

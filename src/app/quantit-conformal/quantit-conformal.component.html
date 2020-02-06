@@ -2,13 +2,15 @@
 <div class="row mt-3">
     <div class="card w-100" style="width: 18rem;">
         <div class="card-body">
+            <div class="row ml-2">
+                <small class="h2 text-muted"><u>Fitting</u></small>
+            </div>
             <div class="row justify-content-between">
                 <div class="col-3 mt-1">
-                    <small class="h2 text-muted"><u>Fitting</u></small>
                     <table class="table table-sm mt-4">
                         <tbody>
                             <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key}}</strong></td>
+                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key}}:</strong></td>
                                 <td class="text-right text-capitalize">{{modelValidationInfo[key][1]}}</td>
                             </tr>
                         </tbody>

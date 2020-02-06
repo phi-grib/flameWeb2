@@ -35,6 +35,7 @@ import { ManagePredictionsComponent } from './manage-predictions/manage-predicti
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SimilarityResultsComponent } from './similarity-results/similarity-results.component';
 import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.component';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.co
     NgMultiSelectDropDownModule.forRoot(),
     ChecklistModule,
     ChartsModule,
-    NgbModule
+    NgbModule,
+    DataTablesModule
 
   ],
   providers: [Model, Prediction, Globals, Manager, Similarity],

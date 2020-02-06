@@ -18,21 +18,17 @@ export class ModelListComponent implements OnInit, AfterViewInit {
   constructor(private service: ModelListService,
     private commonService: CommonService,
     public model: Model,
-    public prediction: Prediction,
-    private modalService: NgbModal) {}
+    public prediction: Prediction) {}
 
   models: Array<any>;
   objectKeys = Object.keys;
   tableVisible = false;
+
   ngOnInit() {
     this.prediction.name = undefined;
     this.model.name = undefined;
+    this.model.version = undefined;
     this.getModelList();
-  }
-  openValidation(name: string, version: string){
-    const modalRef = this.modalService.open(ValidationsComponent, {windowClass : 'modalClass'});
-    modalRef.componentInstance.name = name;
-    modalRef.componentInstance.version = version;
   }
 
   getModelList() {

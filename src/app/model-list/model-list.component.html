@@ -14,7 +14,7 @@
       <thead>
         <tr>
           <th width="5%" class="text-center"></th>
-          <th width="5%"></th>
+          <!--<th width="5%"></th>-->
           <th width="30%">Name</th>
           <th width="10%">Version</th>
           <th width="10%">#Molecules</th>
@@ -42,7 +42,7 @@
          
                         
           </td>
-          <td scope="row" class="text-left">
+          <!--<td scope="row" class="text-left">
 
             <button class="btn p-0" (click)="openValidation(model.listModels[key].name,model.listModels[key].version)"
               *ngIf="model.listModels[key].type != '-'">
@@ -56,10 +56,10 @@
               placement="right"
               [autoClose]="'inside'"
               > <i class="far fa-eye" title="Quality" ></i>
-            </button>
+            </button>-->
                 
             <!-- Content poppover--> 
-            <ng-template #popTitle>Info</ng-template>   
+             <!--<ng-template #popTitle>Info</ng-template>   
             <ng-template #popContent>
               <table class="table">
                 <tbody>
@@ -71,7 +71,7 @@
                 </tbody>
               </table>
             </ng-template>     
-          </td>
+          </td>-->
           <td >{{model.listModels[key].name}}</td>
           <td>{{model.listModels[key].version}}</td>
           <td>{{model.listModels[key].numMols}}</td>

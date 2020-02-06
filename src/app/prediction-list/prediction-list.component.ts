@@ -1,9 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { CommonService } from '../common.service';
 import { Model, Prediction } from '../Globals';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import 'jquery';
-import { AlertPromise } from 'selenium-webdriver';
 // import 'datatables.net-bs4';
 declare var $: any;
 
@@ -24,6 +22,8 @@ export class PredictionListComponent implements OnInit {
     ngOnInit() {
       this.prediction.name = undefined;
       this.model.name = undefined;
+      this.model.version = undefined;
+      this.model.trained = false;
       this.getPredictionList();
     }
     selectPrediction(name: string) {
