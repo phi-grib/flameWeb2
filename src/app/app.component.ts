@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {PlatformLocation  } from '@angular/common';
 import { Model, Prediction } from './Globals';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -11,7 +13,14 @@ export class AppComponent {
   title = 'flameweb';
 
   constructor(public prediction: Prediction,
-    public model: Model) {}
+    public model: Model,
+    private router: Router) {}
+
+    isActive(url: string) {
+      return this.router.url.includes(url);
+ 
+   }
+ 
 }
 
 

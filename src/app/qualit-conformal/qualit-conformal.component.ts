@@ -50,7 +50,6 @@ export class QualitConformalComponent implements OnInit {
     this.service.getValidation(this.model.name, this.model.version).subscribe(
       result => {
           const info = result;
-          console.log(info);
           // INFO ABOUT MODEL
           for (const modelInfo of info['model_build_info']) {
             if (typeof modelInfo[2] === 'number') {

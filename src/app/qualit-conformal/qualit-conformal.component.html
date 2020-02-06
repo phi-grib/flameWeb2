@@ -31,69 +31,12 @@
                 </div>
                 <div class="col-5">
                     <!--CONFUSION MATRIX-->
-                    <div class="container h-60 text-center mb-5 bt-3">
-                        <div class="row align-items-center justify-content-center">
-                            <div class="col-2">
-                                <div class="row">
-
-                                </div>
-                                <div class="row border-bottom border-top">
-                                    <strong>Predicted +</strong> 
-                                </div>
-                                <div class="row border-bottom">
-                                    <strong>Predicted -</strong>
-                                </div>
-                                    
-                            </div>
-                            <div class="col-6">
-                                <div class="row text-center align-middle border-bottom">
-                                    <div class="col border-right border-left">
-                                        <strong>Actual +</strong>
-                                    </div>
-                                    <div class="col border-right">
-                                        <strong>Actual -</strong>
-                                    </div>
-                                    <div class="col">
-                                        &nbsp;
-                                    </div>
-                                </div>
-                                <div class="row border-bottom">
-                                    <div class="col border-right border-left TP">
-                                        {{this.modelValidationInfo['TP'][1]}} TP
-                                    </div>
-                                    <div class="col border-right FP">
-                                        {{this.modelValidationInfo['FP'][1]}} FP
-                                    </div>
-                                    <div class="col"> 
-                                        {{this.modelValidationInfo['TP'][1]+this.modelValidationInfo['FP'][1]}}
-                                    </div>
-                                </div>
-                                <div class="row border-bottom">
-                                    <div class="col border-right border-left FN">
-                                        {{this.modelValidationInfo['FN'][1]}} FN
-                                    </div>
-                                    <div class="col border-right TN">
-                                        {{this.modelValidationInfo['TN'][1]}} TN
-                                    </div>
-                                    <div class="col">
-                                        {{this.modelValidationInfo['FN'][1]+this.modelValidationInfo['TN'][1]}}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col border-right border-left">
-                                        {{this.modelValidationInfo['TP'][1]+this.modelValidationInfo['FN'][1]}}
-                                    </div>
-                                    <div class="col border-right">
-                                        {{this.modelValidationInfo['FP'][1]+this.modelValidationInfo['TN'][1]}}
-                                    </div>
-                                    <div class="col">
-                                    {{this.modelValidationInfo['TP'][1]+this.modelValidationInfo['FN'][1]
-                                        +  this.modelValidationInfo['FP'][1]+this.modelValidationInfo['TN'][1]}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>   
-                    </div>  
+                    <app-confusion-matrix  
+                        [TP] = this.modelValidationInfo['TP'][1]
+                        [FP] = this.modelValidationInfo['FP'][1]
+                        [FN] = this.modelValidationInfo['FN'][1]
+                        [TN] = this.modelValidationInfo['TN'][1] 
+                    > </app-confusion-matrix>
                 </div>
                 <div class="col-5">
                         <div style="display: block">

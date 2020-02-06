@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-5">
                   <!--CONFUSION MATRIX-->
-                  <div id="matrix" class="container">
+                  <!--<div id="matrix" class="container">
                     <div class="row">
                       <div class="col-6 offset-4 text-center">
                         <strong>Actual</strong>
@@ -79,7 +79,13 @@
                           {{this.modelValidationInfo['TPpred'][1]+this.modelValidationInfo['FNpred'][1]
                           +  this.modelValidationInfo['FPpred'][1]+this.modelValidationInfo['TNpred'][1]}}  
                       </div>
-                    </div>
+                    </div>-->
+                   <!-- <app-confusion-matrix 
+                        [TP] = this.modelValidationInfo['TPpred'][1]
+                        [FP] = this.modelValidationInfo['FPpred'][1]
+                        [FN] = this.modelValidationInfo['FNpred'][1]
+                        [TN] = this.modelValidationInfo['TNpred'][1]
+                    ></app-confusion-matrix>-->
                           
                         
                                       
@@ -99,7 +105,6 @@
                                      
                                   
                                  
-                  </div>  
                 </div>
                 <div class="col-5">
                      <div style="display: block">

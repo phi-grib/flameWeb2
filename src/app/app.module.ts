@@ -29,11 +29,12 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { SimilarityComponent } from './similarity/similarity.component';
 import { ModelingSidebarComponent } from './modeling-sidebar/modeling-sidebar.component';
 import { NewSimilarityComponent } from './new-similarity/new-similarity.component';
-import { SimilaritySidebarComponent } from './similarity-sidebar/similarity-sidebar.component';
 import { PredictionListComponent } from './prediction-list/prediction-list.component';
 import { ManageModelsComponent } from './manage-models/manage-models.component';
 import { ManagePredictionsComponent } from './manage-predictions/manage-predictions.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SimilarityResultsComponent } from './similarity-results/similarity-results.component';
+import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.component';
 
 @NgModule({
   declarations: [
@@ -55,10 +56,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SimilarityComponent,
     ModelingSidebarComponent,
     NewSimilarityComponent,
-    SimilaritySidebarComponent,
     PredictionListComponent,
     ManageModelsComponent,
-    ManagePredictionsComponent
+    ManagePredictionsComponent,
+    SimilarityResultsComponent,
+    ConfusionMatrixComponent
   ],
   imports: [
     BrowserModule,

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SimilaritySidebarComponent } from './similarity-sidebar.component';
+import { SimilarityResultsComponent } from './similarity-results.component';
 
-describe('SimilaritySidebarComponent', () => {
-  let component: SimilaritySidebarComponent;
-  let fixture: ComponentFixture<SimilaritySidebarComponent>;
+describe('SimilarityResultsComponent', () => {
+  let component: SimilarityResultsComponent;
+  let fixture: ComponentFixture<SimilarityResultsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SimilaritySidebarComponent ]
+      declarations: [ SimilarityResultsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SimilaritySidebarComponent);
+    fixture = TestBed.createComponent(SimilarityResultsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

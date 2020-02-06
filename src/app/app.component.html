@@ -28,12 +28,15 @@
             <router-outlet></router-outlet>
         </div>
     </div>
-    <div class="col-6 border-left info v-100" *ngIf="(this.prediction.name != undefined && this.model.name == undefined)">
+    <div class="col-6 border-left info v-100" *ngIf="(this.prediction.name != undefined && this.model.name == undefined && !isActive('similarity'))">
         <app-prediction [predictionName]=this.prediction.name></app-prediction>
     </div>
-    <div class="col-6 border-left info  v-100" *ngIf="(this.model.name != undefined && this.model.trained && this.prediction.name == undefined)">
+    <div class="col-6 border-left info  v-100" *ngIf="(this.model.name != undefined && this.model.trained && this.prediction.name == undefined && !isActive('similarity'))">
         <app-validations [name] = this.model.name [version] = this.model.version></app-validations>
     </div>
+    <!--<div class="col-6 border-left info  v-100" *ngIf="isActive('similarity')">
+        <p>SIMILARITY</p>
+    </div>-->
 </div>
 
 

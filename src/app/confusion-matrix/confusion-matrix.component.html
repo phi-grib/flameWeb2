@@ -1,0 +1,77 @@
+  <!--CONFUSION MATRIX-->
+  <div id="matrix" class="container">
+    <div class="row">
+      <div class="col-6 offset-4 text-center">
+        <strong>Actual</strong>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3 offset-4 text-center border-left border-right border-bottom">
+        <strong>+</strong>
+      </div>
+      <div class="col-3 text-center border-right border-bottom">
+        <strong>-</strong>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3 rotate text-right">
+          <span><strong>Predicted</strong></span>
+      </div>
+      <div class="col-1 text-center border-top border-right border-bottom">
+        <strong>+</strong>
+      </div>
+      <div class="col-3 text-center border-top border-right border-bottom TP">
+          {{this.TP}}
+       </div>
+       <div class="col-3 text-center border-top border-right border-bottom FP">
+          {{this.FP}}
+       </div>
+       <div class="col-2 border-top border-left border-bottom">
+          {{this.TP+this.FP}}
+       </div>
+    </div>
+    <div class="row">
+      <div class="col-1 offset-3 text-center border-top border-right border-bottom">
+          <strong>-</strong>
+      </div>
+      <div class="col-3 text-center border-top border-right border-bottom FN">
+          {{this.FN}}
+      </div>
+      <div class="col-3 text-center border-top border-right border-bottom TN">
+          {{this.TN}}
+      </div>
+      <div class="col-2 border-top border-left border-bottom">
+          {{this.FN+this.TN}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3 offset-4 border-left text-center">
+          {{this.TP+this.FN}}
+      </div>
+      <div class="col-3 border-left text-center">
+          {{this.FP+this.TN}}
+      </div>
+      <div class="col-2 border-left">
+          {{this.TP+this.FP+this.TN+this.FN}}  
+      </div>
+    </div>
+          
+        
+                      
+                
+                     
+                  
+                      
+                
+                     
+                  
+                      
+                
+                      
+          
+                      
+                  
+                     
+                  
+                 
+  </div>  
