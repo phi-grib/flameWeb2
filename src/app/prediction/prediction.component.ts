@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges, ViewChild, OnDestroy } from '@angular/core';
 import { Prediction} from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { Subject } from 'rxjs';
@@ -38,7 +38,7 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
   info = [];
   head = [];
 
-  predictionResult: any = undefined;
+  predictionResult = {};
 
   modelBuildInfo = {};
   modelValidationInfo = {};
@@ -73,25 +73,20 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit() {
     this.dtOptions = {
       pagingType: 'full_numbers',
+      retrieve: true,
+      paging: true
     };
-    this.getPrediction();
+    //this.getPrediction();
   }
 
   ngOnChanges(): void {
     this.getPrediction();
   }
 
-  getPrediction() {
 
+  getPrediction() {
     this.predictionVisible = false;
-    this.components = undefined;
-    this.predictionResult = undefined;
-    if (this.dtElement !== undefined) {
-      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-        // Destroy the table first if exist
-        dtInstance.destroy();
-      });
-    }
+    // this.predictionResult = {};
     this.service.getPrediction(this.predictionName).subscribe(
       result => {
         this.predictionResult = result;
@@ -109,6 +104,18 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
           this.polarAreaChartData = [this.modelValidationInfo['TP'][1], this.modelValidationInfo['FP'][1],
           this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
         }
+        setTimeout(() => {
+          /*this.components.forEach((child) => {
+            const options = {'width': 300, 'height': 150};
+            const smilesDrawer = new SmilesDrawer.Drawer(options);
+            SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
+              smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
+              }, function (err) {
+                console.log(err);
+              });
+          });*/
+          this.dtTrigger.next();
+         }, 0);
       }
     );
   }
@@ -158,7 +165,7 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
     this.info = [];
     this.head = ['Name', 'Mol'];
 
-    if (this.predictionResult !== undefined) {
+    if (this.objectKeys(this.predictionResult).length > 0) {
       if (this.predictionResult.ymatrix) {
         this.head.push('Value');
       }
@@ -187,7 +194,6 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
 
       let prediction = [];
       for (let i = 0; i < this.predictionResult.SMILES.length;) {
-        
         prediction = [];
         prediction = [this.predictionResult.obj_nam[i], this.predictionResult.SMILES[i]];
 
@@ -219,23 +225,8 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
         i = i + 1;
       }
     }
-    this.components.changes.subscribe(
+   /* this.components.changes.subscribe(
       () => {
-        if (this.components !== undefined) {
-          console.log(this.components);
-          setTimeout(() => {
-            this.components.forEach((child) => {
-              const options = {'width': 300, 'height': 150};
-              const smilesDrawer = new SmilesDrawer.Drawer(options);
-              SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
-                smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-                }, function (err) {
-                  console.log(err);
-                });
-            });
-            this.dtTrigger.next();
-          }, 0);
-        }
-    });
+    });*/
   }
 }
