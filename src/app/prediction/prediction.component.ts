@@ -67,14 +67,11 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
     },
   ];
 
-
-
   constructor(public prediction: Prediction,
               public service: PredictionService) { }
 
   ngOnInit() {
     this.dtOptions = {
-      ajax: this.predictionResult,
       pagingType: 'full_numbers',
     };
     this.getPrediction();
@@ -84,16 +81,19 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
     this.getPrediction();
   }
 
-
   getPrediction() {
 
     this.predictionVisible = false;
     this.components = undefined;
     this.predictionResult = undefined;
-
+    if (this.dtElement !== undefined) {
+      this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+        // Destroy the table first if exist
+        dtInstance.destroy();
+      });
+    }
     this.service.getPrediction(this.predictionName).subscribe(
       result => {
-       
         this.predictionResult = result;
         if ('external-validation' in this.predictionResult) {
           for (const modelInfo of this.predictionResult['external-validation']) {
@@ -109,7 +109,6 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
           this.polarAreaChartData = [this.modelValidationInfo['TP'][1], this.modelValidationInfo['FP'][1],
           this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
         }
-        this.predictionVisible = true;
       }
     );
   }
@@ -188,13 +187,13 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
 
       let prediction = [];
       for (let i = 0; i < this.predictionResult.SMILES.length;) {
+        
         prediction = [];
         prediction = [this.predictionResult.obj_nam[i], this.predictionResult.SMILES[i]];
 
         if (this.predictionResult.ymatrix) {
           prediction.push(this.predictionResult.ymatrix[i].toFixed(3));
         }
-
         if (this.predictionResult.values) {
           prediction.push(this.predictionResult.values[i].toFixed(3));
         }
@@ -220,25 +219,10 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
         i = i + 1;
       }
     }
-    if (this.components !== undefined) {
-      setTimeout(() => {
-        this.components.forEach((child) => {
-          const options = {'width': 300, 'height': 150};
-          const smilesDrawer = new SmilesDrawer.Drawer(options);
-          SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
-            smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-            }, function (err) {
-              console.log(err);
-            });
-        });
-        // Calling the DT trigger to manually render the table
-        this.dtTrigger.next();
-        /*const table = $('#predictionTable').DataTable();*/
-      }, 0);
-    }
     this.components.changes.subscribe(
       () => {
         if (this.components !== undefined) {
+          console.log(this.components);
           setTimeout(() => {
             this.components.forEach((child) => {
               const options = {'width': 300, 'height': 150};
@@ -249,15 +233,8 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
                   console.log(err);
                 });
             });
-            this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-              // Destroy the table first
-              alert("Aquiiii");
-              dtInstance.destroy();
-              // Call the dtTrigger to rerender again
-              this.dtTrigger.next();
-            });
-            /*onst table = $('#predictionTable').reload();*/
-          }, 1000);
+            this.dtTrigger.next();
+          }, 0);
         }
     });
   }
