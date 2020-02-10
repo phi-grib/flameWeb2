@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges} from '@angular/core';
 import { QualitConformalService } from './qualit-conformal.service';
 import {Model} from '../Globals';
 import { SingleDataSet, Label } from 'ng2-charts';
@@ -9,10 +9,14 @@ import { ChartType, ChartOptions, ChartColor} from 'chart.js';
   templateUrl: './qualit-conformal.component.html',
   styleUrls: ['./qualit-conformal.component.css']
 })
-export class QualitConformalComponent implements OnInit {
+export class QualitConformalComponent implements OnInit, OnChanges {
 
   constructor(private service: QualitConformalService,
     public model: Model) { }
+
+    @Input() modelName;
+    @Input() modelVersion;
+
     
     objectKeys = Object.keys;
     modelBuildInfo = {};
@@ -42,12 +46,12 @@ export class QualitConformalComponent implements OnInit {
       },
     ];
 
-  ngOnInit() {
+  ngOnChanges(): void {
     this.getValidation();
   }
 
   getValidation() {
-    this.service.getValidation(this.model.name, this.model.version).subscribe(
+    this.service.getValidation(this.modelName, this.modelVersion).subscribe(
       result => {
           const info = result;
           // INFO ABOUT MODEL
@@ -71,8 +75,6 @@ export class QualitConformalComponent implements OnInit {
               this.polarAreaChartData = [this.modelValidationInfo['TP'][1], this.modelValidationInfo['FP'][1],
               this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
             }
-            this.polarAreaChartData2 = [this.modelValidationInfo['TPpred'][1], this.modelValidationInfo['FPpred'][1],
-            this.modelValidationInfo['TNpred'][1], this.modelValidationInfo['FNpred'][1]];
           }, 50);
       },
       error => {

@@ -16,11 +16,8 @@ export class ValidationsComponent implements OnInit, OnChanges {
               private commonService: CommonService) { }
 
 
-  ngOnInit() {
-    this.getParameters();
-  }
-
   ngOnChanges(): void {
+    this.model.parameters = undefined;
     this.getParameters();
   }
 

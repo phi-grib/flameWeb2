@@ -32,14 +32,17 @@ export class ManagePredictionsComponent implements OnInit {
   }
 
   deletePrediction() {
-    const table = $('#dataTablePredictions').DataTable();
-    table.row('.selected').remove().draw(false);
-
     this.service.deletePrediction(this.prediction.name).subscribe(
       result => {
+        const table = $('#dataTablePredictions').DataTable();
+        table.row('.selected').remove().draw(false);
+        $('#dataTablePredictions').DataTable().destroy();
+        $('#dataTablePredictions').DataTable();
         this.toastr.success( 'Prediction "' + this.prediction.name + '" deleted', 'DELETED' , {
           timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
         });
+        this.prediction.name = undefined;
+
       },
       error => {
           this.toastr.error(error.error.error, 'ERROR', {

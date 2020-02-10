@@ -5,7 +5,6 @@ import { Subject } from 'rxjs';
 import { SingleDataSet, Label } from 'ng2-charts';
 import { ChartType} from 'chart.js';
 import { PredictionService } from './prediction.service';
-import { DataTableDirective } from 'angular-datatables';
 
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -22,11 +21,6 @@ import * as XLSX from 'xlsx';
 })
 export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
 
-  @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
-
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
 
   @Input() predictionName;
   objectKeys = Object.keys;
@@ -34,11 +28,10 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
 
   table: any = undefined;
   @ViewChildren('cmp') components: QueryList<ElementRef>;
-  dataTable: any;
   info = [];
   head = [];
 
-  predictionResult = {};
+  predictionResult: any;
 
   modelBuildInfo = {};
   modelValidationInfo = {};
@@ -71,22 +64,17 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
               public service: PredictionService) { }
 
   ngOnInit() {
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      retrieve: true,
-      paging: true
-    };
-    //this.getPrediction();
   }
 
   ngOnChanges(): void {
     this.getPrediction();
   }
 
-
   getPrediction() {
     this.predictionVisible = false;
-    // this.predictionResult = {};
+    this.predictionResult = undefined;
+    $('#prediction').DataTable().destroy();
+
     this.service.getPrediction(this.predictionName).subscribe(
       result => {
         this.predictionResult = result;
@@ -105,7 +93,7 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
           this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
         }
         setTimeout(() => {
-          /*this.components.forEach((child) => {
+          this.components.forEach((child) => {
             const options = {'width': 300, 'height': 150};
             const smilesDrawer = new SmilesDrawer.Drawer(options);
             SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
@@ -113,8 +101,9 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
               }, function (err) {
                 console.log(err);
               });
-          });*/
-          this.dtTrigger.next();
+          });
+          this.predictionVisible = true;
+          $('#prediction').DataTable();
          }, 0);
       }
     );
@@ -165,7 +154,7 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
     this.info = [];
     this.head = ['Name', 'Mol'];
 
-    if (this.objectKeys(this.predictionResult).length > 0) {
+    if (this.predictionResult !== undefined) {
       if (this.predictionResult.ymatrix) {
         this.head.push('Value');
       }

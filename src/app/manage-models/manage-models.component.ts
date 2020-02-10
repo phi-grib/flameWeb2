@@ -66,11 +66,13 @@ export class ManageModelsComponent implements OnInit {
         this.toastr.success( 'Model ' + this.model.name + ' deleted', 'DELETED' , {
           timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
         });
-        for (const key of this.objectKeys(this.model.listModels)) {
-          if (key.indexOf(this.model.name + '-') === 0) {
-            delete this.model.listModels[key];
-          }
-        }
+        const table = $('#dataTableModels').DataTable();
+        table.row('.selected').remove().draw(false);
+        $('#dataTableModels').DataTable().destroy();
+        $('#dataTableModels').DataTable();
+
+        this.getModelList();
+
         this.model.name = undefined ;
         this.model.version = undefined;
       },
@@ -87,7 +89,11 @@ export class ManageModelsComponent implements OnInit {
         this.toastr.success( 'Model ' + this.model.name + '.v' + this.model.version + ' deleted','DELETED', {
           timeOut: 4000, positionClass: 'toast-top-right'
         });
-        delete this.model.listModels[this.model.name + '-' + this.model.version];
+        const table = $('#dataTableModels').DataTable();
+        table.row('.selected').remove().draw(false);
+        $('#dataTableModels').DataTable().destroy();
+        $('#dataTableModels').DataTable();
+        this.getModelList();
       },
       error => {
         console.log(error);

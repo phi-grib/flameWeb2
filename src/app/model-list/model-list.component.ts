@@ -66,23 +66,16 @@ export class ModelListComponent implements OnInit, AfterViewInit {
               );
             }
           }
+          setTimeout(() => {
+            this.tableVisible = true;
+            const table = $('#dataTableModels').DataTable();
+          }, 500);
         },
         error => {
           console.log(error.message);
           alert(error.message);
         }
     );
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      const table = $('#dataTableModels').DataTable();
-      $('#dataTableModels tbody').on( 'click', 'tr', function () {
-        $('tr').removeClass('selected'); // removes all highlights from tr's
-        $(this).addClass('selected'); // adds the highlight to this row
-      });
-      this.tableVisible = true;
-    }, 500);
   }
 
   selectModel(name: string, version: string, trained: boolean, type: string) {

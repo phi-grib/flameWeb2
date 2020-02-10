@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { QualitNoConformalService } from './qualit-no-conformal.service';
 import {Model} from '../Globals';
 import { SingleDataSet, Label } from 'ng2-charts';
@@ -9,10 +9,13 @@ import { ChartType, ChartOptions, ChartColor} from 'chart.js';
   templateUrl: './qualit-no-conformal.component.html',
   styleUrls: ['./qualit-no-conformal.component.css']
 })
-export class QualitNoConformalComponent implements OnInit {
+export class QualitNoConformalComponent implements OnInit, OnChanges {
 
   constructor(private service: QualitNoConformalService,
     public model: Model) { }
+
+    @Input() modelName;
+    @Input() modelVersion;
 
     objectKeys = Object.keys;
     modelBuildInfo = {};
@@ -42,12 +45,13 @@ export class QualitNoConformalComponent implements OnInit {
       },
     ];
 
-  ngOnInit() {
+
+  ngOnChanges(): void {
     this.getValidation();
   }
 
   getValidation() {
-    this.service.getValidation(this.model.name, this.model.version).subscribe(
+    this.service.getValidation(this.modelName, this.modelVersion).subscribe(
       result => {
         const info = result;
         console.log(info);

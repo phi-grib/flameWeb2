@@ -79,8 +79,7 @@ export class PredictorComponent implements OnInit {
         result => {
           this.prediction.predictions = result;
           setTimeout(() => {
-            const table = $('#dataTable').DataTable();
-            table.order(4, 'desc');
+            const table = $('#dataTablePredictions').DataTable();
           }, 100);
         },
         error => {
@@ -107,6 +106,7 @@ export class PredictorComponent implements OnInit {
             this.toastr.error( 'Prediction ' + name + ' \n ' , 'ERROR!', {
             timeOut: 10000, positionClass: 'toast-top-right'});
             delete this.prediction.predicting[this.predictName];
+            $('#dataTablePredictions').DataTable().destroy();
             this.getPredictionList();
           }
           iter += 1;
@@ -128,6 +128,7 @@ export class PredictorComponent implements OnInit {
           timeOut: 5000, positionClass: 'toast-top-right'});
         clearInterval(intervalId);
         delete this.prediction.predicting[this.predictName];
+        $('#dataTablePredictions').DataTable().destroy();
         this.getPredictionList();
       },
       error => { // CHECK MAX iterations

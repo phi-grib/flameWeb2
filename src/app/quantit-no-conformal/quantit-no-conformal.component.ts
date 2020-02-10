@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { QuantitNoConformalService } from './quantit-no-conformal.service';
 import {Model} from '../Globals';
 import { ChartDataSets, ChartType, ChartOptions} from 'chart.js';
@@ -9,11 +9,14 @@ import { Label} from 'ng2-charts';
   templateUrl: './quantit-no-conformal.component.html',
   styleUrls: ['./quantit-no-conformal.component.css']
 })
-export class QuantitNoConformalComponent implements OnInit {
+export class QuantitNoConformalComponent implements OnInit, OnChanges {
 
 
   constructor(private service: QuantitNoConformalService,
     public model: Model) { }
+
+  @Input() modelName;
+  @Input() modelVersion;
 
   objectKeys = Object.keys;
   modelBuildInfo = {};
@@ -131,12 +134,12 @@ export class QuantitNoConformalComponent implements OnInit {
 
   public ChartType: ChartType = 'line';
 
-  ngOnInit() {
+  ngOnChanges(): void {
     this.getValidation();
   }
 
   getValidation() {
-    this.service.getValidation(this.model.name, this.model.version).subscribe(
+    this.service.getValidation(this.modelName, this.modelVersion).subscribe(
       result => {
           const info = result;
           for (const modelInfo of info['model_valid_info']) {

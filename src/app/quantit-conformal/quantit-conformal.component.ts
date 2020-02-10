@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnChanges } from '@angular/core';
 import { QuantitConformalService } from './quantit-conformal.service';
 import {Model} from '../Globals';
 import { ChartDataSets, ChartType, ChartOptions } from 'chart.js';
@@ -10,10 +10,14 @@ import 'chartjs-plugin-error-bars';
   templateUrl: './quantit-conformal.component.html',
   styleUrls: ['./quantit-conformal.component.css']
 })
-export class QuantitConformalComponent implements OnInit {
+export class QuantitConformalComponent implements OnInit, OnChanges {
 
 
   constructor(private service: QuantitConformalService, public model: Model) { }
+
+
+    @Input() modelName;
+    @Input() modelVersion;
 
     objectKeys = Object.keys;
     modelBuildInfo = {};
@@ -144,8 +148,12 @@ export class QuantitConformalComponent implements OnInit {
       this.getValidation();
     }
 
+    ngOnChanges(): void {
+      this.getValidation();
+    }
+
     getValidation() {
-      this.service.getValidation(this.model.name, this.model.version).subscribe(
+      this.service.getValidation(this.modelName, this.modelVersion).subscribe(
         result => {
           const info = result;
           console.log(info);

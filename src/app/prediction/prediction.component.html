@@ -4,114 +4,67 @@
     <span class="sr-only">Loading...</span>
   </div>
 </div>-->
-<div class="container"> 
-  {{objectKeys(this.predictionResult).length}}
-  <div class="row"> 
-    <div class="col" *ngIf="objectKeys(this.predictionResult).length > 0  && this.predictionResult['external-validation']">
-    
-      <div class="row justify-content-between">
-        <div class="col-2">
-          <table class="table table-sm table-striped">
-            <tbody>
-              <tr *ngFor = "let res of this.predictionResult['external-validation']">
-                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{res[1]}}"><strong>{{res[0]}}</strong></td>
-                <td class="text-right text-capitalize">{{res[2]}}</td>
-              </tr>
-            </tbody>
-          </table>
+<div class="container"  *ngIf="this.predictionResult != undefined">
+  <div class="row">
+    <div class="card w-100" style="width: 18rem;" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
+      <div class="card-body"> 
+        <div class="row ml-2">
+            <small class="h2 text-muted"><u>Fitting</u></small>
         </div>
-                                                                                                                              <!--Check if is quantitative-->
-        <div class="col p-0" *ngIf="(objectKeys(this.predictionResult).length > 0) && (this.predictionResult['external-validation']) && (existKey(this.modelValidationInfo,'TP'))">
-          <!--CONFUSION MATRIX-->
-          <div class="container">
-            <div class="row align-items-center justify-content-center">
-              <div class="col-2">
-                <div class="row">
-
-                </div>
-                <div class="row border-bottom border-top">
-                    <strong>Predicted +</strong> 
-                </div>
-                <div class="row border-bottom">
-                    <strong>Predicted -</strong>
-                </div>
-                      
-              </div>
-              <div class="col-6">
-                <div class="row text-center align-middle border-bottom">
-                  <div class="col border-right border-left">
-                      <strong>Actual +</strong>
-                  </div>
-                  <div class="col border-right">
-                      <strong>Actual -</strong>
-                  </div>
-                  <div class="col">
-                      &nbsp;
-                  </div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col border-right border-left TP">
-                      {{this.modelValidationInfo['TP'][1]}} TP
-                  </div>
-                  <div class="col border-right FP">
-                      {{this.modelValidationInfo['FP'][1]}} FP
-                  </div>
-                  <div class="col"> 
-                      {{this.modelValidationInfo['TP'][1]+this.modelValidationInfo['FP'][1]}}
-                  </div>
-                </div>
-                <div class="row border-bottom">
-                  <div class="col border-right border-left FN">
-                      {{this.modelValidationInfo['FN'][1]}} FN
-                  </div>
-                  <div class="col border-right TN">
-                      {{this.modelValidationInfo['TN'][1]}} TN
-                  </div>
-                  <div class="col">
-                      {{this.modelValidationInfo['FN'][1]+this.modelValidationInfo['TN'][1]}}
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col border-right border-left">
-                      {{this.modelValidationInfo['TP'][1]+this.modelValidationInfo['FN'][1]}}
-                  </div>
-                  <div class="col border-right">
-                      {{this.modelValidationInfo['FP'][1]+this.modelValidationInfo['TN'][1]}}
-                  </div>
-                  <div class="col">
-                  {{this.modelValidationInfo['TP'][1]+this.modelValidationInfo['FN'][1]
-                      +  this.modelValidationInfo['FP'][1]+this.modelValidationInfo['TN'][1]}}
-                  </div>
-                </div>
-              </div>
-            </div>
-                                                                                                                                <!--Check if is quantitative-->
-            <div class="col-4" *ngIf="(objectKeys(this.predictionResult).length > 0) && (this.predictionResult['external-validation']) && (existKey(this.modelValidationInfo,'TP'))">
-              <div style="display: block">
-                <canvas baseChart
-                    [data]="polarAreaChartData"
-                    [options]="polarChartOptions"
-                    [labels]="polarAreaChartLabels"
-                    [legend]="polarAreaLegend"
-                    [colors]="polarAreaChartColors"
-                    [chartType]="polarAreaChartType">
-                </canvas>
-              </div>
-            </div>  
+        <div class="row align-items-center">
+          <div class="col-2 mt-1">
+            <table class="table table-sm mt-4">
+              <tbody>
+                <tr>
+                  <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity'][0]}}"><strong>Sensitivity:</strong></td>
+                  <td class="text-right text-capitalize">{{modelValidationInfo['Sensitivity'][1]}}</td>
+                </tr>
+                <tr>
+                  <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Specificity'][0]}}"><strong>Specificity:</strong></td>
+                  <td class="text-right text-capitalize">{{modelValidationInfo['Specificity'][1]}}</td>
+                </tr>
+                <tr>
+                  <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCC'][0]}}"><strong>MCC:</strong></td>
+                  <td class="text-right text-capitalize">{{modelValidationInfo['MCC'][1]}}</td>
+                </tr>
+              </tbody>
+            </table> 
           </div>
+          <div class="col-5">
+            <!--CONFUSION MATRIX-->
+            <app-confusion-matrix 
+                  [TP] = "this.modelValidationInfo['TP'][1]"
+                  [FP] = "this.modelValidationInfo['FP'][1]"
+                  [FN] = "this.modelValidationInfo['FN'][1]"
+                  [TN] = "this.modelValidationInfo['TN'][1]"
+              ></app-confusion-matrix>                 
+          </div>
+          <div class="col-5">
+            <div style="display: block">
+              <canvas baseChart
+                  [data]="polarAreaChartData"
+                  [options]="polarChartOptions"
+                  [labels]="polarAreaChartLabels"
+                  [legend]="polarAreaLegend"
+                  [colors]="polarAreaChartColors"
+                  [chartType]="polarAreaChartType">
+              </canvas>
+            </div>
+          </div>
+        </div><!--row---->
+      </div><!--body-->
+    </div><!--card-->
+  </div>
+  <div class="row" *ngIf="this.predictionResult != undefined && this.predictionResult.warning">
+    <div class="card w-100">
+      <div class="card-body"> 
+        <div class="alert alert-danger text-center" role="alert">
+          {{this.predictionResult.warning}}
         </div>
       </div>
     </div>
   </div>
-
-  <div class="row" *ngIf="(objectKeys(this.predictionResult).length > 0) && (this.predictionResult.warning)">
-    <div class="col-10">
-      <div class="alert alert-danger text-center" role="alert">
-          {{this.predictionResult.warning}}
-      </div>
-    </div>
-  </div>
-  <div class="mt-3 mb-3">
+ 
     <!--<div class="d-flex flex-row-reverse" *ngIf="this.predictionResult != undefined">
       
         <div class="btn-group" role="group" aria-label="Basic example">
@@ -120,9 +73,10 @@
         </div>
       
     </div>-->
-    <div class="row mt-3" *ngIf="(objectKeys(this.predictionResult).length > 0)">
-      <div class="col">
-        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"  class="table m-0 table-light" *ngIf="(objectKeys(this.predictionResult).length > 0)" >
+  <div class="row mt-3" *ngIf="this.predictionResult != undefined">
+    <div class="card w-100">
+      <div class="card-body">
+        <table  id="prediction" class="table m-0 table-light">
           <thead>
             <tr>
               <th >Name</th>

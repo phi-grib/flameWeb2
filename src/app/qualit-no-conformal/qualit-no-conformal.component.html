@@ -1,4 +1,4 @@
-<div class="row mt-3">
+<div class="row mt-3" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
     <div class="card w-100" style="width: 18rem;">
         <div class="card-body"> 
             <div class="row ml-2">
@@ -49,7 +49,7 @@
     </div>
 </div>
 
-<div class="row mt-3" *ngIf="this.modelValidationInfo['TP']">
+<div class="row mt-3" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
     <div class="card w-100" style="width: 18rem;">
         <div class="card-body">
             <div class="row ml-2">

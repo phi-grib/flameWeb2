@@ -31,7 +31,7 @@
     <div class="col-6 border-left info v-100" *ngIf="(this.prediction.name != undefined && this.model.name == undefined && isActive('predictions'))">
         <app-prediction [predictionName]=this.prediction.name></app-prediction>
     </div>
-    <div class="col-6 border-left info  v-100" *ngIf="(this.model.name != undefined && this.model.trained && this.prediction.name == undefined && isActive('models'))">
+    <div class="col-6 border-left info v-100" *ngIf="(this.model.name != undefined && this.model.trained && this.prediction.name == undefined && isActive('models'))">
         <app-validations [name] = this.model.name [version] = this.model.version></app-validations>
     </div>
     <!--<div class="col-6 border-left info  v-100" *ngIf="isActive('similarity')">
