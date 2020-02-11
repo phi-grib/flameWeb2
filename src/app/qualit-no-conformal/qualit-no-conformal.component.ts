@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { QualitNoConformalService } from './qualit-no-conformal.service';
 import {Model} from '../Globals';
 import { SingleDataSet, Label } from 'ng2-charts';
@@ -9,7 +9,7 @@ import { ChartType, ChartOptions, ChartColor} from 'chart.js';
   templateUrl: './qualit-no-conformal.component.html',
   styleUrls: ['./qualit-no-conformal.component.css']
 })
-export class QualitNoConformalComponent implements OnInit, OnChanges {
+export class QualitNoConformalComponent implements OnChanges {
 
   constructor(private service: QualitNoConformalService,
     public model: Model) { }
@@ -76,8 +76,10 @@ export class QualitNoConformalComponent implements OnInit, OnChanges {
             this.polarAreaChartData = [this.modelValidationInfo['TP'][1], this.modelValidationInfo['FP'][1],
             this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
           }
-          this.polarAreaChartData2 = [this.modelValidationInfo['TPpred'][1], this.modelValidationInfo['FPpred'][1],
-          this.modelValidationInfo['TNpred'][1], this.modelValidationInfo['FNpred'][1]];
+          if (this.modelValidationInfo['TPpred']) {
+            this.polarAreaChartData2 = [this.modelValidationInfo['TPpred'][1], this.modelValidationInfo['FPpred'][1],
+            this.modelValidationInfo['TNpred'][1], this.modelValidationInfo['FNpred'][1]];
+        }
         }, 50);
       },
       error => {

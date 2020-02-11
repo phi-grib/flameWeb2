@@ -75,41 +75,169 @@
     </div>-->
   <div class="row mt-3" *ngIf="this.predictionResult != undefined">
     <div class="card w-100">
-      <div class="card-body">
-        <table  id="prediction" class="table m-0 table-light">
-          <thead>
-            <tr>
-              <th >Name</th>
-              <th class="align-middle text-center">Mol</th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.ymatrix">Value</th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.values">Prediction</th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">Upper limit</th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">Lower limit</th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.c0">Inactive</th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.c1">Active</th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">Ensemble Class 0</th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">Ensemble Class 1</th>
+      <!--NAVS tables-->
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="pills-all-tab" data-toggle="tab" href="#pills-all" role="tab" aria-controls="pills-home" aria-selected="true">All</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false">One3</a>
+          </li>
+        </ul>
 
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let res of this.predictionResult.SMILES; let i=index">
-              <td class="align-middle" >{{this.predictionResult.obj_nam[i]}}</td>
-              <td class="align-middle text-center">
-                <canvas #cmp id="{{i}}">{{this.predictionResult.SMILES[i]}}</canvas>
-              </td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.ymatrix" >{{this.predictionResult.ymatrix[i].toFixed(3)}}</td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.values">{{this.predictionResult.values[i].toFixed(3)}}</td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">{{this.predictionResult.upper_limit[i].toFixed(3)}}</td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">{{this.predictionResult.lower_limit[i].toFixed(3)}}</td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.c0">{{this.predictionResult.c0[i]}}</td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.c1">{{this.predictionResult.c1[i]}}</td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">{{this.predictionResult.ensemble_c0[i].toFixed(3)}}</td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">{{this.predictionResult.ensemble_c1[i].toFixed(3)}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <div class="tab-content" id="pills-tabContent">
+          <!--ALL-->
+          <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+            <div class="card-body">
+              <table  id="prediction" class="table m-0 table-light">
+                <thead>
+                  <tr>
+                    <th >Name</th>
+                    <th class="align-middle text-center">Mol</th>
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.ymatrix">Value</th>
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.values">Prediction</th>
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">Upper limit</th>
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">Lower limit</th>
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.c0">Inactive</th>
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.c1">Active</th>
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">Ensemble Class 0</th>
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">Ensemble Class 1</th>
+      
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let res of this.predictionResult.SMILES; let i=index">
+                    <td class="align-middle" >{{this.predictionResult.obj_nam[i]}}</td>
+                    <td class="align-middle text-center">
+                      <canvas #cmp id="{{i}}">{{this.predictionResult.SMILES[i]}}</canvas>
+                    </td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.ymatrix" >{{this.predictionResult.ymatrix[i].toFixed(3)}}</td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.values">{{this.predictionResult.values[i].toFixed(3)}}</td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">{{this.predictionResult.upper_limit[i].toFixed(3)}}</td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">{{this.predictionResult.lower_limit[i].toFixed(3)}}</td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.c0">{{this.predictionResult.c0[i]}}</td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.c1">{{this.predictionResult.c1[i]}}</td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">{{this.predictionResult.ensemble_c0[i].toFixed(3)}}</td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">{{this.predictionResult.ensemble_c1[i].toFixed(3)}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!--END ALL-->
+          <!--ONE-->
+          <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
+            <div class="card-body">
+              <!--PAGINATION-->
+              <div class="row justify-content-end">
+                <div class="col-1 p-0">
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                          <span class="sr-only">Previous</span>
+                        </a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                          <span class="sr-only">Next</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+              <!--END PAGINATION-->
+
+
+              <div class="row" style="background-color: #22577a;color: white">
+                <div class="col-3 border">
+                  KJA_27
+                </div>
+                <div class="col-6 border">
+                 Model CAV 12 version 0
+                </div>
+                <div class="col-3 border">
+                  12-02-2020
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-3 border">
+                  Name
+                </div>
+                <div class="col-9 border">
+                  1,2,4-Benzenetricarboxylic_Anhydride
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-3 border">
+                  ID
+                </div>
+                <div class="col-9 border">
+                  345
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-3 border">
+                  Structure
+                </div>
+                <div class="col-9 border">
+                  <canvas id="one_canvas">OC[C@@H](O1)[C@@H](O)[C@H](O)[C@@H]2[C@@H]1c3c(O)c(OC)c(O)cc3C(=O)O2</canvas>
+                </div>
+              </div>
+              <div class="row bg-light">
+                <div class="col-3 border">
+                  Other
+                </div>
+                <div class="col-9 border">
+                  Activity: 9.5
+                </div>
+              </div>
+              <div class="row bg-light">
+                <div class="col-3 border">
+                  Result
+                </div>
+                <div class="col-9 border">
+                  pKi: 9.56 (Ki 2.75nM)
+                </div>
+              </div>
+              <div class="row bg-light">
+                <div class="col-3 border">
+                  Reliability
+                </div>
+                <div class="col-9 border">
+                  90%CI: 8.3 - 10.6
+                </div>
+              </div>
+              <div class="row bg-light">
+                <div class="col-3 border">
+                  Interpretation
+                </div>
+                <div class="col-9 border">
+                  <p>The result rxpress the predicted potency ofthe compound in an assy measuring the ability to inhibit BSEP transporter in rat
+                  <br><br>The higher the potency the more likely is the compound to inhibit the transporter at therapeutic concentration.
+                  </p>
+                </div>
+              </div>
+              <div class="row bg-light">
+                <div class="col-3 border">
+                  Model
+                </div>
+                <div class="col-9 border">
+                    <p>Conformal RF using RDKit_md (120vars)
+                      <br><br>
+                      Training series 450 compounds<br>
+                      R2:0.90, Q2:0.67, SDEP:0.5<br>
+                      <a>QMRF report</a>
+                    </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!---->
     </div>
   </div>
 </div>

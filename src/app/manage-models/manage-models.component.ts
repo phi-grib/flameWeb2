@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderComponent} from '../builder/builder.component';
+declare var $: any;
 
 @Component({
   selector: 'app-manage-models',
@@ -43,6 +44,8 @@ export class ManageModelsComponent implements OnInit {
         this.service.createModel(this.modelName).subscribe(
           result => {
             this.modelName = '';
+            $('#dataTableModels').DataTable().destroy();
+            alert("Destoy");
             this.getModelList();
             this.toastr.success('Model ' + result.modelName, 'CREATED', {
               timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
@@ -69,10 +72,7 @@ export class ManageModelsComponent implements OnInit {
         const table = $('#dataTableModels').DataTable();
         table.row('.selected').remove().draw(false);
         $('#dataTableModels').DataTable().destroy();
-        $('#dataTableModels').DataTable();
-
         this.getModelList();
-
         this.model.name = undefined ;
         this.model.version = undefined;
       },
@@ -86,18 +86,19 @@ export class ManageModelsComponent implements OnInit {
 
     this.service.deleteVersion(this.model.name, this.model.version).subscribe(
       result => {
-        this.toastr.success( 'Model ' + this.model.name + '.v' + this.model.version + ' deleted','DELETED', {
+        this.toastr.success( 'Model ' + this.model.name + '.v' + this.model.version + ' deleted', 'DELETED', {
           timeOut: 4000, positionClass: 'toast-top-right'
         });
         const table = $('#dataTableModels').DataTable();
         table.row('.selected').remove().draw(false);
         $('#dataTableModels').DataTable().destroy();
-        $('#dataTableModels').DataTable();
         this.getModelList();
+        this.model.name = undefined;
+        this.model.version = undefined;
       },
       error => {
         console.log(error);
-        this.toastr.error( 'Model ' + this.model.name + '.v' + this.model.version + ' NOT deleted', 'ERROR',{
+        this.toastr.error( 'Model ' + this.model.name + '.v' + this.model.version + ' NOT deleted', 'ERROR', {
           timeOut: 4000, positionClass: 'toast-top-right'
         });
       }
@@ -129,7 +130,7 @@ export class ManageModelsComponent implements OnInit {
     this.manage.file = file;
     this.service.importModel().subscribe(
       result => {
-        this.toastr.success('Model \'' + result.Model + '\' imported' , 'IMPORTED SUCCESFULLY',{
+        this.toastr.success('Model \'' + result.Model + '\' imported' , 'IMPORTED SUCCESFULLY', {
           timeOut: 5000, positionClass: 'toast-top-right'});
           this.manage.file = undefined;
         this.getModelList();
@@ -175,6 +176,7 @@ export class ManageModelsComponent implements OnInit {
               );
             }
           }
+          $('#dataTableModels').DataTable();
         },
         error => {
           console.log(error.message);

@@ -19,7 +19,7 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./prediction.component.css']/*,
   encapsulation: ViewEncapsulation.ShadowDom*/
 })
-export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
+export class PredictionComponent implements AfterViewInit, OnChanges {
 
 
   @Input() predictionName;
@@ -28,6 +28,8 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
 
   table: any = undefined;
   @ViewChildren('cmp') components: QueryList<ElementRef>;
+  @ViewChildren('cmpone') componentOne: QueryList<ElementRef>;
+
   info = [];
   head = [];
 
@@ -63,8 +65,8 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
   constructor(public prediction: Prediction,
               public service: PredictionService) { }
 
-  ngOnInit() {
-  }
+
+
 
   ngOnChanges(): void {
     this.getPrediction();
@@ -74,6 +76,7 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
     this.predictionVisible = false;
     this.predictionResult = undefined;
     $('#prediction').DataTable().destroy();
+    $('#predictionOne').DataTable().destroy();
 
     this.service.getPrediction(this.predictionName).subscribe(
       result => {
@@ -103,7 +106,18 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
               });
           });
           this.predictionVisible = true;
-          $('#prediction').DataTable();
+          const table = $('#prediction').DataTable();
+          // const table2 = $('#predictionOne').DataTable({'pageLength': 1});
+          $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            const options = {'width': 600, 'height': 300};
+            const smilesDrawer = new SmilesDrawer.Drawer(options);
+            SmilesDrawer.parse('OC[C@@H](O1)[C@@H](O)[C@H](O)[C@@H]2[C@@H]1c3c(O)c(OC)c(O)cc3C(=O)O2', function(tree) {
+              // Draw to the canvas
+              smilesDrawer.draw(tree, 'one_canvas', 'light', false);
+              }, function (err) {
+                console.log(err);
+            });
+          });
          }, 0);
       }
     );
@@ -214,8 +228,5 @@ export class PredictionComponent implements OnInit, AfterViewInit, OnChanges {
         i = i + 1;
       }
     }
-   /* this.components.changes.subscribe(
-      () => {
-    });*/
   }
 }

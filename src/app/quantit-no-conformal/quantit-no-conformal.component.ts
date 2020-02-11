@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { QuantitNoConformalService } from './quantit-no-conformal.service';
 import {Model} from '../Globals';
 import { ChartDataSets, ChartType, ChartOptions} from 'chart.js';
@@ -9,7 +9,7 @@ import { Label} from 'ng2-charts';
   templateUrl: './quantit-no-conformal.component.html',
   styleUrls: ['./quantit-no-conformal.component.css']
 })
-export class QuantitNoConformalComponent implements OnInit, OnChanges {
+export class QuantitNoConformalComponent implements OnChanges {
 
 
   constructor(private service: QuantitNoConformalService,
@@ -109,7 +109,7 @@ export class QuantitNoConformalComponent implements OnInit, OnChanges {
     },
     {
       data: [],
-      type: 'line', 
+      type: 'line',
       fill: false,
       pointRadius: 1
     },

@@ -13,7 +13,7 @@ declare var $: any;
   templateUrl: './model-list.component.html',
   styleUrls: ['./model-list.component.css']
 })
-export class ModelListComponent implements OnInit, AfterViewInit {
+export class ModelListComponent implements OnInit {
 
   constructor(private service: ModelListService,
     private commonService: CommonService,

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, OnChanges } from '@angular/core';
+import { Component, ViewChild, Input, OnChanges } from '@angular/core';
 import { QuantitConformalService } from './quantit-conformal.service';
 import {Model} from '../Globals';
 import { ChartDataSets, ChartType, ChartOptions } from 'chart.js';
@@ -10,7 +10,7 @@ import 'chartjs-plugin-error-bars';
   templateUrl: './quantit-conformal.component.html',
   styleUrls: ['./quantit-conformal.component.css']
 })
-export class QuantitConformalComponent implements OnInit, OnChanges {
+export class QuantitConformalComponent implements OnChanges {
 
 
   constructor(private service: QuantitConformalService, public model: Model) { }
@@ -25,7 +25,7 @@ export class QuantitConformalComponent implements OnInit, OnChanges {
     modelConformal = {};
     data: Array<any>;
 
-    @ViewChild('QuantitConformalChart',{static: false}) QuantitConformalChart;
+    @ViewChild('QuantitConformalChart', {static: false}) QuantitConformalChart;
 
 
     // Options
@@ -144,10 +144,6 @@ export class QuantitConformalComponent implements OnInit, OnChanges {
 
     public ChartType: ChartType = 'line';
 
-    ngOnInit() {
-      this.getValidation();
-    }
-
     ngOnChanges(): void {
       this.getValidation();
     }
@@ -184,9 +180,9 @@ export class QuantitConformalComponent implements OnInit, OnChanges {
               // this.ChartDataPredicted[0].data[i] = { x: info['ymatrix'][i], y: info['Y_pred'][i]};
               // this.ChartDataPredicted[1].data[i] = { x: info['ymatrix'][i], y: info['ymatrix'][i]};
               this.ChartDataFitted[0].data[i] = { x: info['ymatrix'][i], y: this.modelConformal['Conformal_interval_medians'][i]};
-              this.ChartDataFitted[0].errorBars[info['obj_nam'][i]] =
-              { plus: this.modelConformal['Conformal_prediction_ranges'][i][0],
-                minus: this.modelConformal['Conformal_prediction_ranges'][i][1]}
+              this.ChartDataFitted[0].errorBars[info['obj_nam'][i]] = {
+                plus: this.modelConformal['Conformal_prediction_ranges'][i][0],
+                minus: this.modelConformal['Conformal_prediction_ranges'][i][1]};
               this.ChartDataFitted[1].data[i] = { x: info['ymatrix'][i], y: info['ymatrix'][i]};
               if (max) {
                 if (max < this.modelConformal['Conformal_prediction_ranges'][i][0]) {

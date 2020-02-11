@@ -7,7 +7,7 @@ import { CommonService } from '../common.service';
   templateUrl: './validations.component.html',
   styleUrls: ['./validations.component.css']
 })
-export class ValidationsComponent implements OnInit, OnChanges {
+export class ValidationsComponent implements OnChanges {
 
   @Input() name;
   @Input() version;

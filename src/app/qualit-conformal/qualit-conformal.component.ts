@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges} from '@angular/core';
+import { Component, Input, OnChanges} from '@angular/core';
 import { QualitConformalService } from './qualit-conformal.service';
 import {Model} from '../Globals';
 import { SingleDataSet, Label } from 'ng2-charts';
@@ -9,7 +9,7 @@ import { ChartType, ChartOptions, ChartColor} from 'chart.js';
   templateUrl: './qualit-conformal.component.html',
   styleUrls: ['./qualit-conformal.component.css']
 })
-export class QualitConformalComponent implements OnInit, OnChanges {
+export class QualitConformalComponent implements OnChanges {
 
   constructor(private service: QualitConformalService,
     public model: Model) { }
@@ -17,7 +17,6 @@ export class QualitConformalComponent implements OnInit, OnChanges {
     @Input() modelName;
     @Input() modelVersion;
 
-    
     objectKeys = Object.keys;
     modelBuildInfo = {};
     modelValidationInfo = {};
