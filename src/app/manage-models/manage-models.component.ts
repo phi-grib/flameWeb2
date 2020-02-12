@@ -45,7 +45,6 @@ export class ManageModelsComponent implements OnInit {
           result => {
             this.modelName = '';
             $('#dataTableModels').DataTable().destroy();
-            alert("Destoy");
             this.getModelList();
             this.toastr.success('Model ' + result.modelName, 'CREATED', {
               timeOut: 4000, positionClass: 'toast-top-right', progressBar: true

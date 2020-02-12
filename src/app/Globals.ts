@@ -25,6 +25,8 @@ export class Model {
 @Injectable()
 export class Prediction {
     name: string = undefined;   // Name of the model selected in the first step
+    modelName: string = undefined;
+    modelVersion: number = undefined;
     predictions = [];
     predicting = {};
     conformal = false;

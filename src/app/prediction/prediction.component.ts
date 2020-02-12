@@ -34,6 +34,10 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   head = [];
 
   predictionResult: any;
+  modelDocumentation: any;
+  i = 0;
+  noNext = false;
+  noPrevious = true;
 
   modelBuildInfo = {};
   modelValidationInfo = {};
@@ -67,9 +71,54 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
 
 
+  Next() {
+    this.i++;
+    this.noPrevious = false;
+    if ((this.predictionResult.SMILES.length -1) === this.i) {
+      this.noNext = true;
+    }
+    const options = {'width': 600, 'height': 300};
+    const smilesDrawer = new SmilesDrawer.Drawer(options);
+    SmilesDrawer.parse(this.predictionResult.SMILES[this.i], function(tree) {
+      // Draw to the canvas
+      smilesDrawer.draw(tree, 'one_canvas', 'light', false);
+      }, function (err) {
+        console.log(err);
+    });
+  }
+
+  Previous() {
+    this.i--;
+    this.noNext = false;
+    if (this.i === 0) {
+      this.noPrevious = true;
+    }
+    const options = {'width': 600, 'height': 300};
+    const smilesDrawer = new SmilesDrawer.Drawer(options);
+    SmilesDrawer.parse(this.predictionResult.SMILES[this.i], function(tree) {
+      // Draw to the canvas
+      smilesDrawer.draw(tree, 'one_canvas', 'light', false);
+      }, function (err) {
+        console.log(err);
+    });
+  }
 
   ngOnChanges(): void {
+    this.getDocumentation();
     this.getPrediction();
+  }
+
+  getDocumentation() {
+
+    this.service.getDocumentation(this.prediction.modelName, this.prediction.modelVersion).subscribe(
+      result => {
+        this.modelDocumentation = result;
+      },
+      error => {
+        alert('Error getting Documentation');
+      }
+    );
+
   }
 
   getPrediction() {
@@ -108,15 +157,18 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.predictionVisible = true;
           const table = $('#prediction').DataTable();
           // const table2 = $('#predictionOne').DataTable({'pageLength': 1});
+          const me = this;
           $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            const options = {'width': 600, 'height': 300};
-            const smilesDrawer = new SmilesDrawer.Drawer(options);
-            SmilesDrawer.parse('OC[C@@H](O1)[C@@H](O)[C@H](O)[C@@H]2[C@@H]1c3c(O)c(OC)c(O)cc3C(=O)O2', function(tree) {
-              // Draw to the canvas
-              smilesDrawer.draw(tree, 'one_canvas', 'light', false);
-              }, function (err) {
-                console.log(err);
-            });
+            if (e.target.id === 'pills-one-tab') {
+              const options = {'width': 600, 'height': 300};
+              const smilesDrawer = new SmilesDrawer.Drawer(options);
+              SmilesDrawer.parse(me.predictionResult.SMILES[me.i], function(tree) {
+                // Draw to the canvas
+                smilesDrawer.draw(tree, 'one_canvas', 'light', false);
+                }, function (err) {
+                  console.log(err);
+              });
+            }
           });
          }, 0);
       }

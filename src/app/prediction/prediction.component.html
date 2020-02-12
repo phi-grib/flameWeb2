@@ -78,10 +78,10 @@
       <!--NAVS tables-->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="pills-all-tab" data-toggle="tab" href="#pills-all" role="tab" aria-controls="pills-home" aria-selected="true">All</a>
+            <a class="nav-link active" id="pills-all-tab" data-toggle="tab" href="#pills-all" role="tab" aria-controls="pills-home" aria-selected="true">List</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false">One3</a>
+            <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false">Reports</a>
           </li>
         </ul>
 
@@ -126,21 +126,21 @@
           </div>
           <!--END ALL-->
           <!--ONE-->
-          <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
+          <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab" *ngIf="this.predictionResult != undefined">
             <div class="card-body">
               <!--PAGINATION-->
               <div class="row justify-content-end">
                 <div class="col-1 p-0">
                   <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                      <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
+                      <li class="page-item" [ngClass]="{'disabled': this.noPrevious}">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Previous" (click) = "Previous()">
                           <span aria-hidden="true">&laquo;</span>
                           <span class="sr-only">Previous</span>
                         </a>
                       </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
+                      <li class="page-item" [ngClass]="{'disabled': this.noNext}">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Next" (click) = "Next()">
                           <span aria-hidden="true">&raquo;</span>
                           <span class="sr-only">Next</span>
                         </a>
@@ -149,15 +149,17 @@
                   </nav>
                 </div>
               </div>
+              {{this.predictionResult.SMILES.length}}
+              {{this.i}}
               <!--END PAGINATION-->
 
 
               <div class="row" style="background-color: #22577a;color: white">
                 <div class="col-3 border">
-                  KJA_27
+                  {{this.prediction.name}}
                 </div>
                 <div class="col-6 border">
-                 Model CAV 12 version 0
+                 Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}}
                 </div>
                 <div class="col-3 border">
                   12-02-2020
@@ -168,7 +170,7 @@
                   Name
                 </div>
                 <div class="col-9 border">
-                  1,2,4-Benzenetricarboxylic_Anhydride
+                 {{this.predictionResult.obj_nam[i]}}
                 </div>
               </div>
               <div class="row">
@@ -176,7 +178,7 @@
                   ID
                 </div>
                 <div class="col-9 border">
-                  345
+                  {{this.predictionResult.obj_id[i]}}
                 </div>
               </div>
               <div class="row">
@@ -184,7 +186,7 @@
                   Structure
                 </div>
                 <div class="col-9 border">
-                  <canvas id="one_canvas">OC[C@@H](O1)[C@@H](O)[C@H](O)[C@@H]2[C@@H]1c3c(O)c(OC)c(O)cc3C(=O)O2</canvas>
+                  <canvas id="one_canvas"></canvas>
                 </div>
               </div>
               <div class="row bg-light">
@@ -192,7 +194,7 @@
                   Other
                 </div>
                 <div class="col-9 border">
-                  Activity: 9.5
+                  Activity: <p *ngIf="this.predictionResult.ymatrix">{{this.predictionResult.ymatrix[i].toFixed(3)}}</p> 
                 </div>
               </div>
               <div class="row bg-light">
@@ -200,7 +202,7 @@
                   Result
                 </div>
                 <div class="col-9 border">
-                  pKi: 9.56 (Ki 2.75nM)
+                  <p *ngIf="this.predictionResult.values">{{this.predictionResult.values[i].toFixed(3)}}</p>
                 </div>
               </div>
               <div class="row bg-light">

@@ -34,7 +34,7 @@
             <td>{{this.prediction.predicting[key][2].substring(this.prediction.predicting[key][2].lastIndexOf('/') + 1)}}</td>
             <td>-</td>         
           </tr>
-      <tr *ngFor="let info of this.prediction.predictions" (click)= "selectPrediction(info[0])">
+      <tr *ngFor="let info of this.prediction.predictions" (click)= "selectPrediction(info[0], info[1], info[2])">
         <td>{{info[0]}}</td>
         <td>{{info[1]}}</td>
         <td>{{info[2]}}</td>
