@@ -5,8 +5,8 @@
   </div>
 </div>-->
 <div class="container"  *ngIf="this.predictionResult != undefined">
-  <div class="row">
-    <div class="card w-100" style="width: 18rem;" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
+  <div class="row" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
+    <div class="card w-100" style="width: 18rem;">
       <div class="card-body"> 
         <div class="row ml-2">
             <small class="h2 text-muted"><u>Fitting</u></small>
@@ -15,22 +15,15 @@
           <div class="col-2 mt-1">
             <table class="table table-sm mt-4">
               <tbody>
-                <tr>
-                  <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity'][0]}}"><strong>Sensitivity:</strong></td>
-                  <td class="text-right text-capitalize">{{modelValidationInfo['Sensitivity'][1]}}</td>
-                </tr>
-                <tr>
-                  <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Specificity'][0]}}"><strong>Specificity:</strong></td>
-                  <td class="text-right text-capitalize">{{modelValidationInfo['Specificity'][1]}}</td>
-                </tr>
-                <tr>
-                  <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCC'][0]}}"><strong>MCC:</strong></td>
-                  <td class="text-right text-capitalize">{{modelValidationInfo['MCC'][1]}}</td>
-                </tr>
+                <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
+                  
+                  <td  *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key}}:</strong></td>
+                  <td  *ngIf="!this.q_measures.includes(key)" class="text-right text-capitalize">{{modelValidationInfo[key][1]}}</td>
+              </tr>
               </tbody>
             </table> 
           </div>
-          <div class="col-5">
+          <div class="col-5" *ngIf="this.modelValidationInfo['TP']">
             <!--CONFUSION MATRIX-->
             <app-confusion-matrix 
                   [TP] = "this.modelValidationInfo['TP'][1]"
@@ -39,7 +32,7 @@
                   [TN] = "this.modelValidationInfo['TN'][1]"
               ></app-confusion-matrix>                 
           </div>
-          <div class="col-5">
+          <div class="col-5"  *ngIf="this.modelValidationInfo['TP']">
             <div style="display: block">
               <canvas baseChart
                   [data]="polarAreaChartData"
@@ -129,8 +122,11 @@
           <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab" *ngIf="this.predictionResult != undefined">
             <div class="card-body">
               <!--PAGINATION-->
-              <div class="row justify-content-end">
-                <div class="col-1 p-0">
+              <div class="row  align-items-center">
+                <div class="col-2 offset-5">
+                  <span><strong>{{this.i +1}} of {{this.predictionResult.SMILES.length}}</strong></span>
+                </div>
+                <div class="col-1  p-0 offset-4">
                   <nav aria-label="Page navigation example">
                     <ul class="pagination">
                       <li class="page-item" [ngClass]="{'disabled': this.noPrevious}">
@@ -149,8 +145,6 @@
                   </nav>
                 </div>
               </div>
-              {{this.predictionResult.SMILES.length}}
-              {{this.i}}
               <!--END PAGINATION-->
 
 
@@ -167,7 +161,7 @@
               </div>
               <div class="row">
                 <div class="col-3 border">
-                  Name
+                  <strong>Name</strong>
                 </div>
                 <div class="col-9 border">
                  {{this.predictionResult.obj_nam[i]}}
@@ -175,7 +169,7 @@
               </div>
               <div class="row">
                 <div class="col-3 border">
-                  ID
+                  <strong>ID</strong>
                 </div>
                 <div class="col-9 border">
                   {{this.predictionResult.obj_id[i]}}
@@ -183,7 +177,7 @@
               </div>
               <div class="row">
                 <div class="col-3 border">
-                  Structure
+                  <strong>Structure</strong>
                 </div>
                 <div class="col-9 border">
                   <canvas id="one_canvas"></canvas>
@@ -191,23 +185,25 @@
               </div>
               <div class="row bg-light">
                 <div class="col-3 border">
-                  Other
+                  <strong>Other</strong>
                 </div>
                 <div class="col-9 border">
-                  Activity: <p *ngIf="this.predictionResult.ymatrix">{{this.predictionResult.ymatrix[i].toFixed(3)}}</p> 
+                  <span><strong>Activity: </strong></span>
+                  <span *ngIf="this.predictionResult.ymatrix">{{this.predictionResult.ymatrix[i].toFixed(3)}}</span> 
+                  <span *ngIf="!this.predictionResult.ymatrix">-</span> 
                 </div>
               </div>
               <div class="row bg-light">
                 <div class="col-3 border">
-                  Result
+                  <strong>Result</strong>
                 </div>
                 <div class="col-9 border">
-                  <p *ngIf="this.predictionResult.values">{{this.predictionResult.values[i].toFixed(3)}}</p>
+                  <span *ngIf="this.predictionResult.values">{{this.predictionResult.values[i].toFixed(3)}}</span>
                 </div>
               </div>
               <div class="row bg-light">
                 <div class="col-3 border">
-                  Reliability
+                  <strong>Reliability</strong>
                 </div>
                 <div class="col-9 border">
                   90%CI: 8.3 - 10.6
@@ -215,7 +211,7 @@
               </div>
               <div class="row bg-light">
                 <div class="col-3 border">
-                  Interpretation
+                  <strong>Interpretation</strong>
                 </div>
                 <div class="col-9 border">
                   <p>The result rxpress the predicted potency ofthe compound in an assy measuring the ability to inhibit BSEP transporter in rat
@@ -225,7 +221,7 @@
               </div>
               <div class="row bg-light">
                 <div class="col-3 border">
-                  Model
+                  <strong>Model</strong>
                 </div>
                 <div class="col-9 border">
                     <p>Conformal RF using RDKit_md (120vars)

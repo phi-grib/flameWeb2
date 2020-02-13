@@ -26,6 +26,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   objectKeys = Object.keys;
   predictionVisible = false;
 
+  q_measures = ['TP', 'FP', 'TN', 'FN'];
+
   table: any = undefined;
   @ViewChildren('cmp') components: QueryList<ElementRef>;
   @ViewChildren('cmpone') componentOne: QueryList<ElementRef>;
@@ -126,6 +128,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.predictionResult = undefined;
     $('#prediction').DataTable().destroy();
     $('#predictionOne').DataTable().destroy();
+    this.modelBuildInfo = {};
+    this.modelValidationInfo = {};
 
     this.service.getPrediction(this.predictionName).subscribe(
       result => {
@@ -144,6 +148,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.polarAreaChartData = [this.modelValidationInfo['TP'][1], this.modelValidationInfo['FP'][1],
           this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
         }
+        console.log(this.modelValidationInfo);
         setTimeout(() => {
           this.components.forEach((child) => {
             const options = {'width': 300, 'height': 150};
