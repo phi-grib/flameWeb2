@@ -4,7 +4,7 @@
     <span class="sr-only">Loading...</span>
   </div>
 </div>-->
-<div class="container"  *ngIf="this.predictionResult != undefined">
+<div id="cover-spin" class="container"  *ngIf="this.predictionResult != undefined">
   <div class="row" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
     <div class="card w-100" style="width: 18rem;">
       <div class="card-body"> 
@@ -71,10 +71,10 @@
       <!--NAVS tables-->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="pills-all-tab" data-toggle="tab" href="#pills-all" role="tab" aria-controls="pills-home" aria-selected="true">List</a>
+            <a class="nav-link active" id="pills-all-tab" data-toggle="tab" href="#pills-all" role="tab" aria-controls="pills-home" aria-selected="true"><h4>List</h4></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false">Reports</a>
+            <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false"><h4>Reports</h4></a>
           </li>
         </ul>
 
@@ -87,14 +87,14 @@
                   <tr>
                     <th >Name</th>
                     <th class="align-middle text-center">Mol</th>
-                    <th class="align-middle text-center" *ngIf="this.predictionResult.ymatrix">Value</th>
+                    <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ymatrix">Value</th>-->
                     <th class="align-middle text-center" *ngIf="this.predictionResult.values">Prediction</th>
-                    <th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">Upper limit</th>
-                    <th class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">Lower limit</th>
-                    <th class="align-middle text-center" *ngIf="this.predictionResult.c0">Inactive</th>
-                    <th class="align-middle text-center" *ngIf="this.predictionResult.c1">Active</th>
-                    <th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">Ensemble Class 0</th>
-                    <th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">Ensemble Class 1</th>
+                    <!--<th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">Upper limit</th>-->
+                    <!--<th class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">Lower limit</th>-->
+                    <!--<th class="align-middle text-center" *ngIf="this.predictionResult.c0">Inactive</th>-->
+                    <!--<th class="align-middle text-center" *ngIf="this.predictionResult.c1">Active</th>-->
+                    <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">Ensemble Class 0</th>-->
+                    <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">Ensemble Class 1</th>-->
       
                   </tr>
                 </thead>
@@ -104,14 +104,14 @@
                     <td class="align-middle text-center">
                       <canvas #cmp id="{{i}}">{{this.predictionResult.SMILES[i]}}</canvas>
                     </td>
-                    <td class="align-middle text-center" *ngIf="this.predictionResult.ymatrix" >{{this.predictionResult.ymatrix[i].toFixed(3)}}</td>
-                    <td class="align-middle text-center" *ngIf="this.predictionResult.values">{{this.predictionResult.values[i].toFixed(3)}}</td>
-                    <td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">{{this.predictionResult.upper_limit[i].toFixed(3)}}</td>
-                    <td class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">{{this.predictionResult.lower_limit[i].toFixed(3)}}</td>
-                    <td class="align-middle text-center" *ngIf="this.predictionResult.c0">{{this.predictionResult.c0[i]}}</td>
-                    <td class="align-middle text-center" *ngIf="this.predictionResult.c1">{{this.predictionResult.c1[i]}}</td>
-                    <td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">{{this.predictionResult.ensemble_c0[i].toFixed(3)}}</td>
-                    <td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">{{this.predictionResult.ensemble_c1[i].toFixed(3)}}</td>
+                   <!--<td class="align-middle text-center" *ngIf="this.predictionResult.ymatrix" >{{this.predictionResult.ymatrix[i].toFixed(3)}}</td>-->
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.values">{{castValue(this.predictionResult.values[i])}}</td>
+                    <!--<td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">{{this.predictionResult.upper_limit[i].toFixed(3)}}</td>-->
+                    <!--<td class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">{{this.predictionResult.lower_limit[i].toFixed(3)}}</td>-->
+                    <!--<td class="align-middle text-center" *ngIf="this.predictionResult.c0">{{this.predictionResult.c0[i]}}</td>-->
+                    <!--<td class="align-middle text-center" *ngIf="this.predictionResult.c1">{{this.predictionResult.c1[i]}}</td>-->
+                    <!--<td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">{{this.predictionResult.ensemble_c0[i].toFixed(3)}}</td>-->
+                    <!--<td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">{{this.predictionResult.ensemble_c1[i].toFixed(3)}}</td>-->
                   </tr>
                 </tbody>
               </table>
@@ -198,7 +198,7 @@
                   <strong>Result</strong>
                 </div>
                 <div class="col-9 border">
-                  <span *ngIf="this.predictionResult.values">{{this.predictionResult.values[i].toFixed(3)}}</span>
+                  <span *ngIf="this.predictionResult.values">{{castValue(this.predictionResult.values[i])}}</span>
                 </div>
               </div>
               <div class="row bg-light">
@@ -224,12 +224,12 @@
                   <strong>Model</strong>
                 </div>
                 <div class="col-9 border">
-                    <p>Conformal RF using RDKit_md (120vars)
+                    <span class="text-capitalize">{{modelBuildInfo['model']}}</span><span> using {{modelBuildInfo['nvarx']}}vars</span>
                       <br><br>
-                      Training series 450 compounds<br>
-                      R2:0.90, Q2:0.67, SDEP:0.5<br>
+                      <span>Training series {{modelBuildInfo['nobj']}} compounds</span><br>
+                      ------R2:0.90, Q2:0.67, SDEP:0.5-------<br>
                       <a>QMRF report</a>
-                    </p>
+                    
                 </div>
               </div>
             </div>

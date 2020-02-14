@@ -16,7 +16,7 @@ export class PredictionService {
     return this.http.get(url);
   }
 
-  getDocumentation(modelName: string, modelVersion: number): Observable<any> {
+  getDocumentation(modelName: string, modelVersion: string): Observable<any> {
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/documentation';
     return this.http.get(url);
   }

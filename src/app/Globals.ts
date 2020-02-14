@@ -26,7 +26,8 @@ export class Model {
 export class Prediction {
     name: string = undefined;   // Name of the model selected in the first step
     modelName: string = undefined;
-    modelVersion: number = undefined;
+    modelVersion: string = undefined;
+    modelParameters: any;
     predictions = [];
     predicting = {};
     conformal = false;

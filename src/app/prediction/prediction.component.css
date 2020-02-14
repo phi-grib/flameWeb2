@@ -11,6 +11,16 @@
     border-top: 4px solid rgba(0,0,0,.06);
 }
 
+ul li.nav-item a {
+  background:white;
+  color: #6C757D;
+}
+
+ul li.nav-item a.active{
+  background: #F0F0F0;
+  color: #6C757D;
+}
+
 /* rotating circle to show progress */
 
 .loading {

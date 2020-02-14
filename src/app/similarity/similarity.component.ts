@@ -131,7 +131,6 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    alert('Afterview');
     this.components.changes.subscribe(
       () => {
         if (this.components !== undefined) {
