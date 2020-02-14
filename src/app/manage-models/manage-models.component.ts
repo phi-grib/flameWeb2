@@ -29,7 +29,6 @@ export class ManageModelsComponent implements OnInit {
   ngOnInit() {
   }
 
-
   buildModel(name: string, version: string) {
     const modalRef = this.modalService.open(BuilderComponent, {windowClass : 'modalClass'});
     modalRef.componentInstance.name = name;
@@ -44,6 +43,7 @@ export class ManageModelsComponent implements OnInit {
         this.service.createModel(this.modelName).subscribe(
           result => {
             this.modelName = '';
+            this.model.listModels = {};
             $('#dataTableModels').DataTable().destroy();
             this.getModelList();
             this.toastr.success('Model ' + result.modelName, 'CREATED', {
@@ -68,8 +68,7 @@ export class ManageModelsComponent implements OnInit {
         this.toastr.success( 'Model ' + this.model.name + ' deleted', 'DELETED' , {
           timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
         });
-        const table = $('#dataTableModels').DataTable();
-        table.row('.selected').remove().draw(false);
+        this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
         this.getModelList();
         this.model.name = undefined ;
@@ -111,6 +110,8 @@ export class ManageModelsComponent implements OnInit {
       result => {
         this.toastr.success('Model \'' + result['modelName'] + ' v.' + result['version'] + '\'', 'CREATED SUCCESFULLY', {
           timeOut: 5000, positionClass: 'toast-top-right'});
+        this.model.listModels = {};
+        $('#dataTableModels').DataTable().destroy();
         this.getModelList();
       },
       error => {
@@ -120,7 +121,7 @@ export class ManageModelsComponent implements OnInit {
   }
 
   exportModel() {
-    const url: string = environment.baseUrl_manage + 'model/' + this.manage.name + '/export';
+    const url: string = environment.baseUrl_manage + 'model/' + this.model.name + '/export';
     window.open(url);
   }
 
@@ -131,7 +132,9 @@ export class ManageModelsComponent implements OnInit {
       result => {
         this.toastr.success('Model \'' + result.Model + '\' imported' , 'IMPORTED SUCCESFULLY', {
           timeOut: 5000, positionClass: 'toast-top-right'});
-          this.manage.file = undefined;
+        this.manage.file = undefined;
+        this.model.listModels = {};
+        $('#dataTableModels').DataTable().destroy();
         this.getModelList();
       },
       error => {
@@ -140,6 +143,7 @@ export class ManageModelsComponent implements OnInit {
       }
     );
   }
+
   getModelList() {
 
     this.commonService.getModelList().subscribe(
@@ -175,7 +179,9 @@ export class ManageModelsComponent implements OnInit {
               );
             }
           }
-          $('#dataTableModels').DataTable();
+          setTimeout(() => {
+            $('#dataTableModels').DataTable();
+          }, 500);
         },
         error => {
           console.log(error.message);

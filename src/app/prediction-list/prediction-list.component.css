@@ -9,8 +9,9 @@ i {
     color: #22577A;
 }
 .table th{
-    padding: 5px;
-    background: #B8DCED;
+    /*padding-left: 1px;
+    padding-right: 1px;*/
+    /* background: #B8DCED;*/
     color:#0076a3;
     vertical-align: middle;
 }

@@ -36,8 +36,8 @@ export class ManagePredictionsComponent implements OnInit {
       result => {
         const table = $('#dataTablePredictions').DataTable();
         table.row('.selected').remove().draw(false);
-        $('#dataTablePredictions').DataTable().destroy();
-        $('#dataTablePredictions').DataTable();
+        // $('#dataTablePredictions').DataTable().destroy();
+        // $('#dataTablePredictions').DataTable();
         this.toastr.success( 'Prediction "' + this.prediction.name + '" deleted', 'DELETED' , {
           timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
         });

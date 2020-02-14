@@ -6,7 +6,7 @@
     <span class="sr-only">Loading...</span>
   </div>
 </div>
-<div class="ml-3 mr-3"  [hidden] = "!this.tableVisible">
+<div class="col-12 ml-3 mr-3"  [hidden] = "!this.tableVisible">
   <table class="table" id="dataTablePredictions" width="100%" cellspacing="0">
     <thead>
       <tr>
@@ -17,15 +17,6 @@
         <th>Date</th>
       </tr>
     </thead>
-    <tfoot>
-      <tr>
-        <th>Name</th>
-        <th>Models</th>
-        <th>Version</th>
-        <th>Prediction Set</th>
-        <th>Date</th>
-      </tr>
-    </tfoot>
     <tbody>
         <tr class="blink" *ngFor="let key of objectKeys(this.prediction.predicting)">
             <td >{{key}}</td>

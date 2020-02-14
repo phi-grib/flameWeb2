@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges, ViewChild, OnDestroy } from '@angular/core';
 import { Prediction} from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
+import { CommonService } from '../common.service';
 import { Subject } from 'rxjs';
 import { SingleDataSet, Label } from 'ng2-charts';
 import { ChartType} from 'chart.js';
@@ -43,7 +44,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   modelBuildInfo = {};
   modelValidationInfo = {};
-  quantitative = true;
   // PolarArea
   public polarChartOptions: any = {
     responsive: true,
@@ -69,11 +69,13 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   ];
 
   constructor(public prediction: Prediction,
-              public service: PredictionService) { }
+              public service: PredictionService,
+              private commonService: CommonService) { }
 
 
 
   Next() {
+
     this.i++;
     this.noPrevious = false;
     if ((this.predictionResult.SMILES.length -1) === this.i) {
@@ -87,9 +89,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       }, function (err) {
         console.log(err);
     });
+
   }
 
   Previous() {
+
     this.i--;
     this.noNext = false;
     if (this.i === 0) {
@@ -103,11 +107,59 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       }, function (err) {
         console.log(err);
     });
+
   }
 
   ngOnChanges(): void {
+    this.getParameters();
+    this.getInfo();
     this.getDocumentation();
     this.getPrediction();
+  }
+
+  getParameters(): void {
+    this.commonService.getParameters(this.prediction.modelName, this.prediction.modelVersion).subscribe(
+      result => {
+        this.prediction.modelParameters = result;
+        console.log(this.prediction.modelParameters);
+      },
+      error => {
+        alert(error.status + ' : ' + error.statusText);
+      },
+      () => { // when subscribe finishes
+        // console.log('actual parameters.yaml \n', parameters);
+      }
+    );
+  }
+
+  getInfo(): void {
+
+    this.commonService.getModel(this.prediction.modelName, this.prediction.modelVersion).subscribe(
+      result => {
+          this.modelBuildInfo = {};
+          for (const info of result) {
+            this.modelBuildInfo[info[0]] = info[2];
+          }
+         this.modelBuildInfo['quantitative'] = false;
+         if (this.modelBuildInfo['model'].includes('quantitative') || this.modelBuildInfo['model'].includes('mean')
+              || this.modelBuildInfo['model'].includes('median')) {
+          this.modelBuildInfo['quantitative'] = true;
+         }
+         this.modelBuildInfo['conformal'] = false;
+         if (this.modelBuildInfo['model'].includes('conformal')) {
+          this.modelBuildInfo['conformal'] = true;
+         }
+
+         this.modelBuildInfo['ensemble'] = false;
+         if (this.modelBuildInfo['model'].includes('combination')) {
+          this.modelBuildInfo['ensemble'] = true;
+         }
+         console.log(this.modelBuildInfo);
+      },
+      error => {
+
+      }
+    );
   }
 
   getDocumentation() {
@@ -123,12 +175,30 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   }
 
+  castValue(value: any) {
+
+    if (this.modelBuildInfo['quantitative']) {
+      return value.toFixed(3);
+    }
+    else {
+      if (value === 0) {
+        return 'Negative';
+      }
+      else if (value === 1) {
+        return 'Positive';
+      }
+      else {
+        return 'uncertain';
+      }
+    }
+  }
+
   getPrediction() {
     this.predictionVisible = false;
     this.predictionResult = undefined;
     $('#prediction').DataTable().destroy();
     $('#predictionOne').DataTable().destroy();
-    this.modelBuildInfo = {};
+
     this.modelValidationInfo = {};
 
     this.service.getPrediction(this.predictionName).subscribe(
@@ -148,8 +218,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.polarAreaChartData = [this.modelValidationInfo['TP'][1], this.modelValidationInfo['FP'][1],
           this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
         }
-        console.log(this.modelValidationInfo);
         setTimeout(() => {
+
           this.components.forEach((child) => {
             const options = {'width': 300, 'height': 150};
             const smilesDrawer = new SmilesDrawer.Drawer(options);
@@ -159,6 +229,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
                 console.log(err);
               });
           });
+
           this.predictionVisible = true;
           const table = $('#prediction').DataTable();
           // const table2 = $('#predictionOne').DataTable({'pageLength': 1});
@@ -175,7 +246,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               });
             }
           });
-         }, 0);
+        }, 0);
       }
     );
   }

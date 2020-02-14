@@ -1,4 +1,4 @@
-import { Component, OnInit,AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonService } from '../common.service';
 import { ModelListService } from './model-list.service';
 import { Model, Prediction } from '../Globals';
