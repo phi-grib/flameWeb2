@@ -120,7 +120,7 @@ export class ManageModelsComponent implements OnInit {
   }
 
   exportModel() {
-    const url: string = environment.baseUrl_manage + 'model/' + this.manage.name + '/export';
+    const url: string = environment.baseUrl_manage + 'model/' + this.model.name + '/export';
     window.open(url);
   }
 
