@@ -17,7 +17,7 @@
               <tbody>
                 <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
                   
-                  <td  *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key}}:</strong></td>
+                  <td  *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key.replace('_',' ')}}:</strong></td>
                   <td  *ngIf="!this.q_measures.includes(key)" class="text-right text-capitalize">{{modelValidationInfo[key][1]}}</td>
               </tr>
               </tbody>
@@ -183,13 +183,13 @@
                   <canvas id="one_canvas"></canvas>
                 </div>
               </div>
-              <div class="row bg-light">
+              <div class="row">
                 <div class="col-3 border">
                   <strong>Other</strong>
                 </div>
                 <div class="col-9 border">
                   <span><strong>Activity: </strong></span>
-                  <span *ngIf="this.predictionResult.ymatrix">{{this.predictionResult.ymatrix[i].toFixed(3)}}</span> 
+                  <span *ngIf="this.predictionResult.ymatrix">{{this.predictionResult.ymatrix[i]}}</span> 
                   <span *ngIf="!this.predictionResult.ymatrix">-</span> 
                 </div>
               </div>
@@ -206,7 +206,12 @@
                   <strong>Reliability</strong>
                 </div>
                 <div class="col-9 border">
-                  90%CI: 8.3 - 10.6
+
+                  <span >{{(1.0-this.prediction.modelParameters.conformalSignificance.value)*100}}%CI</span>
+                  <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">
+                    : {{this.predictionResult.lower_limit[i].toFixed(1)}} <strong>-</strong> {{this.predictionResult.upper_limit[i].toFixed(3)}}
+                  </span>
+                  <!--90%CI: 8.3 - 10.6-->
                 </div>
               </div>
               <div class="row bg-light">
@@ -224,9 +229,9 @@
                   <strong>Model</strong>
                 </div>
                 <div class="col-9 border">
-                    <span class="text-capitalize">{{modelBuildInfo['model']}}</span><span> using {{modelBuildInfo['nvarx']}}vars</span>
+                    <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}}vars</span>
                       <br><br>
-                      <span>Training series {{modelBuildInfo['nobj']}} compounds</span><br>
+                      <span>Training series {{this.modelBuildInfo['nobj']}} compounds</span><br>
                       ------R2:0.90, Q2:0.67, SDEP:0.5-------<br>
                       <a>QMRF report</a>
                     

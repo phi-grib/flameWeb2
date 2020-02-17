@@ -188,7 +188,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         return 'Positive';
       }
       else {
-        return 'uncertain';
+        return 'Uncertain';
       }
     }
   }
