@@ -37,7 +37,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   head = [];
 
   predictionResult: any;
-  modelDocumentation: any;
+  modelDocumentation: any = undefined;
   i = 0;
   noNext = false;
   noPrevious = true;
@@ -169,7 +169,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         this.modelDocumentation = result;
       },
       error => {
-        alert('Error getting Documentation');
+        this.modelDocumentation = undefined;
       }
     );
 
@@ -230,9 +230,12 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               });
           });
 
+
+          const table = $('#prediction').DataTable({
+            /* No ordering applied by DataTables during initialisation */
+            order: []
+          });
           this.predictionVisible = true;
-          const table = $('#prediction').DataTable();
-          // const table2 = $('#predictionOne').DataTable({'pageLength': 1});
           const me = this;
           $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             if (e.target.id === 'pills-one-tab') {

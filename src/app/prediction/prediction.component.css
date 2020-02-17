@@ -23,36 +23,6 @@ ul li.nav-item a.active{
 
 /* rotating circle to show progress */
 
-.loading {
-    position: absolute;
-    left: 50%;
-    /* top: 50%; */ /* center vertically */
-    z-index: 1; 
-    width: 120px;
-    height: 120px;
-    /* margin: -75px 0 0 -75px; */
-    margin: 0 0 0 -60px;
-    /* border: 20px solid #f3f3f3; */
-    border: 20px solid #e6901a;
-
-    border-radius: 60%;
-    /* border-top: 20px solid #3498db; */
-    border-top: 20px solid #165379;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-  }
-
-  /* Safari */
-  @-webkit-keyframes spin {
-    0% { -webkit-transform: rotate(0deg); }
-    100% { -webkit-transform: rotate(360deg); }
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
 .TP {
   background-color: rgba(0,255,0,0.3);
 }
@@ -69,3 +39,26 @@ ul li.nav-item a.active{
   background: #B8DCED;
   background-color: #B8DCED;
 }
+
+.spinner-border {
+  display: block;
+  position: absolute;
+  z-index: 1031;
+  top: 25%; /* where ... is the element's height */
+  right: 45%; /* where ... is the element's width */
+}
+
+
+#overlay {
+  position: absolute;
+  /*display: none;*/
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #FAFAFA;
+  opacity: 0.7;
+  z-index: 2;
+  cursor: pointer;
+}
+/*END LOADING*/

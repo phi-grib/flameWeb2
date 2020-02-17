@@ -1,10 +1,12 @@
 
-<!--<div class ="text-center spinner" *ngIf = "!this.predictionVisible">
+<!--<div class ="overlay text-center">
   <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
     <span class="sr-only">Loading...</span>
   </div>
 </div>-->
-<div id="cover-spin" class="container"  *ngIf="this.predictionResult != undefined">
+
+
+<div class="container"  *ngIf="this.predictionResult != undefined">
   <div class="row" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
     <div class="card w-100" style="width: 18rem;">
       <div class="card-body"> 
@@ -17,7 +19,7 @@
               <tbody>
                 <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
                   
-                  <td  *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key.replace('_',' ')}}:</strong></td>
+                  <td  *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key.split('_').join(' ')}}:</strong></td>
                   <td  *ngIf="!this.q_measures.includes(key)" class="text-right text-capitalize">{{modelValidationInfo[key][1]}}</td>
               </tr>
               </tbody>
@@ -68,6 +70,11 @@
     </div>-->
   <div class="row mt-3" *ngIf="this.predictionResult != undefined">
     <div class="card w-100">
+        <div id="overlay" *ngIf="!this.predictionVisible">
+          <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
       <!--NAVS tables-->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <li class="nav-item">
@@ -82,6 +89,7 @@
           <!--ALL-->
           <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
             <div class="card-body">
+              
               <table  id="prediction" class="table m-0 table-light">
                 <thead>
                   <tr>
@@ -156,7 +164,7 @@
                  Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}}
                 </div>
                 <div class="col-3 border">
-                  12-02-2020
+                  {{this.prediction.date}}
                 </div>
               </div>
               <div class="row">
@@ -206,8 +214,8 @@
                   <strong>Reliability</strong>
                 </div>
                 <div class="col-9 border">
-
-                  <span >{{(1.0-this.prediction.modelParameters.conformalSignificance.value)*100}}%CI</span>
+                  <span *ngIf="!this.modelBuildInfo['conformal']">-</span>
+                  <span *ngIf="this.modelBuildInfo['conformal']">{{(1.0-this.prediction.modelParameters.conformalSignificance.value)*100}}%CI</span>
                   <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">
                     : {{this.predictionResult.lower_limit[i].toFixed(1)}} <strong>-</strong> {{this.predictionResult.upper_limit[i].toFixed(3)}}
                   </span>
@@ -218,10 +226,13 @@
                 <div class="col-3 border">
                   <strong>Interpretation</strong>
                 </div>
-                <div class="col-9 border">
-                  <p>The result rxpress the predicted potency ofthe compound in an assy measuring the ability to inhibit BSEP transporter in rat
-                  <br><br>The higher the potency the more likely is the compound to inhibit the transporter at therapeutic concentration.
-                  </p>
+                <div class="col-9 border" *ngIf="this.modelDocumentation === undefined">
+                  <span>No documentation</span>
+                </div>
+                <div class="col-9 border" *ngIf="this.modelDocumentation != undefined">
+                  <p *ngIf="this.modelDocumentation['Endpoint'].value != undefined">{{this.modelDocumentation['Endpoint'].value}}</p>
+                  <p *ngIf="this.modelDocumentation['Comment_on_the_endpoint'].value != undefined"> <br>{{this.modelDocumentation['Comment_on_the_endpoint'].value}}</p>
+                  <p *ngIf="this.modelDocumentation['Species'].value != undefined"> <br>{{this.modelDocumentation['Species'].value}}</p>
                 </div>
               </div>
               <div class="row bg-light">
@@ -229,11 +240,36 @@
                   <strong>Model</strong>
                 </div>
                 <div class="col-9 border">
-                    <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}}vars</span>
-                      <br><br>
-                      <span>Training series {{this.modelBuildInfo['nobj']}} compounds</span><br>
-                      ------R2:0.90, Q2:0.67, SDEP:0.5-------<br>
-                      <a>QMRF report</a>
+                  <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}}vars</span>
+                  <br><br>
+                  <span>Training series {{this.modelBuildInfo['nobj']}} compounds</span><br>
+                  <div *ngIf="this.modelBuildInfo['quantitative'] && !this.modelBuildInfo['conformal']">
+                    <span>R2: {{this.modelBuildInfo['R2'].toFixed(2)}}, </span>
+                    <span>SDEC: {{this.modelBuildInfo['SDEC'].toFixed(2)}}, </span>
+                    <span>Q2: {{this.modelBuildInfo['Q2'].toFixed(2)}}, </span>
+                    <span>SDEP: {{this.modelBuildInfo['SDEP'].toFixed(2)}}</span>
+                  </div>
+                  <div *ngIf="!this.modelBuildInfo['quantitative'] && !this.modelBuildInfo['conformal']">
+                    <span>Sensitivity: {{this.modelBuildInfo['Sensitivity'].toFixed(2)}}, </span>
+                    <span>Specificity: {{this.modelBuildInfo['Specificity'].toFixed(2)}}, </span>
+                    <span>MCC: {{this.modelBuildInfo['MCC'].toFixed(2)}}</span><br>
+                     <span>Sensitivity (predicted): {{this.modelBuildInfo['SensitivityPed'].toFixed(2)}}, </span>
+                    <span>Specificity (predicted): {{this.modelBuildInfo['SpecificityPred'].toFixed(2)}}, </span>
+                    <span>MCC (predicted): {{this.modelBuildInfo['MCC'].toFixed(2)}}</span>
+                  </div>
+                  <div *ngIf="this.modelBuildInfo['quantitative'] && this.modelBuildInfo['conformal']">
+                    <span>Conformal mean interval: {{this.modelBuildInfo['Conformal_mean_interval'].toFixed(2)}}, </span>
+                    <span>Conformal accuracy: {{this.modelBuildInfo['Conformal_accuracy'].toFixed(2)}} </span>
+                  </div>
+                  <div *ngIf="!this.modelBuildInfo['quantitative'] && this.modelBuildInfo['conformal']">
+                    <span>Sensitivity: {{this.modelBuildInfo['Sensitivity'].toFixed(2)}}, </span>
+                    <span>Specificity: {{this.modelBuildInfo['Specificity'].toFixed(2)}}, </span>
+                    <span>MCC: {{this.modelBuildInfo['MCC'].toFixed(2)}}, </span>
+                    <span>Conformal coverage: {{this.modelBuildInfo['Conformal_coverage'].toFixed(2)}}, </span>
+                    <span>Conformal accuracy: {{this.modelBuildInfo['Conformal_accuracy'].toFixed(2)}} </span>
+                  </div>
+                  <br>
+                    <a>QMRF report</a>
                     
                 </div>
               </div>

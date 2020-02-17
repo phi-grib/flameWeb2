@@ -68,7 +68,10 @@ export class ModelListComponent implements OnInit {
           }
           setTimeout(() => {
             this.tableVisible = true;
-            const table = $('#dataTableModels').DataTable();
+            const table = $('#dataTableModels').DataTable({
+              /* No ordering applied by DataTables during initialisation */
+              order: []
+            });
           }, 500);
         },
         error => {

@@ -51,4 +51,10 @@ td {
     overflow: auto;
 }
 
+.spinner-table {
+    position: absolute; 
+    right: 45%; 
+    top: 30%; 
+    z-index: 1031;
+}
 

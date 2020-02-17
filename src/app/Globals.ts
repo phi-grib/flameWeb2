@@ -33,6 +33,7 @@ export class Prediction {
     conformal = false;
     file: any = undefined;  // Name of file uploaded in the second step
     result = undefined;
+    date = undefined;
 }
 
 @Injectable()
@@ -56,4 +57,7 @@ export class Similarity {
     file_info = undefined; // Info file ej. num mols, variables
     file_fields = undefined;
     result = undefined;
+    predicting = false;
+    nameSrc = undefined;
+    smileSrc = undefined;
 }

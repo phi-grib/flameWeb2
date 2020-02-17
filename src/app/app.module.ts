@@ -33,7 +33,6 @@ import { PredictionListComponent } from './prediction-list/prediction-list.compo
 import { ManageModelsComponent } from './manage-models/manage-models.component';
 import { ManagePredictionsComponent } from './manage-predictions/manage-predictions.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SimilarityResultsComponent } from './similarity-results/similarity-results.component';
 import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.component';
 import { DataTablesModule } from 'angular-datatables';
 
@@ -60,7 +59,6 @@ import { DataTablesModule } from 'angular-datatables';
     PredictionListComponent,
     ManageModelsComponent,
     ManagePredictionsComponent,
-    SimilarityResultsComponent,
     ConfusionMatrixComponent
   ],
   imports: [

@@ -26,10 +26,11 @@ export class PredictionListComponent implements OnInit {
     this.model.trained = false;
     this.getPredictionList();
   }
-  selectPrediction(name: string, modelName: string, modelVersion: string) {
+  selectPrediction(name: string, modelName: string, modelVersion: string, date: any) {
     this.prediction.name = name;
     this.prediction.modelName = modelName;
     this.prediction.modelVersion = modelVersion;
+    this.prediction.date = date;
   }
 
   getPredictionList() {
@@ -38,7 +39,10 @@ export class PredictionListComponent implements OnInit {
         result => {
           this.prediction.predictions = result;
           setTimeout(() => {
-            const table = $('#dataTablePredictions').DataTable();
+            const table = $('#dataTablePredictions').DataTable({
+              /* No ordering applied by DataTables during initialisation */
+              order: [[4, 'asc']]
+            });
             $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
               $('tr').removeClass('selected'); // removes all highlights from tr's
               $(this).addClass('selected'); // adds the highlight to this row

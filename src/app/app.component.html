@@ -20,7 +20,7 @@
 </div>-->
 
 <div class="row">
-    <div class="col-6 p-0">
+    <div class="col p-0">
         <div class="">
             <app-sidebar></app-sidebar>
         </div>
@@ -28,7 +28,7 @@
             <router-outlet></router-outlet>
         </div>
     </div>
-    <div class="col-6 border-left info v-100">
+    <div class="col-6 border-left info v-100" *ngIf="!isActive('similarity')">
         <div *ngIf="(this.prediction.name != undefined && this.model.name == undefined && isActive('predictions'))">
             <app-prediction [predictionName]=this.prediction.name></app-prediction>
         </div>
