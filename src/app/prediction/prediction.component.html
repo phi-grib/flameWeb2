@@ -4,8 +4,6 @@
     <span class="sr-only">Loading...</span>
   </div>
 </div>-->
-
-
 <div class="container"  *ngIf="this.predictionResult != undefined">
   <div class="row" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
     <div class="card w-100" style="width: 18rem;">
@@ -93,10 +91,14 @@
               <table  id="prediction" class="table m-0 table-light">
                 <thead>
                   <tr>
-                    <th >Name</th>
-                    <th class="align-middle text-center">Mol</th>
+                  
+                    <th data-toggle="tooltip" data-placement="top" data-html="true" title="Name of the molecule, as present in the input file">Name</th>
+                    <th class="align-middle text-center" data-toggle="tooltip" data-placement="top" data-html="true" title="Structure of the molecule in SMILES format">Mol</th>
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ymatrix">Value</th>-->
-                    <th class="align-middle text-center" *ngIf="this.predictionResult.values">Prediction</th>
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.values" data-toggle="tooltip" data-placement="top" data-html="true" title="Results of the prediction">
+                    Prediction 
+                      <span *ngIf ="this.modelDocumentation?.Endpoint_units.value != null">({{this.modelDocumentation?.Endpoint_units.value}})</span>
+                    </th>
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">Upper limit</th>-->
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">Lower limit</th>-->
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.c0">Inactive</th>-->
@@ -127,7 +129,8 @@
           </div>
           <!--END ALL-->
           <!--ONE-->
-          <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab" *ngIf="this.predictionResult != undefined">
+        
+          <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab" *ngIf="this.predictionResult != undefined ">
             <div class="card-body">
               <!--PAGINATION-->
               <div class="row  align-items-center">
@@ -207,6 +210,7 @@
                 </div>
                 <div class="col-9 border">
                   <span *ngIf="this.predictionResult.values">{{castValue(this.predictionResult.values[i])}}</span>
+                  <span *ngIf="this.modelDocumentation != undefined && this.modelDocumentation['Endpoint_units']"> {{this.modelDocumentation['Endpoint_units'].value}}</span>
                 </div>
               </div>
               <div class="row bg-light">
@@ -231,7 +235,7 @@
                 </div>
                 <div class="col-9 border" *ngIf="this.modelDocumentation != undefined">
                   <p *ngIf="this.modelDocumentation['Endpoint'].value != undefined">{{this.modelDocumentation['Endpoint'].value}}</p>
-                  <p *ngIf="this.modelDocumentation['Comment_on_the_endpoint'].value != undefined"> <br>{{this.modelDocumentation['Comment_on_the_endpoint'].value}}</p>
+                  <p *ngIf="this.objectKeys(this.modelDocumentation).includes('Interpretation') && this.modelDocumentation['Interpretation'].value != undefined"> <br>{{this.modelDocumentation?.Interpretation.value}}</p>
                   <p *ngIf="this.modelDocumentation['Species'].value != undefined"> <br>{{this.modelDocumentation['Species'].value}}</p>
                 </div>
               </div>
@@ -243,31 +247,19 @@
                   <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}}vars</span>
                   <br><br>
                   <span>Training series {{this.modelBuildInfo['nobj']}} compounds</span><br>
-                  <div *ngIf="this.modelBuildInfo['quantitative'] && !this.modelBuildInfo['conformal']">
-                    <span>R2: {{this.modelBuildInfo['R2'].toFixed(2)}}, </span>
-                    <span>SDEC: {{this.modelBuildInfo['SDEC'].toFixed(2)}}, </span>
-                    <span>Q2: {{this.modelBuildInfo['Q2'].toFixed(2)}}, </span>
-                    <span>SDEP: {{this.modelBuildInfo['SDEP'].toFixed(2)}}</span>
-                  </div>
-                  <div *ngIf="!this.modelBuildInfo['quantitative'] && !this.modelBuildInfo['conformal']">
-                    <span>Sensitivity: {{this.modelBuildInfo['Sensitivity'].toFixed(2)}}, </span>
-                    <span>Specificity: {{this.modelBuildInfo['Specificity'].toFixed(2)}}, </span>
-                    <span>MCC: {{this.modelBuildInfo['MCC'].toFixed(2)}}</span><br>
-                     <span>Sensitivity (predicted): {{this.modelBuildInfo['SensitivityPed'].toFixed(2)}}, </span>
-                    <span>Specificity (predicted): {{this.modelBuildInfo['SpecificityPred'].toFixed(2)}}, </span>
-                    <span>MCC (predicted): {{this.modelBuildInfo['MCC'].toFixed(2)}}</span>
-                  </div>
-                  <div *ngIf="this.modelBuildInfo['quantitative'] && this.modelBuildInfo['conformal']">
-                    <span>Conformal mean interval: {{this.modelBuildInfo['Conformal_mean_interval'].toFixed(2)}}, </span>
-                    <span>Conformal accuracy: {{this.modelBuildInfo['Conformal_accuracy'].toFixed(2)}} </span>
-                  </div>
-                  <div *ngIf="!this.modelBuildInfo['quantitative'] && this.modelBuildInfo['conformal']">
-                    <span>Sensitivity: {{this.modelBuildInfo['Sensitivity'].toFixed(2)}}, </span>
-                    <span>Specificity: {{this.modelBuildInfo['Specificity'].toFixed(2)}}, </span>
-                    <span>MCC: {{this.modelBuildInfo['MCC'].toFixed(2)}}, </span>
-                    <span>Conformal coverage: {{this.modelBuildInfo['Conformal_coverage'].toFixed(2)}}, </span>
-                    <span>Conformal accuracy: {{this.modelBuildInfo['Conformal_accuracy'].toFixed(2)}} </span>
-                  </div>
+                    <span *ngIf="this.modelBuildInfo['R2']">R2: {{this.modelBuildInfo['R2'].toFixed(2)}}, </span>
+                    <span *ngIf="this.modelBuildInfo['SDEC']">SDEC: {{this.modelBuildInfo['SDEC'].toFixed(2)}}, </span>
+                    <span *ngIf="this.modelBuildInfo['Q2']">Q2: {{this.modelBuildInfo['Q2'].toFixed(2)}}, </span>
+                    <span *ngIf="this.modelBuildInfo['SDEP']">SDEP: {{this.modelBuildInfo['SDEP'].toFixed(2)}}</span>
+                    <span *ngIf="this.modelBuildInfo['Sensitivity']">Sensitivity: {{this.modelBuildInfo['Sensitivity'].toFixed(2)}}, </span>
+                    <span *ngIf="this.modelBuildInfo['Specificity']">Specificity: {{this.modelBuildInfo['Specificity'].toFixed(2)}}, </span>
+                    <span *ngIf="this.modelBuildInfo['MCC']">MCC: {{this.modelBuildInfo['MCC'].toFixed(2)}}</span><br>
+                    <span *ngIf="this.modelBuildInfo['SensitivityPed']">Sensitivity (predicted): {{this.modelBuildInfo['SensitivityPed'].toFixed(2)}}, </span>
+                    <span *ngIf="this.modelBuildInfo['SpecificityPred']">Specificity (predicted): {{this.modelBuildInfo['SpecificityPred'].toFixed(2)}}, </span>
+                    <span *ngIf="this.modelBuildInfo['MCCpred']">MCC (predicted): {{this.modelBuildInfo['MCCpred'].toFixed(2)}}</span>
+                    <span *ngIf="this.modelBuildInfo['Conformal_mean_interval']">Conformal mean interval: {{this.modelBuildInfo['Conformal_mean_interval'].toFixed(2)}}, </span>
+                    <span *ngIf="this.modelBuildInfo['Conformal_coverage']">Conformal coverage: {{this.modelBuildInfo['Conformal_coverage'].toFixed(2)}}, </span>
+                    <span *ngIf="this.modelBuildInfo['Conformal_accuracy']">Conformal accuracy: {{this.modelBuildInfo['Conformal_accuracy'].toFixed(2)}} </span>
                   <br>
                     <a>QMRF report</a>
                     

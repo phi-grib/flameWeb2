@@ -46,7 +46,7 @@ export class PredictorComponent implements OnInit {
   predictNameChange() {
     this.isvalid = true;
     const letters = /^[A-Za-z0-9_]+$/;
-    if (!(this.predictName.match(letters)) || this.predictName in this.predictionsNames) { 
+    if (!(this.predictName.match(letters)) || this.predictName in this.predictionsNames || this.predictName.startsWith('ensemble')) {
       this.isvalid = false;
     }
   }

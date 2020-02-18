@@ -26,7 +26,7 @@
         <label for="space">Space</label>
           <select id="space" class="form-control" [(ngModel)]="this.space" name="space"> 
             <option *ngFor="let value of objectKeys(this.spaces)" [value]='value'>
-            {{value}}
+            {{value}} ({{this.molsXspace[value]}})
             </option>
         </select>
          <small id="space" class="text-muted">
@@ -39,7 +39,7 @@
         <label for="dist_cutoff">Distance cutoff</label>
         <input type="number" id="dist_cutoff" class="form-control mx-sm-1" [(ngModel)]="this.dist_cutoff" aria-describedby="dist_cutoff" min="0" max="10" step=".01">
         <small id="dist_cutoff" class="text-muted">
-          Distance cutoff(0-10).
+          (0-10)
         </small>
       </div>
     </div>
@@ -61,7 +61,7 @@
         <label for="num_cutoff">Number cutoff</label>
         <input type="number" id="num_cutoff" class="form-control mx-sm-1" [(ngModel)]="this.num_cutoff" aria-describedby="num_cutoff" min="1" step="1">
         <small id="num_cutoff" class="text-muted">
-          Number cutoff (min 1).
+          (min 1)
         </small>
       </div>
     </div>
@@ -89,7 +89,7 @@
         <thead>
           <tr>
             <th>Index</th>
-            <th data-toggle="tooltip" data-placement="top" data-html="true" title="Query column name from query test set">Query name</th>
+            <th s>Query name</th>
             <th data-toggle="tooltip" data-placement="top" data-html="true" title="Query molecule from query test set">Query molecule</th>
               <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column ID from Reference training set">Reference ID</th>
             <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column name from Reference training set">Reference name</th>

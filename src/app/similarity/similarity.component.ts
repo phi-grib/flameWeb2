@@ -27,6 +27,7 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
   fileContent: any;
   spaces: {};
   space: string = undefined;
+  molsXspace = {};
   version: string = undefined;
   predicting = false;
   result = [];
@@ -43,13 +44,20 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
     this.service.getSpaces().subscribe(
       result => {
         for (const space of result) {
-          this.spaces[space.spacename] = [];
           for (const version of space.versions) {
-            this.spaces[space.spacename].push(version);
-
+            this.service.getInfo(space.spacename, version).subscribe(
+              result2 => {
+                if (!(space.spacename in  this.spaces)) {
+                  this.spaces[space.spacename] = [];
+                }
+                this.spaces[space.spacename].push(version);
+                this.molsXspace[space.spacename] = result2[0][2];
+              },
+              error => {
+                this.molsXspace[space.spacename] = 0;
+              });
           }
         }
-        console.log(this.spaces);
       },
       error => {
         console.log(error.message);
@@ -131,8 +139,10 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+
     this.components.changes.subscribe(
       () => {
+        $('#simlarityTable').DataTable().destroy();
         if (this.components !== undefined) {
           this.components.forEach((child) => {
             const options = {'width': 300, 'height': 150};

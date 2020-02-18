@@ -111,8 +111,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.getParameters();
+    this.modelBuildInfo = {};
     this.getInfo();
+    this.getParameters();
     this.getDocumentation();
     this.getPrediction();
   }
@@ -121,7 +122,12 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.commonService.getParameters(this.prediction.modelName, this.prediction.modelVersion).subscribe(
       result => {
         this.prediction.modelParameters = result;
-        console.log(this.prediction.modelParameters);
+        this.modelBuildInfo['quantitative'] = result.quantitative.value;
+        this.modelBuildInfo['conformal'] =  result.conformal.value;
+        this.modelBuildInfo['ensemble'] = false;
+        if (result.input_type.value === 'model_ensemble') {
+          this.modelBuildInfo['ensemble'] = true;
+        }
       },
       error => {
         alert(error.status + ' : ' + error.statusText);
@@ -136,25 +142,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
     this.commonService.getModel(this.prediction.modelName, this.prediction.modelVersion).subscribe(
       result => {
-          this.modelBuildInfo = {};
           for (const info of result) {
             this.modelBuildInfo[info[0]] = info[2];
           }
-         this.modelBuildInfo['quantitative'] = false;
-         if (this.modelBuildInfo['model'].includes('quantitative') || this.modelBuildInfo['model'].includes('mean')
-              || this.modelBuildInfo['model'].includes('median')) {
-          this.modelBuildInfo['quantitative'] = true;
-         }
-         this.modelBuildInfo['conformal'] = false;
-         if (this.modelBuildInfo['model'].includes('conformal')) {
-          this.modelBuildInfo['conformal'] = true;
-         }
-
-         this.modelBuildInfo['ensemble'] = false;
-         if (this.modelBuildInfo['model'].includes('combination')) {
-          this.modelBuildInfo['ensemble'] = true;
-         }
-         console.log(this.modelBuildInfo);
       },
       error => {
 
