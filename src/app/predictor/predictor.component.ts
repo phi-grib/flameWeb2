@@ -79,7 +79,10 @@ export class PredictorComponent implements OnInit {
         result => {
           this.prediction.predictions = result;
           setTimeout(() => {
-            const table = $('#dataTablePredictions').DataTable();
+            const table = $('#dataTablePredictions').DataTable({
+              /* No ordering applied by DataTables during initialisation */
+              order: [[4, 'desc']]
+            });
           }, 100);
         },
         error => {

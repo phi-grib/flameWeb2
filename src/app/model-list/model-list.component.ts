@@ -67,6 +67,10 @@ export class ModelListComponent implements OnInit {
             }
           }
           setTimeout(() => {
+            const a = this.objectKeys(this.model.listModels).sort();
+            this.model.name = this.model.listModels[a[0]].name;
+            this.model.version = this.model.listModels[a[0]].version;
+            this.model.trained = this.model.listModels[a[0]].trained;
             this.tableVisible = true;
             const table = $('#dataTableModels').DataTable({
               /* No ordering applied by DataTables during initialisation */
