@@ -39,11 +39,15 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   predictionResult: any;
   modelDocumentation: any = undefined;
   i = 0;
-  noNext = false;
-  noPrevious = true;
+  noNextMol = false;
+  noPreviousMol = true;
+  noNextModel = false;
+  noPreviousModel = true;
 
   modelBuildInfo = {};
   modelValidationInfo = {};
+  submodels = [];
+  submodels_index = 0;
   // PolarArea
   public polarChartOptions: any = {
     responsive: true,
@@ -74,12 +78,12 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
 
 
-  Next() {
+  NextMol() {
 
     this.i++;
-    this.noPrevious = false;
-    if ((this.predictionResult.SMILES.length -1) === this.i) {
-      this.noNext = true;
+    this.noPreviousMol = false;
+    if ((this.predictionResult.SMILES.length - 1) === this.i) {
+      this.noNextMol = true;
     }
     const options = {'width': 600, 'height': 300};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
@@ -92,12 +96,12 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   }
 
-  Previous() {
+  PreviousMol() {
 
     this.i--;
-    this.noNext = false;
+    this.noNextMol = false;
     if (this.i === 0) {
-      this.noPrevious = true;
+      this.noPreviousMol = true;
     }
     const options = {'width': 600, 'height': 300};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
@@ -108,6 +112,24 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         console.log(err);
     });
 
+  }
+
+  NextModel() {
+
+    this.submodels_index++;
+    this.noPreviousModel = false;
+    if ((this.submodels.length - 1) === this.submodels_index) {
+      this.noNextModel = true;
+    }
+  }
+
+  PreviousModel() {
+
+    this.submodels_index--;
+    this.noNextModel = false;
+    if (this.submodels_index === 0) {
+      this.noPreviousModel = true;
+    }
   }
 
   ngOnChanges(): void {
@@ -127,6 +149,37 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         this.modelBuildInfo['ensemble'] = false;
         if (result.input_type.value === 'model_ensemble') {
           this.modelBuildInfo['ensemble'] = true;
+
+          let version = '0';
+          this.submodels = [];
+          result.ensemble_names.value.forEach((submodel, index) => {
+
+            if ( result.ensemble_names.value == null) {
+              version = '0';
+            } else {
+              version =  result.ensemble_versions.value[index];
+            }
+            this.submodels[index] = {};
+            this.submodels[index]['name'] = submodel;
+            this.submodels[index]['version'] = version;
+            this.commonService.getParameters(submodel, version).subscribe(
+              result2 => {
+                this.submodels[index]['quantitative'] = result2.quantitative.value;
+                this.submodels[index]['conformal'] = result2.conformal.value;
+              },
+              error => {
+
+            });
+            this.commonService.getModel(submodel, version).subscribe(
+              result3 => {
+                for (const info of result3) {
+                  this.submodels[index][info[0]] = info[2];
+                }
+              },
+              error => {
+              }
+            );
+          });
         }
       },
       error => {

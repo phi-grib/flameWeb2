@@ -35,8 +35,7 @@ import { ManagePredictionsComponent } from './manage-predictions/manage-predicti
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.component';
 import { DataTablesModule } from 'angular-datatables';
-import { MatTabsModule } from '@angular/material/tabs';
-
+import { TableorderComponent } from './tableorder/tableorder.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +60,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     PredictionListComponent,
     ManageModelsComponent,
     ManagePredictionsComponent,
-    ConfusionMatrixComponent
+    ConfusionMatrixComponent,
+    TableorderComponent
   ],
   imports: [
     BrowserModule,
@@ -74,8 +74,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     ChecklistModule,
     ChartsModule,
     NgbModule,
-    DataTablesModule,
-    MatTabsModule
+    DataTablesModule
 
   ],
   providers: [Model, Prediction, Globals, Manager, Similarity],

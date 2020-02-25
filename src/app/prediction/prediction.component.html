@@ -140,14 +140,14 @@
                 <div class="col-1  p-0 offset-4">
                   <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                      <li class="page-item" [ngClass]="{'disabled': this.noPrevious}">
-                        <a class="page-link" href="javascript:void(0)" aria-label="Previous" (click) = "Previous()">
+                      <li class="page-item" [ngClass]="{'disabled': this.noPreviousMol}">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Previous" (click) = "PreviousMol()">
                           <span aria-hidden="true">&laquo;</span>
                           <span class="sr-only">Previous</span>
                         </a>
                       </li>
-                      <li class="page-item" [ngClass]="{'disabled': this.noNext}">
-                        <a class="page-link" href="javascript:void(0)" aria-label="Next" (click) = "Next()">
+                      <li class="page-item" [ngClass]="{'disabled': this.noNextMol}">
+                        <a class="page-link" href="javascript:void(0)" aria-label="Next" (click) = "NextMol()">
                           <span aria-hidden="true">&raquo;</span>
                           <span class="sr-only">Next</span>
                         </a>
@@ -239,9 +239,9 @@
                   <p *ngIf="this.modelDocumentation['Species'].value != undefined"> <br>{{this.modelDocumentation['Species'].value}}</p>
                 </div>
               </div>
-              <div class="row bg-light">
+              <div class="row bg-light" *ngIf="!this.modelBuildInfo['ensemble']">
                 <div class="col-3 border">
-                  <strong>Model</strong>
+                  <strong >Model</strong>
                 </div>
                 <div class="col-9 border">
                   <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}}vars</span>
@@ -265,6 +265,73 @@
                     
                 </div>
               </div>
+              <div class="row bg-light" *ngIf="this.modelBuildInfo['ensemble']">
+                <div class="col-3 border">
+                  <strong >Combained Model </strong>
+                </div>
+                <div class="col-9 border">
+                  <span class="text-capitalize">{{this.modelBuildInfo['model'].replace('combination:','')}}</span><span> using {{this.modelBuildInfo['nvarx']}} models</span>
+                  <br><br>
+                  <span>Training series {{this.modelBuildInfo['nobj']}} compounds</span><br>
+                   
+                  <br>
+                    <a>QMRF report</a>
+                    
+                </div>
+              </div>
+              <div class="row bg-light" *ngIf="this.modelBuildInfo['ensemble'] && this.submodels.length > 0">
+                <div class="col-3 border">
+                  <div class="row justify-content-between">
+                    <div class="col">
+                      <strong class="align-middle" >Model {{this.submodels_index+1}}/{{this.submodels.length}} </strong>
+                    </div>
+                    <div class="col-3 p-0">
+                      <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                          <li class="page-item" [ngClass]="{'disabled': this.noPreviousModel}">
+                            <a class="page-link" href="javascript:void(0)" aria-label="Previous" (click) = "PreviousModel()">
+                              <span aria-hidden="true">&laquo;</span>
+                              <span class="sr-only">Previous</span>
+                            </a>
+                          </li>
+                          <li class="page-item" [ngClass]="{'disabled': this.noNextModel}">
+                            <a class="page-link" href="javascript:void(0)" aria-label="Next" (click) = "NextModel()">
+                              <span aria-hidden="true">&raquo;</span>
+                              <span class="sr-only">Next</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <strong><h4>{{this.submodels[this.submodels_index]['name']}} v.{{this.submodels[this.submodels_index]['version']}}</h4></strong>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-9 border">
+                  <span class="text-capitalize">{{this.submodels[this.submodels_index]['model']}}</span><span> using {{this.submodels[this.submodels_index]['nvarx']}}vars</span>
+                  <br><br>
+                  <span>Training series {{this.submodels[this.submodels_index]['nobj']}} compounds</span><br>
+                    <span *ngIf="this.submodels[this.submodels_index]['R2']">R2: {{this.submodels[this.submodels_index]['R2'].toFixed(2)}}, </span>
+                    <span *ngIf="this.submodels[this.submodels_index]['SDEC']">SDEC: {{this.submodels[this.submodels_index]['SDEC'].toFixed(2)}}, </span>
+                    <span *ngIf="this.submodels[this.submodels_index]['Q2']">Q2: {{this.submodels[this.submodels_index]['Q2'].toFixed(2)}}, </span>
+                    <span *ngIf="this.submodels[this.submodels_index]['SDEP']">SDEP: {{this.submodels[this.submodels_index]['SDEP'].toFixed(2)}}</span>
+                    <span *ngIf="this.submodels[this.submodels_index]['Sensitivity']">Sensitivity: {{this.submodels[this.submodels_index]['Sensitivity'].toFixed(2)}}, </span>
+                    <span *ngIf="this.submodels[this.submodels_index]['Specificity']">Specificity: {{this.submodels[this.submodels_index]['Specificity'].toFixed(2)}}, </span>
+                    <span *ngIf="this.submodels[this.submodels_index]['MCC']">MCC: {{this.submodels[this.submodels_index]['MCC'].toFixed(2)}}</span><br>
+                    <span *ngIf="this.submodels[this.submodels_index]['SensitivityPed']">Sensitivity (predicted): {{this.submodels[this.submodels_index]['SensitivityPed'].toFixed(2)}}, </span>
+                    <span *ngIf="this.submodels[this.submodels_index]['SpecificityPred']">Specificity (predicted): {{this.submodels[this.submodels_index]['SpecificityPred'].toFixed(2)}}, </span>
+                    <span *ngIf="this.submodels[this.submodels_index]['MCCpred']">MCC (predicted): {{this.submodels[this.submodels_index]['MCCpred'].toFixed(2)}}</span>
+                    <span *ngIf="this.submodels[this.submodels_index]['Conformal_mean_interval']">Conformal mean interval: {{this.submodels[this.submodels_index]['Conformal_mean_interval'].toFixed(2)}}, </span>
+                    <span *ngIf="this.submodels[this.submodels_index]['Conformal_coverage']">Conformal coverage: {{this.submodels[this.submodels_index]['Conformal_coverage'].toFixed(2)}}, </span>
+                    <span *ngIf="this.submodels[this.submodels_index]['Conformal_accuracy']">Conformal accuracy: {{this.submodels[this.submodels_index]['Conformal_accuracy'].toFixed(2)}} </span>
+                  <br>
+                    <a>QMRF report</a>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
