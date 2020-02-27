@@ -135,6 +135,12 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(): void {
+    this.noNextMol = false;
+    this.noPreviousMol = true;
+    this.noNextModel = false;
+    this.noPreviousModel = true;
+    this.molIndex = 0;
+    this.submodelsIndex = 0;
     this.modelBuildInfo = {};
     this.getInfo();
     this.getParameters();
@@ -272,9 +278,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             '<"row"<"col-sm-12"tr>>' +
             '<"row"<"col-sm-5"i><"col-sm-7"p>>',
             buttons: [
-              { 'extend': 'copy', 'text': 'Copy', 'className': 'btn-primary' },
-              { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary' },
-              { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' }
+              { 'extend': 'copy', 'text': 'Copy', 'className': 'btn-primary' , title: ''},
+              { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary' , title: ''},
+              { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' , title: ''}
             ],
             order: []
           };

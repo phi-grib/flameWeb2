@@ -65,6 +65,7 @@ export class ModelListComponent implements OnInit {
                 }
               );
             }
+            
           }
           setTimeout(() => {
             const a = this.objectKeys(this.model.listModels).sort();

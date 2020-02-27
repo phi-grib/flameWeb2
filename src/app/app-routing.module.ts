@@ -14,7 +14,7 @@ const routes: Routes = [
 
   { path: 'predictions', component: PredictionListComponent},
   { path: 'models', component: ModelListComponent},
-  { path: 'similarity', component: TableorderComponent },
+  { path: 'similarity', component: SimilarityComponent },
   { path: 'predictor', component: PredictorComponent },
   { path: 'builder', component: BuilderComponent },
   { path: 'validation', component: ValidationsComponent },

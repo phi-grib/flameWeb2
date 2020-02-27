@@ -18,8 +18,10 @@ export class QualitConformalComponent implements OnChanges {
 
     @Input() modelName;
     @Input() modelVersion;
-    modelDocumentation: any = undefined;
-    orderDocumentaation = ['documentation_versio', 'ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint', 'Endpoint_units', 'Species'];
+    modelDocumentation = undefined;
+    orderDocumentation = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint', 'Endpoint_units', 'Dependent_variable', 'Species',
+            'Limits_applicability', 'Experimental_protocol', 'Data_info', 'Model_availability', 'Algorithm', 'Software', 'Descriptors',
+            'Algorithm_settings', 'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics', 'Internal_validation_1' ];
 
 
     objectKeys = Object.keys;
@@ -53,6 +55,13 @@ export class QualitConformalComponent implements OnChanges {
   ngOnChanges(): void {
     this.getDocumentation();
     this.getValidation();
+  }
+
+  isObject(val) {
+    if (val === null) {
+      return false;
+    }
+    return typeof val === 'object';
   }
 
   getValidation() {
@@ -92,6 +101,7 @@ export class QualitConformalComponent implements OnChanges {
     this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
       result => {
         this.modelDocumentation = result;
+        console.log(this.modelDocumentation);
       },
       error => {
         this.modelDocumentation = undefined;

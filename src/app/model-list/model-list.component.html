@@ -34,6 +34,7 @@
                                                         model.listModels[key].type.indexOf('majority') > -1,
                         'fa-circle': model.listModels[key].type.indexOf('quantitative') >-1 ||
                                      model.listModels[key].type.indexOf('mean') > -1 ||
+                                     model.listModels[key].type.indexOf('matrix') > -1 ||
                                      model.listModels[key].type.indexOf('median') > -1,
                         'fa-times': model.listModels[key].type == '-',
                         'faa-flash animated': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version)}"

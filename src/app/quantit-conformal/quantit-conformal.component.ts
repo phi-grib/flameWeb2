@@ -21,13 +21,17 @@ export class QuantitConformalComponent implements OnChanges {
 
     @Input() modelName;
     @Input() modelVersion;
+    modelDocumentation = undefined;
+    orderDocumentation = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint', 'Endpoint_units', 'Dependent_variable', 'Species',
+            'Limits_applicability', 'Experimental_protocol', 'Data_info', 'Model_availability', 'Algorithm', 'Software', 'Descriptors',
+            'Algorithm_settings', 'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics', 'Internal_validation_1' ];
 
     objectKeys = Object.keys;
     modelBuildInfo = {};
     modelValidationInfo = {};
     modelConformal = {};
     data: Array<any>;
-    modelDocumentation: any = undefined;
+  
 
 
     @ViewChild('QuantitConformalChart', {static: false}) QuantitConformalChart;
@@ -152,8 +156,23 @@ export class QuantitConformalComponent implements OnChanges {
     ngOnChanges(): void {
       this.getDocumentation();
       this.getValidation();
+      let toggler = document.getElementsByClassName('caret');
+      let i;
+
+      for (i = 0; i < toggler.length; i++) {
+        toggler[i].addEventListener('click', function() {
+          this.parentElement.querySelector('.nested').classList.toggle('active');
+          this.classList.toggle('caret-down');
+        });
+      }
     }
 
+    isObject(val) {
+      if (val === null) {
+        return false;
+      }
+      return typeof val === 'object';
+    }
     getValidation() {
       this.service.getValidation(this.modelName, this.modelVersion).subscribe(
         result => {

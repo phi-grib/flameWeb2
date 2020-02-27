@@ -19,12 +19,15 @@ export class QuantitNoConformalComponent implements OnChanges {
 
   @Input() modelName;
   @Input() modelVersion;
+  modelDocumentation = undefined;
+  orderDocumentation = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint', 'Endpoint_units', 'Dependent_variable', 'Species',
+            'Limits_applicability', 'Experimental_protocol', 'Data_info', 'Model_availability', 'Algorithm', 'Software', 'Descriptors',
+            'Algorithm_settings', 'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics', 'Internal_validation_1' ];
 
   objectKeys = Object.keys;
   modelBuildInfo = {};
   modelValidationInfo = {};
   data: Array<any>;
-  modelDocumentation: any = undefined;
 
   // Options
   public ChartOptionsPredicted: ChartOptions = {
@@ -142,6 +145,13 @@ export class QuantitNoConformalComponent implements OnChanges {
     this.getValidation();
   }
 
+  isObject(val) {
+    if (val === null) {
+      return false;
+    }
+    return typeof val === 'object';
+  }
+  
   getValidation() {
     this.service.getValidation(this.modelName, this.modelVersion).subscribe(
       result => {
