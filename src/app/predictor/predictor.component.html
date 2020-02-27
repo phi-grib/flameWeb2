@@ -33,7 +33,7 @@
         <div class="form-group">
           <label for="model">Model</label>
             <select id="model" class="form-control" [(ngModel)]="this.modelName" name="modelName"> 
-              <option *ngFor="let value of objectKeys(this.models)" [value]='value'>
+              <option *ngFor="let value of objectKeys(this.models).sort()" [value]='value'>
               {{value}}
               </option>
           </select>

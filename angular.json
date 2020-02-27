@@ -23,23 +23,32 @@
               "src/assets"
             ],
             "styles": [
-             
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/assets/css/bootstrap.min.css",
               "node_modules/font-awesome-animation/dist/font-awesome-animation.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
               "node_modules/ngx-toastr/toastr.css",
               "src/assets/css/dataTables.bootstrap4.min.css",
+              "src/assets/css/buttons.bootstrap4.min.css",
               "src/styles.css"
             ],
             "scripts": [
               "src/assets/js/jquery-3.3.1.js",
               "src/assets/js/jquery.dataTables.min.js",
               "src/assets/js/dataTables.bootstrap4.min.js",
+              "src/assets/js/dataTables.buttons.min.js",
+              "src/assets/js/buttons.bootstrap4.min.js",
+              "src/assets/js/jszip.min.js",
+              "src/assets/js/pdfmake.min.js",
+              "src/assets/js/vfs_fonts.js",
+              "src/assets/js/buttons.html5.min.js",
+              "src/assets/js/buttons.print.min.js",
+              "src/assets/js/buttons.colVis.min.js",
               "node_modules/smiles-drawer/dist/smiles-drawer.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/arrive/src/arrive.js"
-              ]
+            ]
           },
           "configurations": {
             "production": {
@@ -86,6 +95,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": [],

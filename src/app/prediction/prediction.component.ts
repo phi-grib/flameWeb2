@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
 import { SingleDataSet, Label } from 'ng2-charts';
 import { ChartType} from 'chart.js';
 import { PredictionService } from './prediction.service';
+import 'datatables.net-bs4';
+import 'datatables.net-buttons-bs4';
 
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -38,12 +40,16 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   predictionResult: any;
   modelDocumentation: any = undefined;
-  i = 0;
-  noNext = false;
-  noPrevious = true;
+  molIndex = 0;
+  noNextMol = false;
+  noPreviousMol = true;
+  noNextModel = false;
+  noPreviousModel = true;
 
   modelBuildInfo = {};
   modelValidationInfo = {};
+  submodels = [];
+  submodelsIndex = 0;
   // PolarArea
   public polarChartOptions: any = {
     responsive: true,
@@ -72,16 +78,18 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               public service: PredictionService,
               private commonService: CommonService) { }
 
-  Next() {
 
-    this.i++;
-    this.noPrevious = false;
-    if ((this.predictionResult.SMILES.length -1) === this.i) {
-      this.noNext = true;
+
+  NextMol() {
+
+    this.molIndex++;
+    this.noPreviousMol = false;
+    if ((this.predictionResult.SMILES.length - 1) === this.molIndex) {
+      this.noNextMol = true;
     }
     const options = {'width': 600, 'height': 300};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
-    SmilesDrawer.parse(this.predictionResult.SMILES[this.i], function(tree) {
+    SmilesDrawer.parse(this.predictionResult.SMILES[this.molIndex], function(tree) {
       // Draw to the canvas
       smilesDrawer.draw(tree, 'one_canvas', 'light', false);
       }, function (err) {
@@ -90,22 +98,40 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   }
 
-  Previous() {
+  PreviousMol() {
 
-    this.i--;
-    this.noNext = false;
-    if (this.i === 0) {
-      this.noPrevious = true;
+    this.molIndex--;
+    this.noNextMol = false;
+    if (this.molIndex === 0) {
+      this.noPreviousMol = true;
     }
     const options = {'width': 600, 'height': 300};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
-    SmilesDrawer.parse(this.predictionResult.SMILES[this.i], function(tree) {
+    SmilesDrawer.parse(this.predictionResult.SMILES[this.molIndex], function(tree) {
       // Draw to the canvas
       smilesDrawer.draw(tree, 'one_canvas', 'light', false);
       }, function (err) {
         console.log(err);
     });
 
+  }
+
+  NextModel() {
+
+    this.submodelsIndex++;
+    this.noPreviousModel = false;
+    if ((this.submodels.length - 1) === this.submodelsIndex) {
+      this.noNextModel = true;
+    }
+  }
+
+  PreviousModel() {
+
+    this.submodelsIndex--;
+    this.noNextModel = false;
+    if (this.submodelsIndex === 0) {
+      this.noPreviousModel = true;
+    }
   }
 
   ngOnChanges(): void {
@@ -125,6 +151,29 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         this.modelBuildInfo['ensemble'] = false;
         if (result.input_type.value === 'model_ensemble') {
           this.modelBuildInfo['ensemble'] = true;
+
+          let version = '0';
+          this.submodels = [];
+          result.ensemble_names.value.forEach((submodel, index) => {
+
+            if ( result.ensemble_names.value) {
+              version = '0';
+            } else {
+              version =  result.ensemble_versions.value[index];
+            }
+            this.submodels[index] = {};
+            this.submodels[index]['name'] = submodel;
+            this.submodels[index]['version'] = version;
+            this.commonService.getModel(submodel, version).subscribe(
+              result3 => {
+                for (const info of result3) {
+                  this.submodels[index][info[0]] = info[2];
+                }
+              },
+              error => {
+              }
+            );
+          });
         }
       },
       error => {
@@ -218,18 +267,26 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               });
           });
 
-
-          const table = $('#prediction').DataTable({
-            /* No ordering applied by DataTables during initialisation */
+          const settingsObj: any = {
+            dom:'<"row"<"col-sm-6"B><"col-sm-6"f>>' +
+            '<"row"<"col-sm-12"tr>>' +
+            '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+            buttons: [
+              { 'extend': 'copy', 'text': 'Copy', 'className': 'btn-primary' },
+              { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary' },
+              { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' }
+            ],
             order: []
-          });
+          };
+          const table = $('#prediction').DataTable(settingsObj);
+
           this.predictionVisible = true;
           const me = this;
           $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             if (e.target.id === 'pills-one-tab') {
               const options = {'width': 600, 'height': 300};
               const smilesDrawer = new SmilesDrawer.Drawer(options);
-              SmilesDrawer.parse(me.predictionResult.SMILES[me.i], function(tree) {
+              SmilesDrawer.parse(me.predictionResult.SMILES[me.molIndex], function(tree) {
                 // Draw to the canvas
                 smilesDrawer.draw(tree, 'one_canvas', 'light', false);
                 }, function (err) {

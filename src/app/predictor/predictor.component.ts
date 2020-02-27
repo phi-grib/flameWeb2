@@ -18,7 +18,7 @@ export class PredictorComponent implements OnInit {
   objectKeys = Object.keys;
   models: {};
   modelName = 'Model1';
-  predictName = '';
+  predictName = 'Prediction_';
   version = '0';
   file: any;
   isvalid = false;
@@ -37,17 +37,6 @@ export class PredictorComponent implements OnInit {
     for (const name of this.prediction.predictions) {
       this.predictionsNames[name[0]] = true;
     }
-    let nameFound = false;
-    let i = 1;
-    while (!nameFound) {
-      this.predictName = 'Prediction_' + i;
-      if (!this.objectKeys(this.predictionsNames).includes(this.predictName)) {
-        nameFound = true;
-        this.isvalid = true;
-      }
-      i = i + 1;
-    }
-
   }
   public change(fileList: FileList): void {
     const file = fileList[0];
@@ -81,6 +70,7 @@ export class PredictorComponent implements OnInit {
               );
             }
           }
+          
         }
     );
   }
@@ -90,7 +80,10 @@ export class PredictorComponent implements OnInit {
         result => {
           this.prediction.predictions = result;
           setTimeout(() => {
-            const table = $('#dataTablePredictions').DataTable();
+            const table = $('#dataTablePredictions').DataTable({
+              /* No ordering applied by DataTables during initialisation */
+              order: [[4, 'desc']]
+            });
           }, 100);
         },
         error => {
