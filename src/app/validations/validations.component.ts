@@ -11,12 +11,14 @@ export class ValidationsComponent implements OnChanges {
 
   @Input() name;
   @Input() version;
+  modelDocumentation: any = undefined;
 
   constructor(public model: Model,
               private commonService: CommonService) { }
 
 
   ngOnChanges(): void {
+    this.modelDocumentation = undefined;
     this.model.parameters = undefined;
     this.getParameters();
   }

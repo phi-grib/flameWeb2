@@ -36,7 +36,18 @@ export class PredictorComponent implements OnInit {
     this.getModelList();
     for (const name of this.prediction.predictions) {
       this.predictionsNames[name[0]] = true;
+    }
+    let nameFound = false;
+    let i = 1;
+    while (!nameFound) {
+      this.predictName = 'Prediction_' + i;
+      if (!this.objectKeys(this.predictionsNames).includes(this.predictName)) {
+        nameFound = true;
+        this.isvalid = true;
       }
+      i = i + 1;
+    }
+
   }
   public change(fileList: FileList): void {
     const file = fileList[0];

@@ -3,6 +3,7 @@ import { QualitConformalService } from './qualit-conformal.service';
 import {Model} from '../Globals';
 import { SingleDataSet, Label } from 'ng2-charts';
 import { ChartType, ChartOptions, ChartColor} from 'chart.js';
+import { CommonService } from '../common.service';
 
 @Component({
   selector: 'app-qualit-conformal',
@@ -12,10 +13,14 @@ import { ChartType, ChartOptions, ChartColor} from 'chart.js';
 export class QualitConformalComponent implements OnChanges {
 
   constructor(private service: QualitConformalService,
-    public model: Model) { }
+    public model: Model,
+    private commonService: CommonService) { }
 
     @Input() modelName;
     @Input() modelVersion;
+    modelDocumentation: any = undefined;
+    orderDocumentaation = ['documentation_versio', 'ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint', 'Endpoint_units', 'Species'];
+
 
     objectKeys = Object.keys;
     modelBuildInfo = {};
@@ -46,6 +51,7 @@ export class QualitConformalComponent implements OnChanges {
     ];
 
   ngOnChanges(): void {
+    this.getDocumentation();
     this.getValidation();
   }
 
@@ -78,6 +84,17 @@ export class QualitConformalComponent implements OnChanges {
       },
       error => {
         alert('Error getting model');
+      }
+    );
+  }
+
+  getDocumentation(): void {
+    this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
+      result => {
+        this.modelDocumentation = result;
+      },
+      error => {
+        this.modelDocumentation = undefined;
       }
     );
   }

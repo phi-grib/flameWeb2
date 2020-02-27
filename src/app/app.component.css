@@ -2,3 +2,7 @@
     background-color: #FAFAFA;
     min-height: 100vh;   
 }
+.scrollable{
+    max-height: 90vh;
+    overflow: auto;
+}

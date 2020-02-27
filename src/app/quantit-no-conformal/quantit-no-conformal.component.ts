@@ -3,6 +3,7 @@ import { QuantitNoConformalService } from './quantit-no-conformal.service';
 import {Model} from '../Globals';
 import { ChartDataSets, ChartType, ChartOptions} from 'chart.js';
 import { Label} from 'ng2-charts';
+import { CommonService } from '../common.service';
 
 @Component({
   selector: 'app-quantit-no-conformal',
@@ -13,7 +14,8 @@ export class QuantitNoConformalComponent implements OnChanges {
 
 
   constructor(private service: QuantitNoConformalService,
-    public model: Model) { }
+    public model: Model,
+    private commonService: CommonService) { }
 
   @Input() modelName;
   @Input() modelVersion;
@@ -22,6 +24,7 @@ export class QuantitNoConformalComponent implements OnChanges {
   modelBuildInfo = {};
   modelValidationInfo = {};
   data: Array<any>;
+  modelDocumentation: any = undefined;
 
   // Options
   public ChartOptionsPredicted: ChartOptions = {
@@ -135,6 +138,7 @@ export class QuantitNoConformalComponent implements OnChanges {
   public ChartType: ChartType = 'line';
 
   ngOnChanges(): void {
+    this.getDocumentation();
     this.getValidation();
   }
 
@@ -165,6 +169,17 @@ export class QuantitNoConformalComponent implements OnChanges {
       },
       error => {
         alert('Error getting model');
+      }
+    );
+  }
+
+  getDocumentation(): void {
+    this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
+      result => {
+        this.modelDocumentation = result;
+      },
+      error => {
+        this.modelDocumentation = undefined;
       }
     );
   }

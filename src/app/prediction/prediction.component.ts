@@ -72,8 +72,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               public service: PredictionService,
               private commonService: CommonService) { }
 
-
-
   Next() {
 
     this.i++;
@@ -154,7 +152,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   getDocumentation() {
 
-    this.service.getDocumentation(this.prediction.modelName, this.prediction.modelVersion).subscribe(
+    this.commonService.getDocumentation(this.prediction.modelName, this.prediction.modelVersion).subscribe(
       result => {
         this.modelDocumentation = result;
       },
@@ -191,7 +189,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
     this.modelValidationInfo = {};
 
-    this.service.getPrediction(this.predictionName).subscribe(
+    this.commonService.getPrediction(this.predictionName).subscribe(
       result => {
         this.predictionResult = result;
         if ('external-validation' in this.predictionResult) {

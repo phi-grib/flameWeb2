@@ -10,14 +10,4 @@ export class PredictionService {
 
   constructor(private http: HttpClient) { }
 
-
-  getPrediction(predictionName: string): Observable<any> {
-    const url: string = environment.baseUrl_manage + 'prediction/' + predictionName;
-    return this.http.get(url);
-  }
-
-  getDocumentation(modelName: string, modelVersion: string): Observable<any> {
-    const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/documentation';
-    return this.http.get(url);
-  }
 }

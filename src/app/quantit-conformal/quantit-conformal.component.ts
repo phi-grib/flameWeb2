@@ -4,6 +4,7 @@ import {Model} from '../Globals';
 import { ChartDataSets, ChartType, ChartOptions } from 'chart.js';
 import { Label, BaseChartDirective } from 'ng2-charts';
 import 'chartjs-plugin-error-bars';
+import { CommonService } from '../common.service';
 
 @Component({
   selector: 'app-quantit-conformal',
@@ -13,7 +14,9 @@ import 'chartjs-plugin-error-bars';
 export class QuantitConformalComponent implements OnChanges {
 
 
-  constructor(private service: QuantitConformalService, public model: Model) { }
+  constructor(private service: QuantitConformalService,
+     public model: Model,
+     private commonService: CommonService) { }
 
 
     @Input() modelName;
@@ -24,6 +27,8 @@ export class QuantitConformalComponent implements OnChanges {
     modelValidationInfo = {};
     modelConformal = {};
     data: Array<any>;
+    modelDocumentation: any = undefined;
+
 
     @ViewChild('QuantitConformalChart', {static: false}) QuantitConformalChart;
 
@@ -145,6 +150,7 @@ export class QuantitConformalComponent implements OnChanges {
     public ChartType: ChartType = 'line';
 
     ngOnChanges(): void {
+      this.getDocumentation();
       this.getValidation();
     }
 
@@ -207,6 +213,17 @@ export class QuantitConformalComponent implements OnChanges {
         },
         error => {
           alert('Error getting model');
+        }
+      );
+    }
+
+    getDocumentation(): void {
+      this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
+        result => {
+          this.modelDocumentation = result;
+        },
+        error => {
+          this.modelDocumentation = undefined;
         }
       );
     }
