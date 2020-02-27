@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
 import { SingleDataSet, Label } from 'ng2-charts';
 import { ChartType} from 'chart.js';
 import { PredictionService } from './prediction.service';
+import 'datatables.net-bs4';
+import 'datatables.net-buttons-bs4';
 
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -38,7 +40,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   predictionResult: any;
   modelDocumentation: any = undefined;
-  i = 0;
+  molIndex = 0;
   noNextMol = false;
   noPreviousMol = true;
   noNextModel = false;
@@ -47,7 +49,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   modelBuildInfo = {};
   modelValidationInfo = {};
   submodels = [];
-  submodels_index = 0;
+  submodelsIndex = 0;
   // PolarArea
   public polarChartOptions: any = {
     responsive: true,
@@ -80,14 +82,14 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   NextMol() {
 
-    this.i++;
+    this.molIndex++;
     this.noPreviousMol = false;
-    if ((this.predictionResult.SMILES.length - 1) === this.i) {
+    if ((this.predictionResult.SMILES.length - 1) === this.molIndex) {
       this.noNextMol = true;
     }
     const options = {'width': 600, 'height': 300};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
-    SmilesDrawer.parse(this.predictionResult.SMILES[this.i], function(tree) {
+    SmilesDrawer.parse(this.predictionResult.SMILES[this.molIndex], function(tree) {
       // Draw to the canvas
       smilesDrawer.draw(tree, 'one_canvas', 'light', false);
       }, function (err) {
@@ -98,14 +100,14 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   PreviousMol() {
 
-    this.i--;
+    this.molIndex--;
     this.noNextMol = false;
-    if (this.i === 0) {
+    if (this.molIndex === 0) {
       this.noPreviousMol = true;
     }
     const options = {'width': 600, 'height': 300};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
-    SmilesDrawer.parse(this.predictionResult.SMILES[this.i], function(tree) {
+    SmilesDrawer.parse(this.predictionResult.SMILES[this.molIndex], function(tree) {
       // Draw to the canvas
       smilesDrawer.draw(tree, 'one_canvas', 'light', false);
       }, function (err) {
@@ -116,18 +118,18 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   NextModel() {
 
-    this.submodels_index++;
+    this.submodelsIndex++;
     this.noPreviousModel = false;
-    if ((this.submodels.length - 1) === this.submodels_index) {
+    if ((this.submodels.length - 1) === this.submodelsIndex) {
       this.noNextModel = true;
     }
   }
 
   PreviousModel() {
 
-    this.submodels_index--;
+    this.submodelsIndex--;
     this.noNextModel = false;
-    if (this.submodels_index === 0) {
+    if (this.submodelsIndex === 0) {
       this.noPreviousModel = true;
     }
   }
@@ -154,7 +156,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.submodels = [];
           result.ensemble_names.value.forEach((submodel, index) => {
 
-            if ( result.ensemble_names.value == null) {
+            if ( result.ensemble_names.value) {
               version = '0';
             } else {
               version =  result.ensemble_versions.value[index];
@@ -162,14 +164,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             this.submodels[index] = {};
             this.submodels[index]['name'] = submodel;
             this.submodels[index]['version'] = version;
-            this.commonService.getParameters(submodel, version).subscribe(
-              result2 => {
-                this.submodels[index]['quantitative'] = result2.quantitative.value;
-                this.submodels[index]['conformal'] = result2.conformal.value;
-              },
-              error => {
-
-            });
             this.commonService.getModel(submodel, version).subscribe(
               result3 => {
                 for (const info of result3) {
@@ -273,18 +267,26 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               });
           });
 
-
-          const table = $('#prediction').DataTable({
-            /* No ordering applied by DataTables during initialisation */
+          const settingsObj: any = {
+            dom:'<"row"<"col-sm-6"B><"col-sm-6"f>>' +
+            '<"row"<"col-sm-12"tr>>' +
+            '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+            buttons: [
+              { 'extend': 'copy', 'text': 'Copy', 'className': 'btn-primary' },
+              { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary' },
+              { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' }
+            ],
             order: []
-          });
+          };
+          const table = $('#prediction').DataTable(settingsObj);
+
           this.predictionVisible = true;
           const me = this;
           $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             if (e.target.id === 'pills-one-tab') {
               const options = {'width': 600, 'height': 300};
               const smilesDrawer = new SmilesDrawer.Drawer(options);
-              SmilesDrawer.parse(me.predictionResult.SMILES[me.i], function(tree) {
+              SmilesDrawer.parse(me.predictionResult.SMILES[me.molIndex], function(tree) {
                 // Draw to the canvas
                 smilesDrawer.draw(tree, 'one_canvas', 'light', false);
                 }, function (err) {

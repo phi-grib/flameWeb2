@@ -8,12 +8,13 @@ import { SimilarityComponent, } from './similarity/similarity.component';
 import { BuilderComponent, } from './builder/builder.component';
 import { PredictionListComponent } from './prediction-list/prediction-list.component';
 import { PredictorComponent } from './predictor/predictor.component';
+import { TableorderComponent } from './tableorder/tableorder.component';
 
 const routes: Routes = [
 
   { path: 'predictions', component: PredictionListComponent},
   { path: 'models', component: ModelListComponent},
-  { path: 'similarity', component: SimilarityComponent },
+  { path: 'similarity', component: TableorderComponent },
   { path: 'predictor', component: PredictorComponent },
   { path: 'builder', component: BuilderComponent },
   { path: 'validation', component: ValidationsComponent },

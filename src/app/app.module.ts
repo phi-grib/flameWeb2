@@ -73,8 +73,7 @@ import { TableorderComponent } from './tableorder/tableorder.component';
     NgMultiSelectDropDownModule.forRoot(),
     ChecklistModule,
     ChartsModule,
-    NgbModule,
-    DataTablesModule
+    NgbModule
 
   ],
   providers: [Model, Prediction, Globals, Manager, Similarity],

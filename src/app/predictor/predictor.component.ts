@@ -18,7 +18,7 @@ export class PredictorComponent implements OnInit {
   objectKeys = Object.keys;
   models: {};
   modelName = 'Model1';
-  predictName = '';
+  predictName = 'Prediction_';
   version = '0';
   file: any;
   isvalid = false;
@@ -36,7 +36,7 @@ export class PredictorComponent implements OnInit {
     this.getModelList();
     for (const name of this.prediction.predictions) {
       this.predictionsNames[name[0]] = true;
-      }
+    }
   }
   public change(fileList: FileList): void {
     const file = fileList[0];
@@ -70,6 +70,7 @@ export class PredictorComponent implements OnInit {
               );
             }
           }
+          
         }
     );
   }
