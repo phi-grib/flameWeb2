@@ -153,12 +153,19 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
                 console.log(err);
               });
           });
-          $('#simlarityTable').DataTable( {
-            dom: 'Bfrtip',
+
+          const settingsObj: any = {
+            dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
+            '<"row"<"col-sm-12"tr>>' +
+            '<"row"<"col-sm-5"i><"col-sm-7"p>>',
             buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
+              { 'extend': 'copy', 'text': 'Copy', 'className': 'btn-primary' , title: ''},
+              { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary' , title: ''},
+              { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' , title: ''},
+              { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
             ]
-        } );
+          };
+          $('#simlarityTable').DataTable(settingsObj);
         }
     });
   }

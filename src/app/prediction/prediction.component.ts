@@ -280,7 +280,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             buttons: [
               { 'extend': 'copy', 'text': 'Copy', 'className': 'btn-primary' , title: ''},
               { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary' , title: ''},
-              { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' , title: ''}
+              { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' , title: ''},
+              { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
             ],
             order: []
           };
