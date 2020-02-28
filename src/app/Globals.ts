@@ -20,6 +20,7 @@ export class Model {
   trainig_models = [];
   listModels = {};
   trained_models = [];
+  selectedItems = [];
 }
 
 @Injectable()
