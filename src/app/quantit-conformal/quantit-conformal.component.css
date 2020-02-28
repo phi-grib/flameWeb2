@@ -1,49 +1,35 @@
-canvas {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+.TP {
+  background-color: rgba(0,255,0,0.3);
+}
+.FP {
+  background-color:rgba(235,143,3,0.3);
+}
+.TN {
+  background-color:rgba(3,49,155,0.3);
+}
+.FN {
+  background-color:rgba(255,0,0,0.3);
 }
 .card-header {
-    background: #B8DCED;
-    background-color: #B8DCED;
+  background: #B8DCED;
+  background-color: #B8DCED;
+}
+#matrix * {
+padding: 0px;
+text-align: center;
 }
 
-/* Remove default bullets */
-ul, #myUL {
-  list-style-type: none;
+.rotate > span {
+transform: rotate(-90deg);
+position:absolute;
+left:10;
+right:0;
+top: 10px;
+margin:auto;
+
 }
 
-/* Remove margins and padding from the parent ul */
-#myUL {
-  margin: 0;
-  padding: 0;
+table td {
+  padding-top: 1px;
+  padding-bottom: 1px;
 }
-
-/* Style the caret/arrow */
-.caret {
-  cursor: pointer;
-  user-select: none; /* Prevent text selection */
-}
-
-/* Create the caret/arrow with a unicode, and style it */
-.caret::before {
-  content: "\25B6";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
-.caret-down::before {
-  transform: rotate(90deg);
-}
-
-/* Hide the nested list */
-.nested {
-  display: none;
-}
-
-/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
-.active {
-  display: block;
-} 
