@@ -16,6 +16,7 @@ export class ConfigModelComponent implements OnInit, AfterContentChecked {
 
   parametersModel = {
     RF: 'RF_parameters',
+    XGBOOST: 'XGBOOST_parameters',
     PLSDA: 'PLSDA_parameters',
     PLSR: 'PLSR_parameters',
     GNB: 'GNB_parameters',
@@ -23,6 +24,7 @@ export class ConfigModelComponent implements OnInit, AfterContentChecked {
   };
   optimizeModel = {
     RF: 'RF_optimize',
+    XGBOOST: 'XGBOOST_optimize',
     PLSDA: 'PLSDA_optimize',
     PLSR: 'PLSR_optimize',
     GNB: 'GNB_optimize',
@@ -30,9 +32,9 @@ export class ConfigModelComponent implements OnInit, AfterContentChecked {
   };
 
   type_models = {
-    data: ['RF', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
-    molecule: ['RF', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
-    model_ensemble: ['RF', 'PLSDA', 'PLSR', 'GNB', 'SVM', 'mean', 'median', 'majority']
+    data: ['RF',  'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
+    molecule: ['RF',  'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
+    model_ensemble: ['RF', 'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM', 'mean', 'median', 'majority']
 
   };
   ngOnInit() {
