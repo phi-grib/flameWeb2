@@ -28,3 +28,8 @@
   margin:auto;
   
 }
+
+table td {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
