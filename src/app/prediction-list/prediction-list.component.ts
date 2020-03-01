@@ -40,7 +40,7 @@ export class PredictionListComponent implements OnInit {
           this.prediction.predictions = result;
           setTimeout(() => {
             const table = $('#dataTablePredictions').DataTable({
-              /* No ordering applied by DataTables during initialisation */
+              /*Ordering by date */
               order: [[4, 'desc']],
               columnDefs: [{ 'type': 'date', 'targets': 4 }]
             });

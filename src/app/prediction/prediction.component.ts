@@ -274,7 +274,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           });
 
           const settingsObj: any = {
-            dom:'<"row"<"col-sm-6"B><"col-sm-6"f>>' +
+            dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
             '<"row"<"col-sm-12"tr>>' +
             '<"row"<"col-sm-5"i><"col-sm-7"p>>',
             buttons: [
