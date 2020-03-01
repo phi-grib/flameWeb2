@@ -191,18 +191,37 @@
           {{this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].description}}
           </small>
         </div>
-        <div class="checkbox mt-3" *ngIf="!this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='list' ">
+        <!--CASE NO XGBOOST-->
+        <div class="checkbox mt-3" *ngIf="!this.model.parameters['model'].value=='XGBOOST' && !this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='list' ">
           <label id="key" class="bmd-label-static mb-2 p-0">{{key}}</label>
           <label id="key" class="mr-2 mb-2 w-100" *ngFor="let value of this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].options">
+           
             <input id="key" type="checkbox"
                   [(checklist)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value"
                   [checklistValue]="value" />
                 {{value}}
+
           </label>
           <small id="key" class="text-muted">
             {{this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].description}}
           </small>
         </div>
+
+         <!--CASE XGBOOST-->
+
+        
+         <div *ngIf="this.model.parameters['model'].value=='XGBOOST' && !this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='list' ">
+            <label id="key" class="bmd-label-static mb-2 p-0">{{key}}</label><br>
+            <div class="form-check form-check-inline" *ngFor="let value of this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].options">
+              <input class="form-check-input" type="radio" id="value" name="inlineRadioOptions" [value]="value" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value"
+             >
+              <label class="form-check-label" for="value">{{value}}</label>
+            </div>
+            <br>
+            <small id="key" class="text-muted">
+              {{this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].description}}
+            </small>
+          </div>
       </div>
 </fieldset>
 <!-- TUNE HARDCODED-->

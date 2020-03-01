@@ -41,7 +41,11 @@ export class ManagePredictionsComponent implements OnInit {
         this.toastr.success( 'Prediction "' + this.prediction.name + '" deleted', 'DELETED' , {
           timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
         });
-        this.prediction.name = undefined;
+        this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
+        this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
+        this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
+        this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
+       
 
       },
       error => {
