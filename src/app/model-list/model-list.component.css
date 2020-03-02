@@ -24,7 +24,7 @@ i {
 .table td {
     padding: 5px;
     font-family: 'Barlow Semi Condensed', sans-serif;
-    border-bottom: 2px solid #B8DCED;
+    /*border-bottom: 2px solid #B8DCED;*/
 }
 tr {
     cursor: pointer;
@@ -46,10 +46,6 @@ td {
     max-width: 350px;
     max-height: 350px;
 }
-.scrolltable{
-    max-height: 90vh;
-    overflow: auto;
-}
 
 .spinner-table {
     position: absolute; 
@@ -58,3 +54,20 @@ td {
     z-index: 1031;
 }
 
+.scrolltable { 
+    max-height: 90vh;
+    overflow: auto;
+}
+.scrolltable thead th { 
+    position: sticky; 
+    top: 0; 
+    background-color:white;
+}
+
+.scrolltable,
+.scrolltable td {
+box-shadow: inset 0 0, 0 1px  #B8DCED;
+}
+.scrolltable th {
+    box-shadow: inset 0 0, 0 1px  #B8DCED;
+    }
