@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonService } from '../common.service';
 import { ModelListService } from './model-list.service';
-import { Model, Prediction } from '../Globals';
+import { Model, Prediction, Globals } from '../Globals';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ValidationsComponent} from '../validations/validations.component';
 import 'jquery';
@@ -18,11 +18,11 @@ export class ModelListComponent implements OnInit {
   constructor(private service: ModelListService,
     private commonService: CommonService,
     public model: Model,
+    public globals: Globals,
     public prediction: Prediction) {}
 
   models: Array<any>;
   objectKeys = Object.keys;
-  tableVisible = false;
 
   ngOnInit() {
     this.prediction.name = undefined;
@@ -32,7 +32,7 @@ export class ModelListComponent implements OnInit {
   }
 
   getModelList() {
-    this.tableVisible = false;
+    this.globals.tableModelVisible = false;
     this.commonService.getModelList().subscribe(
         result => {
           // result = JSON.parse(result[1]);
@@ -65,19 +65,18 @@ export class ModelListComponent implements OnInit {
                 }
               );
             }
-            
           }
+          this.globals.tableModelVisible = true;
           setTimeout(() => {
             const a = this.objectKeys(this.model.listModels).sort();
             this.model.name = this.model.listModels[a[0]].name;
             this.model.version = this.model.listModels[a[0]].version;
             this.model.trained = this.model.listModels[a[0]].trained;
-            this.tableVisible = true;
-            const table = $('#dataTableModels').DataTable({
-              /* No ordering applied by DataTables during initialisation */
-              order: []
-            });
-          }, 500);
+           
+            /*const table = $('#dataTableModels').DataTable({
+              paging: false
+            });*/
+          }, 1500);
         },
         error => {
           console.log(error.message);

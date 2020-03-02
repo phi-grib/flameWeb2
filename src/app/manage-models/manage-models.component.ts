@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Manager, Model } from '../Globals';
+import { Manager, Model, Globals } from '../Globals';
 import { CommonService } from '../common.service';
 import { ManageModelService } from './manage-models.service';
 import { ToastrService } from 'ngx-toastr';
@@ -22,6 +22,7 @@ export class ManageModelsComponent implements OnInit {
               private commonService: CommonService,
               public service: ManageModelService,
               public model: Model,
+              public globals: Globals,
               private toastr: ToastrService,
               private modalService: NgbModal) { }
 
@@ -146,7 +147,8 @@ export class ManageModelsComponent implements OnInit {
 
   getModelList() {
 
-    this.commonService.getModelList().subscribe(
+    this.globals.tableModelVisible = false;
+    this.commonService.getModelList().subscribe( 
         result => {
           // result = JSON.parse(result[1]);
           this.model.trained_models = [];
@@ -179,9 +181,15 @@ export class ManageModelsComponent implements OnInit {
               );
             }
           }
+          this.globals.tableModelVisible = true;
           setTimeout(() => {
-            $('#dataTableModels').DataTable();
-          }, 500);
+            const a = this.objectKeys(this.model.listModels).sort();
+            this.model.name = this.model.listModels[a[0]].name;
+            this.model.version = this.model.listModels[a[0]].version;
+            this.model.trained = this.model.listModels[a[0]].trained;
+            this.globals.tableModelVisible = true;
+            //$('#dataTableModels').DataTable();
+          }, 1500);
         },
         error => {
           console.log(error.message);
