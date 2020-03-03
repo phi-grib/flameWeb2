@@ -33,6 +33,7 @@ export class ModelListComponent implements OnInit {
 
   getModelList() {
     this.globals.tableModelVisible = false;
+    let num_models = 0;
     this.commonService.getModelList().subscribe(
         result => {
           // result = JSON.parse(result[1]);
@@ -41,6 +42,7 @@ export class ModelListComponent implements OnInit {
             const modelName = model.modelname;
             for ( const version of model.versions) {
               // INFO OF EACH MODEL
+              num_models++;
               this.commonService.getModel(modelName, version).subscribe(
                 result2 => {
                     const dict_info = {};
@@ -62,21 +64,27 @@ export class ModelListComponent implements OnInit {
                 error => {
                  this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
                     variables: '-', type: '-', quality: {}};
+                    num_models--;
+                },
+                () => {
+                  num_models--;
                 }
               );
             }
           }
-          this.globals.tableModelVisible = true;
-          setTimeout(() => {
-            const a = this.objectKeys(this.model.listModels).sort();
-            this.model.name = this.model.listModels[a[0]].name;
-            this.model.version = this.model.listModels[a[0]].version;
-            this.model.trained = this.model.listModels[a[0]].trained;
-           
-            /*const table = $('#dataTableModels').DataTable({
-              paging: false
-            });*/
-          }, 1500);
+          const intervalId = setInterval(() => {
+            if (num_models == 0) {
+              const a = this.objectKeys(this.model.listModels).sort();
+              this.model.name = this.model.listModels[a[0]].name;
+              this.model.version = this.model.listModels[a[0]].version;
+              this.model.trained = this.model.listModels[a[0]].trained;
+              const table = $('#dataTableModels').DataTable({
+                //paging: false
+              });
+              this.globals.tableModelVisible = true;
+              clearInterval(intervalId);
+            }
+          }, 10);
         },
         error => {
           console.log(error.message);
