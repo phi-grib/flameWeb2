@@ -45,7 +45,6 @@ export class ManagePredictionsComponent implements OnInit {
         this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
         this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
         this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
-       
 
       },
       error => {

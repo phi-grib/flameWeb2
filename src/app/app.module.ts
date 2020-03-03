@@ -28,14 +28,12 @@ import { DataTableModule } from 'angular-6-datatable';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { SimilarityComponent } from './similarity/similarity.component';
 import { ModelingSidebarComponent } from './modeling-sidebar/modeling-sidebar.component';
-import { NewSimilarityComponent } from './new-similarity/new-similarity.component';
 import { PredictionListComponent } from './prediction-list/prediction-list.component';
 import { ManageModelsComponent } from './manage-models/manage-models.component';
 import { ManagePredictionsComponent } from './manage-predictions/manage-predictions.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.component';
 import { DataTablesModule } from 'angular-datatables';
-import { TableorderComponent } from './tableorder/tableorder.component';
 
 @NgModule({
   declarations: [
@@ -56,12 +54,10 @@ import { TableorderComponent } from './tableorder/tableorder.component';
     PredictionComponent,
     SimilarityComponent,
     ModelingSidebarComponent,
-    NewSimilarityComponent,
     PredictionListComponent,
     ManageModelsComponent,
     ManagePredictionsComponent,
-    ConfusionMatrixComponent,
-    TableorderComponent
+    ConfusionMatrixComponent
   ],
   imports: [
     BrowserModule,

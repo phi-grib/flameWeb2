@@ -8,7 +8,6 @@ import { SimilarityComponent, } from './similarity/similarity.component';
 import { BuilderComponent, } from './builder/builder.component';
 import { PredictionListComponent } from './prediction-list/prediction-list.component';
 import { PredictorComponent } from './predictor/predictor.component';
-import { TableorderComponent } from './tableorder/tableorder.component';
 
 const routes: Routes = [
 
