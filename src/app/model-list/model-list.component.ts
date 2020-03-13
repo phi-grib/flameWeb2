@@ -50,11 +50,14 @@ export class ModelListComponent implements OnInit {
                       dict_info[info[0]] = info[2];
                     }
                     const quality = {};
+                    
                     for (const info of (Object.keys(dict_info))) {
                       if ( (info !== 'nobj') && (info !== 'nvarx') && (info !== 'model') // HARCODED: NEED TO IMPROVE
                           && (info !== 'Conformal_interval_medians' ) && (info !== 'Conformal_prediction_ranges' )
                           && (info !== 'Y_adj' ) && (info !== 'Y_pred' )) {
+
                             quality[info] =  parseFloat(dict_info[info].toFixed(3));
+
                       }
                     }
                     this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: true,
