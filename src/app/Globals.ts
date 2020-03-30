@@ -11,6 +11,9 @@ export class Model {
   file_fields = undefined;
   quantitative: boolean = undefined;
   conformal: boolean = undefined;
+  ensemble: boolean = undefined;
+  incremental = false;
+  error: string = undefined;
   /*
   Delta parameters, empty by default, fills on clicking the parameters tab.
   When you change anything on the formulary, automatically changes the value for that key

@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderComponent} from '../builder/builder.component';
+import { CommonFunctions } from '../common.functions';
 declare var $: any;
 
 @Component({
@@ -24,7 +25,8 @@ export class ManageModelsComponent implements OnInit {
               public model: Model,
               public globals: Globals,
               private toastr: ToastrService,
-              private modalService: NgbModal) { }
+              private modalService: NgbModal,
+              public func: CommonFunctions) { }
 
 
   ngOnInit() {
@@ -46,7 +48,7 @@ export class ManageModelsComponent implements OnInit {
             this.modelName = '';
             this.model.listModels = {};
             $('#dataTableModels').DataTable().destroy();
-            this.getModelList();
+           this.func.getModelList();
             this.toastr.success('Model ' + result.modelName, 'CREATED', {
               timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
             });
@@ -71,7 +73,7 @@ export class ManageModelsComponent implements OnInit {
         });
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
-        this.getModelList();
+       this.func.getModelList();
         this.model.name = undefined ;
         this.model.version = undefined;
       },
@@ -91,7 +93,7 @@ export class ManageModelsComponent implements OnInit {
         const table = $('#dataTableModels').DataTable();
         table.row('.selected').remove().draw(false);
         $('#dataTableModels').DataTable().destroy();
-        this.getModelList();
+       this.func.getModelList();
         this.model.name = undefined;
         this.model.version = undefined;
       },
@@ -113,7 +115,7 @@ export class ManageModelsComponent implements OnInit {
           timeOut: 5000, positionClass: 'toast-top-right'});
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
-        this.getModelList();
+       this.func.getModelList();
       },
       error => {
        alert('Error cloning');
@@ -136,74 +138,12 @@ export class ManageModelsComponent implements OnInit {
         this.manage.file = undefined;
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
-        this.getModelList();
+       this.func.getModelList();
       },
       error => {
         this.toastr.error('Model \'' + error.error.Model + '\' already exist' , 'ERROR IMPORTING', {
           timeOut: 5000, positionClass: 'toast-top-right'});
       }
-    );
-  }
-
-  getModelList() {
-    this.globals.tableModelVisible = false;
-    let num_models = 0;
-    this.commonService.getModelList().subscribe(
-        result => {
-          // result = JSON.parse(result[1]);
-          this.model.trained_models = [];
-          for (const model of result) {
-            const modelName = model.modelname;
-            for ( const version of model.versions) {
-              // INFO OF EACH MODEL
-              num_models++;
-              this.commonService.getModel(modelName, version).subscribe(
-                result2 => {
-                    const dict_info = {};
-                    for (const info of result2) {
-                      dict_info[info[0]] = info[2];
-                    }
-                    const quality = {};
-                    for (const info of (Object.keys(dict_info))) {
-                      if ( (info !== 'nobj') && (info !== 'nvarx') && (info !== 'model') // HARCODED: NEED TO IMPROVE
-                          && (info !== 'Conformal_interval_medians' ) && (info !== 'Conformal_prediction_ranges' )
-                          && (info !== 'Y_adj' ) && (info !== 'Y_pred' )) {
-                            quality[info] =  parseFloat(dict_info[info].toFixed(3));
-                      }
-                    }
-                    this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: true,
-                    numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality};
-                    this.model.trained_models.push(modelName + ' .v' + version);
-                },
-                error => {
-                 this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
-                    variables: '-', type: '-', quality: {}};
-                    num_models--;
-                },
-                () => {
-                  num_models--;
-                }
-              );
-            }
-          }
-          const intervalId = setInterval(() => {
-            if (num_models == 0) {
-              const a = this.objectKeys(this.model.listModels).sort();
-              this.model.name = this.model.listModels[a[0]].name;
-              this.model.version = this.model.listModels[a[0]].version;
-              this.model.trained = this.model.listModels[a[0]].trained;
-              const table = $('#dataTableModels').DataTable({
-                //paging: false
-              });
-              this.globals.tableModelVisible = true;
-              clearInterval(intervalId);
-            }
-          }, 10);
-        },
-        error => {
-          console.log(error.message);
-          alert(error.message);
-        }
     );
   }
 }

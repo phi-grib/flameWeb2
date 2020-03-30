@@ -33,7 +33,7 @@ export class PredictorComponent implements OnInit {
 
   ngOnInit() {
     this.models = {};
-    this.getModelList();
+    this.getModelListPredict();
     for (const name of this.prediction.predictions) {
       this.predictionsNames[name[0]] = true;
     }
@@ -42,7 +42,7 @@ export class PredictorComponent implements OnInit {
     let nameFound = false;
     while (!nameFound) {
       this.predictName = 'Prediction_' + i;
-      if (!this.objectKeys(this.predictionsNames).includes(this.predictName)){
+      if (!this.objectKeys(this.predictionsNames).includes(this.predictName)) {
         nameFound = true;
         this.isvalid = true;
       }
@@ -62,23 +62,20 @@ export class PredictorComponent implements OnInit {
     }
   }
 
-  getModelList() {
+  getModelListPredict() {
 
     this.commonService.getModelList().subscribe(
         result => {
           // result = JSON.parse(result[1]);
           for (const model of result) {
-            const modelName = model.modelname;
-            for ( const version of model.versions) {
-              // INFO OF EACH MODEL
-              this.commonService.getModel(modelName, version).subscribe(
-                result2 => {
-                  if (!(modelName in  this.models)) {
-                    this.models[modelName] = [];
-                  }
-                  this.models[modelName].push(version);
-                }
-              );
+            if (typeof(model.info) === 'object' ) {
+              const modelName = model.modelname;
+              if (!(modelName in  this.models)) {
+                this.models[modelName] = [];
+              }
+              if (model.info) {
+                this.models[modelName].push(model.version);
+              }
             }
           }
         }
@@ -93,7 +90,7 @@ export class PredictorComponent implements OnInit {
             const table = $('#dataTablePredictions').DataTable({
               /*Ordering by date */
               order: [[4, 'desc']],
-              columnDefs: [{ 'type': 'date', 'targets': 4 }]
+              columnDefs: [{ 'type': 'date-euro', 'targets': 4 }]
             });
             this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
             this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
@@ -122,14 +119,14 @@ export class PredictorComponent implements OnInit {
           } else {
             clearInterval(intervalId);
             this.toastr.clear(inserted.toastId);
-            this.toastr.error( 'Prediction ' + name + ' \n ' , 'ERROR!', {
+            this.toastr.error( 'Prediction ' + name + ' \n Time Out' , 'ERROR!', {
             timeOut: 10000, positionClass: 'toast-top-right'});
             delete this.prediction.predicting[this.predictName];
             $('#dataTablePredictions').DataTable().destroy();
             this.getPredictionList();
           }
           iter += 1;
-        }, 10000);
+        }, 5000);
       },
       error => {
         alert('Error prediction');
@@ -151,6 +148,15 @@ export class PredictorComponent implements OnInit {
         this.getPredictionList();
       },
       error => { // CHECK MAX iterations
+        if (error.error.code !== 0) {
+          this.toastr.clear(inserted.toastId);
+          this.toastr.error(  'Prediction ' + name + ' \n '  + error.error.message , 'ERROR!', {
+            timeOut: 10000, positionClass: 'toast-top-right'});
+          clearInterval(intervalId);
+          delete this.prediction.predicting[this.predictName];
+          $('#dataTablePredictions').DataTable().destroy();
+          this.getPredictionList();
+        }
       }
     );
   }

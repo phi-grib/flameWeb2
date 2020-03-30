@@ -8,14 +8,14 @@
     </div>
   </div>
   <div class="col-12"  [hidden] = "!this.tableVisible">
-    <table class="table" id="dataTablePredictions" width="100%" cellspacing="0">
+    <table class="table" id="dataTablePredictions">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Models</th>
-          <th>Version</th>
-          <th>Prediction Set</th>
-          <th>Date</th>
+          <th style="width: 40%">Name</th>
+          <th style="width: 5%">Models</th>
+          <th style="width: 5%">Version</th>
+          <th style="width: 20%">Prediction Set</th>
+          <th style="width: 30%" >Date</th>
         </tr>
       </thead>
       <tbody>
@@ -28,11 +28,11 @@
             </tr>
         <tr *ngFor="let info of this.prediction.predictions" (click)= "selectPrediction(info[0], info[1], info[2], info[3])"
         [ngClass]="{'selected': this.prediction.name=== info[0]}">
-          <td>{{info[0]}}</td>
+          <td class="text-truncate iffyTip hideText">{{info[0]}}</td>
           <td>{{info[1]}}</td>
           <td>{{info[2]}}</td>
-          <td>{{info[4].substring(info[4].lastIndexOf('/') + 1)}}</td>
-          <td>{{info[3]}}</td>         
+          <td class="text-truncate iffyTip hideText">{{info[4].substring(info[4].lastIndexOf('/') + 1)}}</td>
+          <td class="text-truncate iffyTip hideText">{{info[3]}}</td>         
         </tr>
       </tbody>
     </table>

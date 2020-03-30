@@ -19,19 +19,5 @@ export class ValidationsComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.modelDocumentation = undefined;
-    this.model.parameters = undefined;
-    this.getParameters();
-  }
-
-  getParameters(): void {
-    this.commonService.getParameters(this.name, this.version).subscribe(
-      result => {
-        this.model.parameters = result;
-      },
-      error => {
-        alert('get paramaeters validation');
-        alert(error.status + ' : ' + error.statusText);
-      }
-    );
   }
 }

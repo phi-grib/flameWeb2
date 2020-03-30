@@ -58,8 +58,8 @@ export class QualitNoConformalComponent implements OnChanges {
 
 
   ngOnChanges(): void {
-    let a = null;
-    console.log(a === null );
+    this.polarAreaChartData = [0, 0, 0, 0];
+    this.polarAreaChartData2 = [0, 0, 0, 0];
     this.getDocumentation();
     this.getValidation();
   }

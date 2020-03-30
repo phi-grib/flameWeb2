@@ -33,6 +33,8 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
   result = [];
   smileSrc = [];
   nameSrc = [];
+  error = false;
+  error_message = '';
 
   ngOnInit() {
     this.prediction.name = undefined;
@@ -71,6 +73,7 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
     this.nameSrc = [];
     this.smileSrc = [];
     this.predicting = true;
+    this.error = false;
     this.service.search(this.space, this.version, this.num_cutoff, this.dist_cutoff).subscribe(
       result => { let iter = 0;
         console.log(result);
@@ -78,6 +81,9 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
           if (iter < 15) {
             this.checkSearch(result, intervalId);
           } else {
+            this.predicting = false;
+            this.error = true;
+            this.error_message = 'Time out exceeded!'
             clearInterval(intervalId);
           }
           iter += 1;
@@ -103,7 +109,13 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
         clearInterval(intervalId);
       },
       error => {
-        console.log(error.message);
+        if (error.error.code !== 0) {
+          this.predicting = false;
+          this.error = true;
+          this.error_message = error.error.message;
+          clearInterval(intervalId);
+
+        }
       }
     );
   }

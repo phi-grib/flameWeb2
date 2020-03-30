@@ -143,29 +143,27 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.submodelsIndex = 0;
     this.modelBuildInfo = {};
     this.getInfo();
-    this.getParameters();
     this.getDocumentation();
     this.getPrediction();
   }
 
-  getParameters(): void {
-    this.commonService.getParameters(this.prediction.modelName, this.prediction.modelVersion).subscribe(
+  getInfo(): void {
+
+    this.commonService.getModel(this.prediction.modelName, this.prediction.modelVersion).subscribe(
       result => {
-        this.prediction.modelParameters = result;
-        this.modelBuildInfo['quantitative'] = result.quantitative.value;
-        this.modelBuildInfo['conformal'] =  result.conformal.value;
-        this.modelBuildInfo['ensemble'] = false;
-        if (result.input_type.value === 'model_ensemble') {
-          this.modelBuildInfo['ensemble'] = true;
+        for (const info of result) {
+          this.modelBuildInfo[info[0]] = info[2];
+        }
+        if (this.modelBuildInfo['ensemble']) {
 
           let version = '0';
           this.submodels = [];
-          result.ensemble_names.value.forEach((submodel, index) => {
+          this.modelBuildInfo['ensemble_names'].forEach((submodel, index) => {
 
-            if ( result.ensemble_names.value) {
-              version = '0';
+            if (this.modelBuildInfo['ensemble_names']) {
+              version = this.modelBuildInfo['ensemble_versions'][index];
             } else {
-              version =  result.ensemble_versions.value[index];
+              version = '0';
             }
             this.submodels[index] = {};
             this.submodels[index]['name'] = submodel;
@@ -183,24 +181,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         }
       },
       error => {
-        alert(error.status + ' : ' + error.statusText);
-      },
-      () => { // when subscribe finishes
-        // console.log('actual parameters.yaml \n', parameters);
-      }
-    );
-  }
-
-  getInfo(): void {
-
-    this.commonService.getModel(this.prediction.modelName, this.prediction.modelVersion).subscribe(
-      result => {
-          for (const info of result) {
-            this.modelBuildInfo[info[0]] = info[2];
-          }
-      },
-      error => {
-
       }
     );
   }
@@ -222,15 +202,12 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
     if (this.modelBuildInfo['quantitative']) {
       return value.toFixed(3);
-    }
-    else {
+    } else {
       if (value === 0) {
         return 'Negative';
-      }
-      else if (value === 1) {
+      } else if (value === 1) {
         return 'Positive';
-      }
-      else {
+      } else {
         return 'Uncertain';
       }
     }
