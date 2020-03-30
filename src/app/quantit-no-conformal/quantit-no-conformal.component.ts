@@ -24,7 +24,7 @@ export class QuantitNoConformalComponent implements OnChanges {
   'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
  'Limits_applicability', 'Experimental_protocol', 'Model_availability',
  'Data_info', 'Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
- 'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics', 
+ 'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics',
  'Internal_validation_1', 'Internal_validation_2', 'External_validation',
  'Comments', 'Other_related_models', 'Date_of_QMRF', 'Data_of_QMRF_updates',
  'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
@@ -147,6 +147,11 @@ export class QuantitNoConformalComponent implements OnChanges {
   public ChartType: ChartType = 'line';
 
   ngOnChanges(): void {
+    this.ChartDataFitted[0].data = [];
+    this.ChartDataFitted[1].data = [];
+    this.ChartDataPredicted[0].data = [];
+    this.ChartDataPredicted[1].data = [];
+    this.ChartLabels = [];
     this.getDocumentation();
     this.getValidation();
   }
@@ -157,7 +162,7 @@ export class QuantitNoConformalComponent implements OnChanges {
     }
     return typeof val === 'object';
   }
-  
+
   getValidation() {
     this.service.getValidation(this.modelName, this.modelVersion).subscribe(
       result => {

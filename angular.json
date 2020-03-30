@@ -45,6 +45,7 @@
               "src/assets/js/buttons.html5.min.js",
               "src/assets/js/buttons.print.min.js",
               "src/assets/js/buttons.colVis.min.js",
+              "src/assets/js/date-euro.js",
               "node_modules/smiles-drawer/dist/smiles-drawer.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/arrive/src/arrive.js"

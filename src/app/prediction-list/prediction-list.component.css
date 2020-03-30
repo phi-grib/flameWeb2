@@ -7,10 +7,12 @@ i {
     background-color: white;
     background: white;
     color: #22577A;
+    /*table-layout: fixed;*/
+    width: 100%;
 }
 .table th{
-    /*padding-left: 1px;
-    padding-right: 1px;*/
+    padding-left: 1px;
+    padding-right: 1px;
     /* background: #B8DCED;*/
     color:#0076a3;
     vertical-align: middle;
@@ -19,6 +21,7 @@ i {
     padding: 5px;
     font-family: 'Barlow Semi Condensed', sans-serif;
     border-bottom: 2px solid #B8DCED;
+    vertical-align: middle;
 }
 tr {
     cursor: pointer;
@@ -42,4 +45,13 @@ tr.selected {
     right: 45%; 
     top: 30%; 
     z-index: 1031;
+}
+
+.iffyTip {
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.hideText{
+max-width:200px;
 }

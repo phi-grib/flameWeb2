@@ -17,6 +17,7 @@ export class BuilderService {
     const formData = new FormData();
     formData.append('SDF', this.model.file);
     formData.append('parameters', JSON.stringify(this.model.delta));
+    formData.append('incremental', JSON.stringify(this.model.incremental));
     const url: string = environment.baseUrl_build + 'model/' + this.model.name;
     return this.http.post(url, formData);
 

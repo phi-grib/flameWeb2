@@ -5,6 +5,7 @@ import { CommonService } from '../common.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { CommonFunctions } from '../common.functions';
 declare var $: any;
 
 @Component({
@@ -19,7 +20,8 @@ export class BuilderComponent implements OnInit {
     private commonService: CommonService,
     private router: Router,
     private toastr: ToastrService,
-    public activeModal: NgbActiveModal ) { }
+    public activeModal: NgbActiveModal,
+    public func: CommonFunctions ) { }
 
   ngOnInit() {
     this.getParameters();
@@ -68,13 +70,14 @@ export class BuilderComponent implements OnInit {
 
     this.model.delta = {};
     this.model.delta = this.recursiveDelta(this.model.parameters);
+    this.model.listModels[name + '-' + version] = {name: name, version: version, trained: false, numMols: '-',
+      variables: '-', type: '-', quality: {}, quantitative: false, conformal: false, ensemble: false};
     this.model.trainig_models.push(name + '-' + version);
     const inserted = this.toastr.info('Running!', 'Model ' + name + '.v' + version , {
       disableTimeOut: true, positionClass: 'toast-top-right'});
     this.activeModal.close('Close click');
     this.service.buildModel().subscribe(
       result => {
-        this.getModelList();
         let iter = 0;
         const intervalId = setInterval(() => {
           if (iter < 15) {
@@ -93,6 +96,7 @@ export class BuilderComponent implements OnInit {
         }, 10000);
       },
       error => {
+        $('#dataTableModels').DataTable().destroy();
         const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
         if (index > -1) {
           this.model.trainig_models.splice(index, 1);
@@ -101,87 +105,59 @@ export class BuilderComponent implements OnInit {
         this.toastr.clear(inserted.toastId);
         this.toastr.error( 'Model ' + name + '.v' + version + ' \n ' + error.error , 'ERROR!', {
           timeOut: 10000, positionClass: 'toast-top-right'});
-        this.getModelList();
+        this.func.getModelList();
       }
     );
     this.router.navigate(['/models']);
-  }
-
-
-  getModelList() {
-
-    this.commonService.getModelList().subscribe(
-        result => {
-          // result = JSON.parse(result[1]);
-          for (const model of result) {
-            const modelName = model.modelname;
-            for ( const version of model.versions) {
-              // INFO OF EACH MODEL
-              this.commonService.getModel(modelName, version).subscribe(
-                result2 => {
-                  // True is trained
-                  const dict_info = {};
-                  for ( const info of result2) {
-                    dict_info[info[0]] = info[2];
-                  }
-                  const quality = {};
-                  for ( const info of (Object.keys(dict_info))) {
-                    if ( (info !== 'nobj') && (info !== 'nvarx') && (info !== 'model') // HARCODED: NEED TO IMPROVE
-                        && (info !== 'Conformal_interval_medians' ) && (info !== 'Conformal_prediction_ranges' )
-                        && (info !== 'Y_adj' ) && (info !== 'Y_pred' )) {
-                          quality[info] =  parseFloat(dict_info[info].toFixed(3));
-                    }
-                  }
-                  this.model.listModels[modelName + '-' + version] = {name: modelName, version: version,
-                    trained: true, numMols: dict_info['nobj'], variables: dict_info['nvarx'],
-                    type: dict_info['model'], quality: quality};
-                },
-                error => {
-                  this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
-                    variables: '-', type: '-', quality: {}};
-                }
-              );
-            }
-          }
-        },
-        error => {
-          alert(error.message);
-        }
-    );
   }
 
   // Periodic function to check model
   checkModel(name, version, inserted, intervalId) {
     this.commonService.getModel(name, version).subscribe(
       result => {
-          const dict_info = {};
-          for (const info of result) {
-            dict_info[info[0]] = info[2];
+        $('#dataTableModels').DataTable().destroy();
+        const dict_info = {};
+        for (const aux of  result) {
+          dict_info[aux[0]] = aux[2];
+        }
+        const quality = {};
+        for (const info of (Object.keys(dict_info))) {
+          if (typeof(dict_info[info]) === 'number') {
+            quality[info] =  parseFloat(dict_info[info].toFixed(3));
           }
-          const quality = {};
-          for (const info of (Object.keys(dict_info))) {
-            if ( (info !== 'nobj') && (info !== 'nvarx') && (info !== 'model') // HARCODED: NEED TO IMPROVE
-                && (info !== 'Conformal_interval_medians' ) && (info !== 'Conformal_prediction_ranges' )
-                && (info !== 'Y_adj' ) && (info !== 'Y_pred' )) {
-                  quality[info] =  parseFloat(dict_info[info].toFixed(3));
-            }
-          }
-          const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
-          if (index > -1) {
-            this.model.trainig_models.splice(index, 1);
-          }
-          this.toastr.clear(inserted.toastId);
-          this.model.listModels[name + '-' + version] = {name: name, version: version, trained: true,
-          numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality};
-          this.model.trained_models.push(name + ' .v' + version);
-          this.toastr.success('Model ' + name + '.v' + version + ' created' , 'MODEL CREATED', {
-            timeOut: 5000, positionClass: 'toast-top-right'});
-          clearInterval(intervalId);
-          this.getModelList();
+        }
+        this.model.trained_models.push(name + ' .v' + version);
+
+        const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
+        if (index > -1) {
+          this.model.trainig_models.splice(index, 1);
+        }
+        this.toastr.clear(inserted.toastId);
+
+        this.model.listModels[name + '-' + version] = {name: name, version: version, trained: true,
+        numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality,
+        quantitative: dict_info['quantitative'], conformal: dict_info['conformal'], ensemble: dict_info['ensemble']};
+
+        this.model.trained_models.push(name + ' .v' + version);
+        this.toastr.success('Model ' + name + '.v' + version + ' created' , 'MODEL CREATED', {
+          timeOut: 5000, positionClass: 'toast-top-right'});
+        clearInterval(intervalId);
+        this.func.getModelList();
       },
-      error => { // CHECK MAX iterations
-       this.model.listModels[name + '-' + version] = {name: name, version: version, trained: false, numMols: '-',
-          variables: '-', type: '-', quality: {}};
+      error => { // CHECK what type of error
+       if (error.error.code !== 0) {
+        $('#dataTableModels').DataTable().destroy();
+        const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
+        if (index > -1) {
+          this.model.trainig_models.splice(index, 1);
+        }
+        this.model.listModels[name + '-' + version].trained = false;
+        this.toastr.clear(inserted.toastId);
+        this.toastr.error( 'Model ' + name + '.v' + version + ' \n ' + error.error.message , 'ERROR!', {
+          timeOut: 10000, positionClass: 'toast-top-right'});
+        clearInterval(intervalId);
+        this.func.getModelList();
+       }
       }
     );
   }

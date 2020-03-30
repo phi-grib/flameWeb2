@@ -31,8 +31,23 @@
       </ul>
     </div>
   </div>
-
   <div class="row mt-4">
+    <div class="col-3">
+      <div class="form-check">
+          <input class="form-check-input" type="radio" name="exampleRadios" id="incremental"
+          [checked]="this.model.incremental" (change)="this.model.incremental = !this.model.incremental" >
+          <label class="control-label" for="incremental">
+           Incremental
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="exampleRadios" id="new"
+          [checked]="!this.model.incremental" (change)="this.model.incremental = !this.model.incremental" >
+          <label class="control-label" for="new">
+            New
+          </label>
+        </div>  
+    </div>
     <div class="col-3">
       <label class="btn btn-outline-primary btn-lg" for="my-file-selector">
           <input id="my-file-selector" type="file" style="display:none;" accept=".sdf" (change)="onChange($event.target.files)">

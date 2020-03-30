@@ -58,6 +58,7 @@ export class QualitConformalComponent implements OnChanges {
     ];
 
   ngOnChanges(): void {
+    this.polarAreaChartData = [0, 0, 0, 0];
     this.getDocumentation();
     this.getValidation();
   }

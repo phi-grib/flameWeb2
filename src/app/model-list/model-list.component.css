@@ -8,23 +8,29 @@ i {
     background: white;
     color: #22577A;
     /*border: 1px solid;*/
+    table-layout: fixed;
+    width: 100%;
     
    /* max-height: 80vh;*/
     /*overflow-y: scroll;*/
     
     
 }
+
 .table th{
     /*padding-left: 1px;
     padding-right: 1px;*/
     /* background: #B8DCED; */
     color:#0076a3;
+   
 }
 
 .table td {
     padding: 5px;
+   
     font-family: 'Barlow Semi Condensed', sans-serif;
     border-bottom: 2px solid #B8DCED;
+    vertical-align: middle;
 }
 tr {
     cursor: pointer;
@@ -37,11 +43,6 @@ tr.selected {
 .table tbody tr:hover {
     background: #f7f9ea;
 }
-td {
-    padding: 4px;
-    vertical-align: middle;
-}
-
 .model-content {
     max-width: 350px;
     max-height: 350px;
@@ -56,4 +57,13 @@ td {
     right: 45%; 
     top: 30%; 
     z-index: 1031;
+}
+
+.iffyTip {
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.hideText{
+max-width:200px;
 }

@@ -84,7 +84,7 @@
         </ul>
 
         <div class="tab-content" id="pills-tabContent">
-          <!--ALL-->
+          <!--ALL PREDICTIONS-->
           <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
             <div class="card-body">
               
@@ -127,9 +127,9 @@
               </table>
             </div>
           </div>
-          <!--END ALL-->
-          <!--ONE-->
-        
+           <!--END ALL PREDICTIONS-->
+
+          <!--REPORT PREDICTIONS-->
           <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab" *ngIf="this.predictionResult != undefined ">
             <div class="card-body">
               <!--PAGINATION-->
@@ -219,7 +219,7 @@
                 </div>
                 <div class="col-9 border">
                   <span *ngIf="!this.modelBuildInfo['conformal']">-</span>
-                  <span *ngIf="this.modelBuildInfo['conformal']">{{(1.0-this.prediction.modelParameters.conformalSignificance.value)*100}}%CI</span>
+                  <span *ngIf="this.modelBuildInfo['conformal']">{{(1.0-this.modelBuildInfo['conformal_significance'])*100}}%CI</span>
                   <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">
                     : {{this.predictionResult.lower_limit[molIndex].toFixed(1)}} <strong>-</strong> {{this.predictionResult.upper_limit[molIndex].toFixed(3)}}
                   </span>
@@ -242,6 +242,7 @@
               <div class="row bg-light" *ngIf="!this.modelBuildInfo['ensemble']">
                 <div class="col-3 border">
                   <strong >Model</strong>
+                  {{this.modelBuildInfo['modelID']}}=={{this.predictionResult['']['']}}
                 </div>
                 <div class="col-9 border">
                   <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}}vars</span>
@@ -352,7 +353,7 @@
             </div>
           </div>
         </div>
-      <!---->
+        <!--END REPORT PREDICTIONS-->
     </div>
   </div>
 </div>

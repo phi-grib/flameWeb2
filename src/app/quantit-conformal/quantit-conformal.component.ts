@@ -159,9 +159,12 @@ export class QuantitConformalComponent implements OnChanges {
     public ChartType: ChartType = 'line';
 
     ngOnChanges(): void {
+      this.ChartDataFitted[0].data = [];
+      this.ChartDataFitted[1].data = [];
+      this.ChartLabels = [];
       this.getDocumentation();
       this.getValidation();
-      let toggler = document.getElementsByClassName('caret');
+      const toggler = document.getElementsByClassName('caret');
       let i;
 
       for (i = 0; i < toggler.length; i++) {

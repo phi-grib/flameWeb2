@@ -1,22 +1,27 @@
 
-<div class="m-3" *ngIf="this.model.parameters !=undefined">
-    <div *ngIf="!this.model.parameters.quantitative.value && !this.model.parameters.conformal.value">
+<div class="m-3" *ngIf="this.model.name !=undefined && this.model.trained">
+    <div *ngIf="!this.model.quantitative && !this.model.conformal">
         <app-qualit-no-conformal [modelName]="this.model.name" [modelVersion]= "this.model.version"></app-qualit-no-conformal>
     </div>
-    <div *ngIf="!this.model.parameters.quantitative.value && this.model.parameters.conformal.value">
+    <div *ngIf="!this.model.quantitative && this.model.conformal">
         <app-qualit-conformal [modelName]="this.model.name" [modelVersion]= "this.model.version"></app-qualit-conformal>
     </div>
-    <div *ngIf="this.model.parameters.quantitative.value && !this.model.parameters.conformal.value">
+    <div *ngIf="this.model.quantitative && !this.model.conformal">
         <app-quantit-no-conformal [modelName]="this.model.name" [modelVersion]= "this.model.version"></app-quantit-no-conformal>
     </div>
-    <div *ngIf="this.model.parameters.quantitative.value && this.model.parameters.conformal.value">
+    <div *ngIf="this.model.quantitative && this.model.conformal">
         <app-quantit-conformal [modelName]="this.model.name" [modelVersion]= "this.model.version"></app-quantit-conformal>
     </div>
-</div>
-
-                
+</div> 
+<div class="m-3" *ngIf="this.model.name !=undefined && this.model.error!=undefined  && !this.model.trained">
+  <div *ngIf="this.model.error!='Info file not found'"class="alert alert-danger text-center" role="alert">
+      <span class="font-weight-bolder">ERROR: </span>{{this.model.error}}!
+  </div>
+  <div *ngIf="this.model.error=='Info file not found'"class="alert alert-warning text-center" role="alert">
+      <span class="font-weight-bolder">WARNING: </span> the model remains to be trained.
+</div>               
 <!--END Modal Documentation-->
 
 
-
+                
 

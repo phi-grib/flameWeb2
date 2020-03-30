@@ -29,6 +29,17 @@
     $(document).ready(function() { 
       /*Toaster and bootstrao error control*/
         $('[data-toggle="tooltip"]').tooltip()
+        $(document).on('mouseenter', ".iffyTip", function () {
+        var $this = $(this);
+        if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
+            $this.tooltip({
+                title: $this.text(),
+                placement: "top"
+            });
+            $this.tooltip('show');
+        }
+    });
+    $('.hideText').css('width',$('.hideText').parent().width());
     });
     </script>
   </body>
