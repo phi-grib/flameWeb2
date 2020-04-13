@@ -242,7 +242,7 @@
               <div class="row bg-light" *ngIf="!this.modelBuildInfo['ensemble']">
                 <div class="col-3 border">
                   <strong >Model</strong>
-                  {{this.modelBuildInfo['modelID']}}=={{this.predictionResult['']['']}}
+                  <!-- {{this.modelBuildInfo['modelID']}}=={{this.predictionResult['']['']}} -->
                 </div>
                 <div class="col-9 border">
                   <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}}vars</span>
@@ -264,6 +264,40 @@
                   <br>
                     <a href="javascript:void(0);">QMRF report</a>
                     
+                </div>
+                <div class="col-3 border" *ngIf="this.predictionResult['search_results']">
+                  <strong >Similars</strong>
+                </div>
+                <div class="col-9 border" *ngIf="this.predictionResult['search_results']">
+
+                  <table class="table w-auto">
+                    <thead>
+                      <tr>
+                        <th class="pl-0 pb-2 pt-2 pr-2 text-left" scope="col">Structure</th>
+                        <th class="p-2 text-center" scope="col">Name</th>
+                        <th class="pr-0 pl-2 pb-2 pt-2 text-right" scope="col">Activity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- <tr *ngFor="let model of this.predictionResult.var_nam; let j = index">
+                        <td class="p-0 text-left">{{model.split(":")[1]}}</td>
+                        <td class="p-0 text-center">{{model.split(":")[2]}}</td>
+                        <td class="p-0 text-right">{{castValue(this.predictionResult.xmatrix[this.molIndex][j])}}</td>
+                      </tr> -->
+                      <tr >
+                        <td class="p-0 text-left">A1</td>
+                        <td class="p-0 text-center">B1</td>
+                        <td class="p-0 text-right">C2</td>
+                      </tr>
+                      <tr >
+                        <td class="p-0 text-left">A2</td>
+                        <td class="p-0 text-center">B2</td>
+                        <td class="p-0 text-right">C2</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <!-- <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}}vars</span> -->
                 </div>
               </div>
               <div class="row bg-light" *ngIf="this.modelBuildInfo['ensemble']">

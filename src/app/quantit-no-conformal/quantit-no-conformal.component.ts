@@ -38,6 +38,9 @@ export class QuantitNoConformalComponent implements OnChanges {
   // Options
   public ChartOptionsPredicted: ChartOptions = {
     responsive: true,
+    animation: {
+      duration: 0
+    }, 
     tooltips: {
       callbacks: {
          label: function(tooltipItem, data) {
@@ -75,6 +78,9 @@ export class QuantitNoConformalComponent implements OnChanges {
   };
   public ChartOptionsFitted: ChartOptions = {
     responsive: true,
+    animation: {
+      duration: 0
+    }, 
     tooltips: {
       callbacks: {
          label: function(tooltipItem, data) {

@@ -32,9 +32,16 @@ export class QualitConformalComponent implements OnChanges {
     objectKeys = Object.keys;
     modelBuildInfo = {};
     modelValidationInfo = {};
+    
+    // Chart.defaults.global.animation = false;
+
     // PolarArea
     public polarChartOptions: any = {
       responsive: true,
+      animation: false, 
+      // animation: { 
+      //   duration: 0,
+      // },
       startAngle : 1 * Math.PI,
       scale: {
         gridLines: {

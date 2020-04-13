@@ -45,6 +45,9 @@ export class QuantitConformalComponent implements OnChanges {
     // Options
     public ChartOptionsPredicted: ChartOptions = {
       responsive: true,
+      animation: {
+        duration: 0
+      }, 
       tooltips: {
         callbacks: {
            label: function(tooltipItem, data) {
@@ -56,7 +59,7 @@ export class QuantitConformalComponent implements OnChanges {
            }
         }
       },
-     scales: {
+      scales: {
         xAxes: [{
           type: 'linear',
           position: 'bottom',
@@ -78,6 +81,9 @@ export class QuantitConformalComponent implements OnChanges {
     };
     public ChartOptionsFitted: ChartOptions = {
       responsive: true,
+      animation: {
+        duration: 0
+      }, 
       tooltips: {
         callbacks: {
            label: function(tooltipItem, data) {
