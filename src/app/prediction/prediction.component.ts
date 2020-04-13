@@ -53,6 +53,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   // PolarArea
   public polarChartOptions: any = {
     responsive: true,
+    animation: false, 
     startAngle : 1 * Math.PI,
     scale: {
       gridLines: {

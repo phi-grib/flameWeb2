@@ -34,6 +34,7 @@ export class QualitNoConformalComponent implements OnChanges {
     // PolarArea
     public polarChartOptions: any = {
       responsive: true,
+      animation: false, 
       startAngle : 1 * Math.PI,
       scale: {
         gridLines: {
