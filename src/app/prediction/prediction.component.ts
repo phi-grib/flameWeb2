@@ -97,6 +97,17 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         console.log(err);
     });
 
+    if (this.predictionResult.hasOwnProperty('search_results')) {
+      const optionsA = {'width': 200, 'height': 100};
+      const smilesDrawerA = new SmilesDrawer.Drawer(optionsA);
+      SmilesDrawer.parse(this.predictionResult.search_results[this.molIndex].SMILES[0], function(tree) {
+        // Draw to the canvas
+        smilesDrawerA.draw(tree, 'one_canvasA', 'light', false);
+        }, function (err) {
+          console.log(err);
+      });  
+    };
+
   }
 
   PreviousMol() {
@@ -277,6 +288,16 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
                 }, function (err) {
                   console.log(err);
               });
+              if (me.predictionResult.hasOwnProperty('search_results')) {
+                const optionsA = {'width': 200, 'height': 100};
+                const smilesDrawerA = new SmilesDrawer.Drawer(optionsA);
+                SmilesDrawer.parse(me.predictionResult.search_results[me.molIndex].SMILES[0], function(tree) {
+                  // Draw to the canvas
+                  smilesDrawerA.draw(tree, 'one_canvasA', 'light', false);
+                  }, function (err) {
+                    console.log(err);
+                });  
+              };
             }
           });
         }, 0);
