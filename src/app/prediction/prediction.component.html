@@ -279,20 +279,23 @@
                       </tr>
                     </thead>
                     <tbody>
+
+
                       <!-- <tr *ngFor="let model of this.predictionResult.var_nam; let j = index">
                         <td class="p-0 text-left">{{model.split(":")[1]}}</td>
                         <td class="p-0 text-center">{{model.split(":")[2]}}</td>
                         <td class="p-0 text-right">{{castValue(this.predictionResult.xmatrix[this.molIndex][j])}}</td>
                       </tr> -->
+                      
                       <tr >
-                        <td class="p-0 text-left">A1</td>
-                        <td class="p-0 text-center">B1</td>
-                        <td class="p-0 text-right">C2</td>
+                        <td class="p-0 text-left"><canvas id="one_canvasA"></canvas></td>
+                        <td class="p-0 text-left">{{this.predictionResult.search_results[this.molIndex].obj_nam[0]}}</td>
+                        <td class="p-0 text-right">{{this.predictionResult.search_results[this.molIndex].ymatrix[0]}}</td>
                       </tr>
                       <tr >
-                        <td class="p-0 text-left">A2</td>
-                        <td class="p-0 text-center">B2</td>
-                        <td class="p-0 text-right">C2</td>
+                        <td class="p-0 text-left">{{this.predictionResult.search_results[this.molIndex].SMILES[1]}}</td>
+                        <td class="p-0 text-left">{{this.predictionResult.search_results[this.molIndex].obj_nam[1]}}</td>
+                        <td class="p-0 text-right">{{this.predictionResult.search_results[this.molIndex].ymatrix[1]}}</td>
                       </tr>
                     </tbody>
                   </table>
