@@ -19,6 +19,16 @@ padding: 0px;
 text-align: center;
 }
 
+ul li.nav-item a {
+  background:white;
+  color: #6C757D;
+}
+
+ul li.nav-item a.active{
+  background: #F0F0F0;
+  color: #6C757D;
+}
+
 .rotate > span {
 transform: rotate(-90deg);
 position:absolute;

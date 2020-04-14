@@ -14,8 +14,6 @@ import 'jspdf-autotable';
 
 import * as XLSX from 'xlsx';
 
-
-
 @Component({
   selector: 'app-prediction',
   templateUrl: './prediction.component.html',
@@ -80,14 +78,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               private commonService: CommonService) { }
 
 
-
-  NextMol() {
-
-    this.molIndex++;
-    this.noPreviousMol = false;
-    if ((this.predictionResult.SMILES.length - 1) === this.molIndex) {
-      this.noNextMol = true;
-    }
+  drawReportHeader () {
     const options = {'width': 600, 'height': 300};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
     SmilesDrawer.parse(this.predictionResult.SMILES[this.molIndex], function(tree) {
@@ -96,7 +87,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       }, function (err) {
         console.log(err);
     });
+  }
 
+  drawSimilars () {
     setTimeout(() => {
       // draw similar compounds (if applicable)
       if (this.predictionResult.hasOwnProperty('search_results')) {
@@ -117,6 +110,18 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     },0);
   }
 
+  NextMol() {
+
+    this.molIndex++;
+    this.noPreviousMol = false;
+    if ((this.predictionResult.SMILES.length - 1) === this.molIndex) {
+      this.noNextMol = true;
+    }
+
+    this.drawReportHeader();
+    this.drawSimilars();
+  }
+
   PreviousMol() {
 
     this.molIndex--;
@@ -124,33 +129,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     if (this.molIndex === 0) {
       this.noPreviousMol = true;
     }
-    const options = {'width': 600, 'height': 300};
-    const smilesDrawer = new SmilesDrawer.Drawer(options);
-    SmilesDrawer.parse(this.predictionResult.SMILES[this.molIndex], function(tree) {
-      // Draw to the canvas
-      smilesDrawer.draw(tree, 'one_canvas', 'light', false);
-      }, function (err) {
-        console.log(err);
-    });
 
-    setTimeout(() => {
-      // draw similar compounds (if applicable)
-      if (this.predictionResult.hasOwnProperty('search_results')) {
-        const optionsA = {'width': 400, 'height': 150};
-        const smiles = this.predictionResult.search_results[this.molIndex].SMILES;
-        let iteratorCount = 0;
-        for (var value of smiles) {
-          const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
-          SmilesDrawer.parse(value, function(tree) {
-            let canvasName = 'one_canvas';
-            smilesDrawer.draw(tree,  canvasName.concat(iteratorCount.toString()), 'light', false);
-          }, function (err) {
-            console.log(err);
-          });
-          iteratorCount++;
-        };  
-      };
-    },0);
+    this.drawReportHeader();
+    this.drawSimilars();
   }
 
   NextModel() {
@@ -305,34 +286,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           const me = this;
           $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             if (e.target.id === 'pills-one-tab') {
-
-              // draw top image
-              const options = {'width': 600, 'height': 300};
-              const smilesDrawer = new SmilesDrawer.Drawer(options);
-              SmilesDrawer.parse(me.predictionResult.SMILES[me.molIndex], function(tree) {
-                // Draw to the canvas
-                smilesDrawer.draw(tree, 'one_canvas', 'light', false);
-                }, function (err) {
-                  console.log(err);
-              });
-
-              // draw similar compounds (if applicable)
-              if (me.predictionResult.hasOwnProperty('search_results')) {
-                const optionsA = {'width': 400, 'height': 150};
-                let smiles = me.predictionResult.search_results[me.molIndex].SMILES;
-                let iteratorCount = 0;
-                for (let value of smiles) {
-                  const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
-                  SmilesDrawer.parse(value, function(tree) {
-                    let canvasName = 'one_canvas';
-                    smilesDrawer.draw(tree,  canvasName.concat(iteratorCount.toString()) , 'light', false);
-                  }, function (err) {
-                    console.log(err);
-                  });
-                  iteratorCount++;
-                };  
-              };
-
+              me.drawReportHeader();
+              me.drawSimilars();
             }
           });
         }, 0);
@@ -360,6 +315,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     /* save to file */
     XLSX.writeFile(wb, this.prediction.name  + '.xlsx');
   }
+
   savePDF() {
 
     const pdf = new jsPDF();
@@ -410,7 +366,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       if ( this.predictionResult.ensemble_c1) {
         this.head.push('Ensemble Class 1');
       }
-
 
       let prediction = [];
       for (let i = 0; i < this.predictionResult.SMILES.length;) {
