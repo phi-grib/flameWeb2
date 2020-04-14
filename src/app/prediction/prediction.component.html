@@ -58,14 +58,6 @@
     </div>
   </div>
  
-    <!--<div class="d-flex flex-row-reverse" *ngIf="this.predictionResult != undefined">
-      
-        <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-raised btn-etransafe" (click)="savePDF()"><i class="far fa-file-pdf"></i>  PDF</button>
-          <button type="button" class="btn btn-raised btn-etransafe" (click)="saveEXCEL()"><i class="fas fa-file-excel"></i>  Excel</button>
-        </div>
-      
-    </div>-->
   <div class="row mt-3" *ngIf="this.predictionResult != undefined">
     <div class="card w-100">
         <div id="overlay" *ngIf="!this.predictionVisible">
@@ -196,21 +188,21 @@
               </div>
               <div class="row">
                 <div class="col-3 border">
-                  <strong>Other</strong>
-                </div>
-                <div class="col-9 border">
-                  <span><strong>Activity: </strong></span>
-                  <span *ngIf="this.predictionResult.ymatrix">{{this.predictionResult.ymatrix[molIndex]}}</span> 
-                  <span *ngIf="!this.predictionResult.ymatrix">-</span> 
-                </div>
-              </div>
-              <div class="row bg-light">
-                <div class="col-3 border">
                   <strong>Result</strong>
                 </div>
                 <div class="col-9 border">
                   <span *ngIf="this.predictionResult.values">{{castValue(this.predictionResult.values[molIndex])}}</span>
                   <span *ngIf="this.modelDocumentation != undefined && this.modelDocumentation['Endpoint_units']"> {{this.modelDocumentation['Endpoint_units'].value}}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-3 border">
+                  <strong>Other</strong>
+                </div>
+                <div class="col-9 border">
+                  <span>Activity: </span>
+                  <span *ngIf="this.predictionResult.ymatrix">{{this.predictionResult.ymatrix[molIndex]}}</span> 
+                  <span *ngIf="!this.predictionResult.ymatrix">-</span> 
                 </div>
               </div>
               <div class="row bg-light">
@@ -219,13 +211,45 @@
                 </div>
                 <div class="col-9 border">
                   <span *ngIf="!this.modelBuildInfo['conformal']">-</span>
-                  <span *ngIf="this.modelBuildInfo['conformal']">{{(1.0-this.modelBuildInfo['conformal_significance'])*100}}%CI</span>
-                  <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">
-                    : {{this.predictionResult.lower_limit[molIndex].toFixed(1)}} <strong>-</strong> {{this.predictionResult.upper_limit[molIndex].toFixed(3)}}
+                  <span *ngIf="this.modelBuildInfo['conformal']">{{(1.0-this.modelBuildInfo['conformal_significance'])*100}}%CI:</span>
+                  <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">{{this.predictionResult.lower_limit[molIndex].toFixed(1)}} 
+                    <strong>-</strong> {{this.predictionResult.upper_limit[molIndex].toFixed(3)}}
                   </span>
                   <!--90%CI: 8.3 - 10.6-->
                 </div>
               </div>
+              
+              <div class="row bg-light" *ngIf="this.predictionResult['search_results']">
+                <div class="col-3 border" >
+                  <strong >Similars</strong>
+                </div>
+                
+                <div class="col-9 border">
+
+                  <table class="table w-auto">
+                    <thead>
+                      <tr>
+                        <th class="pl-0 pb-2 pt-2 pr-2 text-left" scope="col">Distance</th>
+                        <th class="pl-0 pb-2 pt-2 pr-2 text-center" scope="col">Structure</th>
+                        <!-- <th class="p-2 text-left" scope="col">Name</th> -->
+                        <th class="pr-0 pl-2 pb-2 pt-2 text-left" scope="col">Name</th>
+                        <th class="pr-0 pl-2 pb-2 pt-2 text-right" scope="col">Activity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <tr *ngFor="let dist of this.predictionResult.search_results[this.molIndex].distances; let j = index">
+                        <td class="p-0 text-left">{{dist.toFixed(2)}}</td>
+                        <td class="p-0 text-left"><canvas id="{{'one_canvas'+j}}"></canvas></td>
+                        <td class="p-0 text-left">{{this.predictionResult.search_results[this.molIndex].obj_nam[j]}}</td>
+                        <td class="p-0 text-right">{{this.predictionResult.search_results[this.molIndex].ymatrix[j]}}</td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
               <div class="row bg-light">
                 <div class="col-3 border">
                   <strong>Interpretation</strong>
@@ -242,19 +266,18 @@
               <div class="row bg-light" *ngIf="!this.modelBuildInfo['ensemble']">
                 <div class="col-3 border">
                   <strong >Model</strong>
-                  <!-- {{this.modelBuildInfo['modelID']}}=={{this.predictionResult['']['']}} -->
                 </div>
                 <div class="col-9 border">
                   <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}}vars</span>
-                  <br><br>
-                  <span>Training series {{this.modelBuildInfo['nobj']}} compounds</span><br>
+                  <br>
+                  <span>Training series {{this.modelBuildInfo['nobj']}} compounds</span>
                     <span *ngIf="this.modelBuildInfo['R2']">R2: {{this.modelBuildInfo['R2'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['SDEC']">SDEC: {{this.modelBuildInfo['SDEC'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['Q2']">Q2: {{this.modelBuildInfo['Q2'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['SDEP']">SDEP: {{this.modelBuildInfo['SDEP'].toFixed(2)}}</span>
                     <span *ngIf="this.modelBuildInfo['Sensitivity']">Sensitivity: {{this.modelBuildInfo['Sensitivity'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['Specificity']">Specificity: {{this.modelBuildInfo['Specificity'].toFixed(2)}}, </span>
-                    <span *ngIf="this.modelBuildInfo['MCC']">MCC: {{this.modelBuildInfo['MCC'].toFixed(2)}}</span><br>
+                    <span *ngIf="this.modelBuildInfo['MCC']">MCC: {{this.modelBuildInfo['MCC'].toFixed(2)}}</span>
                     <span *ngIf="this.modelBuildInfo['SensitivityPed']">Sensitivity (predicted): {{this.modelBuildInfo['SensitivityPed'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['SpecificityPred']">Specificity (predicted): {{this.modelBuildInfo['SpecificityPred'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['MCCpred']">MCC (predicted): {{this.modelBuildInfo['MCCpred'].toFixed(2)}}</span>
@@ -265,53 +288,8 @@
                     <a href="javascript:void(0);">QMRF report</a>
                     
                 </div>
-                <div class="col-3 border" *ngIf="this.predictionResult['search_results']">
-                  <strong >Similars</strong>
-                </div>
-                <div class="col-9 border" *ngIf="this.predictionResult['search_results']">
-
-                  <table class="table w-auto">
-                    <thead>
-                      <tr>
-                        <th class="pl-0 pb-2 pt-2 pr-2 text-left" scope="col">Distance</th>
-                        <th class="pl-0 pb-2 pt-2 pr-2 text-center" scope="col">Structure</th>
-                        <th class="p-2 text-center" scope="col">Name</th>
-                        <th class="pr-0 pl-2 pb-2 pt-2 text-right" scope="col">Activity</th>
-                      </tr>
-                    </thead>
-                    <tbody>
 
 
-                      <!-- <tr *ngFor="let mol of this.predictionResult.search_results[this.molIndex].obj_nam; let j = index">
-                        <td class="p-0 text-left"><canvas id="{{'one_canvas'+j}}"></canvas></td>
-                        <td class="p-0 text-left">{{mol}} {{'one_canvas'+j}}</td>
-                        <td class="p-0 text-right">{{this.predictionResult.search_results[this.molIndex].ymatrix[j]}}</td>
-                      </tr> -->
-
-                      <tr >
-                        <td class="p-0 text-left">{{this.predictionResult.search_results[this.molIndex].distances[0].toFixed(2)}}</td>
-                        <td class="p-0 text-center"><canvas id="one_canvas0"></canvas></td>
-                        <td class="p-0 text-left">{{this.predictionResult.search_results[this.molIndex].obj_nam[0]}}</td>
-                        <td class="p-0 text-right">{{this.predictionResult.search_results[this.molIndex].ymatrix[0]}}</td>
-                      </tr>
-                      <tr >
-                        <td class="p-0 text-left">{{this.predictionResult.search_results[this.molIndex].distances[1].toFixed(2)}}</td>
-                        <td class="p-0 text-center"><canvas id="one_canvas1"></canvas></td>
-                        <td class="p-0 text-left">{{this.predictionResult.search_results[this.molIndex].obj_nam[1]}}</td>
-                        <td class="p-0 text-right">{{this.predictionResult.search_results[this.molIndex].ymatrix[1]}}</td>
-                      </tr>
-                      <tr >
-                        <td class="p-0 text-left">{{this.predictionResult.search_results[this.molIndex].distances[2].toFixed(2)}}</td>
-                        <td class="p-0 text-center"><canvas id="one_canvas2"></canvas></td>
-                        <td class="p-0 text-left">{{this.predictionResult.search_results[this.molIndex].obj_nam[2]}}</td>
-                        <td class="p-0 text-right">{{this.predictionResult.search_results[this.molIndex].ymatrix[2]}}</td>
-                      </tr>
-
-                    </tbody>
-                  </table>
-
-                  <!-- <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}}vars</span> -->
-                </div>
               </div>
               <div class="row bg-light" *ngIf="this.modelBuildInfo['ensemble']">
                 <div class="col-3 border">

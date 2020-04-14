@@ -97,22 +97,24 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         console.log(err);
     });
 
-    // draw similar compounds (if applicable)
-    if (this.predictionResult.hasOwnProperty('search_results')) {
-      const optionsA = {'width': 400, 'height': 150};
-      const smiles = this.predictionResult.search_results[this.molIndex].SMILES;
-      let iteratorCount = 0;
-      for (let value of smiles) {
-        const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
-        SmilesDrawer.parse(value, function(tree) {
-          var canvasName = 'one_canvas';
-          smilesDrawer.draw(tree,  canvasName.concat(iteratorCount.toString()), 'light', false);
-        }, function (err) {
-          console.log(err);
-        });
-        iteratorCount++;
-      };  
-    };
+    setTimeout(() => {
+      // draw similar compounds (if applicable)
+      if (this.predictionResult.hasOwnProperty('search_results')) {
+        const optionsA = {'width': 400, 'height': 150};
+        const smiles = this.predictionResult.search_results[this.molIndex].SMILES;
+        let iteratorCount = 0;
+        for (var value of smiles) {
+          const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
+          SmilesDrawer.parse(value, function(tree) {
+            let canvasName = 'one_canvas';
+            smilesDrawer.draw(tree,  canvasName.concat(iteratorCount.toString()), 'light', false);
+          }, function (err) {
+            console.log(err);
+          });
+          iteratorCount++;
+        };  
+      };
+    },0);
   }
 
   PreviousMol() {
@@ -130,22 +132,25 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       }, function (err) {
         console.log(err);
     });
-    // draw similar compounds (if applicable)
-    if (this.predictionResult.hasOwnProperty('search_results')) {
-      const optionsA = {'width': 400, 'height': 150};
-      const smiles = this.predictionResult.search_results[this.molIndex].SMILES;
-      let iteratorCount = 0;
-      for (let value of smiles) {
-        const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
-        SmilesDrawer.parse(value, function(tree) {
-          var canvasName = 'one_canvas';
-          smilesDrawer.draw(tree,  canvasName.concat(iteratorCount.toString()), 'light', false);
-        }, function (err) {
-          console.log(err);
-        });
-        iteratorCount++;
-      };  
-    };
+
+    setTimeout(() => {
+      // draw similar compounds (if applicable)
+      if (this.predictionResult.hasOwnProperty('search_results')) {
+        const optionsA = {'width': 400, 'height': 150};
+        const smiles = this.predictionResult.search_results[this.molIndex].SMILES;
+        let iteratorCount = 0;
+        for (var value of smiles) {
+          const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
+          SmilesDrawer.parse(value, function(tree) {
+            let canvasName = 'one_canvas';
+            smilesDrawer.draw(tree,  canvasName.concat(iteratorCount.toString()), 'light', false);
+          }, function (err) {
+            console.log(err);
+          });
+          iteratorCount++;
+        };  
+      };
+    },0);
   }
 
   NextModel() {
@@ -277,7 +282,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             const smilesDrawer = new SmilesDrawer.Drawer(options);
             SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
               smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-              console.log(child.nativeElement.id)
               }, function (err) {
                 console.log(err);
               });
@@ -315,13 +319,13 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               // draw similar compounds (if applicable)
               if (me.predictionResult.hasOwnProperty('search_results')) {
                 const optionsA = {'width': 400, 'height': 150};
-                const smiles = me.predictionResult.search_results[me.molIndex].SMILES;
+                let smiles = me.predictionResult.search_results[me.molIndex].SMILES;
                 let iteratorCount = 0;
                 for (let value of smiles) {
                   const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
                   SmilesDrawer.parse(value, function(tree) {
-                    var canvasName = 'one_canvas'
-                    smilesDrawer.draw(tree,  canvasName.concat(iteratorCount.toString()), 'light', false);
+                    let canvasName = 'one_canvas';
+                    smilesDrawer.draw(tree,  canvasName.concat(iteratorCount.toString()) , 'light', false);
                   }, function (err) {
                     console.log(err);
                   });
