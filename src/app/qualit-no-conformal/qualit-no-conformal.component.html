@@ -1,104 +1,119 @@
 <div class="row mt-3" *ngIf="this.modelValidationInfo['TPpred']">
+    
     <div class="card w-100" style="width: 18rem;">
-        <div class="card-body"> 
-            <div class="row ml-2">
-                <small class="h2 text-muted"><u>Fitting</u></small>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-2 mt-1">
-                    <table class="table table-sm mt-4">
-                        <tbody>
-                            <tr>
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SensitivityPed'][0]}}"><strong>Sensitivity:</strong></td>
-                                <td class="text-right text-capitalize">{{modelValidationInfo['SensitivityPed'][1]}}</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SpecificityPred'][0]}}"><strong>Specificity:</strong></td>
-                                <td class="text-right text-capitalize">{{modelValidationInfo['SpecificityPred'][1]}}</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCCpred'][0]}}"><strong>MCC:</strong></td>
-                                <td class="text-right text-capitalize">{{modelValidationInfo['MCCpred'][1]}}</td>
-                            </tr>
-                        </tbody>
-                    </table> 
-                </div>
-                <div class="col-5">
-                  <!--CONFUSION MATRIX-->
-                 <app-confusion-matrix 
-                        [TP] = "this.modelValidationInfo['TPpred'][1]"
-                        [FP] = "this.modelValidationInfo['FPpred'][1]"
-                        [FN] = "this.modelValidationInfo['FNpred'][1]"
-                        [TN] = "this.modelValidationInfo['TNpred'][1]"
-                    ></app-confusion-matrix>                 
-                </div>
-                <div class="col-5">
-                     <div style="display: block">
-                        <canvas baseChart
-                            [data]="polarAreaChartData2"
-                            [options]="polarChartOptions"
-                            [labels]="polarAreaChartLabels"
-                            [legend]="polarAreaLegend"
-                            [colors]="polarAreaChartColors"
-                            [chartType]="polarAreaChartType">
-                        </canvas>
+        
+        <!--NAVS tables-->
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-predict-tab" data-toggle="tab" href="#pills-predict" role="tab" aria-controls="pills-predict" aria-selected="true"><h4>Prediction</h4></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-fitting-tab" data-toggle="tab" href="#pills-fitting" role="tab" aria-controls="pills-fitting" aria-selected="false"><h4>Fitting</h4></a>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="pills-tabContent">
+            
+            <!-- PREDICTION TAB START -->
+            <div class="tab-pane fade show active" id="pills-predict" role="tabpanel" aria-labelledby="pills-predict-tab" >
+                <div class="card-body">
+                    <div id="container">
+                        <div class="col-3">
+                            <table class="table table-sm mt-4">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity'][0]}}"><strong>Sensitivity:</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['Sensitivity'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Specificity'][0]}}"><strong>Specificity:</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['Specificity'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCC'][0]}}"><strong>MCC:</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['MCC'][1]}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>    
+                        </div>
+                        <div class="col-4">
+                            <!--CONFUSION MATRIX-->
+                                <app-confusion-matrix 
+                                [TP] = "this.modelValidationInfo['TP'][1]"
+                                [FP] = "this.modelValidationInfo['FP'][1]"
+                                [FN] = "this.modelValidationInfo['FN'][1]"
+                                [TN] = "this.modelValidationInfo['TN'][1]"
+                            ></app-confusion-matrix>
+                        </div>
+                        <div class="col-4">
+                                <div style="display: block">
+                                <canvas baseChart
+                                        [data]="polarAreaChartData"
+                                        [options]="polarChartOptions"
+                                        [labels]="polarAreaChartLabels"
+                                        [legend]="polarAreaLegend"
+                                        [colors]="polarAreaChartColors"
+                                        [chartType]="polarAreaChartType">
+                                </canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- PREDICTION TAB END -->
+            <!-- FITTING TAB START -->
+            <div class="tab-pane fade" id="pills-fitting" role="tabpanel" aria-labelledby="pills-fitting-tab">
+                <div class="card-body"> 
+                    <div id="container">
+                        <div class="col-3 mt-1">
+                            <table class="table table-sm mt-4">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SensitivityPed'][0]}}"><strong>Sensitivity:</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['SensitivityPed'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SpecificityPred'][0]}}"><strong>Specificity:</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['SpecificityPred'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCCpred'][0]}}"><strong>MCC:</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['MCCpred'][1]}}</td>
+                                    </tr>
+                                </tbody>
+                            </table> 
+                        </div>
+                        <div class="col-3">
+                        <!--CONFUSION MATRIX-->
+                        <app-confusion-matrix 
+                                [TP] = "this.modelValidationInfo['TPpred'][1]"
+                                [FP] = "this.modelValidationInfo['FPpred'][1]"
+                                [FN] = "this.modelValidationInfo['FNpred'][1]"
+                                [TN] = "this.modelValidationInfo['TNpred'][1]"
+                            ></app-confusion-matrix>                 
+                        </div>
+                        <div class="col-4">
+                            <div style="display: block">
+                                <canvas baseChart
+                                    [data]="polarAreaChartData2"
+                                    [options]="polarChartOptions"
+                                    [labels]="polarAreaChartLabels"
+                                    [legend]="polarAreaLegend"
+                                    [colors]="polarAreaChartColors"
+                                    [chartType]="polarAreaChartType">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FITTING TAB END -->
+
+
         </div>
     </div>
 </div>
 
-<div class="row mt-3" *ngIf="this.modelValidationInfo['TP']">
-    <div class="card w-100" style="width: 18rem;">
-        <div class="card-body">
-            <div class="row ml-2">
-                <small class="h2 text-muted"><u>Prediction (cross-validation)</u></small>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-2">
-                    <table class="table table-sm mt-4">
-                        <tbody>
-                            <tr>
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity'][0]}}"><strong>Sensitivity:</strong></td>
-                                <td class="text-right text-capitalize">{{modelValidationInfo['Sensitivity'][1]}}</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Specificity'][0]}}"><strong>Specificity:</strong></td>
-                                <td class="text-right text-capitalize">{{modelValidationInfo['Specificity'][1]}}</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCC'][0]}}"><strong>MCC:</strong></td>
-                                <td class="text-right text-capitalize">{{modelValidationInfo['MCC'][1]}}</td>
-                            </tr>
-                        </tbody>
-                    </table>    
-                </div>
-                <div class="col-5">
-                    <!--CONFUSION MATRIX-->
-                     <app-confusion-matrix 
-                        [TP] = "this.modelValidationInfo['TP'][1]"
-                        [FP] = "this.modelValidationInfo['FP'][1]"
-                        [FN] = "this.modelValidationInfo['FN'][1]"
-                        [TN] = "this.modelValidationInfo['TN'][1]"
-                    ></app-confusion-matrix>
-                </div>
-                <div class="col-5">
-                     <div style="display: block">
-                        <canvas baseChart
-                                [data]="polarAreaChartData"
-                                [options]="polarChartOptions"
-                                [labels]="polarAreaChartLabels"
-                                [legend]="polarAreaLegend"
-                                [colors]="polarAreaChartColors"
-                                [chartType]="polarAreaChartType">
-                        </canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="row mt-3" *ngIf="this.modelDocumentation !== undefined">
     <div class="card w-100" style="width: 18rem;">
         <!--<div class="card-header"><h5>Prediction (cross-validation)</h5></div>-->

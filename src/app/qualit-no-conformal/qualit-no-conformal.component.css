@@ -29,6 +29,22 @@
   
 }
 
+#container {
+    display: flex;
+    height: 250px; 
+    justify-content: space-between;
+}
+
+ul li.nav-item a {
+    background:white;
+    color: #6C757D;
+}
+  
+ul li.nav-item a.active{
+    background: #F0F0F0;
+    color: #6C757D;
+}
+
 table td {
     padding-top: 1px;
     padding-bottom: 1px;

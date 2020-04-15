@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { QuantitNoConformalService } from './quantit-no-conformal.service';
 import {Model} from '../Globals';
-import { ChartDataSets, ChartType, ChartOptions} from 'chart.js';
+import { ChartDataSets, ChartType, ChartOptions, Chart} from 'chart.js';
 import { Label} from 'ng2-charts';
 import { CommonService } from '../common.service';
 
@@ -12,10 +12,9 @@ import { CommonService } from '../common.service';
 })
 export class QuantitNoConformalComponent implements OnChanges {
 
-
   constructor(private service: QuantitNoConformalService,
     public model: Model,
-    private commonService: CommonService) { }
+    private commonService: CommonService) {}
 
   @Input() modelName;
   @Input() modelVersion;
@@ -36,21 +35,31 @@ export class QuantitNoConformalComponent implements OnChanges {
   data: Array<any>;
 
   // Options
-  public ChartOptionsPredicted: ChartOptions = {
+  public ChartOptionsFitted : ChartOptions = {}
+  public ChartOptions: ChartOptions = {
     responsive: true,
     animation: {
       duration: 0
     }, 
     tooltips: {
       callbacks: {
-         label: function(tooltipItem, data) {
-            return '(' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+        label: function(tooltipItem, data) {
+            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+            if (label) {
+                label += ': ';
+            }
+            var labelx = Math.round(tooltipItem.xLabel * 100) / 100;
+            var labely = Math.round(tooltipItem.yLabel * 100) / 100;
+            return '(' + labelx + ', ' + labely + ')';
          },
          title: function(tooltipItem, data) {
           const label = data.labels[tooltipItem[0].index];
           return label;
          }
-      }
+      },
+      titleFontSize: 16,
+      bodyFontSize: 14
     },
    scales: {
       xAxes: [{
@@ -58,15 +67,24 @@ export class QuantitNoConformalComponent implements OnChanges {
         position: 'bottom',
         scaleLabel: {
           display: true,
-          labelString: 'experimental',
+          fontSize: 20,
+          labelString: 'Experimental',
+        },
+        ticks: {
+          fontSize: 15
         }
       }],
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Predicted'
+          fontSize: 20,
+          labelString: 'Model',
+        },
+        ticks: {
+          fontSize: 15
         }
       }],
+
       ticks: {
         min: -8,
         max: -3,
@@ -76,81 +94,56 @@ export class QuantitNoConformalComponent implements OnChanges {
       display: false
     }
   };
-  public ChartOptionsFitted: ChartOptions = {
-    responsive: true,
-    animation: {
-      duration: 0
-    }, 
-    tooltips: {
-      callbacks: {
-         label: function(tooltipItem, data) {
-            return '(' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
-         },
-         title: function(tooltipItem, data) {
-          const label = data.labels[tooltipItem[0].index];
-          return label;
-         }
-      }
-    },
-   scales: {
-      xAxes: [{
-        type: 'linear',
-        position: 'bottom',
-        scaleLabel: {
-          display: true,
-          labelString: 'experimental'
-        }
-      }],
-      yAxes: [{
-        position: 'bottom',
-        scaleLabel: {
-          display: true,
-          labelString: 'Fitted'
-        }
-      }]
-    },
-    legend: {
-      display: false
-    }
-  };
+
 
   public ChartLabels: Label[] = [];
 
   public ChartDataPredicted: ChartDataSets[] = [
     {
       data: [],
-      pointRadius: 3,
-      backgroundColor: 'rgba(255,0,0,0.3)',
+      pointRadius: 5,
+      pointBorderWidth: 2,
+      pointBorderColor: 'rgba(255,0,0,1)',
+      pointBackgroundColor: 'rgba(255,0,0,0.2)',
       type: 'scatter',
       showLine: false,
-      fill: false,
+      fill: true
     },
     {
       data: [],
+      borderColor: 'rgba(0,0,0,0.8)',
       type: 'line',
+      showLine: true,
       fill: false,
-      pointRadius: 1
+      pointRadius: 0,
+      borderWidth: 3
     },
   ];
 
   public ChartDataFitted: ChartDataSets[] = [
     {
       data: [],
-      pointRadius: 3,
-      backgroundColor: 'rgba(255,0,0,0.3)',
-      type: '',
+      pointRadius: 5,
+      pointBorderWidth: 2,
+      pointBorderColor: 'rgba(255,0,0,1)',
+      pointBackgroundColor: 'rgba(255,0,0,0.2)',
+      type: 'scatter',
       showLine: false,
       fill: false
     },
     {
       data: [],
+      borderColor: 'rgba(0,0,0,0.8)',
       type: 'line',
+      showLine: true,
       fill: false,
-      pointRadius: 1
+      pointRadius: 0,
+      borderWidth: 3
     },
   ];
 
   public ChartType: ChartType = 'line';
+
 
   ngOnChanges(): void {
     this.ChartDataFitted[0].data = [];
@@ -185,9 +178,9 @@ export class QuantitNoConformalComponent implements OnChanges {
             // tslint:disable-next-line:forin
             for (const i in info['ymatrix']) {
              if ('Y_pred' in info) {
-              this.ChartDataPredicted[0].data[i] = { x: info['ymatrix'][i], y: info['Y_pred'][i]};
-              this.ChartDataPredicted[1].data[i] = { x: info['ymatrix'][i], y: info['ymatrix'][i]};
-            }
+               this.ChartDataPredicted[0].data[i] = { x: info['ymatrix'][i], y: info['Y_pred'][i]};
+               this.ChartDataPredicted[1].data[i] = { x: info['ymatrix'][i], y: info['ymatrix'][i]};
+              }
               this.ChartDataFitted[0].data[i] = { x: info['ymatrix'][i], y: info['Y_adj'][i]};
               this.ChartDataFitted[1].data[i] = { x: info['ymatrix'][i], y: info['ymatrix'][i]};
               this.ChartLabels[i] = info['obj_nam'][i];
