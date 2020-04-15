@@ -26,7 +26,16 @@ left:10;
 right:0;
 top: 10px;
 margin:auto;
+}
 
+ul li.nav-item a {
+  background:white;
+  color: #6C757D;
+}
+
+ul li.nav-item a.active{
+  background: #F0F0F0;
+  color: #6C757D;
 }
 
 table td {

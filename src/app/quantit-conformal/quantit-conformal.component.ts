@@ -43,77 +43,51 @@ export class QuantitConformalComponent implements OnChanges {
 
 
     // Options
-    public ChartOptionsPredicted: ChartOptions = {
+    public ChartOptions: ChartOptions = {
       responsive: true,
       animation: {
         duration: 0
       }, 
       tooltips: {
         callbacks: {
-           label: function(tooltipItem, data) {
-              return '(' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
-           },
-           title: function(tooltipItem, data) {
+          label: function(tooltipItem, data) {
+              var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+              if (label) {
+                  label += ': ';
+              }
+              var labelx = Math.round(tooltipItem.xLabel * 100) / 100;
+              var labely = Math.round(tooltipItem.yLabel * 100) / 100;
+              return '(' + labelx + ', ' + labely + ')';
+          },
+          title: function(tooltipItem, data) {
             const label = data.labels[tooltipItem[0].index];
             return label;
-           }
-        }
+          }
+        },
+        titleFontSize: 16,
+        bodyFontSize: 14
       },
+
       scales: {
         xAxes: [{
           type: 'linear',
           position: 'bottom',
           scaleLabel: {
             display: true,
-            labelString: 'experimental'
+            fontSize: 20,
+            labelString: 'Experimental'
           }
         }],
         yAxes: [{
           scaleLabel: {
             display: true,
-            labelString: 'Predicted'
-          }
-        }]
-      },
-      legend: {
-        display: false
-      }
-    };
-    public ChartOptionsFitted: ChartOptions = {
-      responsive: true,
-      animation: {
-        duration: 0
-      }, 
-      tooltips: {
-        callbacks: {
-           label: function(tooltipItem, data) {
-              return '(' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
-           },
-           title: function(tooltipItem, data) {
-            const label = data.labels[tooltipItem[0].index];
-            return label;
-           }
-        }
-      },
-     scales: {
-        xAxes: [{
-          type: 'linear',
-          position: 'bottom',
-          scaleLabel: {
-            display: true,
-            labelString: 'experimental'
-          }
-        }],
-        yAxes: [{
-          position: 'bottom',
-          scaleLabel: {
-            display: true,
-            labelString: 'Fitted'
-          }/*,
+            fontSize: 20,
+            labelString: 'Model'
+          },
           ticks: {
-            min: -10,
-            max: 0,
-          }*/
+            fontSize: 15
+          }
         }]
       },
       legend: {
@@ -121,29 +95,83 @@ export class QuantitConformalComponent implements OnChanges {
       },
       plugins: {
         chartJsPluginErrorBars: {
-          color: '#666',
+          color: 'rgba(0,0,0,0.2)',
           lineWidth: 2,
           absoluteValues: true
         }
       }
     };
 
+    // public ChartOptionsFitted: ChartOptions = {
+    //   responsive: true,
+    //   animation: {
+    //     duration: 0
+    //   }, 
+    //   tooltips: {
+    //     callbacks: {
+    //        label: function(tooltipItem, data) {
+    //           return '(' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+    //        },
+    //        title: function(tooltipItem, data) {
+    //         const label = data.labels[tooltipItem[0].index];
+    //         return label;
+    //        }
+    //     }
+    //   },
+    //  scales: {
+    //     xAxes: [{
+    //       type: 'linear',
+    //       position: 'bottom',
+    //       scaleLabel: {
+    //         display: true,
+    //         labelString: 'experimental'
+    //       }
+    //     }],
+    //     yAxes: [{
+    //       position: 'bottom',
+    //       scaleLabel: {
+    //         display: true,
+    //         labelString: 'Fitted'
+    //       }/*,
+    //       ticks: {
+    //         min: -10,
+    //         max: 0,
+    //       }*/
+    //     }]
+    //   },
+    //   legend: {
+    //     display: false
+    //   },
+    //   plugins: {
+    //     chartJsPluginErrorBars: {
+    //       color: '#666',
+    //       lineWidth: 2,
+    //       absoluteValues: true
+    //     }
+    //   }
+    // };
+
     public ChartLabels: Label[] = [];
 
     public ChartDataPredicted: ChartDataSets[] = [
       {
         data: [],
-        pointRadius: 3,
-        backgroundColor: 'rgba(255,0,0,0.3)',
+        pointRadius: 5,
+        pointBorderWidth: 2,
+        pointBorderColor: 'rgba(255,0,0,1)',
+        pointBackgroundColor: 'rgba(255,0,0,0.2)',
         type: 'scatter',
         showLine: false,
-        fill: false,
+        fill: true
       },
       {
         data: [],
+        borderColor: 'rgba(0,0,0,0.8)',
         type: 'line',
+        showLine: true,
         fill: false,
-        pointRadius: 1
+        pointRadius: 0,
+        borderWidth: 3
       },
     ];
 
@@ -151,14 +179,22 @@ export class QuantitConformalComponent implements OnChanges {
       {
         errorBars : {},
         data: [],
-        pointRadius: 3,
+        pointRadius: 5,
+        pointBorderWidth: 2,
+        pointBorderColor: 'rgba(255,0,0,1)',
+        pointBackgroundColor: 'rgba(255,0,0,0.2)',
+        type: 'scatter',
         showLine: false,
-        fill: false
+        fill: true
       },
       {
         data: [],
+        borderColor: 'rgba(0,0,0,0.8)',
+        type: 'line',
+        showLine: true,
         fill: false,
-        pointRadius: 1
+        pointRadius: 0,
+        borderWidth: 3
       },
     ];
 
