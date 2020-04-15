@@ -19,6 +19,12 @@ padding: 0px;
 text-align: center;
 }
 
+#container {
+  display: flex;
+  height: 250px; 
+  justify-content: space-between;
+}
+
 ul li.nav-item a {
   background:white;
   color: #6C757D;

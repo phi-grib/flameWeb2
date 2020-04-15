@@ -1,85 +1,103 @@
 <div class="row mt-3" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
+    
     <div class="card w-100" style="width: 18rem;">
-        <!--<div class="card-header"><h5>Fitting</h5></div>-->
-        <div class="card-body">
-            <div class="row ml-2">
-                <small class="h2 text-muted"><u>Fitting</u></small>
-            </div>
-            <div class="row justify-content-between">
-                <div class="col-3 mt-1">
-                    <table class="table table-sm mt-4">
-                        <tbody>
-                            <tr>
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['scoringR'][0]}}"><strong>Scoring:</strong></td>
-                                <td class="text-right text-capitalize">{{modelValidationInfo['scoringR'][1]}}</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['R2'][0]}}"><strong>R2:</strong></td>
-                                <td class="text-right text-capitalize">{{modelValidationInfo['R2'][1]}}</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SDEC'][0]}}"><strong>SDEC:</strong></td>
-                                <td class="text-right text-capitalize">{{modelValidationInfo['SDEC'][1]}}</td>
-                            </tr>
-                        </tbody>
-                    </table>    
-                </div>
-                <div class="col-9">
-                    <div style="display: block">
-                         <canvas baseChart
-                            [datasets]="ChartDataFitted"
-                            [options]="ChartOptionsFitted"
-                            [labels]="ChartLabels"
-                            [chartType]="ChartType">
-                        </canvas>
+
+        <!--NAVS tables-->
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-fitting-tab" data-toggle="tab" href="#pills-fitting" role="tab" aria-controls="pills-fitting" aria-selected="true"><h4>Fitting</h4></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-prediction-tab" data-toggle="tab" href="#pills-prediction" role="tab" aria-controls="pills-prediction" aria-selected="false"><h4>Prediction</h4></a>
+            </li>
+        </ul>
+    
+
+        <div class="tab-content" id="pills-tabContent">
+            <!--PREDICTION TAB START-->
+            <div class="tab-pane fade show active" id="pills-fitting" role="tabpanel" aria-labelledby="pills-fitting-tab">
+                <div class="card-body">
+    
+                    <div class="row justify-content-between">
+                        <div class="col-3 mt-1">
+                            <table class="table table-sm mt-4">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['scoringR'][0]}}"><strong>Scoring:</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['scoringR'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['R2'][0]}}"><strong>R2:</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['R2'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SDEC'][0]}}"><strong>SDEC:</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['SDEC'][1]}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>    
+                        </div>
+                        <div class="col-9">
+                            <div style="display: block">
+                                <canvas baseChart
+                                    [datasets]="ChartDataFitted"
+                                    [options]="ChartOptions"
+                                    [labels]="ChartLabels"
+                                    [chartType]="ChartType">
+                                </canvas>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
+            <!--PREDICTION TAB END-->
+
+            <!--FITTING TAB START-->
+            <div class="tab-pane fade" id="pills-prediction" role="tabpanel" aria-labelledby="pills-prediction-tab" >
+                <div class="card-body">
+
+                    <div class="row justify-content-between">
+                        <div class="col-3 mt-1">
+                            
+                            <table class="table table-sm mt-4">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['scoringP'][0]}}"><strong>Scoring:</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['scoringP'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Q2'][0]}}"><strong>Q2:</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['Q2'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SDEP'][0]}}"><strong>SDEP:</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['SDEP'][1]}}</td>
+                                    </tr>
+                                </tbody>
+                            </table> 
+                        </div>
+                        
+                        <div class="col-9">
+                            <div style="display: block">
+                                <canvas baseChart
+                                    [datasets]="ChartDataPredicted"
+                                    [options]="ChartOptions"
+                                    [labels]="ChartLabels"
+                                    [chartType]="ChartType">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!--FITTING TAB END-->
         </div>
+
     </div>
 </div>
-<div class="row mt-3" *ngIf="ChartDataPredicted[0].data.length>0">
-    <div class="card w-100" style="width: 18rem;">
-        <!--<div class="card-header"><h5>Prediction (cross-validation)</h5></div>-->
-        <div class="card-body">
-            <div class="row ml-2">
-                <small class="h2 text-muted"><u>Prediction (cross-validation)</u></small>
-            </div>
-            <div class="row justify-content-between">
-                <div class="col-3 mt-1">
-                    
-                    <table class="table table-sm mt-4">
-                        <tbody>
-                            <tr>
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['scoringP'][0]}}"><strong>Scoring:</strong></td>
-                                <td class="text-right text-capitalize">{{modelValidationInfo['scoringP'][1]}}</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Q2'][0]}}"><strong>Q2:</strong></td>
-                                <td class="text-right text-capitalize">{{modelValidationInfo['Q2'][1]}}</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SDEP'][0]}}"><strong>SDEP:</strong></td>
-                                <td class="text-right text-capitalize">{{modelValidationInfo['SDEP'][1]}}</td>
-                            </tr>
-                        </tbody>
-                    </table> 
-                </div>
-                
-                <div class="col-9">
-                    <div style="display: block">
-                        <canvas baseChart
-                            [datasets]="ChartDataPredicted"
-                            [options]="ChartOptionsPredicted"
-                            [labels]="ChartLabels"
-                            [chartType]="ChartType">
-                        </canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>  
+
 <div class="row mt-3" *ngIf="this.modelDocumentation !== undefined">
     <div class="card w-100" style="width: 18rem;">
         <!--<div class="card-header"><h5>Prediction (cross-validation)</h5></div>-->

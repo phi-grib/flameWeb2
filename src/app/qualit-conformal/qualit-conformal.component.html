@@ -4,21 +4,19 @@
 
         <!--NAVS tables-->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="pills-all-tab" data-toggle="tab" href="#pills-all" role="tab" aria-controls="pills-home" aria-selected="true"><h4>Prediction</h4></a>
-          </li>
-          <li class="nav-item">
-            <!-- <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false"><h4>Fitting</h4></a> -->
-            <a class="nav-link disabled" id="pills-one-tab" data-toggle="tab" role="tab" aria-controls="pills-one" aria-selected="false"><h4>Fitting</h4></a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link active" id="pills-all-tab" data-toggle="tab" href="#pills-all" role="tab" aria-controls="pills-all" aria-selected="true"><h4>Prediction</h4></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false"><h4>Fitting</h4></a>
+            </li>
         </ul>
 
         <div class="tab-content" id="pills-tabContent">
             <!--PREDICTION TAB-->
             <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
                 <div class="card-body">
-                    <!-- <div class="row align-items-center"> -->
-                    <div class="row">
+                    <div id="container">
                         <div class="col-3 mt-1" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
                             <table class="table table-sm mt-4">
                                 <tbody>
@@ -74,7 +72,7 @@
             <!--FITTING-->
             <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab" >
                 <div class="card-body">
-                    <div class="row align-items-center">
+                    <div id="container">
                         <!-- <div class="col-2 mt-1" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
                             <table class="table table-sm mt-4">
                                 <tbody>
