@@ -28,31 +28,40 @@ export class CommonFunctions {
           for (const model of result) {
             const modelName = model.modelname;
             const version = model.version;
+            
             // INFO OF EACH MODEL
-            console.log(typeof(model.info));
             num_models++;
+
+            // fallback
+            this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
+                variables: '-', type: '-', quality: {}, quantitative: false, conformal: false, ensemble: false, error: model.info};
+
             if (typeof(model.info) !== 'string') {
-              const dict_info = {};
-              for (const aux of  model.info) {
-                dict_info[aux[0]] = aux[2];
-              }
-              const quality = {};
-              for (const info of (Object.keys(dict_info))) {
-                if (typeof(dict_info[info]) === 'number') {
-                  quality[info] =  parseFloat(dict_info[info].toFixed(3));
+              if (model.info['code'] != 0) {
+
+                const dict_info = {};
+                
+                for (const aux of model.info) {
+                  dict_info[aux[0]] = aux[2];
                 }
+                const quality = {};
+                for (const info of (Object.keys(dict_info))) {
+                  if (typeof(dict_info[info]) === 'number') {
+                    quality[info] =  parseFloat(dict_info[info].toFixed(3));
+                  }
+                }
+                this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: true,
+                numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality,
+                quantitative: dict_info['quantitative'], conformal: dict_info['conformal'], ensemble: dict_info['ensemble'], 
+                error: undefined };
+                this.model.trained_models.push(modelName + ' .v' + version);
               }
-              this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: true,
-              numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality,
-              quantitative: dict_info['quantitative'], conformal: dict_info['conformal'], ensemble: dict_info['ensemble'], 
-              error: undefined };
-              this.model.trained_models.push(modelName + ' .v' + version);
-              num_models--;
-            } else {
-              this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
-                  variables: '-', type: '-', quality: {}, quantitative: false, conformal: false, ensemble: false, error: model.info};
-                  num_models--;
-            }
+              else {
+                this.model.listModels[modelName + '-' + version].error = model.info['message'];
+              }
+            } 
+            num_models--;
+
           }
           const intervalId = setInterval(() => {
             if (num_models <= 0) {
