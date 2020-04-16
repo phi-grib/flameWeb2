@@ -44,14 +44,16 @@ export class QuantitNoConformalComponent implements OnChanges {
     tooltips: {
       callbacks: {
         label: function(tooltipItem, data) {
-            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+            // var label = data.datasets[tooltipItem.datasetIndex].label || '';
 
-            if (label) {
-                label += ': ';
-            }
-            var labelx = Math.round(tooltipItem.xLabel * 100) / 100;
-            var labely = Math.round(tooltipItem.yLabel * 100) / 100;
-            return '(' + labelx + ', ' + labely + ')';
+            // if (label) {
+            //     label += ': ';
+            // }
+            // var labelx = Math.round(tooltipItem.xLabel * 100) / 100;
+            // var labely = Math.round(tooltipItem.yLabel * 100) / 100;
+            // return '(' + labelx + ', ' + labely + ')';
+            return '(' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
+
          },
          title: function(tooltipItem, data) {
           const label = data.labels[tooltipItem[0].index];

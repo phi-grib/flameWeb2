@@ -1,5 +1,6 @@
 .container div {
-    border: 2px;
+    /* border: 2px; */
+    border: 0px;
 }
 .rotate {
 

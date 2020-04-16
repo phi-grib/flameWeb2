@@ -1,6 +1,6 @@
 
-<div class="m-3" *ngIf="this.model.name !=undefined && this.model.trained">
-<!-- <div *ngIf="this.model.name !=undefined && this.model.trained"> -->
+<!-- <div class="m-3" *ngIf="this.model.name !=undefined && this.model.trained"> -->
+<div *ngIf="this.model.name !=undefined && this.model.trained">
     <div *ngIf="!this.model.quantitative && !this.model.conformal">
         <app-qualit-no-conformal [modelName]="this.model.name" [modelVersion]= "this.model.version"></app-qualit-no-conformal>
     </div>
