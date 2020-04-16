@@ -23,15 +23,15 @@
                             
                             <table class="table table-sm mt-4">
                                 <tbody>
-                                    <tr>
+                                    <tr *ngIf="modelValidationInfo['scoringP']">
                                         <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['scoringP'][0]}}"><strong>Scoring:</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['scoringP'][1]}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="modelValidationInfo['Q2']">
                                         <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Q2'][0]}}"><strong>Q2:</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['Q2'][1]}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="modelValidationInfo['SDEP']">
                                         <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SDEP'][0]}}"><strong>SDEP:</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['SDEP'][1]}}</td>
                                     </tr>

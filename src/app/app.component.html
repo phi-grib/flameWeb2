@@ -38,7 +38,6 @@
                 <app-prediction [predictionName]=this.prediction.name></app-prediction>
             </div>
             <div *ngIf="(this.model.name != undefined && this.prediction.name == undefined && isActive('models'))">
-            <!-- <div  *ngIf=""></div> -->
                 <app-validations [name] = this.model.name [version] = this.model.version></app-validations>
             </div>
         </div>

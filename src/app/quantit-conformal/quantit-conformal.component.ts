@@ -228,7 +228,7 @@ export class QuantitConformalComponent implements OnChanges {
       this.service.getValidation(this.modelName, this.modelVersion).subscribe(
         result => {
           const info = result;
-          console.log(info);
+          // console.log(info);
           for (const modelInfo of info['model_build_info']) {
             if (typeof modelInfo[2] === 'number') {
               modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
