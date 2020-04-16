@@ -1,6 +1,7 @@
 
- <div class="m-3" >
-  <div class="row mt-3" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
+ <!-- <div class="m-3" > -->
+<div >
+  <div class="row" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
     <div class="card w-100" style="width: 18rem;">
       <div class="card-body"> 
         <div class="row ml-2">
@@ -53,7 +54,7 @@
     </div>
   </div>
  
-  <div class="row mt-3" *ngIf="this.predictionResult != undefined">
+  <div class="row" *ngIf="this.predictionResult != undefined">
     <div class="card w-100">
         <div id="overlay" *ngIf="!this.predictionVisible">
           <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">

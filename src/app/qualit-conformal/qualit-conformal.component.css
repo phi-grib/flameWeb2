@@ -35,6 +35,21 @@ ul li.nav-item a.active{
   color: #6C757D;
 }
 
+/* ul {
+  background: #0076a3;
+}
+ul li a {
+  background: #0076a3;
+  color: #B8DCED;
+ 
+}
+
+ul li a.active{
+  background: #22577a;
+  color: white;
+  border-bottom: 3px solid #e59300;
+} */
+
 .rotate > span {
 transform: rotate(-90deg);
 position:absolute;
