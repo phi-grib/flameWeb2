@@ -76,7 +76,7 @@ export class QualitNoConformalComponent implements OnChanges {
     this.service.getValidation(this.modelName, this.modelVersion).subscribe(
       result => {
         const info = result;
-        console.log(info);
+        // console.log(info);
         // INFO ABOUT MODEL
         for (const modelInfo of info['model_build_info']) {
           if (typeof modelInfo[2] === 'number') {

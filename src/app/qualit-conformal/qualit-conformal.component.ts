@@ -114,7 +114,7 @@ export class QualitConformalComponent implements OnChanges {
     this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
       result => {
         this.modelDocumentation = result;
-        console.log(this.modelDocumentation);
+        // console.log(this.modelDocumentation);
       },
       error => {
         this.modelDocumentation = undefined;
