@@ -1,25 +1,4 @@
 
-<!--<div class="page-header border-bottom mb-3">
-  <div class="d-flex">
-        <div class="mr-auto p-2">
-            <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" routerLink="/modeling"  data-toggle="pill" role="tab">Modeling</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/similarity" data-toggle="pill" role="tab">Similarity</a>
-                </li>
-            </ul>
-        </div>
-        <div class="p-2">
-            <!--<a target="_blank">
-                <img [src]="imageSource" data-holder-rendered="true" height="40"/>
-            </a>
-        </div>
-    </div>
-</div>-->
-<!-- <div class="row"> -->
-
 <div class="container-fluid">
     <div class="row">
 
@@ -33,7 +12,8 @@
         </div>
 
         <!-- <div class="col-6 border-left info v-100 scrollable" *ngIf="!isActive('similarity')"> -->
-        <div class="col-7 info scrollable" *ngIf="!isActive('similarity')">
+        <!-- <div class="col-7 info scrollable" style="padding-left: 0px; padding-right: 0px;" *ngIf="!isActive('similarity')"> -->
+        <div class="col-7 info scrollable v-100" *ngIf="!isActive('similarity')">
             <div *ngIf="(this.prediction.name != undefined && this.model.name == undefined && isActive('predictions'))">
                 <app-prediction [predictionName]=this.prediction.name></app-prediction>
             </div>
@@ -44,6 +24,3 @@
 
     </div>
 </div>
-
-
-
