@@ -14,6 +14,7 @@
   background: #B8DCED;
   background-color: #B8DCED;
 }
+
 #matrix * {
 padding: 0px;
 text-align: center;
@@ -23,6 +24,7 @@ text-align: center;
   display: flex;
   height: 250px; 
   justify-content: space-between;
+  align-items: center;
 }
 
 ul li.nav-item a {
@@ -50,7 +52,7 @@ ul li a.active{
   border-bottom: 3px solid #e59300;
 } */
 
-.rotate > span {
+/* .rotate > span {
 transform: rotate(-90deg);
 position:absolute;
 left:10;
@@ -58,7 +60,7 @@ right:0;
 top: 10px;
 margin:auto;
 
-}
+} */
 
 table td {
   padding-top: 1px;
