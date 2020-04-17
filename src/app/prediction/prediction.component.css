@@ -11,6 +11,12 @@
     border-top: 4px solid rgba(0,0,0,.06);
 }
 
+.scrollable{
+  max-height: 90vh;
+  overflow: auto;
+  /* padding-left: 0px;
+  padding-right: 10px; */
+}
 ul li.nav-item a {
   background:white;
   color: #6C757D;

@@ -1,5 +1,5 @@
  <!-- <div class="m-3" > -->
-<div >
+<!-- <div > -->
   <div class="row" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
     <div class="card w-100" style="width: 18rem;">
       <div class="card-body"> 
@@ -18,7 +18,7 @@
               </tbody>
             </table> 
           </div>
-          <div class="col-5" *ngIf="this.modelValidationInfo['TP']">
+          <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
             <!--CONFUSION MATRIX-->
             <app-confusion-matrix 
                   [TP] = "this.modelValidationInfo['TP'][1]"
@@ -27,7 +27,7 @@
                   [TN] = "this.modelValidationInfo['TN'][1]"
               ></app-confusion-matrix>                 
           </div>
-          <div class="col-5"  *ngIf="this.modelValidationInfo['TP']">
+          <div class="col-4"  *ngIf="this.modelValidationInfo['TP']">
             <div style="display: block">
               <canvas baseChart
                   [data]="polarAreaChartData"
@@ -55,7 +55,9 @@
   </div>
  
   <div class="row" *ngIf="this.predictionResult != undefined">
-    <div class="card w-100">
+    <!-- <div class="col scrollable" style="padding-left:0px;"> -->
+
+      <div class="card w-100">
         <div id="overlay" *ngIf="!this.predictionVisible">
           <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
             <span class="sr-only">Loading...</span>
@@ -374,6 +376,8 @@
           </div>
         </div>
         <!--END REPORT PREDICTIONS-->
-    </div>
+      </div>
+    <!-- </div> -->
   </div>
-</div>
+
+<!-- </div> -->
