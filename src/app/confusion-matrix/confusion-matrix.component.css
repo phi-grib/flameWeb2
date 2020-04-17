@@ -1,30 +1,31 @@
 .TP {
-    background-color: rgba(0,255,0,0.3);
+    /* background-color: rgba(0,255,0,0.3); */
+    background-color: rgba(0,255,0,0.8);
 }
 .FP {
-    background-color:rgba(235,143,3,0.3);
+    /* background-color:rgba(235,143,3,0.3); */
+    background-color:rgba(255,153,0,0.8);
 }
 .TN {
-    background-color:rgba(3,49,155,0.3);
+    /* background-color:rgba(3,49,155,0.3); */
+    background-color:rgba(80,190,25,0.8);
 }
 .FN {
-    background-color:rgba(255,0,0,0.3);
-}
-.card-header {
-    background: #B8DCED;
-    background-color: #B8DCED;
-}
-#matrix * {
-  padding: 0px;
-  text-align: center;
+    /* background-color:rgba(255,0,0,0.3); */
+    background-color:rgba(255,80,75,0.8);
 }
 
-.rotate > span {
-  transform: rotate(-90deg);
-  position:absolute;
-  left:10;
-  right:0;
-  top: 10px;
-  margin:auto;
-  
+table, td {
+    border: 2px solid rgb(200, 200, 200);
+    border-collapse: collapse;
+    padding: 2px;
+    text-align: center;
+}
+
+.numcell {
+    min-width: 100px;
+}
+
+.signcell {
+    min-width: 80px;
 }

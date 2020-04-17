@@ -2,7 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { QualitNoConformalService } from './qualit-no-conformal.service';
 import {Model} from '../Globals';
 import { SingleDataSet, Label } from 'ng2-charts';
-import { ChartType, ChartOptions, ChartColor} from 'chart.js';
+import { ChartType, ChartOptions} from 'chart.js';
 import { CommonService } from '../common.service';
 
 @Component({
@@ -42,7 +42,7 @@ export class QualitNoConformalComponent implements OnChanges {
         },
         ticks: {
           color: 'rgba(0, 0, 0, 0.5)',
-          fontStyle : 'bold'
+          // fontStyle : 'bold'
         }
       }
     };
@@ -53,10 +53,11 @@ export class QualitNoConformalComponent implements OnChanges {
     public polarAreaChartType: ChartType = 'polarArea';
     public polarAreaChartColors = [
       {
-        backgroundColor: ['rgba(0,255,0,0.3)', 'rgba(235,143,3,0.3)', 'rgba(3,49,155,0.3)', 'rgba(255,0,0,0.3)'],
+        // backgroundColor: ['rgba(0,255,0,0.3)', 'rgba(235,143,3,0.3)', 'rgba(3,49,155,0.3)', 'rgba(255,0,0,0.3)'],
+        backgroundColor: ['rgba(0,255,0,0.8)', 'rgba(255,153,3,0.8)', 'rgba(80,190,25,0.8)', 'rgba(255,80,75,0.8)'],
+
       },
     ];
-
 
   ngOnChanges(): void {
     this.polarAreaChartData = [0, 0, 0, 0];

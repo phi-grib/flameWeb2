@@ -14,12 +14,13 @@
     background: #B8DCED;
     background-color: #B8DCED;
 }
+
 #matrix * {
   padding: 0px;
   text-align: center;
 }
 
-.rotate > span {
+/* .rotate > span {
   transform: rotate(-90deg);
   position:absolute;
   left:10;
@@ -27,12 +28,13 @@
   top: 10px;
   margin:auto;
   
-}
+} */
 
 #container {
     display: flex;
     height: 250px; 
     justify-content: space-between;
+    align-items: center;
 }
 
 ul li.nav-item a {
