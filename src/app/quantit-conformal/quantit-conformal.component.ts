@@ -39,7 +39,7 @@ export class QuantitConformalComponent implements OnChanges {
   
 
 
-    @ViewChild('QuantitConformalChart', {static: false}) QuantitConformalChart;
+    @ViewChild('QuantitConformalChart') QuantitConformalChart;
 
 
     // Options
