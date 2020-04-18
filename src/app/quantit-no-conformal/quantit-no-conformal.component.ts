@@ -5,6 +5,9 @@ import { ChartDataSets, ChartType, ChartOptions, Chart} from 'chart.js';
 import { Label} from 'ng2-charts';
 import { CommonService } from '../common.service';
 
+// import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+// import { PlotlyModule } from 'angular-plotly.js';
+
 @Component({
   selector: 'app-quantit-no-conformal',
   templateUrl: './quantit-no-conformal.component.html',
