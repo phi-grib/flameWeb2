@@ -1,12 +1,12 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { QuantitNoConformalService } from './quantit-no-conformal.service';
 import {Model} from '../Globals';
-import { ChartDataSets, ChartType, ChartOptions, Chart} from 'chart.js';
+import { ChartDataSets, ChartType, ChartOptions} from 'chart.js';
 import { Label} from 'ng2-charts';
 import { CommonService } from '../common.service';
 
-// import * as PlotlyJS from 'plotly.js/dist/plotly.js';
-// import { PlotlyModule } from 'angular-plotly.js';
+import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+import { PlotlyModule } from 'angular-plotly.js';
 
 @Component({
   selector: 'app-quantit-no-conformal',
@@ -100,6 +100,27 @@ export class QuantitNoConformalComponent implements OnChanges {
     }
   };
 
+  public plotFitted = {
+    data: [
+        { x: [], 
+          y: [], 
+          text: [],
+          type: 'scatter', 
+          mode: 'markers', 
+          marker: {
+            color: 'red',
+            opacity: 0.2,
+            size: 12,
+            line: {
+              color: 'red',
+              opacity: 1,
+              width: 4
+            }
+          }
+        }
+    ],
+    layout: {width: 900, height: 600}
+  };
 
   public ChartLabels: Label[] = [];
 
@@ -151,6 +172,11 @@ export class QuantitNoConformalComponent implements OnChanges {
 
 
   ngOnChanges(): void {
+
+    this.plotFitted.data[0].x = [];
+    this.plotFitted.data[0].y = [];
+    this.plotFitted.data[0].text = [];
+
     this.ChartDataFitted[0].data = [];
     this.ChartDataFitted[1].data = [];
     this.ChartDataPredicted[0].data = [];
@@ -182,13 +208,18 @@ export class QuantitNoConformalComponent implements OnChanges {
           setTimeout(() => {
             // tslint:disable-next-line:forin
             for (const i in info['ymatrix']) {
-             if ('Y_pred' in info) {
+              this.plotFitted.data[0].x[i] = info['ymatrix'][i] ;
+              this.plotFitted.data[0].y[i] = info['Y_adj'][i];
+              this.plotFitted.data[0].text[i] = info['obj_nam'][i];
+
+              if ('Y_pred' in info) {
                this.ChartDataPredicted[0].data[i] = { x: info['ymatrix'][i], y: info['Y_pred'][i]};
                this.ChartDataPredicted[1].data[i] = { x: info['ymatrix'][i], y: info['ymatrix'][i]};
               }
               this.ChartDataFitted[0].data[i] = { x: info['ymatrix'][i], y: info['Y_adj'][i]};
               this.ChartDataFitted[1].data[i] = { x: info['ymatrix'][i], y: info['ymatrix'][i]};
               this.ChartLabels[i] = info['obj_nam'][i];
+
             }
           }, 50);
       },
