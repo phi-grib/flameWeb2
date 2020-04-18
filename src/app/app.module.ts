@@ -34,6 +34,14 @@ import { ManagePredictionsComponent } from './manage-predictions/manage-predicti
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.component';
 import { DataTablesModule } from 'angular-datatables';
+import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+import { PlotlyModule } from 'angular-plotly.js';
+
+// import { PlotlyViaCDNModule } from 'angular-plotly.js';
+
+PlotlyModule.plotlyjs = PlotlyJS;
+// PlotlyViaCDNModule.plotlyVersion = '1.49.4';
+
 
 @NgModule({
   declarations: [
@@ -69,8 +77,9 @@ import { DataTablesModule } from 'angular-datatables';
     NgMultiSelectDropDownModule.forRoot(),
     ChecklistModule,
     ChartsModule,
-    NgbModule
-
+    NgbModule,
+    // PlotlyViaCDNModule,
+    PlotlyModule
   ],
   providers: [Model, Prediction, Globals, Manager, Similarity],
   bootstrap: [AppComponent]

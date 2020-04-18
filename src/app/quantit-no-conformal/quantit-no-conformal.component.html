@@ -43,6 +43,8 @@
                         
                         <div class="col-9">
                             <div style="display: block">
+
+                                
                                 <canvas baseChart
                                     [datasets]="ChartDataPredicted"
                                     [options]="ChartOptions"
@@ -82,12 +84,19 @@
                         </div>
                         <div class="col-9">
                             <div style="display: block">
-                                <canvas baseChart
+
+                                <!-- <canvas baseChart
                                     [datasets]="ChartDataFitted"
                                     [options]="ChartOptions"
                                     [labels]="ChartLabels"
                                     [chartType]="ChartType">
-                                </canvas>
+                                </canvas> -->
+
+                                <plotly-plot 
+                                    [data]="plotFitted.data" 
+                                    [layout]="plotFitted.layout" >
+                                </plotly-plot>
+
                             </div>
                         </div>
                     </div>
