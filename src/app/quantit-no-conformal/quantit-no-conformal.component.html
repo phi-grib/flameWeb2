@@ -19,7 +19,7 @@
             <div class="tab-pane fade show active" id="pills-prediction" role="tabpanel" aria-labelledby="pills-prediction-tab" >
                 
                 <div class="card-body">
-
+                    <!-- <div id="container"> -->
                     <div class="row justify-content-between">
                         <div class="col-3 mt-1">
                             
@@ -41,18 +41,24 @@
                             </table> 
                         </div>
                         
-                        <div class="col-9">
-                            <div style="display: block">
+                        <!-- <div class="col-9"> -->
+                            <div>
+                                <plotly-plot 
+                                    [data]="plotPredicted.data" 
+                                    [layout]="plotCommon.layout" 
+                                    [config]="plotCommon.config">
+                                </plotly-plot>  
 
-                                
+                            </div>
+                            <!-- <div style="display: block">
                                 <canvas baseChart
                                     [datasets]="ChartDataPredicted"
                                     [options]="ChartOptions"
                                     [labels]="ChartLabels"
                                     [chartType]="ChartType">
                                 </canvas>
-                            </div>
-                        </div>
+                            </div> -->
+                        <!-- </div> -->
                     </div>
 
                 </div>
@@ -64,7 +70,9 @@
                 <div class="card-body">
     
                     <div class="row justify-content-between">
-                        <div class="col-3 mt-1">
+                    <!-- <div id="container"> -->
+
+                        <div class="col-3 ">
                             <table class="table table-sm mt-4">
                                 <tbody>
                                     <tr>
@@ -80,10 +88,12 @@
                                         <td class="text-right text-capitalize">{{modelValidationInfo['SDEC'][1]}}</td>
                                     </tr>
                                 </tbody>
-                            </table>    
-                        </div>
-                        <div class="col-9">
-                            <div style="display: block">
+                            </table>
+                        </div>  
+
+                        <!-- <div class="col-8"> -->
+                        <!-- <div style="display: block"> -->
+                        <div>
 
                                 <!-- <canvas baseChart
                                     [datasets]="ChartDataFitted"
@@ -91,13 +101,13 @@
                                     [labels]="ChartLabels"
                                     [chartType]="ChartType">
                                 </canvas> -->
-
+                                
                                 <plotly-plot 
                                     [data]="plotFitted.data" 
-                                    [layout]="plotFitted.layout" >
+                                    [layout]="plotCommon.layout" 
+                                    [config]="plotCommon.config">
                                 </plotly-plot>
 
-                            </div>
                         </div>
                     </div>
 

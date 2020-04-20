@@ -1,18 +1,14 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { QuantitNoConformalService } from './quantit-no-conformal.service';
-import {Model} from '../Globals';
-import { ChartDataSets, ChartType, ChartOptions} from 'chart.js';
-import { Label} from 'ng2-charts';
+import { Model} from '../Globals';
 import { CommonService } from '../common.service';
-
-import * as PlotlyJS from 'plotly.js/dist/plotly.js';
-import { PlotlyModule } from 'angular-plotly.js';
 
 @Component({
   selector: 'app-quantit-no-conformal',
   templateUrl: './quantit-no-conformal.component.html',
   styleUrls: ['./quantit-no-conformal.component.css']
 })
+
 export class QuantitNoConformalComponent implements OnChanges {
 
   constructor(private service: QuantitNoConformalService,
@@ -21,6 +17,7 @@ export class QuantitNoConformalComponent implements OnChanges {
 
   @Input() modelName;
   @Input() modelVersion;
+
   modelDocumentation = undefined;
   orderDocumentation = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
   'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
@@ -37,138 +34,110 @@ export class QuantitNoConformalComponent implements OnChanges {
   modelValidationInfo = {};
   data: Array<any>;
 
-  // Options
-  public ChartOptionsFitted : ChartOptions = {}
-  public ChartOptions: ChartOptions = {
-    responsive: true,
-    animation: {
-      duration: 0
-    }, 
-    tooltips: {
-      callbacks: {
-        label: function(tooltipItem, data) {
-            // var label = data.datasets[tooltipItem.datasetIndex].label || '';
-
-            // if (label) {
-            //     label += ': ';
-            // }
-            // var labelx = Math.round(tooltipItem.xLabel * 100) / 100;
-            // var labely = Math.round(tooltipItem.yLabel * 100) / 100;
-            // return '(' + labelx + ', ' + labely + ')';
-            return '(' + tooltipItem.xLabel + ', ' + tooltipItem.yLabel + ')';
-
-         },
-         title: function(tooltipItem, data) {
-          const label = data.labels[tooltipItem[0].index];
-          return label;
-         }
-      },
-      titleFontSize: 16,
-      bodyFontSize: 14
-    },
-   scales: {
-      xAxes: [{
-        type: 'linear',
-        position: 'bottom',
-        scaleLabel: {
-          display: true,
-          fontSize: 20,
-          labelString: 'Experimental',
-        },
-        ticks: {
-          fontSize: 15
-        }
-      }],
-      yAxes: [{
-        scaleLabel: {
-          display: true,
-          fontSize: 20,
-          labelString: 'Model',
-        },
-        ticks: {
-          fontSize: 15
-        }
-      }],
-
-      ticks: {
-        min: -8,
-        max: -3,
-      }
-    },
-    legend: {
-      display: false
-    }
-  };
-
   public plotFitted = {
     data: [
-        { x: [], 
-          y: [], 
-          text: [],
-          type: 'scatter', 
-          mode: 'markers', 
-          marker: {
+      { x: [], 
+        y: [], 
+        text: [],
+        type: 'scatter', 
+        mode: 'markers', 
+        marker: {
+          color: 'rgba(255,0,0,0.2)',
+          size: 12,
+          line: {
             color: 'red',
-            opacity: 0.2,
-            size: 12,
-            line: {
-              color: 'red',
-              opacity: 1,
-              width: 4
-            }
+            width: 2
           }
         }
+      },
+      { x: [], 
+        y: [], 
+        type: 'scatter', 
+        mode: 'lines', 
+        line: {
+          color: 'black',
+          width: 2
+        }
+      }
     ],
-    layout: {width: 900, height: 600}
+  }
+  public plotPredicted = {
+    data: [
+      { x: [], 
+        y: [], 
+        text: [],
+        type: 'scatter', 
+        mode: 'markers', 
+        marker: {
+          color: 'rgba(255,0,0,0.2)',
+          size: 12,
+          line: {
+            color: 'red',
+            width: 2
+          }
+        }
+      },
+      { x: [], 
+        y: [], 
+        type: 'scatter', 
+        mode: 'lines', 
+        line: {
+          color: 'black',
+          width: 2
+        }
+      }
+    ],
+  }
+
+  public plotCommon = {
+    layout: { 
+          width: 950,
+          height: 600,
+          margin: {
+            r: 10,
+            t: 30,
+            pad: 0
+          },
+          showlegend: false,
+          showtitle: false,
+          xaxis: {
+            showgrid: true,
+            showline: true,
+            gridwidth: 1,
+            linecolor: 'rgb(200,200,200)',
+            linewidth: 2,
+            title: 'Experimental',
+            titlefont: {
+              family: 'Barlow Semi Condensed, sans-serif',
+              size: 24,
+            },
+            tickfont: {
+              family: 'Barlow Semi Condensed, sans-serif',
+              size: 18,
+            },
+          },
+          yaxis: {
+            showgrid: true,
+            showline: true,
+            gridwidth: 1,
+            linecolor: 'rgb(200,200,200)',
+            linewidth: 2,
+            title: 'Model',
+            titlefont: {
+              family: 'Barlow Semi Condensed, sans-serif',
+              size: 24,
+            },
+            tickfont: {
+              family: 'Barlow Semi Condensed, sans-serif',
+              size: 18,
+            },
+      },
+    },
+    config: {
+          // responsive: true,
+          displaylogo: false,
+          modeBarButtonsToRemove: ['lasso2d', 'autoScale2d']    }
   };
-
-  public ChartLabels: Label[] = [];
-
-  public ChartDataPredicted: ChartDataSets[] = [
-    {
-      data: [],
-      pointRadius: 5,
-      pointBorderWidth: 2,
-      pointBorderColor: 'rgba(255,0,0,1)',
-      pointBackgroundColor: 'rgba(255,0,0,0.2)',
-      type: 'scatter',
-      showLine: false,
-      fill: true
-    },
-    {
-      data: [],
-      borderColor: 'rgba(0,0,0,0.8)',
-      type: 'line',
-      showLine: true,
-      fill: false,
-      pointRadius: 0,
-      borderWidth: 3
-    },
-  ];
-
-  public ChartDataFitted: ChartDataSets[] = [
-    {
-      data: [],
-      pointRadius: 5,
-      pointBorderWidth: 2,
-      pointBorderColor: 'rgba(255,0,0,1)',
-      pointBackgroundColor: 'rgba(255,0,0,0.2)',
-      type: 'scatter',
-      showLine: false,
-      fill: false
-    },
-    {
-      data: [],
-      borderColor: 'rgba(0,0,0,0.8)',
-      type: 'line',
-      showLine: true,
-      fill: false,
-      pointRadius: 0,
-      borderWidth: 3
-    },
-  ];
-
-  public ChartType: ChartType = 'line';
 
 
   ngOnChanges(): void {
@@ -177,11 +146,10 @@ export class QuantitNoConformalComponent implements OnChanges {
     this.plotFitted.data[0].y = [];
     this.plotFitted.data[0].text = [];
 
-    this.ChartDataFitted[0].data = [];
-    this.ChartDataFitted[1].data = [];
-    this.ChartDataPredicted[0].data = [];
-    this.ChartDataPredicted[1].data = [];
-    this.ChartLabels = [];
+    this.plotPredicted.data[0].x = [];
+    this.plotPredicted.data[0].y = [];
+    this.plotPredicted.data[0].text = [];
+
     this.getDocumentation();
     this.getValidation();
   }
@@ -207,20 +175,21 @@ export class QuantitNoConformalComponent implements OnChanges {
           }
           setTimeout(() => {
             // tslint:disable-next-line:forin
-            for (const i in info['ymatrix']) {
-              this.plotFitted.data[0].x[i] = info['ymatrix'][i] ;
-              this.plotFitted.data[0].y[i] = info['Y_adj'][i];
-              this.plotFitted.data[0].text[i] = info['obj_nam'][i];
+            
+            this.plotFitted.data[0].x = info['ymatrix'] ;
+            this.plotFitted.data[0].y = info['Y_adj'];
+            this.plotFitted.data[0].text = info['obj_nam'];
+            this.plotFitted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])]  ;
+            this.plotFitted.data[1].y = [ Math.min.apply(Math, info['Y_adj']), Math.max.apply(Math, info['Y_adj'])]  ;
 
-              if ('Y_pred' in info) {
-               this.ChartDataPredicted[0].data[i] = { x: info['ymatrix'][i], y: info['Y_pred'][i]};
-               this.ChartDataPredicted[1].data[i] = { x: info['ymatrix'][i], y: info['ymatrix'][i]};
-              }
-              this.ChartDataFitted[0].data[i] = { x: info['ymatrix'][i], y: info['Y_adj'][i]};
-              this.ChartDataFitted[1].data[i] = { x: info['ymatrix'][i], y: info['ymatrix'][i]};
-              this.ChartLabels[i] = info['obj_nam'][i];
-
+            if ('Y_pred' in info) {
+              this.plotPredicted.data[0].x = info['ymatrix'] ;
+              this.plotPredicted.data[0].y = info['Y_pred'];
+              this.plotPredicted.data[0].text = info['obj_nam'];
+              this.plotPredicted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])]  ;
+              this.plotPredicted.data[1].y = [ Math.min.apply(Math, info['Y_pred']), Math.max.apply(Math, info['Y_pred'])]  ;
             }
+
           }, 50);
       },
       error => {
