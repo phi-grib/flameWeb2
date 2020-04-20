@@ -48,7 +48,7 @@ export class ManageModelsComponent implements OnInit {
             this.modelName = '';
             this.model.listModels = {};
             $('#dataTableModels').DataTable().destroy();
-           this.func.getModelList();
+            this.func.getModelList();
             this.toastr.success('Model ' + result.modelName, 'CREATED', {
               timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
             });
@@ -73,7 +73,7 @@ export class ManageModelsComponent implements OnInit {
         });
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
-       this.func.getModelList();
+        this.func.getModelList();
         this.model.name = undefined ;
         this.model.version = undefined;
       },
@@ -115,7 +115,7 @@ export class ManageModelsComponent implements OnInit {
           timeOut: 5000, positionClass: 'toast-top-right'});
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
-       this.func.getModelList();
+        this.func.getModelList();
       },
       error => {
        alert('Error cloning');
@@ -138,7 +138,7 @@ export class ManageModelsComponent implements OnInit {
         this.manage.file = undefined;
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
-       this.func.getModelList();
+        this.func.getModelList();
       },
       error => {
         this.toastr.error('Model \'' + error.error.Model + '\' already exist' , 'ERROR IMPORTING', {

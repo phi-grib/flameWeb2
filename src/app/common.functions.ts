@@ -23,69 +23,71 @@ export class CommonFunctions {
     let num_models = 0;
     this.commonService.getModelList().subscribe(
         result => {
-          // result = JSON.parse(result[1]);
-          this.model.trained_models = [];
-          for (const model of result) {
-            const modelName = model.modelname;
-            const version = model.version;
-            
-            // INFO OF EACH MODEL
-            num_models++;
+          if (result[0]) {
+            this.model.trained_models = [];
+            for (const model of result[1]) {
+              const modelName = model.modelname;
+              const version = model.version;
+              
+              // INFO OF EACH MODEL
+              num_models++;
 
-            // fallback
-            this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
-                variables: '-', type: '-', quality: {}, quantitative: false, conformal: false, ensemble: false, error: model.info};
+              // fallback
+              this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
+                  variables: '-', type: '-', quality: {}, quantitative: false, conformal: false, ensemble: false, error: model.info};
 
-            if (typeof(model.info) !== 'string') {
-              if (model.info['code'] != 0) {
+              if (typeof(model.info) !== 'string') {
+                if (model.info['code'] != 0) {
 
-                const dict_info = {};
-                
-                for (const aux of model.info) {
-                  dict_info[aux[0]] = aux[2];
-                }
-                const quality = {};
-                for (const info of (Object.keys(dict_info))) {
-                  if (typeof(dict_info[info]) === 'number') {
-                    quality[info] =  parseFloat(dict_info[info].toFixed(3));
+                  const dict_info = {};
+                  
+                  for (const aux of model.info) {
+                    dict_info[aux[0]] = aux[2];
                   }
+                  const quality = {};
+                  for (const info of (Object.keys(dict_info))) {
+                    if (typeof(dict_info[info]) === 'number') {
+                      quality[info] =  parseFloat(dict_info[info].toFixed(3));
+                    }
+                  }
+                  this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: true,
+                  numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality,
+                  quantitative: dict_info['quantitative'], conformal: dict_info['conformal'], ensemble: dict_info['ensemble'], 
+                  error: undefined };
+                  this.model.trained_models.push(modelName + ' .v' + version);
                 }
-                this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: true,
-                numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality,
-                quantitative: dict_info['quantitative'], conformal: dict_info['conformal'], ensemble: dict_info['ensemble'], 
-                error: undefined };
-                this.model.trained_models.push(modelName + ' .v' + version);
-              }
-              else {
-                this.model.listModels[modelName + '-' + version].error = model.info['message'];
-              }
-            } 
-            num_models--;
+                else {
+                  this.model.listModels[modelName + '-' + version].error = model.info['message'];
+                }
+              } 
+              num_models--;
 
-          }
-          const intervalId = setInterval(() => {
-            if (num_models <= 0) {
-              if (this.objectKeys(this.model.listModels).length > 0) {
-                const a = this.objectKeys(this.model.listModels).sort();
-                this.model.name = this.model.listModels[a[0]].name;
-                this.model.version = this.model.listModels[a[0]].version;
-                this.model.trained = this.model.listModels[a[0]].trained;
-                this.model.conformal = this.model.listModels[a[0]].conformal;
-                this.model.quantitative = this.model.listModels[a[0]].quantitative;
-                this.model.ensemble = this.model.listModels[a[0]].ensemble;
-                this.model.error = this.model.listModels[a[0]].error;
-              }
-              const table = $('#dataTableModels').DataTable({'autoWidth': false});
-              this.globals.tableModelVisible = true;
-              clearInterval(intervalId);
             }
-          }, 10);
+            const intervalId = setInterval(() => {
+              if (num_models <= 0) {
+                if (this.objectKeys(this.model.listModels).length > 0) {
+                  const a = this.objectKeys(this.model.listModels).sort();
+                  this.model.name = this.model.listModels[a[0]].name;
+                  this.model.version = this.model.listModels[a[0]].version;
+                  this.model.trained = this.model.listModels[a[0]].trained;
+                  this.model.conformal = this.model.listModels[a[0]].conformal;
+                  this.model.quantitative = this.model.listModels[a[0]].quantitative;
+                  this.model.ensemble = this.model.listModels[a[0]].ensemble;
+                  this.model.error = this.model.listModels[a[0]].error;
+                }
+                const table = $('#dataTableModels').DataTable({'autoWidth': false});
+                this.globals.tableModelVisible = true;
+                clearInterval(intervalId);
+              }
+            }, 10);
+        
+          }
+          else {
+            alert(result[1]);
+          }
         },
         error => {
-          /*this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
-                  variables: '-', type: '-', quality: {}};
-                  num_models--;*/
-          console.log(error);
+          alert('Unable to retrieve model list');
         }
       );
   }

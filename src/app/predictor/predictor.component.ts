@@ -66,17 +66,22 @@ export class PredictorComponent implements OnInit {
 
     this.commonService.getModelList().subscribe(
         result => {
-          // result = JSON.parse(result[1]);
-          for (const model of result) {
-            if (typeof(model.info) === 'object' ) {
-              const modelName = model.modelname;
-              if (!(modelName in  this.models)) {
-                this.models[modelName] = [];
-              }
-              if (model.info) {
-                this.models[modelName].push(model.version);
+          if (result[0]){
+
+            for (const model of result[1]) {
+              if (typeof(model.info) === 'object' ) {
+                const modelName = model.modelname;
+                if (!(modelName in  this.models)) {
+                  this.models[modelName] = [];
+                }
+                if (model.info) {
+                  this.models[modelName].push(model.version);
+                }
               }
             }
+          }
+          else {
+            alert(result[1]);
           }
         }
     );

@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { QuantitNoConformalService } from './quantit-no-conformal.service';
-import { Model} from '../Globals';
+import { Model } from '../Globals';
 import { CommonService } from '../common.service';
 
 @Component({

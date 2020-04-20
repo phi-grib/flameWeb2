@@ -37,25 +37,31 @@ export class PredictionListComponent implements OnInit {
     this.tableVisible = false;
     this.commonService.getPredictionList().subscribe(
         result => {
-          this.prediction.predictions = result;
-          setTimeout(() => {
-            const table = $('#dataTablePredictions').DataTable({
-              /*Ordering by date */
-              order: [[4, 'desc']],
-              columnDefs: [{ 'type': 'date-euro', 'targets': 4 }]
-            });
-            if (result.length > 0) {
-              this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
-              this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
-              this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
-              this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
-            }
-            $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
-              $('tr').removeClass('selected'); // removes all highlights from tr's
-              $(this).addClass('selected'); // adds the highlight to this row
-            });
-            this.tableVisible = true;
-          }, 100);
+          if (result[0]) {
+            this.prediction.predictions = result[1];
+
+            setTimeout(() => {
+              const table = $('#dataTablePredictions').DataTable({
+                /*Ordering by date */
+                order: [[4, 'desc']],
+                columnDefs: [{ 'type': 'date-euro', 'targets': 4 }]
+              });
+              if (result.length > 0) {
+                this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
+                this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
+                this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
+                this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
+              }
+              $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
+                $('tr').removeClass('selected'); // removes all highlights from tr's
+                $(this).addClass('selected'); // adds the highlight to this row
+              });
+              this.tableVisible = true;
+            }, 100);
+          } 
+          else {
+            alert(result[1]);
+          }
         },
         error => {
           alert(error.message);
