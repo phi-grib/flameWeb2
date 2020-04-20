@@ -1,59 +1,13 @@
-.TP {
-    background-color: rgba(0,255,0,0.3);
-}
-.FP {
-    background-color:rgba(235,143,3,0.3);
-}
-.TN {
-    background-color:rgba(3,49,155,0.3);
-}
-.FN {
-    background-color:rgba(255,0,0,0.3);
-}
-.card-header {
-    background: #B8DCED;
-    background-color: #B8DCED;
-}
-
-#matrix * {
-  padding: 0px;
-  text-align: center;
-}
-
-.rotate > span {
-  transform: rotate(-90deg);
-  position:absolute;
-  left:10;
-  right:0;
-  top: 10px;
-  margin:auto;
-  
-}
-
 ul li.nav-item a {
     background:white;
     color: #6C757D;
-  }
+}
   
 ul li.nav-item a.active{
     background: #F0F0F0;
     color: #6C757D;
 }
   
-
-/* ul li a {
-    background: #0076a3;
-    color: #B8DCED;
-   
-}
-
-ul li a.active{
-    background: #22577a;
-    color: white;
-    border-bottom: 3px solid #e59300;
-} */
-
-
 table td {
     padding-top: 1px;
     padding-bottom: 1px;
