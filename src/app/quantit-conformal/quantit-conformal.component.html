@@ -32,7 +32,16 @@
                                 </tbody>
                             </table>    
                         </div>
-                        <div class="col-9">
+
+                        <div>
+                            <plotly-plot 
+                                [data]="plotPredictedConf.data" 
+                                [layout]="plotCommon.layout" 
+                                [config]="plotCommon.config">
+                            </plotly-plot>  
+                        </div>
+
+                        <!-- <div class="col-9">
                             <div style="display: block">
                                 <canvas baseChart #QuantitConformalChart
                                     [datasets]="ChartDataFitted"
@@ -41,7 +50,7 @@
                                     [chartType]="ChartType">
                                 </canvas>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
