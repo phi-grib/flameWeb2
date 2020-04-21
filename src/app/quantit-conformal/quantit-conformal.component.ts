@@ -208,19 +208,54 @@ export class QuantitConformalComponent implements OnChanges {
 
           setTimeout(() => {
 
-            const ymean = this.modelConformal['Conformal_interval_medians'];
-            const yint  = this.modelConformal['Conformal_prediction_ranges']; // (min, max)
-            this.plotPredictedConf.data[0].x = info['ymatrix'] ;
-            this.plotPredictedConf.data[0].y = ymean;
-
-            for (const i in info['ymatrix']) {
-              this.plotPredictedConf.data[0].error_y.array[i] = yint[i][1] - ymean[i];
-              this.plotPredictedConf.data[0].error_y.arrayminus[i] = ymean[i] - yint[i][0];
+            // predicted data
+            if ('Y_pred' in info) {
+              this.plotPredictedConf.data[0].x = info['ymatrix'] ;
+              this.plotPredictedConf.data[0].y = info['Y_pred'];
+              
+              const yintpred  = this.modelConformal['Conformal_prediction_ranges']; // (min, max)
+              for (const i in info['ymatrix']) {
+                this.plotPredictedConf.data[0].error_y.array[i] = yintpred[i][1] - info['Y_pred'][i];
+                this.plotPredictedConf.data[0].error_y.arrayminus[i] = info['Y_pred'][i] - yintpred[i][0];
+              }
+              
+              this.plotPredictedConf.data[0].text = info['obj_nam'];
+              this.plotPredictedConf.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
+              this.plotPredictedConf.data[1].y = [ Math.min.apply(Math, info['Y_pred']),Math.max.apply(Math, info['Y_pred'])];
             }
-            
-            this.plotPredictedConf.data[0].text = info['obj_nam'];
-            this.plotPredictedConf.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
-            this.plotPredictedConf.data[1].y = [ Math.min.apply(Math, ymean),Math.max.apply(Math, ymean)];
+            else { // legacy method
+              const ymean = this.modelConformal['Conformal_interval_medians'];
+              const yint  = this.modelConformal['Conformal_prediction_ranges']; // (min, max)
+  
+              this.plotPredictedConf.data[0].x = info['ymatrix'] ;
+              this.plotPredictedConf.data[0].y = ymean;
+  
+              for (const i in info['ymatrix']) {
+                this.plotPredictedConf.data[0].error_y.array[i] = yint[i][1] - ymean[i];
+                this.plotPredictedConf.data[0].error_y.arrayminus[i] = ymean[i] - yint[i][0];
+              }
+              
+              this.plotPredictedConf.data[0].text = info['obj_nam'];
+              this.plotPredictedConf.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
+              this.plotPredictedConf.data[1].y = [ Math.min.apply(Math, ymean),Math.max.apply(Math, ymean)];
+              
+            }
+
+            // ajusted data
+              if ('Y_adj' in info) {
+              this.plotFittedConf.data[0].x = info['ymatrix'] ;
+              this.plotFittedConf.data[0].y = info['Y_adj'];
+              
+              const yintfit  = this.modelConformal['Conformal_prediction_ranges_fitting']; // (min, max)
+              for (const i in info['ymatrix']) {
+                this.plotFittedConf.data[0].error_y.array[i] = yintfit[i][1] - info['Y_adj'][i];
+                this.plotFittedConf.data[0].error_y.arrayminus[i] = info['Y_adj'][i] - yintfit[i][0];
+              }
+              
+              this.plotFittedConf.data[0].text = info['obj_nam'];
+              this.plotFittedConf.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
+              this.plotFittedConf.data[1].y = [ Math.min.apply(Math, info['Y_adj']),Math.max.apply(Math, info['Y_adj'])];
+            }
 
           }, 50);
         },
