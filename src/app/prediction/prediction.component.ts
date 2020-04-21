@@ -3,8 +3,8 @@ import { Prediction} from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonService } from '../common.service';
 import { Subject } from 'rxjs';
-import { SingleDataSet, Label } from 'ng2-charts';
-import { ChartType} from 'chart.js';
+// import { SingleDataSet, Label } from 'ng2-charts';
+// import { ChartType} from 'chart.js';
 import { PredictionService } from './prediction.service';
 import 'datatables.net-bs4';
 import 'datatables.net-buttons-bs4';
@@ -48,32 +48,75 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   modelValidationInfo = {};
   submodels = [];
   submodelsIndex = 0;
-  // PolarArea
-  public polarChartOptions: any = {
-    responsive: true,
-    animation: false, 
-    startAngle : 1 * Math.PI,
-    scale: {
-      gridLines: {
-        color: 'rgba(0, 0, 0, 0.5)'
+
+  // // PolarArea
+  // public polarChartOptions: any = {
+  //   responsive: true,
+  //   animation: false, 
+  //   startAngle : 1 * Math.PI,
+  //   scale: {
+  //     gridLines: {
+  //       color: 'rgba(0, 0, 0, 0.5)'
+  //     },
+  //     ticks: {
+  //       color: 'rgba(0, 0, 0, 0.5)',
+  //       // fontStyle : 'bold'
+  //     }
+  //   }
+  // };
+  // public polarAreaChartLabels: Label[] = ['TP', 'FP', 'TN', 'FN'];
+  // public polarAreaChartData: SingleDataSet = [0, 0, 0, 0];
+  // public polarAreaLegend = true;
+  // public polarAreaChartType: ChartType = 'polarArea';
+  // public polarAreaChartColors = [
+  //   {
+  //     // backgroundColor: ['rgba(0,255,0,0.3)', 'rgba(235,143,3,0.3)', 'rgba(3,49,155,0.3)', 'rgba(255,0,0,0.3)'],
+  //     backgroundColor: ['rgba(0,255,0,0.8)', 'rgba(255,153,3,0.8)', 'rgba(80,190,25,0.8)', 'rgba(255,80,75,0.8)'],
+  //   },
+  // ];
+
+  public predictData = [{
+    offset: 45, 
+    r: [],
+    theta: ["TP", "FN", "TN", "FP"],
+    meta: ["TP", "FN", "TN", "FP"],
+    marker: {
+      opacity: 0.8,
+      color: ['green','red','green','orange'],
+    },
+    type: "barpolar",
+    hovertemplate: "%{meta}: %{r}<extra></extra>"
+}]
+
+public plotCommon = {
+  layout :{
+    width: 350,
+    // height: 600,
+    polar: {
+      bargap: 0,
+      gridcolor: "grey",
+      gridwidth: 1,
+      radialaxis: {
+        angle: 90,
+        ticks: '', 
+        tickfont: {
+          size: 12,
+          fontStyle: 'Barlow Semi Condensed, sans-serif',
+        },
+        // dtick: 20,
       },
-      ticks: {
-        color: 'rgba(0, 0, 0, 0.5)',
-        // fontStyle : 'bold'
+      angularaxis: {
+        showticklabels: false, 
+        ticks:'',
       }
     }
-  };
-  public polarAreaChartLabels: Label[] = ['TP', 'FP', 'TN', 'FN'];
-  public polarAreaChartData: SingleDataSet = [0, 0, 0, 0];
-  public polarAreaLegend = true;
-  public polarAreaChartType: ChartType = 'polarArea';
-  public polarAreaChartColors = [
-    {
-      // backgroundColor: ['rgba(0,255,0,0.3)', 'rgba(235,143,3,0.3)', 'rgba(3,49,155,0.3)', 'rgba(255,0,0,0.3)'],
-      backgroundColor: ['rgba(0,255,0,0.8)', 'rgba(255,153,3,0.8)', 'rgba(80,190,25,0.8)', 'rgba(255,80,75,0.8)'],
-    },
-  ];
+  },
 
+  config: {
+    // responsive: true,
+    displayModeBar: false
+  }
+};  
   constructor(public prediction: Prediction,
               public service: PredictionService,
               private commonService: CommonService) { }
@@ -161,6 +204,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.molIndex = 0;
     this.submodelsIndex = 0;
     this.modelBuildInfo = {};
+    this.predictData[0].r = [0, 0, 0, 0];
     this.getInfo();
     this.getDocumentation();
     this.getPrediction();
@@ -254,8 +298,13 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           }
         }
         if ('TP' in this.modelValidationInfo) {
-          this.polarAreaChartData = [this.modelValidationInfo['TP'][1], this.modelValidationInfo['FP'][1],
-          this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
+          this.predictData[0].r = [this.modelValidationInfo['TP'][1], 
+          this.modelValidationInfo['FN'][1],
+          this.modelValidationInfo['TN'][1], 
+          this.modelValidationInfo['FP'][1]];
+
+          // this.polarAreaChartData = [this.modelValidationInfo['TP'][1], this.modelValidationInfo['FP'][1],
+          // this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
         }
         setTimeout(() => {
 

@@ -27,6 +27,13 @@ ul li.nav-item a.active{
   color: #6C757D;
 }
 
+#container {
+  display: flex;
+  height: 250px; 
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* rotating circle to show progress */
 
 .TP {

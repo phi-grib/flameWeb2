@@ -16,7 +16,7 @@ import { ConfigTrainingComponent } from './config-training/config-training.compo
 import { ConfigModelComponent } from './config-model/config-model.component';
 import { ConfigPreferencesComponent } from './config-preferences/config-preferences.component';
 import { ChecklistModule } from 'angular-checklist';
-import { ChartsModule } from 'ng2-charts';
+// import { ChartsModule } from 'ng2-charts';
 import { QualitNoConformalComponent } from './qualit-no-conformal/qualit-no-conformal.component';
 import { QualitConformalComponent } from './qualit-conformal/qualit-conformal.component';
 import { QuantitNoConformalComponent } from './quantit-no-conformal/quantit-no-conformal.component';
@@ -76,7 +76,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ToastrModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     ChecklistModule,
-    ChartsModule,
+    // ChartsModule,
     NgbModule,
     // PlotlyViaCDNModule,
     PlotlyModule

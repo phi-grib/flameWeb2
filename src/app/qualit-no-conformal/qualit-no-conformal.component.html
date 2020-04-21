@@ -46,16 +46,11 @@
                             ></app-confusion-matrix>
                         </div>
                         <div class="col-4">
-                                <div style="display: block">
-                                <canvas baseChart
-                                        [data]="polarAreaChartData"
-                                        [options]="polarChartOptions"
-                                        [labels]="polarAreaChartLabels"
-                                        [legend]="polarAreaLegend"
-                                        [colors]="polarAreaChartColors"
-                                        [chartType]="polarAreaChartType">
-                                </canvas>
-                            </div>
+                            <plotly-plot 
+                                [data]="predictData" 
+                                [layout]="plotCommon.layout"
+                                [config]="plotCommon.config">
+                            </plotly-plot> 
                         </div>
                     </div>
                 </div>
@@ -93,16 +88,11 @@
                             ></app-confusion-matrix>                 
                         </div>
                         <div class="col-4">
-                            <div style="display: block">
-                                <canvas baseChart
-                                    [data]="polarAreaChartData2"
-                                    [options]="polarChartOptions"
-                                    [labels]="polarAreaChartLabels"
-                                    [legend]="polarAreaLegend"
-                                    [colors]="polarAreaChartColors"
-                                    [chartType]="polarAreaChartType">
-                                </canvas>
-                            </div>
+                            <plotly-plot 
+                                [data]="fittingData" 
+                                [layout]="plotCommon.layout"
+                                [config]="plotCommon.config">
+                            </plotly-plot> 
                         </div>
                     </div>
                 </div>
