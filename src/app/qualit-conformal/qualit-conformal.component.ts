@@ -62,12 +62,19 @@ export class QualitConformalComponent implements OnChanges {
 
     public plotCommon = {
       layout :{
-        width: 400,
+        width: 350,
         // height: 600,
         polar: {
           bargap: 0,
+          gridcolor: "grey",
+          gridwidth: 1,
           radialaxis: {
-            angle: 90, 
+            angle: 90,
+            ticks: '', 
+            tickfont: {
+              size: 12,
+              fontStyle: 'Barlow Semi Condensed, sans-serif',
+            },
             // dtick: 20,
           },
           angularaxis: {
