@@ -5,6 +5,11 @@ body {
     /*height: 100%;*/
 }
 
+.dropdown {
+  font-family: 'Barlow Semi Condensed', 'sans-serif';
+  font-size: 20px;
+}
+
 #toast-container > div {
     opacity:1;
 }
@@ -89,7 +94,7 @@ table.dataTable thead .sorting_desc_disabled:after {
   /* .caret {
     cursor: pointer;
     user-select: none; /* Prevent text selection */
-  /* } */ 
+  /* }  */ 
   
   /* Create the caret/arrow with a unicode, and style it */
   /* .caret::before {
@@ -97,7 +102,7 @@ table.dataTable thead .sorting_desc_disabled:after {
     color: black;
     display: inline-block;
     margin-right: 6px;
-  } */
+  }  */
   
   /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
   /* .caret-down::before {
@@ -107,7 +112,7 @@ table.dataTable thead .sorting_desc_disabled:after {
   /* Hide the nested list */
   /* .nested {
     display: none;
-  } */
+  }  */
   
   /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
   /* .active {
