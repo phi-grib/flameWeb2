@@ -22,15 +22,15 @@
                             <table class="table table-sm mt-4">
                                 <tbody>
                                     <tr>
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity'][0]}}"><strong>Sensitivity:</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity'][0]}}"><strong>Sensitivity</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['Sensitivity'][1]}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Specificity'][0]}}"><strong>Specificity:</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Specificity'][0]}}"><strong>Specificity</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['Specificity'][1]}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCC'][0]}}"><strong>MCC:</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCC'][0]}}"><strong>MCC</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['MCC'][1]}}</td>
                                     </tr>
                                 </tbody>
@@ -38,11 +38,11 @@
                         </div>
                         <div class="col-4">
                             <!--CONFUSION MATRIX-->
-                                <app-confusion-matrix 
-                                [TP] = "this.modelValidationInfo['TP'][1]"
-                                [FP] = "this.modelValidationInfo['FP'][1]"
-                                [FN] = "this.modelValidationInfo['FN'][1]"
-                                [TN] = "this.modelValidationInfo['TN'][1]"
+                            <app-confusion-matrix 
+                                [TP] = "this.modelValidationInfo['TPpred'][1]"
+                                [FP] = "this.modelValidationInfo['FPpred'][1]"
+                                [FN] = "this.modelValidationInfo['FNpred'][1]"
+                                [TN] = "this.modelValidationInfo['TNpred'][1]"
                             ></app-confusion-matrix>
                         </div>
                         <div class="col-4">
@@ -69,15 +69,15 @@
                             <table class="table table-sm mt-4">
                                 <tbody>
                                     <tr>
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SensitivityPed'][0]}}"><strong>Sensitivity:</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SensitivityPed'][0]}}"><strong>Sensitivity</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['SensitivityPed'][1]}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SpecificityPred'][0]}}"><strong>Specificity:</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SpecificityPred'][0]}}"><strong>Specificity</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['SpecificityPred'][1]}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCCpred'][0]}}"><strong>MCC:</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCCpred'][0]}}"><strong>MCC</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['MCCpred'][1]}}</td>
                                     </tr>
                                 </tbody>
@@ -86,10 +86,10 @@
                         <div class="col-3">
                         <!--CONFUSION MATRIX-->
                         <app-confusion-matrix 
-                                [TP] = "this.modelValidationInfo['TPpred'][1]"
-                                [FP] = "this.modelValidationInfo['FPpred'][1]"
-                                [FN] = "this.modelValidationInfo['FNpred'][1]"
-                                [TN] = "this.modelValidationInfo['TNpred'][1]"
+                                [TP] = "this.modelValidationInfo['TP'][1]"
+                                [FP] = "this.modelValidationInfo['FP'][1]"
+                                [FN] = "this.modelValidationInfo['FN'][1]"
+                                [TN] = "this.modelValidationInfo['TN'][1]"
                             ></app-confusion-matrix>                 
                         </div>
                         <div class="col-4">
