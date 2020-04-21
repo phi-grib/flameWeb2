@@ -101,6 +101,8 @@ export class QuantitNoConformalComponent implements OnChanges {
           showlegend: false,
           showtitle: false,
           xaxis: {
+            hoverformat: '.2f',
+            zeroline: false,
             showgrid: true,
             showline: true,
             gridwidth: 1,
@@ -117,6 +119,8 @@ export class QuantitNoConformalComponent implements OnChanges {
             },
           },
           yaxis: {
+            hoverformat: '.2f',
+            zeroline: false,
             showgrid: true,
             showline: true,
             gridwidth: 1,
@@ -136,9 +140,8 @@ export class QuantitNoConformalComponent implements OnChanges {
     config: {
           // responsive: true,
           displaylogo: false,
-          modeBarButtonsToRemove: ['lasso2d', 'autoScale2d']    }
+          modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d']    }
   };
-
 
   ngOnChanges(): void {
 
@@ -174,7 +177,6 @@ export class QuantitNoConformalComponent implements OnChanges {
             }
           }
           setTimeout(() => {
-            // tslint:disable-next-line:forin
             
             this.plotFitted.data[0].x = info['ymatrix'] ;
             this.plotFitted.data[0].y = info['Y_adj'];

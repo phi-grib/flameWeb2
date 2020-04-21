@@ -19,10 +19,8 @@
             <div class="tab-pane fade show active" id="pills-predict" role="tabpanel" aria-labelledby="pills-predict-tab" >
  
                 <div class="card-body">
-
                     <div class="row justify-content-between">
                         <div class="col-3 mt-1">
-                            
                             <table class="table table-sm mt-4">
                                 <tbody>
                                     <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
@@ -32,7 +30,6 @@
                                 </tbody>
                             </table>    
                         </div>
-
                         <div>
                             <plotly-plot 
                                 [data]="plotPredictedConf.data" 
@@ -40,17 +37,6 @@
                                 [config]="plotCommon.config">
                             </plotly-plot>  
                         </div>
-
-                        <!-- <div class="col-9">
-                            <div style="display: block">
-                                <canvas baseChart #QuantitConformalChart
-                                    [datasets]="ChartDataFitted"
-                                    [options]="ChartOptions"
-                                    [labels]="ChartLabels"
-                                    [chartType]="ChartType">
-                                </canvas>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -94,7 +80,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
                                     </div>
                                 </td>
                                 <td *ngIf="!this.modelDocumentation[key].value">-</td>

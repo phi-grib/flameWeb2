@@ -12,7 +12,11 @@ a {
     background:#22577a;
     color: #f7f9ea;
     border-bottom: 2px solid #0076a3;
+}
    
+.formControl{
+    font-family: 'Barlow Semi Condensed', 'sans-serif';
+    font-size: 20px;
 }
 .wrap {
     cursor:not-allowed;
