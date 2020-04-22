@@ -16,6 +16,7 @@ export class QualitConformalComponent implements OnChanges {
     public model: Model,
     private commonService: CommonService) { }
     
+    
     @Input() modelName;
     @Input() modelVersion;
     modelDocumentation = undefined;
@@ -32,6 +33,7 @@ export class QualitConformalComponent implements OnChanges {
     objectKeys = Object.keys;
     modelBuildInfo = {};
     modelValidationInfo = {};
+    modelWarning = '';
     
 
     public predictData = [{
@@ -90,39 +92,8 @@ export class QualitConformalComponent implements OnChanges {
       }
     };  
 
-    // // PolarArea
-    // public polarChartOptions: any = {
-    //   responsive: true,
-    //   animation: false, 
-    //   // animation: { 
-    //   //     duration: 0,
-    //   //   },
-    //     startAngle : 1 * Math.PI,
-    //     scale: {
-    //       gridLines: {
-    //         color: 'rgba(0, 0, 0, 0.5)'
-    //       },
-    //       ticks: {
-    //         color: 'rgba(0, 0, 0, 0.5)',
-    //         // fontStyle : 'bold'
-    //       }
-    //     }
-    // };
-
-    // public polarAreaChartLabels: Label[] = ['TP', 'FP', 'TN', 'FN'];
-    // public polarAreaChartData: SingleDataSet = [0, 0, 0, 0];
-    // public polarAreaChartData2: SingleDataSet = [0, 0, 0, 0];
-    // public polarAreaLegend = true;
-    // public polarAreaChartType: ChartType = 'polarArea';
-    // public polarAreaChartColors = [
-    //   {
-    //     backgroundColor: ['rgba(0,255,0,0.8)', 'rgba(255,153,3,0.8)', 'rgba(80,190,25,0.8)', 'rgba(255,80,75,0.8)'],
-    //   },
-    // ];
-      
     ngOnChanges(): void {
-      // this.polarAreaChartData = [0, 0, 0, 0];
-      // this.polarAreaChartData2 = [0, 0, 0, 0];
+      this.modelWarning = '';
       this.predictData[0].r = [0, 0, 0, 0];
       this.fittingData[0].r = [0, 0, 0, 0];
       this.getDocumentation();
@@ -140,6 +111,11 @@ export class QualitConformalComponent implements OnChanges {
       this.service.getValidation(this.modelName, this.modelVersion).subscribe(
         result => {
           const info = result;
+          
+          // process warnings
+          if (info.warning){
+            this.modelWarning = info.warning;
+          }
           // INFO ABOUT MODEL
           for (const modelInfo of info['model_build_info']) {
             if (typeof modelInfo[2] === 'number') {

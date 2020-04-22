@@ -123,6 +123,15 @@
 
 </div>
 
+<div class="row" *ngIf="this.modelWarning!='' ">
+    <div class="card w-100">
+      <div class="card-body"> 
+        <div class="alert alert-danger text-center" role="alert">
+          {{this.modelWarning}}
+        </div>
+      </div>
+    </div>
+ </div>
 
 <div class="row" *ngIf="this.modelDocumentation !== undefined">
     <div class="card w-100" style="width: 18rem;">

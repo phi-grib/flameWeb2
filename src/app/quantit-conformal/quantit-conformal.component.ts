@@ -30,6 +30,7 @@ export class QuantitConformalComponent implements OnChanges {
     modelBuildInfo = {};
     modelValidationInfo = {};
     modelConformal = {};
+    modelWarning = '';
     data: Array<any>;
 
     @ViewChild('QuantitConformalChart') QuantitConformalChart;
@@ -159,6 +160,7 @@ export class QuantitConformalComponent implements OnChanges {
   
     ngOnChanges(): void {
 
+      this.modelWarning = '';
       this.plotFittedConf.data[0].x = [];
       this.plotFittedConf.data[0].y = [];
       this.plotFittedConf.data[0].text = [];
@@ -182,8 +184,12 @@ export class QuantitConformalComponent implements OnChanges {
       this.service.getValidation(this.modelName, this.modelVersion).subscribe(
         result => {
           const info = result;
-          // console.log(info);
           
+          // process warnings
+          if (info.warning){
+            this.modelWarning = info.warning;
+          }
+
           for (const modelInfo of info['model_build_info']) {
             if (typeof modelInfo[2] === 'number') {
               modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
