@@ -32,6 +32,7 @@ export class QuantitNoConformalComponent implements OnChanges {
   objectKeys = Object.keys;
   modelBuildInfo = {};
   modelValidationInfo = {};
+  modelWarning = '';
   data: Array<any>;
 
   public plotFitted = {
@@ -145,6 +146,7 @@ export class QuantitNoConformalComponent implements OnChanges {
 
   ngOnChanges(): void {
 
+    this.modelWarning = '';
     this.plotFitted.data[0].x = [];
     this.plotFitted.data[0].y = [];
     this.plotFitted.data[0].text = [];
@@ -168,6 +170,12 @@ export class QuantitNoConformalComponent implements OnChanges {
     this.service.getValidation(this.modelName, this.modelVersion).subscribe(
       result => {
           const info = result;
+
+          // process warnings
+          if (info.warning){
+            this.modelWarning = info.warning;
+          }
+
           for (const modelInfo of info['model_valid_info']) {
             if (typeof modelInfo[2] === 'number') {
               modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));

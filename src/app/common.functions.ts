@@ -36,29 +36,49 @@ export class CommonFunctions {
               this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
                   variables: '-', type: '-', quality: {}, quantitative: false, conformal: false, ensemble: false, error: model.info};
 
-              if (typeof(model.info) !== 'string') {
-                if (model.info['code'] != 0) {
+              // model.info should be 
+              // (a) dictionay with a code 0 or 1 and an error message
+              // (b) an array of tuples of three elements 
+              if (typeof(model.info) !== 'string') { // this should never happen, only in very old Flame versions
+                // console.log (model.info);
 
+                // option (a) some kind of controlled error
+                if (model.info['code'] == 0 || model.info['code'] == 1 ){
+                  this.model.listModels[modelName + '-' + version].error = model.info['message'];
+                }
+                // option (b) healthy 
+                else {
                   const dict_info = {};
                   
                   for (const aux of model.info) {
                     dict_info[aux[0]] = aux[2];
                   }
+
                   const quality = {};
                   for (const info of (Object.keys(dict_info))) {
                     if (typeof(dict_info[info]) === 'number') {
                       quality[info] =  parseFloat(dict_info[info].toFixed(3));
                     }
                   }
-                  this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: true,
-                  numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality,
-                  quantitative: dict_info['quantitative'], conformal: dict_info['conformal'], ensemble: dict_info['ensemble'], 
-                  error: undefined };
+
+                  this.model.listModels[modelName + '-' + version] = {
+                    name: modelName, 
+                    version: version, trained: true,
+                    numMols: dict_info['nobj'], 
+                    variables: dict_info['nvarx'], 
+                    type: dict_info['model'], 
+                    quality: quality,
+                    quantitative: dict_info['quantitative'], 
+                    conformal: dict_info['conformal'], 
+                    ensemble: dict_info['ensemble'], 
+                    error: undefined 
+                  };
+
                   this.model.trained_models.push(modelName + ' .v' + version);
                 }
-                else {
-                  this.model.listModels[modelName + '-' + version].error = model.info['message'];
-                }
+              }
+              else {
+                alert('Unexpected result: ' + model.info );
               } 
               num_models--;
 

@@ -26,6 +26,7 @@ export class BuilderComponent implements OnInit {
   ngOnInit() {
     this.getParameters();
   }
+
   getParameters(): void {
     this.commonService.getParameters(this.model.name, this.model.version).subscribe(
       result => {
@@ -67,7 +68,6 @@ export class BuilderComponent implements OnInit {
   }
 
   buildModel(name, version): void {
-
     this.model.delta = {};
     this.model.delta = this.recursiveDelta(this.model.parameters);
     this.model.listModels[name + '-' + version] = {name: name, version: version, trained: false, numMols: '-',
@@ -80,7 +80,7 @@ export class BuilderComponent implements OnInit {
       result => {
         let iter = 0;
         const intervalId = setInterval(() => {
-          if (iter < 15) {
+          if (iter < 50) {
             this.checkModel(name, version, inserted, intervalId);
           } else {
             clearInterval(intervalId);
@@ -89,7 +89,7 @@ export class BuilderComponent implements OnInit {
               this.model.trainig_models.splice(index, 1);
             }
             this.toastr.clear(inserted.toastId);
-            this.toastr.error( 'Model ' + name + '.v' + version + ' \n ' , 'ERROR!', {
+            this.toastr.warning( 'Model ' + name + '.v' + version + ' \n ' , 'Interactive timeout exceeded, check latter...', {
             timeOut: 10000, positionClass: 'toast-top-right'});
           }
           iter += 1;
