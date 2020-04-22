@@ -90,18 +90,25 @@ export class PredictorComponent implements OnInit {
   getPredictionList() {
     this.commonService.getPredictionList().subscribe(
         result => {
-          this.prediction.predictions = result;
-          setTimeout(() => {
-            const table = $('#dataTablePredictions').DataTable({
-              /*Ordering by date */
-              order: [[4, 'desc']],
-              columnDefs: [{ 'type': 'date-euro', 'targets': 4 }]
-            });
-            this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
-            this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
-            this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
-            this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
-          }, 100);
+          if (result[0]){
+            this.prediction.predictions = result[1];
+            setTimeout(() => {
+              const table = $('#dataTablePredictions').DataTable({
+                /*Ordering by date */
+                order: [[4, 'desc']],
+                columnDefs: [{ 'type': 'date-euro', 'targets': 4 }]
+              });
+              if (result[1].length > 0) {
+                this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
+                this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
+                this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
+                this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
+              }
+            }, 100);
+          }
+          else {
+            alert(result[1]);
+          }
         },
         error => {
           alert(error.message);

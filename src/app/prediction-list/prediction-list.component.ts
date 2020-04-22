@@ -40,13 +40,15 @@ export class PredictionListComponent implements OnInit {
           if (result[0]) {
             this.prediction.predictions = result[1];
 
+            console.log(result[1])
+
             setTimeout(() => {
               const table = $('#dataTablePredictions').DataTable({
                 /*Ordering by date */
                 order: [[4, 'desc']],
                 columnDefs: [{ 'type': 'date-euro', 'targets': 4 }]
               });
-              if (result.length > 0) {
+              if (result[1].length > 0) {
                 this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
                 this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
                 this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
