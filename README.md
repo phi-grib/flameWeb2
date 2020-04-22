@@ -1,24 +1,24 @@
-# Flameweb
+# FlameWeb2
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.5.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.2
 
 
 ## Installation
 
 Flame should have been already installed in this computer. Refer to the [flame](https://github.com/phi-grib/flame) manual for full instructions of how create a flame conda environment and install the software. 
 
-Flame_API should have been also installed and be running. Refer to to the [flame_AP](https://github.com/phi-grib/flame_API) manual for full instructions of how install and run the API.
+Flame_API should have been also installed and be running. Refer to to the [flame_API](https://github.com/phi-grib/flame_API) manual for full instructions of how install and run the API.
 
 Download the repository:
 
 ```bash
-git clone https://github.com/phi-grib/flameWeb.git
+git clone https://github.com/phi-grib/flameWeb2.git
 ```
 
 Go to the source repository directory 
 
 ```bash
-cd flameWeb
+cd flameWeb2
 ```
 
 For running the development server you must have Angular installed in your computer. Refer to [this page](https://angular.io/cli) for full instructions. Once Angular is installed, type
@@ -41,16 +41,6 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-# flameWeb
-# flameWeb2
