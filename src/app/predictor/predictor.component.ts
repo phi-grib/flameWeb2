@@ -126,19 +126,19 @@ export class PredictorComponent implements OnInit {
       result => {
         let iter = 0;
         const intervalId = setInterval(() => {
-          if (iter < 15) {
+          if (iter < 30) {
             this.checkPrediction(this.predictName, inserted, intervalId);
           } else {
             clearInterval(intervalId);
             this.toastr.clear(inserted.toastId);
-            this.toastr.error( 'Prediction ' + name + ' \n Time Out' , 'ERROR!', {
-            timeOut: 10000, positionClass: 'toast-top-right'});
+            this.toastr.warning( 'Prediction ' + name + ' \n Time Out' , 'Warning', {
+                                  timeOut: 10000, positionClass: 'toast-top-right'});
             delete this.prediction.predicting[this.predictName];
             $('#dataTablePredictions').DataTable().destroy();
             this.getPredictionList();
           }
           iter += 1;
-        }, 5000);
+        }, 2500);
       },
       error => {
         alert('Error prediction');
@@ -150,10 +150,17 @@ export class PredictorComponent implements OnInit {
    checkPrediction(name, inserted, intervalId) {
     this.commonService.getPrediction(name).subscribe(
       result => {
-        console.log(result);
+        // console.log(result);
         this.toastr.clear(inserted.toastId);
-        this.toastr.success('Prediction ' + name + ' created' , 'PREDICTION CREATED', {
-          timeOut: 5000, positionClass: 'toast-top-right'});
+        if (result['error']){
+          this.toastr.warning('Prediction ' + name + ' finished with error ' + result['error'] , 'PREDICTION COMPLETED', {
+            timeOut: 5000, positionClass: 'toast-top-right'});
+            
+        }
+        else {
+           this.toastr.success('Prediction ' + name + ' created' , 'PREDICTION COMPLETED', {
+            timeOut: 5000, positionClass: 'toast-top-right'});
+        }
         clearInterval(intervalId);
         delete this.prediction.predicting[this.predictName];
         $('#dataTablePredictions').DataTable().destroy();

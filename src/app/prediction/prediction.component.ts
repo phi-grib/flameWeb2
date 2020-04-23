@@ -48,6 +48,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   modelValidationInfo = {};
   submodels = [];
   submodelsIndex = 0;
+  predictionError = '';
 
   public predictData = [{
     offset: 45, 
@@ -179,6 +180,7 @@ public plotCommon = {
     this.submodelsIndex = 0;
     this.modelBuildInfo = {};
     this.predictData[0].r = [0, 0, 0, 0];
+    this.predictionError = '';
     this.getInfo();
     this.getDocumentation();
     this.getPrediction();
@@ -188,6 +190,7 @@ public plotCommon = {
 
     this.commonService.getModel(this.prediction.modelName, this.prediction.modelVersion).subscribe(
       result => {
+
         for (const info of result) {
           this.modelBuildInfo[info[0]] = info[2];
         }
@@ -260,6 +263,10 @@ public plotCommon = {
 
     this.commonService.getPrediction(this.predictionName).subscribe(
       result => {
+        if (result['error']) {
+          this.predictionError = result['error']; 
+        }
+
         this.predictionResult = result;
         if ('external-validation' in this.predictionResult) {
           for (const modelInfo of this.predictionResult['external-validation']) {

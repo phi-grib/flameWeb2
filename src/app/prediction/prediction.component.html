@@ -59,8 +59,18 @@
       </div>
     </div>
   </div>
+
+  <div class="row" *ngIf="this.predictionError">
+    <div class="card w-100">
+      <div class="card-body"> 
+        <div class="alert alert-danger text-center" role="alert">
+          {{this.predictionError}}
+        </div>
+      </div>
+    </div>
+  </div>
  
-  <div class="row" *ngIf="this.predictionResult != undefined">
+  <div class="row" *ngIf="this.predictionResult != undefined && this.predictionError == ''">
     <!-- <div class="col scrollable" style="padding-left:0px;"> -->
 
       <div class="card w-100">
