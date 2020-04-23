@@ -1,18 +1,18 @@
 .TP {
-    /* background-color: rgba(0,255,0,0.3); */
-    background-color: rgba(0,255,0,0.8);
+    /* background-color: rgba(0,255,0,0.8); */
+    background-color: rgba(70,143,184,0.8);
 }
 .FP {
     /* background-color:rgba(235,143,3,0.3); */
-    background-color:rgba(255,153,0,0.8);
+    background-color: rgba(249,219,132,0.8);
 }
 .TN {
     /* background-color:rgba(3,49,155,0.3); */
-    background-color:rgba(80,190,25,0.8);
+    background-color: rgba(156,198,221,0.8);
 }
 .FN {
     /* background-color:rgba(255,0,0,0.3); */
-    background-color:rgba(255,80,75,0.8);
+    background-color:rgba(242,185,15,0.8);
 }
 
 table, td {
