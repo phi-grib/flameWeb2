@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import 'jquery';
-import 'datatables.net-bs4';
+// import 'jquery';
+// import 'datatables.net-bs4';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonService } from '../common.service';
 import { Prediction } from '../Globals';
 import { ToastrService } from 'ngx-toastr';
 import { ManagePredictionsService } from './manage-predictions.service';
 import { PredictorComponent} from '../predictor/predictor.component';
-import { Router } from '@angular/router';
+// import { Router } from '@angular/router';
 declare var $: any;
 
 @Component({
@@ -22,7 +22,8 @@ export class ManagePredictionsComponent implements OnInit {
               private toastr: ToastrService,
               private service: ManagePredictionsService,
               private prediction: Prediction,
-              private router: Router) { }
+              // private router: Router
+              ) { }
 
   ngOnInit() {
   }

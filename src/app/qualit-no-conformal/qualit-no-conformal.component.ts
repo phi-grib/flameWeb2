@@ -130,17 +130,17 @@ export class QualitNoConformalComponent implements OnChanges {
           }
         }
         setTimeout(() => {
+          if (this.modelValidationInfo['TP_f']) {
+            this.fittingData[0].r = [this.modelValidationInfo['TP_f'][1], 
+                                    this.modelValidationInfo['FN_f'][1],
+                                    this.modelValidationInfo['TN_f'][1], 
+                                    this.modelValidationInfo['FP_f'][1]];
+          }
           if (this.modelValidationInfo['TP']) {
-            this.fittingData[0].r = [this.modelValidationInfo['TP'][1], 
+            this.predictData[0].r = [this.modelValidationInfo['TP'][1], 
                                     this.modelValidationInfo['FN'][1],
                                     this.modelValidationInfo['TN'][1], 
                                     this.modelValidationInfo['FP'][1]];
-          }
-          if (this.modelValidationInfo['TPpred']) {
-            this.predictData[0].r = [this.modelValidationInfo['TPpred'][1], 
-                                    this.modelValidationInfo['FNpred'][1],
-                                    this.modelValidationInfo['TNpred'][1], 
-                                    this.modelValidationInfo['FPpred'][1]];
           }
         }, 50);
       },

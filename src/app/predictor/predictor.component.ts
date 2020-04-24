@@ -5,7 +5,7 @@ import { PredictorService } from './predictor.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import 'jquery';
+// import 'jquery';
 declare var $: any;
 
 @Component({

@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges } from '@angular/core';
 import { Prediction} from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonService } from '../common.service';
-import { Subject } from 'rxjs';
+// import { Subject } from 'rxjs';
 // import { SingleDataSet, Label } from 'ng2-charts';
 // import { ChartType} from 'chart.js';
 import { PredictionService } from './prediction.service';
-import 'datatables.net-bs4';
-import 'datatables.net-buttons-bs4';
+// import 'datatables.net-bs4';
+// import 'datatables.net-buttons-bs4';
 
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';

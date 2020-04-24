@@ -24,10 +24,10 @@ import { QuantitConformalComponent } from './quantit-conformal/quantit-conformal
 import { BuilderComponent } from './builder/builder.component';
 import { PredictorComponent } from './predictor/predictor.component';
 import { PredictionComponent } from './prediction/prediction.component';
-import { DataTableModule } from 'angular-6-datatable';
+// import { DataTableModule } from 'angular-6-datatable';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { SimilarityComponent } from './similarity/similarity.component';
-import { ModelingSidebarComponent } from './modeling-sidebar/modeling-sidebar.component';
+// import { ModelingSidebarComponent } from './modeling-sidebar/modeling-sidebar.component';
 import { PredictionListComponent } from './prediction-list/prediction-list.component';
 import { ManageModelsComponent } from './manage-models/manage-models.component';
 import { ManagePredictionsComponent } from './manage-predictions/manage-predictions.component';
@@ -36,6 +36,10 @@ import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.co
 import { DataTablesModule } from 'angular-datatables';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PlotlyModule } from 'angular-plotly.js';
+// import * as SmilesDrawer from 'smiles-drawer';
+// import jsPDF from 'jspdf';
+// import 'jspdf-autotable';
+// import * as XLSX from 'xlsx';
 
 // import { PlotlyViaCDNModule } from 'angular-plotly.js';
 
@@ -61,7 +65,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     PredictorComponent,
     PredictionComponent,
     SimilarityComponent,
-    ModelingSidebarComponent,
+    // ModelingSidebarComponent,
     PredictionListComponent,
     ManageModelsComponent,
     ManagePredictionsComponent,
