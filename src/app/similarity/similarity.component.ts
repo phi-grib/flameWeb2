@@ -3,7 +3,7 @@ import { Similarity } from '../Globals';
 import { SimilarityService} from './similarity.service';
 import * as SmilesDrawer from 'smiles-drawer';
 import { Model, Prediction } from '../Globals';
-import 'jquery';
+// import 'jquery';
 // import 'datatables.net-bs4';
 declare var $: any;
 

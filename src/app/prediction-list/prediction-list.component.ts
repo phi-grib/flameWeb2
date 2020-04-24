@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { CommonService } from '../common.service';
 import { Model, Prediction } from '../Globals';
-import 'jquery';
+// import 'jquery';
 // import 'datatables.net-bs4';
 declare var $: any;
 
