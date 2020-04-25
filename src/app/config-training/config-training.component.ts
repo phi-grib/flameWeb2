@@ -20,10 +20,10 @@ export class ConfigTrainingComponent implements OnInit {
   dropdownSettings: IDropdownSettings = {};
 
   infoSeries = {
-    'molecule':       ['SDFile_name', 'SDFile_activity', 'SDFile_experimental', 'quantitative', 'normalize_method',
+    'molecule':       ['SDFile_name', 'SDFile_activity', 'SDFile_experimental', 'SDFile_complementary', 'quantitative', 'normalize_method',
                        'convert3D_method', 'ionize_method', 'modelAutoscaling', 'computeMD_method'],
-    'model_ensemble': ['SDFile_name', 'SDFile_activity', 'SDFile_experimental', 'quantitative', 'normalize_method',
-                      'convert3D_method', 'ionize_method', 'modelAutoscaling'],
+    'model_ensemble': ['SDFile_name', 'SDFile_activity', 'SDFile_experimental', 'SDFile_complementary', 'quantitative', 'normalize_method',
+                       'modelAutoscaling'],
     'data':           ['TSV_objnames', 'TSV_activity', 'TSV_varnames'],
     'ext_data':       ['model_set']
   };
