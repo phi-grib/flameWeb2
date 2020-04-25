@@ -18,7 +18,7 @@
             <div class="tab-pane fade show active" id="pills-predict" role="tabpanel" aria-labelledby="pills-predict-tab" >
                 <div class="card-body">
                     <div id="container">
-                        <div class="col-3">
+                        <div class="col-3 mt-1">
                             <table class="table table-sm mt-4">
                                 <tbody>
                                     <tr>
@@ -78,7 +78,7 @@
                                 </tbody>
                             </table> 
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                         <!--CONFUSION MATRIX-->
                         <app-confusion-matrix 
                                 [TP] = "this.modelValidationInfo['TP_f'][1]"
