@@ -1,28 +1,28 @@
 <div class="container m-3">
   <div class="row">
     <div *ngIf="this.model.file_info!==undefined" class="col-4 card p-0 mb-0 mr-4">
-      <div class="card-header p-2"><h5>FILE INFO</h5></div>
+      <div class="card-header p-2"><h5>Input file info</h5></div>
       <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
-              <strong>File name: </strong> 
+              <strong>File name </strong> 
             {{this.model.file_info['name']}}
             </li>
         <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
-          <strong>Type file: </strong> 
+          <strong>Type file </strong> 
           {{this.model.file_info['type_file']}}
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
-            <strong>Size: </strong> 
+            <strong>Size </strong> 
             {{this.model.file_info['size_M']}} MB
           </li>
         <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
-          <strong>Number of molecules: </strong> 
+          <strong>Number of molecules </strong> 
           <span class="badge badge-primary badge-pill">{{this.model.file_info['num_mols']}}</span>
         </li>
       </ul>
     </div>
     <div *ngIf="this.model.file_fields!==undefined" class="col-4 card p-0">
-      <div class="card-header p-2"><h5>SDFILE FIELDS</h5></div>
+      <div class="card-header p-2"><h5>SDFile fields</h5></div>
       <ul class="list-group">
         <li class="list-group-item d-flex justify-content-between align-items-left p-1" *ngFor="let key of objectKeys(this.model.file_fields)">
           <strong>{{key}}</strong>
@@ -32,27 +32,32 @@
     </div>
   </div>
   <div class="row mt-4">
-    <div class="col-3">
+    
+    <div class="col-4">
+      <input id="input-file-selector" type="file" accept=".sdf" style="display:none;" (change)="onChange($event.target.files)">
+      <label class="custom-file-label" for="input-file-selector" id="input-file-selector-label">Choose file</label>
+    </div>
+
+    <div class="col-6">
+      <label>
+        <input  type="checkbox" [(ngModel)]="this.model.incremental"> Incremental
+      </label>
+      <small id="key" class="text-muted"><br>Select only if you want this input to be added to existing training series
+      </small>
+    </div>
+
+    <!-- <div class="col-3">
       <div class="form-check">
           <input class="form-check-input" type="radio" name="exampleRadios" id="incremental"
           [checked]="this.model.incremental" (change)="this.model.incremental = !this.model.incremental" >
-          <label class="control-label" for="incremental">
-           Incremental
-          </label>
-        </div>
-        <div class="form-check">
+          <label class="control-label" for="incremental">Incremental</label>
+      </div>
+      <div class="form-check">
           <input class="form-check-input" type="radio" name="exampleRadios" id="new"
           [checked]="!this.model.incremental" (change)="this.model.incremental = !this.model.incremental" >
-          <label class="control-label" for="new">
-            New
-          </label>
-        </div>  
-    </div>
-    <div class="col-3">
-      <label class="btn btn-outline-primary btn-lg" for="my-file-selector">
-          <input id="my-file-selector" type="file" style="display:none;" accept=".sdf" (change)="onChange($event.target.files)">
-          BROWSE FILE
-      </label>
-    </div>
+          <label class="control-label" for="new">New</label>
+      </div>
+    </div> -->
+
   </div> 
 </div>
