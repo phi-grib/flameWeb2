@@ -40,7 +40,7 @@ export class PredictionListComponent implements OnInit {
           if (result[0]) {
             this.prediction.predictions = result[1];
 
-            console.log(result[1])
+            // console.log(result[1])
 
             setTimeout(() => {
               const table = $('#dataTablePredictions').DataTable({
