@@ -90,6 +90,7 @@
         </ul>
 
         <div class="tab-content" id="pills-tabContent">
+
           <!--ALL PREDICTIONS-->
           <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
             <div class="card-body">
@@ -97,6 +98,7 @@
               <table  id="prediction" class="table m-0 table-light">
                 <thead>
                   <tr>
+                    <th data-toggle="tooltip" data-placement="top" data-html="true" title="Mol index">#</th>
                     <th data-toggle="tooltip" data-placement="top" data-html="true" title="Name of the molecule, as present in the input file">Name</th>
                     <th class="align-middle text-center" data-toggle="tooltip" data-placement="top" data-html="true" title="Structure of the molecule in SMILES format">Mol</th>
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ymatrix">Value</th>-->
@@ -104,8 +106,8 @@
                     Prediction 
                       <span *ngIf ="this.modelDocumentation?.Endpoint_units.value != null">({{this.modelDocumentation?.Endpoint_units.value}})</span>
                     </th>
-                    <!--<th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">Upper limit</th>-->
-                    <!--<th class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">Lower limit</th>-->
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">CI</th>
+                    <!-- <th class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">Lower limit</th> -->
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.c0">Inactive</th>-->
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.c1">Active</th>-->
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">Ensemble Class 0</th>-->
@@ -115,14 +117,17 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let res of this.predictionResult.SMILES; let i=index">
-                    <td class="align-middle" >{{this.predictionResult.obj_nam[i]}}</td>
+                    <td class="align-middle">{{i+1}}</td>
+                    <td class="align-middle">{{this.predictionResult.obj_nam[i]}}</td>
                     <td class="align-middle text-center">
                       <canvas #cmp id="{{i}}">{{this.predictionResult.SMILES[i]}}</canvas>
                     </td>
                    <!--<td class="align-middle text-center" *ngIf="this.predictionResult.ymatrix" >{{this.predictionResult.ymatrix[i].toFixed(3)}}</td>-->
                     <td class="align-middle text-center" *ngIf="this.predictionResult.values">{{castValue(this.predictionResult.values[i])}}</td>
-                    <!--<td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">{{this.predictionResult.upper_limit[i].toFixed(3)}}</td>-->
-                    <!--<td class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">{{this.predictionResult.lower_limit[i].toFixed(3)}}</td>-->
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">
+                      {{this.predictionResult.lower_limit[i].toFixed(3)}} to {{this.predictionResult.upper_limit[i].toFixed(3)}}
+                    </td>
+                    <!-- <td class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">{{this.predictionResult.lower_limit[i].toFixed(3)}}</td> -->
                     <!--<td class="align-middle text-center" *ngIf="this.predictionResult.c0">{{this.predictionResult.c0[i]}}</td>-->
                     <!--<td class="align-middle text-center" *ngIf="this.predictionResult.c1">{{this.predictionResult.c1[i]}}</td>-->
                     <!--<td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">{{this.predictionResult.ensemble_c0[i].toFixed(3)}}</td>-->
