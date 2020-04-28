@@ -61,42 +61,44 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     },
     type: "barpolar",
     hovertemplate: "%{meta}: %{r}<extra></extra>"
-}]
+  }]
 
-public plotCommon = {
-  layout :{
-    width: 350,
-    // height: 600,
-    polar: {
-      bargap: 0,
-      gridcolor: "grey",
-      gridwidth: 1,
-      radialaxis: {
-        angle: 90,
-        ticks: '', 
-        tickfont: {
-          size: 12,
-          fontStyle: 'Barlow Semi Condensed, sans-serif',
+  public plotCommon = {
+    layout :{
+      width: 350,
+      // height: 600,
+      polar: {
+        bargap: 0,
+        gridcolor: "grey",
+        gridwidth: 1,
+        radialaxis: {
+          angle: 90,
+          ticks: '', 
+          tickfont: {
+            size: 12,
+            fontStyle: 'Barlow Semi Condensed, sans-serif',
+          },
+          // dtick: 20,
         },
-        // dtick: 20,
-      },
-      angularaxis: {
-        showticklabels: false, 
-        ticks:'',
+        angularaxis: {
+          showticklabels: false, 
+          ticks:'',
+        }
       }
-    }
-  },
+    },
+    config: {
+      // responsive: true,
+        displayModeBar: false
+      }
+  };  
 
-  config: {
-    // responsive: true,
-    displayModeBar: false
-  }
-};  
   constructor(public prediction: Prediction,
-              public service: PredictionService,
-              private commonService: CommonService) { }
-
-
+    public service: PredictionService,
+    private commonService: CommonService) { }
+  
+  dtOptions: DataTables.Settings = {};
+  message = '';
+  
   drawReportHeader () {
     const options = {'width': 600, 'height': 300};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
@@ -130,31 +132,26 @@ public plotCommon = {
   }
 
   NextMol() {
-
     this.molIndex++;
     this.noPreviousMol = false;
     if ((this.predictionResult.SMILES.length - 1) === this.molIndex) {
       this.noNextMol = true;
     }
-
     this.drawReportHeader();
     this.drawSimilars();
   }
 
   PreviousMol() {
-
     this.molIndex--;
     this.noNextMol = false;
     if (this.molIndex === 0) {
       this.noPreviousMol = true;
     }
-
     this.drawReportHeader();
     this.drawSimilars();
   }
 
   NextModel() {
-
     this.submodelsIndex++;
     this.noPreviousModel = false;
     if ((this.submodels.length - 1) === this.submodelsIndex) {
@@ -163,7 +160,6 @@ public plotCommon = {
   }
 
   PreviousModel() {
-
     this.submodelsIndex--;
     this.noNextModel = false;
     if (this.submodelsIndex === 0) {
@@ -184,6 +180,41 @@ public plotCommon = {
     this.getInfo();
     this.getDocumentation();
     this.getPrediction();
+  }
+
+  tabClickHandler(info: any): void {
+    // console.log(info[0], info[1]);
+    
+    this.molIndex=parseInt(info[0])-1;
+
+    this.noPreviousMol = false;
+    this.noNextMol = false;
+    if (this.molIndex == 0) {
+      this.noPreviousMol = true;
+    }
+    if (this.molIndex == (this.predictionResult.SMILES.length - 1)) {
+      this.noNextMol = true;
+    }
+    
+    // var b = document.querySelector("#pills-all"); 
+    // b.setAttribute('aria-selected', 'false');
+    // b.setAttribute('tabindex', "-1");
+    
+    $('a[aria-controls="pills-home"]').removeClass('active');
+    $('#pills-all').removeClass('active');
+    $('#pills-all').removeClass('show');
+    
+    // var tab = document.querySelector("#pills-one"); 
+    // tab.setAttribute('aria-selected', 'true');
+    // tab.removeAttribute('tabindex');
+    
+    $('a[aria-controls="pills-one"]').addClass('active');
+    $('#pills-one').addClass('active'); 
+    $('#pills-one').addClass('show'); 
+    
+    this.drawReportHeader();
+    this.drawSimilars();
+
   }
 
   getInfo(): void {
@@ -309,8 +340,17 @@ public plotCommon = {
               { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' , title: ''},
               { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
             ],
+            rowCallback: (row: Node, data: any[] | Object, index: number) => {
+              const self = this;
+              $('td', row).unbind('click');
+              $('td', row).bind('click', () => {
+                this.tabClickHandler(data);
+              });
+              return row;
+            },
             order: []
           };
+
           const table = $('#prediction').DataTable(settingsObj);
 
           this.predictionVisible = true;
