@@ -19,15 +19,24 @@
         </div>
       </div>
     </div>
+    
     <div class="row mt-2">
       <div class="col">
+        <label for="inputGroupFile01">Input file</label>
+
         <div class="form-group">
-          <label for="exampleInputFile" class="bmd-label-floating">File input</label>
-          <input type="file" class="form-control-file" id="exampleInputFile" accept=".sdf" (change)="change($event.target.files)">
-          <small class="text-muted">Input search file.</small>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputGroupFile01"
+              aria-describedby="inputGroupFileAddon01" onchange="this.nextElementSibling.innerText = this.files[0].name" 
+              (change)="change($event.target.files)">
+              <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+              <small class="text-muted">Enter a SDFile format input file.</small>
+          </div>
         </div>
+
       </div>
     </div>
+
     <div class="row">
       <div class="col -8">
         <div class="form-group">
