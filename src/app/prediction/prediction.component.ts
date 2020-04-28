@@ -353,7 +353,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
           const table = $('#prediction').DataTable(settingsObj);
 
-          this.predictionVisible = true;
           const me = this;
           $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             if (e.target.id === 'pills-one-tab') {
@@ -361,6 +360,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               me.drawSimilars();
             }
           });
+          
+          this.predictionVisible = true;
+
         }, 0);
       }
     );
