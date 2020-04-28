@@ -38,7 +38,7 @@ export class PredictorComponent implements OnInit {
       this.predictionsNames[name[0]] = true;
     }
 
-    let i = 1;
+    let i=1;
     let nameFound = false;
     while (!nameFound) {
       this.predictName = 'Prediction_' + i;
@@ -46,9 +46,10 @@ export class PredictorComponent implements OnInit {
         nameFound = true;
         this.isvalid = true;
       }
-      i = i + 1;
+      i=i+1;
     }
   }
+
   public change(fileList: FileList): void {
     const file = fileList[0];
     this.file = file;

@@ -34,7 +34,9 @@
   <div class="row mt-4">
     
     <div class="col-4">
-      <input id="input-file-selector" type="file" accept=".sdf" style="display:none;" (change)="onChange($event.target.files)">
+      <input id="input-file-selector" type="file" accept=".sdf" style="display:none;" 
+      onchange="this.nextElementSibling.innerText = this.files[0].name"
+      (change)="onChange($event.target.files)">
       <label class="custom-file-label" for="input-file-selector" id="input-file-selector-label">Choose file</label>
     </div>
 

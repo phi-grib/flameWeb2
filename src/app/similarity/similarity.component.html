@@ -1,25 +1,22 @@
 <div class="container mt-5">
   <div class="row align-items-centermt-4">
+
     <div class="col-6">
+      <label for="inputGroupFile01">Input file</label>
       <div class="form-group">
-        <label for="exampleInputFile" class="bmd-label-floating">File input</label>
-        <input type="file" class="form-control-file" id="exampleInputFile" accept=".sdf" (change)="change($event.target.files)">
-        <small class="text-muted">Input search file.</small>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="inputGroupFile01"
+            aria-describedby="inputGroupFileAddon01" onchange="this.nextElementSibling.innerText = this.files[0].name" 
+            (change)="change($event.target.files)">
+            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            <small class="text-muted">
+              Enter a SDFile format input file.
+            </small>
+        </div>
       </div>
     </div>
+
     <div class="col-6 align-self-center">
-      <!--<div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-        <label class="form-check-label" for="gridRadios1">
-          Euclidean
-        </label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-        <label class="form-check-label" for="gridRadios2">
-          Tanimoto
-        </label>
-      </div>-->
     </div>
     <div class="col-6">
       <div class="form-group">
