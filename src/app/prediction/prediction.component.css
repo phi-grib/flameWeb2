@@ -1,14 +1,45 @@
-/* @import '../../assets/css/dataTables.material.min.css';
-@import '../../assets/css/material.min.css'; */
+/* .table th{
+  color: #22577A;
+} */
+/* .table td, .table th {
+  padding: 0px;
+  border-top: 1px solid rgba(0,0,0,.1);
+  border-bottom: 1px solid rgba(0,0,0,.1);
+} */
 
+/* .table tr {
+  padding: 1px;
+  border-top: 1px solid rgba(0,0,0,.1);
+  border-bottom: 1px solid rgba(0,0,0,.1);
+} */
+
+.table {
+  background-color: white;
+  background: white;
+  color: #22577A;
+  table-layout: fixed;
+  width: 100%;
+}
 .table th{
-    color: #22577A;
+  padding-left: 1px;
+  padding-right: 1px;
+  color:#0076a3;
 }
 .table td {
-    /*font-family: Verdana, Geneva, Tahoma, sans-serif;*/
+  padding: 5px;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  border-bottom: 2px solid #B8DCED;
+  vertical-align: middle;
 }
-.table td, .table th {
-    border-top: 4px solid rgba(0,0,0,.06);
+tr {
+  cursor: pointer;
+}
+
+tr.selected {
+  background: #f7f9ea;
+}
+.table tbody tr:hover {
+  background: #f7f9ea;
 }
 
 .scrollable{
@@ -34,8 +65,6 @@ ul li.nav-item a.active{
   align-items: center;
 }
 
-/* rotating circle to show progress */
-
 .TP {
   background-color: rgba(0,255,0,0.3);
 }
@@ -53,6 +82,7 @@ ul li.nav-item a.active{
   background-color: #B8DCED;
 }
 
+/* rotating circle to show progress */
 .spinner-border {
   display: block;
   position: absolute;
@@ -60,7 +90,6 @@ ul li.nav-item a.active{
   top: 25%; /* where ... is the element's height */
   right: 45%; /* where ... is the element's width */
 }
-
 
 #overlay {
   position: absolute;
