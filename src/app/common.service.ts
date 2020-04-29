@@ -34,9 +34,10 @@ export class CommonService {
   }
 
    /**
-   * @param modelname The model name to recieve parameters
+   * @param modelname The model name to receive parameters
    * Version will be automatically set to 'dev'
    */
+  
   getParameters(model: string, version: string): Observable<any> {
     const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/parameters';
     return this.http.get(url);

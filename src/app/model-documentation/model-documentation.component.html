@@ -1,0 +1,56 @@
+<div class="row" *ngIf="this.modelDocumentation !== undefined" >
+    <div class="card w-100" style="width: 18rem;">
+
+        <div class="card-body" >
+
+            <div class="row ml-2">
+                <h4>Documentation</h4>
+            </div>
+
+            <div class="row">
+                <table class="table documentation">
+                    <tbody>
+                        <div class="accordion" id="accordionExample">
+
+                            <tr *ngFor="let key of this.orderDocumentation">
+                                <td>{{key}}</td>
+                                <ng-container *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">
+                                    <td *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">{{this.modelDocumentation[key].value}}</td>
+                                    <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">   
+                                                <button class="btn btn-link" type="button" data-toggle="collapse" [attr.data-target]="'#' + key" aria-expanded="false" >
+                                                info
+                                                </button>
+                                                <div id="{{key}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                    <table class="table">
+                                                        <tbody>
+                                                            <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
+                                                                <td>{{key2}}</td>
+                                                                <td *ngIf="isObject(this.modelDocumentation[key].value[key2])">{{this.modelDocumentation[key].value[key2].value}}</td>
+                                                                <td *ngIf="!isObject(this.modelDocumentation[key].value[key2])">{{this.modelDocumentation[key].value[key2]}}</td>
+                                                                <td class="text-right comment" *ngIf="isObject(this.modelDocumentation[key].value[key2])">{{this.modelDocumentation[key].value[key2].description}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table> 
+
+                                                </div>
+                                    </td>
+                                    <td *ngIf="!this.modelDocumentation[key].value">-</td>
+                                    <td class="text-right comment" >{{this.modelDocumentation[key].description}}</td>
+                                </ng-container>
+
+                                <ng-container *ngIf="!this.objectKeys(this.modelDocumentation).includes(key)">
+                                    <td>no info</td>
+                                    <td class="text-right comment">noinfo</td>
+                                </ng-container>
+
+                            </tr>
+                        </div> <!-- accordion -->
+                    </tbody>
+                </table> 
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

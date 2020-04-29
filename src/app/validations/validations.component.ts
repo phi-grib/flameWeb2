@@ -1,23 +1,17 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import {Model} from '../Globals';
-import { CommonService } from '../common.service';
+import { Component, Input } from '@angular/core';
+import { Model } from '../Globals';
 
 @Component({
   selector: 'app-validations',
   templateUrl: './validations.component.html',
   styleUrls: ['./validations.component.css']
 })
-export class ValidationsComponent implements OnChanges {
+
+export class ValidationsComponent {
 
   @Input() name;
   @Input() version;
-  modelDocumentation: any = undefined;
 
-  constructor(public model: Model,
-              private commonService: CommonService) { }
+  constructor(public model: Model) { }
 
-
-  ngOnChanges(): void {
-    this.modelDocumentation = undefined;
-  }
 }
