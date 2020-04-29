@@ -4,47 +4,43 @@
     <span aria-hidden="true">&times;</span>
     </button>
 </div>
+
 <div class="modal-body">
-  <div class="accordion m-3" *ngIf="this.model.parameters!==undefined">
+  <div class="accordion mt-3" id="buildingAccordion" *ngIf="this.model.parameters!==undefined">
     <!--START CARD CONFIG TRAIN-->
-
-    <!-- END CONFIG TRAIN-->
-
     <div class="card">
       <div class="card-header" id="headingZero" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
         <h5 class="mb-0">
-            1 - Training Series
+          1 - Training Series
           <button class="btn btn-link pt-0 pb-0 float-right"  type="button" >
           </button>
         </h5>
-        
       </div>
-  
-      <div #trainigseries id="collapseZero" class="collapse show" aria-labelledby="headingZero" >
+      <div #trainigseries id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#buildingAccordion">
         <div class="card-body p-2 pl-5 pr-5">
-            <app-training-series></app-training-series>
+          <app-training-series></app-training-series>
         </div>
       </div>
     </div>
-
-    <!--START CARD CONFIG TRAIN-->
+    <!-- END CONFIG TRAIN-->
+    
+    <!--START CARD INPUT-->
     <div class="card">
-      <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <div class="card-header collapsed" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
         <h5 class="mb-0">
             2 - Input
           <button class="btn btn-link pt-0 pb-0 float-right"  type="button" >
           </button>
         </h5>
-        
       </div>
-  
-      <div #trainigseries id="collapseOne" class="collapse show" aria-labelledby="headingOne" >
+      <div #trainigseries id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#buildingAccordion" >
         <div class="card-body p-2 pl-5 pr-5">
             <app-config-training></app-config-training>
         </div>
       </div>
     </div>
-    <!-- END CONFIG TRAIN-->
+    <!-- END CONFIG INPUT -->
+
     <!--START CARD CONFIG MODEL-->
     <div class="card">
       <div class="card-header collapsed" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -54,13 +50,14 @@
           </button>
         </h5>
       </div>
-      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" >
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#buildingAccordion">
         <div class="card-body p-2 pl-5 pr-5">
           <app-config-model></app-config-model>
         </div>
       </div>
     </div>
     <!-- END CONFIG MODEL-->
+
     <!--START CARD CONFIG PREFERENCES-->
     <div class="card">
       <div class="card-header collapsed" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -70,26 +67,17 @@
           </button>
         </h5>
       </div>
-      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" >
+      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#buildingAccordion" >
         <div class="card-body p-2 pl-5 pr-5">
           <app-config-preferences></app-config-preferences>
         </div>
       </div>
     </div>
     <!-- END CONFIG PREFERENCES-->
+
   </div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-secondary btn-lg" (click)="activeModal.close('Close click')">Close</button>
   <button type="button" class="btn btn-outline-primary btn-lg" (click)="buildModel(this.model.name, this.model.version)">Build</button>
 </div>
-  
-    <!--<div class="container">
-      <div class="row justify-content-center">
-        <div class="col align-self-center">
-          <button type="button" class="btn btn-outline-light btn-block btn-lg" 
-                  [ngClass]="{'disabled': ((model.file === undefined && model.trained === false) || model.parameters === undefined)}" 
-                  (click)="buildModel(this.model.name,this.model.version)">Build model</button>
-        </div>
-      </div>
-    </div>-->
