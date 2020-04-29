@@ -16,7 +16,6 @@ import { ConfigTrainingComponent } from './config-training/config-training.compo
 import { ConfigModelComponent } from './config-model/config-model.component';
 import { ConfigPreferencesComponent } from './config-preferences/config-preferences.component';
 import { ChecklistModule } from 'angular-checklist';
-// import { ChartsModule } from 'ng2-charts';
 import { QualitNoConformalComponent } from './qualit-no-conformal/qualit-no-conformal.component';
 import { QualitConformalComponent } from './qualit-conformal/qualit-conformal.component';
 import { QuantitNoConformalComponent } from './quantit-no-conformal/quantit-no-conformal.component';
@@ -24,10 +23,8 @@ import { QuantitConformalComponent } from './quantit-conformal/quantit-conformal
 import { BuilderComponent } from './builder/builder.component';
 import { PredictorComponent } from './predictor/predictor.component';
 import { PredictionComponent } from './prediction/prediction.component';
-// import { DataTableModule } from 'angular-6-datatable';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { SimilarityComponent } from './similarity/similarity.component';
-// import { ModelingSidebarComponent } from './modeling-sidebar/modeling-sidebar.component';
 import { PredictionListComponent } from './prediction-list/prediction-list.component';
 import { ManageModelsComponent } from './manage-models/manage-models.component';
 import { ManagePredictionsComponent } from './manage-predictions/manage-predictions.component';
@@ -65,7 +62,6 @@ PlotlyModule.plotlyjs = PlotlyJS;
     PredictorComponent,
     PredictionComponent,
     SimilarityComponent,
-    // ModelingSidebarComponent,
     PredictionListComponent,
     ManageModelsComponent,
     ManagePredictionsComponent,
@@ -80,7 +76,6 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ToastrModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     ChecklistModule,
-    // ChartsModule,
     NgbModule,
     // PlotlyViaCDNModule,
     PlotlyModule
