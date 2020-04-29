@@ -34,10 +34,11 @@ export class BuilderComponent implements OnInit {
       },
       error => {
         alert(error.status + ' : ' + error.statusText);
-      },
-      () => { // when subscribe finishes
-        // console.log('actual parameters.yaml \n', parameters);
       }
+      // ,
+      // () => { // when subscribe finishes
+      //   // console.log('actual parameters.yaml \n', parameters);
+      // }
     );
   }
 
@@ -46,7 +47,6 @@ export class BuilderComponent implements OnInit {
   }
 
   private recursiveDelta(dict_in: {}) {
-
     let dict_aux = {};
     const dict_out = {};
     for (const key of Object.keys(dict_in)) {
