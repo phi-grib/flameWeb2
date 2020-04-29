@@ -32,6 +32,7 @@ export class Prediction {
     modelName: string = undefined;
     modelVersion: string = undefined;
     modelParameters: any;
+    modelDocumentation: any = undefined;
     predictions = [];
     predicting = {};
     conformal = false;

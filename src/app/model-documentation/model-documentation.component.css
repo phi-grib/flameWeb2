@@ -1,0 +1,13 @@
+table td {
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  
+.comment {
+  color: grey;
+}
+
+.documentation {
+  table-layout: fixed;
+  width: 100%;
+}

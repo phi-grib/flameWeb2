@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { QuantitNoConformalService } from './quantit-no-conformal.service';
 import { Model } from '../Globals';
-import { CommonService } from '../common.service';
 
 @Component({
   selector: 'app-quantit-no-conformal',
@@ -12,22 +11,10 @@ import { CommonService } from '../common.service';
 export class QuantitNoConformalComponent implements OnChanges {
 
   constructor(private service: QuantitNoConformalService,
-    public model: Model,
-    private commonService: CommonService) {}
+    public model: Model) {}
 
   @Input() modelName;
   @Input() modelVersion;
-
-  modelDocumentation = undefined;
-  orderDocumentation = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
-  'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
- 'Limits_applicability', 'Experimental_protocol', 'Model_availability',
- 'Data_info', 'Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
- 'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics',
- 'Internal_validation_1', 'Internal_validation_2', 'External_validation',
- 'Comments', 'Other_related_models', 'Date_of_QMRF', 'Data_of_QMRF_updates',
- 'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
- 'Endpoint_data_quality_and_variability', 'Descriptor_selection'];
 
   objectKeys = Object.keys;
   modelBuildInfo = {};
@@ -155,7 +142,6 @@ export class QuantitNoConformalComponent implements OnChanges {
     this.plotPredicted.data[0].y = [];
     this.plotPredicted.data[0].text = [];
 
-    this.getDocumentation();
     this.getValidation();
   }
 
@@ -207,16 +193,4 @@ export class QuantitNoConformalComponent implements OnChanges {
       }
     );
   }
-
-  getDocumentation(): void {
-    this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
-      result => {
-        this.modelDocumentation = result;
-      },
-      error => {
-        this.modelDocumentation = undefined;
-      }
-    );
-  }
-
 }

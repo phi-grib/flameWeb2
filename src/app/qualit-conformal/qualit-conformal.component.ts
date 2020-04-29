@@ -3,7 +3,7 @@ import { QualitConformalService } from './qualit-conformal.service';
 import { Model } from '../Globals';
 // import { SingleDataSet, Label } from 'ng2-charts';
 // import { ChartType, ChartOptions} from 'chart.js';
-import { CommonService } from '../common.service';
+// import { CommonService } from '../common.service';
 
 @Component({
   selector: 'app-qualit-conformal',
@@ -13,29 +13,18 @@ import { CommonService } from '../common.service';
 export class QualitConformalComponent implements OnChanges {
   
   constructor(private service: QualitConformalService,
-    public model: Model,
-    private commonService: CommonService) { }
+    public model: Model) { }
     
     
     @Input() modelName;
     @Input() modelVersion;
-    modelDocumentation = undefined;
-    orderDocumentation = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
-    'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
-    'Limits_applicability', 'Experimental_protocol', 'Model_availability',
-    'Data_info', 'Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
-    'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics', 
-    'Internal_validation_1', 'Internal_validation_2', 'External_validation',
-    'Comments', 'Other_related_models', 'Date_of_QMRF', 'Data_of_QMRF_updates',
-    'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
-    'Endpoint_data_quality_and_variability', 'Descriptor_selection'];
     
-    objectKeys = Object.keys;
+    // objectKeys = Object.keys;
     modelBuildInfo = {};
     modelValidationInfo = {};
     modelWarning = '';
+    objectKeys = Object.keys;
     
-
     public predictData = [{
         offset: 45, 
         r: [],
@@ -98,7 +87,7 @@ export class QualitConformalComponent implements OnChanges {
       this.modelWarning = '';
       this.predictData[0].r = [0, 0, 0, 0];
       this.fittingData[0].r = [0, 0, 0, 0];
-      this.getDocumentation();
+    //   this.getDocumentation();
       this.getValidation();
     }
     
@@ -165,15 +154,14 @@ export class QualitConformalComponent implements OnChanges {
       );
     } 
 
-    getDocumentation(): void {
-      this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
-        result => {
-          this.modelDocumentation = result;
-          // console.log(this.modelDocumentation);
-        },
-        error => {
-          this.modelDocumentation = undefined;
-        }
-      );
-    }
+    // getDocumentation(): void {
+    //   this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
+    //     result => {
+    //       this.modelDocumentation = result;
+    //     },
+    //     error => {
+    //       this.modelDocumentation = undefined;
+    //     }
+    //   );
+    // }
 }

@@ -33,6 +33,7 @@ import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.co
 import { DataTablesModule } from 'angular-datatables';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PlotlyModule } from 'angular-plotly.js';
+import { ModelDocumentationComponent } from './model-documentation/model-documentation.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -65,7 +66,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     PredictionListComponent,
     ManageModelsComponent,
     ManagePredictionsComponent,
-    ConfusionMatrixComponent
+    ConfusionMatrixComponent,
+    ModelDocumentationComponent
   ],
   imports: [
     BrowserModule,

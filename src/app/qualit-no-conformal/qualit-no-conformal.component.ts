@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { QualitNoConformalService } from './qualit-no-conformal.service';
 import { Model } from '../Globals';
-import { CommonService } from '../common.service';
 
 @Component({
   selector: 'app-qualit-no-conformal',
@@ -11,21 +10,11 @@ import { CommonService } from '../common.service';
 export class QualitNoConformalComponent implements OnChanges {
 
   constructor(private service: QualitNoConformalService,
-    public model: Model,
-    private commonService: CommonService) { }
+    public model: Model) { }
 
     @Input() modelName;
     @Input() modelVersion;
-    modelDocumentation = undefined;
-    orderDocumentation = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
-               'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
-              'Limits_applicability', 'Experimental_protocol', 'Model_availability',
-              'Data_info', 'Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
-              'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics', 
-              'Internal_validation_1', 'Internal_validation_2', 'External_validation',
-              'Comments', 'Other_related_models', 'Date_of_QMRF', 'Data_of_QMRF_updates',
-              'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
-              'Endpoint_data_quality_and_variability', 'Descriptor_selection'];
+
     objectKeys = Object.keys;
     modelBuildInfo = {};
     modelValidationInfo = {};
@@ -94,7 +83,6 @@ export class QualitNoConformalComponent implements OnChanges {
     this.modelWarning = '';
     this.predictData[0].r = [0, 0, 0, 0];
     this.fittingData[0].r = [0, 0, 0, 0];
-    this.getDocumentation();
     this.getValidation();
   }
 
@@ -146,17 +134,6 @@ export class QualitNoConformalComponent implements OnChanges {
       },
       error => {
         alert('Error getting model');
-      }
-    );
-  }
-
-  getDocumentation(): void {
-    this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
-      result => {
-        this.modelDocumentation = result;
-      },
-      error => {
-        this.modelDocumentation = undefined;
       }
     );
   }
