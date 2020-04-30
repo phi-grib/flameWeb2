@@ -17,6 +17,7 @@ export class ModelDocumentationComponent implements OnChanges {
   @Input() modelVersion;
 
   modelDocumentation = undefined;
+  public documentationVisible = false;
 
   orderDocumentation = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
   'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
@@ -41,15 +42,25 @@ export class ModelDocumentationComponent implements OnChanges {
     return typeof val === 'object';
   }
 
+  cleanStr (str) {
+    return str.replace(/_/g, ' ');
+  }
+
   getDocumentation(): void {
+    this.documentationVisible = false;
     this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
       result => {
         this.modelDocumentation = result;
+
+        for (var key in this.modelDocumentation) {
+              console.log(key, this.modelDocumentation[key]);
+          }
       },
       error => {
         this.modelDocumentation = undefined;
       }
     );
+    this.documentationVisible = true;
   }
 
 }

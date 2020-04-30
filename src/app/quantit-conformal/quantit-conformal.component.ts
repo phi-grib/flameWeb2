@@ -20,6 +20,7 @@ export class QuantitConformalComponent implements OnChanges {
     modelValidationInfo = {};
     modelConformal = {};
     modelWarning = '';
+    public modelVisible = false;
     data: Array<any>;
 
     @ViewChild('QuantitConformalChart') QuantitConformalChart;
@@ -139,26 +140,28 @@ export class QuantitConformalComponent implements OnChanges {
                 family: 'Barlow Semi Condensed, sans-serif',
                 size: 18,
               },
-        },
-      },
-      config: {
+            },
+          },
+          config: {
             // responsive: true,
             displaylogo: false,
             modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d']    }
-    };
-  
+          };
+          
     ngOnChanges(): void {
-
+      
+      this.modelVisible = false;
       this.modelWarning = '';
       this.plotFittedConf.data[0].x = [];
       this.plotFittedConf.data[0].y = [];
       this.plotFittedConf.data[0].text = [];
-  
+      
       this.plotPredictedConf.data[0].x = [];
       this.plotPredictedConf.data[0].y = [];
       this.plotPredictedConf.data[0].text = [];
-
+      
       this.getValidation();
+      this.modelVisible = true;
     }
 
     isObject(val) {
@@ -236,7 +239,7 @@ export class QuantitConformalComponent implements OnChanges {
             }
 
             // ajusted data
-              if ('Y_adj' in info) {
+            if ('Y_adj' in info) {
               this.plotFittedConf.data[0].x = info['ymatrix'] ;
               this.plotFittedConf.data[0].y = info['Y_adj'];
               
@@ -256,7 +259,7 @@ export class QuantitConformalComponent implements OnChanges {
         error => {
           alert('Error getting model');
         }
-      );
+        );
     }
 
 }
