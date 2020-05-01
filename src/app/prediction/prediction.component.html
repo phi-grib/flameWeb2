@@ -28,17 +28,8 @@
                   [TN] = "this.modelValidationInfo['TN'][1]"
               ></app-confusion-matrix>                 
           </div>
-          <div class="col-4"  *ngIf="this.modelValidationInfo['TP']">
-            <!-- <div style="display: block">
-              <canvas baseChart
-                  [data]="polarAreaChartData"
-                  [options]="polarChartOptions"
-                  [labels]="polarAreaChartLabels"
-                  [legend]="polarAreaLegend"
-                  [colors]="polarAreaChartColors"
-                  [chartType]="polarAreaChartType">
-              </canvas>
-            </div> -->
+          <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
+
             <plotly-plot 
               [data]="predictData" 
               [layout]="plotCommon.layout"

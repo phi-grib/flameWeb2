@@ -35,14 +35,14 @@ export class ModelDocumentationComponent implements OnChanges {
     this.getDocumentation();
   }
 
-  isObject(val) {
+  isObject(val:any) {
     if (val === null) {
       return false;
     }
     return typeof val === 'object';
   }
 
-  cleanStr (str) {
+  cleanStr (str:string) {
     return str.replace(/_/g, ' ');
   }
 
@@ -52,9 +52,9 @@ export class ModelDocumentationComponent implements OnChanges {
       result => {
         this.modelDocumentation = result;
 
-        for (var key in this.modelDocumentation) {
-              console.log(key, this.modelDocumentation[key]);
-          }
+        // for (var key in this.modelDocumentation) {
+        //       console.log(key, this.modelDocumentation[key]);
+        //   }
       },
       error => {
         this.modelDocumentation = undefined;

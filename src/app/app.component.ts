@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {PlatformLocation  } from '@angular/common';
 import { Model, Prediction } from './Globals';
 import { Router } from '@angular/router';
 

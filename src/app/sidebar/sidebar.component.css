@@ -13,3 +13,14 @@ ul li a.active{
     color: white;
     border-bottom: 3px solid #e59300;
 }
+
+.logo-right {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding: 5px;
+}
+
+.logo {
+    padding-left: 30px;
+}

@@ -57,7 +57,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     meta: ["TP", "FN", "TN", "FP"],
     marker: {
       opacity: 0.8,
-      color: ['green','red','green','orange'],
+      // color: ['green','red','green','orange'],
+      color: ["#468FB8", "#F2B90F", "#9CC6DD", "#F9DB84"]
     },
     type: "barpolar",
     hovertemplate: "%{meta}: %{r}<extra></extra>"

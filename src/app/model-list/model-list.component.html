@@ -1,9 +1,7 @@
-
 <hr class="my-0">
 
 <app-manage-models></app-manage-models>
-  <!-- Extra large modal -->
-  <!-- {{num_models}} -->
+
 <div class ="text-center spinner-table" *ngIf = "!this.globals.tableModelVisible">
   <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
     <span class="sr-only">Loading...</span>
@@ -16,13 +14,11 @@
       <thead>
         <tr>
           <th style="width: 5%" class="text-center"></th>
-          <!--<th width="5%"></th>-->
           <th style="width: 35%">Name</th>
           <th style="width: 10%">Version</th>
           <th style="width: 12.5%">#Molecules</th>
           <th style="width: 12.5%">#Variables</th>3
           <th style="width: 25%">Type</th>
-         
         </tr>
       </thead>
       <tbody>
@@ -31,7 +27,6 @@
                       'version': model.listModels[key].version > 0}"
           (click)= "selectModel(model.listModels[key].name, model.listModels[key].version, model.listModels[key].trained,model.listModels[key].type,model.listModels[key].quantitative
           , model.listModels[key].conformal, model.listModels[key].ensemble, model.listModels[key].error)">
-           <!--"{'background-color': style1 ? 'red' : (style2 ? 'blue' : null) }" fas fa-circle, fas fa-square -->
           <td class="text-center">
             <i class = "fas" [ngClass]="{'fa-grip-lines': model.listModels[key].type.indexOf('qualitative') > -1 ||
                                                         model.listModels[key].type.indexOf('majority') > -1,
@@ -43,39 +38,8 @@
                         'faa-flash animated': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version)}"
                         [ngStyle]="{'color': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version) ? '#E69400' : (model.listModels[key].trained ? '#51cf66' : 'red' ) }" 
                         aria-hidden="true"></i> 
-         
-                        
           </td>
-          <!--<td scope="row" class="text-left">
 
-            <button class="btn p-0" (click)="openValidation(model.listModels[key].name,model.listModels[key].version)"
-              *ngIf="model.listModels[key].type != '-'">
-                <i class="far fa-chart-bar" title="Validation" ></i>
-            </button>
-
-            <button *ngIf="model.listModels[key].type != '-'"
-              class="btn p-0" 
-              id ="collapse_{{model.listModels[key].name}}_{{model.listModels[key].version}}" 
-              [ngbPopover]="popContent" [popoverTitle]="popTitle"
-              placement="right"
-              [autoClose]="'inside'"
-              > <i class="far fa-eye" title="Quality" ></i>
-            </button>-->
-                
-            <!-- Content poppover--> 
-             <!--<ng-template #popTitle>Info</ng-template>   
-            <ng-template #popContent>
-              <table class="table">
-                <tbody>
-                  <tr style ="border-bottom: 2px solid #B8DCED;" *ngFor="let key2 of objectKeys(model.listModels[key].quality)">
-                    <td class="text-left"><strong>{{key2}}: </strong></td>
-                    <td class="text-right">{{model.listModels[key].quality[key2]}}</td>
-                  </tr>
-
-                </tbody>
-              </table>
-            </ng-template>     
-          </td>-->
           <td class="text-truncate iffyTip hideText">{{model.listModels[key].name}}</td>
           <td>{{model.listModels[key].version}}</td>
           <td>{{model.listModels[key].numMols}}</td>
@@ -85,6 +49,7 @@
       </tbody>
     </table>
   </div>
+</div>
 
 
 
