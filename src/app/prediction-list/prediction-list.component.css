@@ -13,7 +13,6 @@ i {
     padding-left: 1px;
     padding-right: 1px;
     color:#0076a3;
-    /* vertical-align: middle; */
 }
 .table td {
     padding: 5px;
@@ -36,6 +35,15 @@ tr.selected {
 }
 @keyframes blinker {  
     100% { opacity: 0; }
+}
+
+.model-content {
+    max-width: 350px;
+    max-height: 350px;
+}
+.scrolltable{
+    max-height: 90vh;
+    overflow: auto;
 }
 
 .spinner-table {
