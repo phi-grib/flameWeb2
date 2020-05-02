@@ -1,8 +1,10 @@
 .info {
     background-color: #FAFAFA;
-    min-height: 100vh;   
+    /* min-height: 100vh;    */
 }
 .scrollable{
-    max-height: 90vh;
+    /* right column will have a max of 95%
+       and a scroll bar will appear only when it is bigger */
+    max-height: 90vh; 
     overflow: auto;
 }

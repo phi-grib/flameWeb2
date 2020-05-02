@@ -33,3 +33,11 @@ table td {
   z-index: 2;
   cursor: pointer;
 }
+
+.card-body {
+  border-width: 0px;
+}
+
+.card {
+  border-width: 0px;
+}

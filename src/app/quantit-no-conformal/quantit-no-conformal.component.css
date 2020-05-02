@@ -1,4 +1,4 @@
-ul li.nav-item a {
+/* ul li.nav-item a {
     background:white;
     color: #6C757D;
 }
@@ -6,9 +6,29 @@ ul li.nav-item a {
 ul li.nav-item a.active{
     background: #F0F0F0;
     color: #6C757D;
+} */
+
+ul li.nav-item a {
+    background:white;
+    color: #B8DCED;
 }
   
+ul li.nav-item a.active{
+    background:white;
+    color:#22577A;
+    font-weight: bold;
+    border-bottom: 4px solid #e59300;
+}
+
 table td {
     padding-top: 1px;
     padding-bottom: 1px;
+}
+
+.card-body {
+    border-width: 0px;
+}
+  
+.card {
+    border-width: 0px;
 }

@@ -19,8 +19,8 @@
                 <div class="card-body">
                     <div id="container">
                     <!-- <div class="row justify-content-between"> -->
-                        <div class="col-3 mt-1" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
-                            <table class="table table-sm mt-4">
+                        <div class="col-3" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
+                            <table class="table table-sm">
                                 <tbody>
                                     <tr>
                                         <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity'][0]}}"><strong>Sensitivity</strong></td>
@@ -54,8 +54,8 @@
                                 [TN] = "this.modelValidationInfo['TN'][1]"
                             > </app-confusion-matrix>
                         </div>
-                        <div class="col-4" >
-                            <plotly-plot 
+                        <div class="col-4"  >
+                            <plotly-plot style="padding-bottom: 10px;"
                                 [data]="predictData" 
                                 [layout]="plotCommon.layout"
                                 [config]="plotCommon.config">
@@ -72,8 +72,8 @@
                     <div id="container">
                     <!-- <div class="row justify-content-between"> -->
                     
-                        <div class="col-3 mt-1" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
-                            <table class="table table-sm mt-4">
+                        <div class="col-3" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
+                            <table class="table table-sm">
                                 <tbody>
                                     <tr>
                                         <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity'][0]}}"><strong>Sensitivity</strong></td>
@@ -107,7 +107,7 @@
                             > </app-confusion-matrix>
                         </div> 
                         <div class="col-4">
-                            <plotly-plot 
+                            <plotly-plot style="padding-bottom: 10px;"
                                 [data]="fittingData" 
                                 [layout]="plotCommon.layout"
                                 [config]="plotCommon.config">
