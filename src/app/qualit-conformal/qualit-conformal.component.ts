@@ -56,7 +56,7 @@ export class QualitConformalComponent implements OnChanges {
     public plotCommon = {
       layout :{
         width: 350,
-        // height: 600,
+        // height: 300,
         polar: {
           bargap: 0,
           gridcolor: "grey",

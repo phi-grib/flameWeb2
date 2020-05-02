@@ -17,7 +17,7 @@ i {
 .table td {
     padding: 5px;
     font-family: 'Barlow Semi Condensed', sans-serif;
-    border-bottom: 2px solid #B8DCED;
+    border-bottom: 1px solid #B8DCED;
     vertical-align: middle;
 }
 tr {

@@ -5,12 +5,12 @@ a:hover {
 
 a.active {
     background: #EBAB39;
-    border-bottom: 2px solid #0076a3;
+    border-bottom: 1px solid #0076a3;
 }
 a {
     background:#22577a;
     color: #f7f9ea;
-    border-bottom: 2px solid #0076a3;
+    border-bottom: 1px solid #0076a3;
 }
 .wrap {
     cursor:not-allowed;
