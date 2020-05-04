@@ -1,6 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { CommonService } from '../common.service';
-import { Model, Prediction } from '../Globals';
+import { Model, Prediction, Globals } from '../Globals';
 // import 'jquery';
 // import 'datatables.net-bs4';
 declare var $: any;
@@ -13,10 +13,10 @@ declare var $: any;
 export class PredictionListComponent implements OnInit {
 
   objectKeys = Object.keys;
-  tableVisible = false;
 
   constructor(private commonService: CommonService,
               public prediction: Prediction,
+              public globals: Globals,
               private model: Model) {}
 
   ngOnInit() {
@@ -34,16 +34,17 @@ export class PredictionListComponent implements OnInit {
   }
 
   getPredictionList() {
-    this.tableVisible = false;
+    this.globals.tablePredictionVisible = false;
     this.commonService.getPredictionList().subscribe(
-        result => {
-          if (result[0]) {
+      result => {
+        if (result[0]) {
             this.prediction.predictions = result[1];
 
             // console.log(result[1])
 
             setTimeout(() => {
               const table = $('#dataTablePredictions').DataTable({
+                'autoWidth': false,
                 /*Ordering by date */
                 order: [[4, 'desc']],
                 columnDefs: [{ 'type': 'date-euro', 'targets': 4 }]
@@ -58,7 +59,6 @@ export class PredictionListComponent implements OnInit {
                 $('tr').removeClass('selected'); // removes all highlights from tr's
                 $(this).addClass('selected'); // adds the highlight to this row
               });
-              this.tableVisible = true;
             }, 100);
           } 
           else {
@@ -69,5 +69,6 @@ export class PredictionListComponent implements OnInit {
           alert(error.message);
         }
     );
+    this.globals.tablePredictionVisible = true;
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Prediction, Model } from '../Globals';
+import { Prediction, Model, Globals } from '../Globals';
 import { CommonService } from '../common.service';
 import { PredictorService } from './predictor.service';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +17,7 @@ export class PredictorComponent implements OnInit {
 
   objectKeys = Object.keys;
   models: {};
-  modelName = 'Model1';
+  modelName = '';
   predictName = '';
   version = '0';
   file: any;
@@ -29,6 +29,7 @@ export class PredictorComponent implements OnInit {
               public activeModal: NgbActiveModal,
               public prediction: Prediction,
               public model: Model,
+              public globals: Globals,
               private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -89,12 +90,14 @@ export class PredictorComponent implements OnInit {
   }
 
   getPredictionList() {
+    this.globals.tablePredictionVisible = false;
     this.commonService.getPredictionList().subscribe(
         result => {
           if (result[0]){
             this.prediction.predictions = result[1];
             setTimeout(() => {
               const table = $('#dataTablePredictions').DataTable({
+                'autoWidth': false,
                 /*Ordering by date */
                 order: [[4, 'desc']],
                 columnDefs: [{ 'type': 'date-euro', 'targets': 4 }]
@@ -105,6 +108,10 @@ export class PredictorComponent implements OnInit {
                 this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
                 this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
               }
+              $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
+                $('tr').removeClass('selected'); // removes all highlights from tr's
+                $(this).addClass('selected'); // adds the highlight to this row
+              });
             }, 100);
           }
           else {
@@ -115,36 +122,42 @@ export class PredictorComponent implements OnInit {
           alert(error.message);
         }
     );
+    this.globals.tablePredictionVisible = true;
   }
 
   predict() {
     this.activeModal.close('Close click');
-    const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictName , {
-      disableTimeOut: true, positionClass: 'toast-top-right'});
-    this.prediction.predicting[this.predictName] = [this.modelName, this.version, this.file.name];
+    if (this.modelName != '') {
+      const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictName , {
+        disableTimeOut: true, positionClass: 'toast-top-right'});
+      this.prediction.predicting[this.predictName] = [this.modelName, this.version, this.file.name];
 
-    this.service.predict(this.modelName, this.version, this.file, this.predictName).subscribe(
-      result => {
-        let iter = 0;
-        const intervalId = setInterval(() => {
-          if (iter < 30) {
-            this.checkPrediction(this.predictName, inserted, intervalId);
-          } else {
-            clearInterval(intervalId);
-            this.toastr.clear(inserted.toastId);
-            this.toastr.warning( 'Prediction ' + name + ' \n Time Out' , 'Warning', {
-                                  timeOut: 10000, positionClass: 'toast-top-right'});
-            delete this.prediction.predicting[this.predictName];
-            $('#dataTablePredictions').DataTable().destroy();
-            this.getPredictionList();
-          }
-          iter += 1;
-        }, 2500);
-      },
-      error => {
-        alert('Error prediction');
-      }
-    );
+      this.service.predict(this.modelName, this.version, this.file, this.predictName).subscribe(
+        result => {
+          let iter = 0;
+          const intervalId = setInterval(() => {
+            if (iter < 30) {
+              this.checkPrediction(this.predictName, inserted, intervalId);
+            } else {
+              clearInterval(intervalId);
+              this.toastr.clear(inserted.toastId);
+              this.toastr.warning( 'Prediction ' + name + ' \n Time Out' , 'Warning', {
+                                    timeOut: 10000, positionClass: 'toast-top-right'});
+              delete this.prediction.predicting[this.predictName];
+              $('#dataTablePredictions').DataTable().destroy();
+              this.getPredictionList();
+            }
+            iter += 1;
+          }, 2500);
+        },
+        error => {
+          alert('Error prediction');
+        }
+      );
+    }
+    else {
+      alert('Model name undefined!')
+    }
   }
 
    // Periodic function to check model
