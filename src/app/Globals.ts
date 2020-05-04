@@ -51,6 +51,7 @@ export class Manager {
 @Injectable()
 export class Globals {
     tableModelVisible = false;
+    tablePredictionVisible = false;
 }
 
 @Injectable()

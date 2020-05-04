@@ -41,7 +41,7 @@
       <div class="col -8">
         <div class="form-group">
           <label for="model">Model</label>
-            <select id="model" class="form-control" [(ngModel)]="this.modelName" name="modelName"> 
+            <select id="model" class="form-control" [(ngModel)]="this.modelName" name=""> 
               <option *ngFor="let value of objectKeys(this.models).sort()" [value]='value'>
               {{value}}
               </option>

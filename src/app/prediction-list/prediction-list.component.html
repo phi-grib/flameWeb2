@@ -2,13 +2,13 @@
 
 <app-manage-predictions></app-manage-predictions>
 
-<div class ="text-center spinner-table" *ngIf = "!this.tableVisible">
+<div class ="text-center spinner-table" *ngIf = "!this.globals.tablePredictionVisible">
   <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
     <span class="sr-only">Loading...</span>
   </div>
 </div>
 
-<div class="ml-3 mr-3" [hidden] = "!this.tableVisible">
+<div class="ml-3 mr-3" [hidden] = "!this.globals.tablePredictionVisible">
   <div class="col-12 scrolltable" >
     <table class="table" id="dataTablePredictions">
       <thead>

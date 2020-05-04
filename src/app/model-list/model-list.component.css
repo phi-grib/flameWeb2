@@ -6,7 +6,7 @@ i {
     background-color: white;
     background: white;
     color: #22577A;
-    table-layout: fixed;
+    /* table-layout: fixed; */
     width: 100%;
 }
 .table th{
