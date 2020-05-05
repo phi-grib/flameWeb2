@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Prediction, Model, Globals } from '../Globals';
 import { CommonService } from '../common.service';
 import { PredictorService } from './predictor.service';
+import { CommonFunctions } from '../common.functions';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 // import 'jquery';
 declare var $: any;
@@ -20,12 +20,12 @@ export class PredictorComponent implements OnInit {
   modelName = '';
   predictName = '';
   version = '0';
-  file: any;
+  file = undefined;
   isvalid = false;
   predictionsNames = {};
   constructor(public service: PredictorService,
-              private router: Router,
               private commonService: CommonService,
+              private func: CommonFunctions,
               public activeModal: NgbActiveModal,
               public prediction: Prediction,
               public model: Model,
@@ -89,42 +89,6 @@ export class PredictorComponent implements OnInit {
     );
   }
 
-  getPredictionList() {
-    this.globals.tablePredictionVisible = false;
-    this.commonService.getPredictionList().subscribe(
-        result => {
-          if (result[0]){
-            this.prediction.predictions = result[1];
-            setTimeout(() => {
-              const table = $('#dataTablePredictions').DataTable({
-                'autoWidth': false,
-                /*Ordering by date */
-                order: [[4, 'desc']],
-                columnDefs: [{ 'type': 'date-euro', 'targets': 4 }]
-              });
-              if (result[1].length > 0) {
-                this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
-                this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
-                this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
-                this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
-              }
-              $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
-                $('tr').removeClass('selected'); // removes all highlights from tr's
-                $(this).addClass('selected'); // adds the highlight to this row
-              });
-            }, 100);
-          }
-          else {
-            alert(result[1]);
-          }
-        },
-        error => {
-          alert(error.message);
-        }
-    );
-    this.globals.tablePredictionVisible = true;
-  }
-
   predict() {
     this.activeModal.close('Close click');
     if (this.modelName != '') {
@@ -145,7 +109,7 @@ export class PredictorComponent implements OnInit {
                                     timeOut: 10000, positionClass: 'toast-top-right'});
               delete this.prediction.predicting[this.predictName];
               $('#dataTablePredictions').DataTable().destroy();
-              this.getPredictionList();
+              this.func.getPredictionList();
             }
             iter += 1;
           }, 2500);
@@ -178,7 +142,7 @@ export class PredictorComponent implements OnInit {
         clearInterval(intervalId);
         delete this.prediction.predicting[this.predictName];
         $('#dataTablePredictions').DataTable().destroy();
-        this.getPredictionList();
+        this.func.getPredictionList();
       },
       error => { // CHECK MAX iterations
         if (error.error.code !== 0) {
@@ -188,7 +152,7 @@ export class PredictorComponent implements OnInit {
           clearInterval(intervalId);
           delete this.prediction.predicting[this.predictName];
           $('#dataTablePredictions').DataTable().destroy();
-          this.getPredictionList();
+          this.func.getPredictionList();
         }
       }
     );

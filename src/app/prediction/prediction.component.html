@@ -237,12 +237,11 @@
                 
                 <div class="col-9 border">
 
-                  <table class="table w-auto">
+                  <table class="table">
                     <thead>
                       <tr>
                         <th class="pl-0 pb-2 pt-2 pr-2 text-left" scope="col">Distance</th>
                         <th class="pl-0 pb-2 pt-2 pr-2 text-center" scope="col">Structure</th>
-                        <!-- <th class="p-2 text-left" scope="col">Name</th> -->
                         <th class="pr-0 pl-2 pb-2 pt-2 text-left" scope="col">Name</th>
                         <th class="pr-0 pl-2 pb-2 pt-2 text-right" scope="col">Activity</th>
                       </tr>
@@ -251,9 +250,9 @@
 
                       <tr *ngFor="let dist of this.predictionResult.search_results[this.molIndex].distances; let j = index">
                         <td class="p-0 text-left">{{dist.toFixed(2)}}</td>
-                        <td class="p-0 text-left"><canvas id="{{'one_canvas'+j}}"></canvas></td>
+                        <td class="p-0 text-center"><canvas id="{{'one_canvas'+j}}"></canvas></td>
                         <td class="p-0 text-left">{{this.predictionResult.search_results[this.molIndex].obj_nam[j]}}</td>
-                        <td class="p-0 text-right">{{this.predictionResult.search_results[this.molIndex].ymatrix[j]}}</td>
+                        <td class="p-0 text-right">{{castValue(this.predictionResult.search_results[this.molIndex].ymatrix[j])}}</td>
                       </tr>
 
                     </tbody>
@@ -279,24 +278,24 @@
                   <strong >Model</strong>
                 </div>
                 <div class="col-9 border">
-                  <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}}vars</span>
+                  <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}} vars </span>
                   <br>
-                  <span>Training series {{this.modelBuildInfo['nobj']}} compounds</span>
+                  <span>Training series {{this.modelBuildInfo['nobj']}} compounds. </span>
                     <span *ngIf="this.modelBuildInfo['R2']">R2: {{this.modelBuildInfo['R2'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['SDEC']">SDEC: {{this.modelBuildInfo['SDEC'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['Q2']">Q2: {{this.modelBuildInfo['Q2'].toFixed(2)}}, </span>
-                    <span *ngIf="this.modelBuildInfo['SDEP']">SDEP: {{this.modelBuildInfo['SDEP'].toFixed(2)}}</span>
+                    <span *ngIf="this.modelBuildInfo['SDEP']">SDEP: {{this.modelBuildInfo['SDEP'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['Sensitivity']">Sensitivity: {{this.modelBuildInfo['Sensitivity'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['Specificity']">Specificity: {{this.modelBuildInfo['Specificity'].toFixed(2)}}, </span>
-                    <span *ngIf="this.modelBuildInfo['MCC']">MCC: {{this.modelBuildInfo['MCC'].toFixed(2)}}</span>
+                    <span *ngIf="this.modelBuildInfo['MCC']">MCC: {{this.modelBuildInfo['MCC'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['SensitivityPed']">Sensitivity (predicted): {{this.modelBuildInfo['SensitivityPed'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['SpecificityPred']">Specificity (predicted): {{this.modelBuildInfo['SpecificityPred'].toFixed(2)}}, </span>
-                    <span *ngIf="this.modelBuildInfo['MCCpred']">MCC (predicted): {{this.modelBuildInfo['MCCpred'].toFixed(2)}}</span>
+                    <span *ngIf="this.modelBuildInfo['MCCpred']">MCC (predicted): {{this.modelBuildInfo['MCCpred'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['Conformal_mean_interval']">Conformal mean interval: {{this.modelBuildInfo['Conformal_mean_interval'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['Conformal_coverage']">Conformal coverage: {{this.modelBuildInfo['Conformal_coverage'].toFixed(2)}}, </span>
                     <span *ngIf="this.modelBuildInfo['Conformal_accuracy']">Conformal accuracy: {{this.modelBuildInfo['Conformal_accuracy'].toFixed(2)}} </span>
                   <br>
-                    <a href="javascript:void(0);">QMRF report</a>
+                    <!-- <a href="javascript:void(0);">QMRF report</a> -->
                     
                 </div>
 
@@ -329,7 +328,7 @@
                   <!--END SUBMODEL RESULTS-->
                    
                   <br>
-                    <a href="javascript:void(0);">QMRF report</a>
+                    <!-- <a href="javascript:void(0);">QMRF report</a> -->
                     
                 </div>
               </div>
@@ -365,24 +364,24 @@
                   </div>
                 </div>
                 <div class="col-9 border">
-                  <span class="text-capitalize">{{this.submodels[this.submodelsIndex]['model']}}</span><span> using {{this.submodels[this.submodelsIndex]['nvarx']}}vars</span>
+                  <span class="text-capitalize">{{this.submodels[this.submodelsIndex]['model']}}</span><span> using {{this.submodels[this.submodelsIndex]['nvarx']}} vars </span>
                   <br><br>
-                  <span>Training series {{this.submodels[this.submodelsIndex]['nobj']}} compounds</span><br><br>
+                  <span>Training series {{this.submodels[this.submodelsIndex]['nobj']}} compounds. </span><br><br>
                     <span *ngIf="this.submodels[this.submodelsIndex]['R2']">R2: {{this.submodels[this.submodelsIndex]['R2'].toFixed(2)}}, </span>
                     <span *ngIf="this.submodels[this.submodelsIndex]['SDEC']">SDEC: {{this.submodels[this.submodelsIndex]['SDEC'].toFixed(2)}}, </span>
                     <span *ngIf="this.submodels[this.submodelsIndex]['Q2']">Q2: {{this.submodels[this.submodelsIndex]['Q2'].toFixed(2)}}, </span>
-                    <span *ngIf="this.submodels[this.submodelsIndex]['SDEP']">SDEP: {{this.submodels[this.submodelsIndex]['SDEP'].toFixed(2)}}</span>
+                    <span *ngIf="this.submodels[this.submodelsIndex]['SDEP']">SDEP: {{this.submodels[this.submodelsIndex]['SDEP'].toFixed(2)}}, </span>
                     <span *ngIf="this.submodels[this.submodelsIndex]['Sensitivity']">Sensitivity: {{this.submodels[this.submodelsIndex]['Sensitivity'].toFixed(2)}}, </span>
                     <span *ngIf="this.submodels[this.submodelsIndex]['Specificity']">Specificity: {{this.submodels[this.submodelsIndex]['Specificity'].toFixed(2)}}, </span>
-                    <span *ngIf="this.submodels[this.submodelsIndex]['MCC']">MCC: {{this.submodels[this.submodelsIndex]['MCC'].toFixed(2)}}</span><br>
+                    <span *ngIf="this.submodels[this.submodelsIndex]['MCC']">MCC: {{this.submodels[this.submodelsIndex]['MCC'].toFixed(2)}}, </span><br>
                     <span *ngIf="this.submodels[this.submodelsIndex]['SensitivityPed']">Sensitivity (predicted): {{this.submodels[this.submodelsIndex]['SensitivityPed'].toFixed(2)}}, </span>
                     <span *ngIf="this.submodels[this.submodelsIndex]['SpecificityPred']">Specificity (predicted): {{this.submodels[this.submodelsIndex]['SpecificityPred'].toFixed(2)}}, </span>
-                    <span *ngIf="this.submodels[this.submodelsIndex]['MCCpred']">MCC (predicted): {{this.submodels[this.submodelsIndex]['MCCpred'].toFixed(2)}}</span>
+                    <span *ngIf="this.submodels[this.submodelsIndex]['MCCpred']">MCC (predicted): {{this.submodels[this.submodelsIndex]['MCCpred'].toFixed(2)}}, </span>
                     <span *ngIf="this.submodels[this.submodelsIndex]['Conformal_mean_interval']">Conformal mean interval: {{this.submodels[this.submodelsIndex]['Conformal_mean_interval'].toFixed(2)}}, </span>
                     <span *ngIf="this.submodels[this.submodelsIndex]['Conformal_coverage']">Conformal coverage: {{this.submodels[this.submodelsIndex]['Conformal_coverage'].toFixed(2)}}, </span>
                     <span *ngIf="this.submodels[this.submodelsIndex]['Conformal_accuracy']">Conformal accuracy: {{this.submodels[this.submodelsIndex]['Conformal_accuracy'].toFixed(2)}} </span>
-                  <br><br>
-                     <a href="javascript:void(0);">QMRF report</a>
+                  <br>
+                     <!-- <a href="javascript:void(0);">QMRF report</a> -->
                 </div>
               </div>
 
