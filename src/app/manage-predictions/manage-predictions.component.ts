@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 // import 'jquery';
-// import 'datatables.net-bs4';
+import 'datatables.net-bs4';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonService } from '../common.service';
 import { Prediction } from '../Globals';

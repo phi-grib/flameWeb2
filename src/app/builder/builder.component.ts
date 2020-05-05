@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonFunctions } from '../common.functions';
+import 'datatables.net-bs4';
+import 'datatables.net-select-bs4';
 declare var $: any;
 
 @Component({
@@ -72,10 +74,14 @@ export class BuilderComponent implements OnInit {
     this.model.delta = this.recursiveDelta(this.model.parameters);
     this.model.listModels[name + '-' + version] = {name: name, version: version, trained: false, numMols: '-',
       variables: '-', type: '-', quality: {}, quantitative: false, conformal: false, ensemble: false};
+    
     this.model.trainig_models.push(name + '-' + version);
+    
     const inserted = this.toastr.info('Running!', 'Model ' + name + '.v' + version , {
       disableTimeOut: true, positionClass: 'toast-top-right'});
+    
     this.activeModal.close('Close click');
+
     this.service.buildModel().subscribe(
       result => {
         let iter = 0;
@@ -88,6 +94,7 @@ export class BuilderComponent implements OnInit {
             if (index > -1) {
               this.model.trainig_models.splice(index, 1);
             }
+
             this.toastr.clear(inserted.toastId);
             this.toastr.warning( 'Model ' + name + '.v' + version + ' \n ' , 'Interactive timeout exceeded, check latter...', {
             timeOut: 10000, positionClass: 'toast-top-right'});
@@ -115,7 +122,8 @@ export class BuilderComponent implements OnInit {
   checkModel(name, version, inserted, intervalId) {
     this.commonService.getModel(name, version).subscribe(
       result => {
-        $('#dataTableModels').DataTable().destroy();
+        const table = $('#dataTableModels').DataTable();
+        table.destroy();
         const dict_info = {};
         for (const aux of  result) {
           dict_info[aux[0]] = aux[2];
@@ -143,6 +151,11 @@ export class BuilderComponent implements OnInit {
           timeOut: 5000, positionClass: 'toast-top-right'});
         clearInterval(intervalId);
         this.func.getModelList();
+
+        console.log (table.row(20).data());
+        table.row(20).select();
+
+
       },
       error => { // CHECK what type of error
        if (error.error.code !== 0) {

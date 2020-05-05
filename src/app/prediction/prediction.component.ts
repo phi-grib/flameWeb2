@@ -6,7 +6,7 @@ import { CommonService } from '../common.service';
 // import { SingleDataSet, Label } from 'ng2-charts';
 // import { ChartType} from 'chart.js';
 import { PredictionService } from './prediction.service';
-// import 'datatables.net-bs4';
+import 'datatables.net-bs4';
 // import 'datatables.net-buttons-bs4';
 
 import jsPDF from 'jspdf';

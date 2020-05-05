@@ -6,7 +6,7 @@ import { Model, Prediction, Globals } from '../Globals';
 // import { ValidationsComponent} from '../validations/validations.component';
 // import 'jquery';
 import { CommonFunctions } from '../common.functions';
-// import 'datatables.net-bs4';
+import 'datatables.net-bs4';
 declare var $: any;
 
 @Component({

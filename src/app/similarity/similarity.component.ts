@@ -4,7 +4,7 @@ import { SimilarityService} from './similarity.service';
 import * as SmilesDrawer from 'smiles-drawer';
 import { Model, Prediction } from '../Globals';
 // import 'jquery';
-// import 'datatables.net-bs4';
+import 'datatables.net-bs4';
 declare var $: any;
 
 @Component({

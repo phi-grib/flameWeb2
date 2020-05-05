@@ -31,6 +31,7 @@ import { ManagePredictionsComponent } from './manage-predictions/manage-predicti
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.component';
 import { DataTablesModule } from 'angular-datatables';
+// import { DataTableModule } from 'angular-6-datatable';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PlotlyModule } from 'angular-plotly.js';
 import { ModelDocumentationComponent } from './model-documentation/model-documentation.component';

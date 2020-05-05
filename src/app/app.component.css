@@ -8,3 +8,7 @@
     max-height: 90vh; 
     overflow: auto;
 }
+.app-base {
+    padding-left: 0px;
+    padding-right: 30px; /* prevents horizontal scrollbar*/
+}
