@@ -60,6 +60,10 @@ export class ModelDocumentationComponent implements OnChanges {
     return str.replace(/_/g, ' ');
   }
 
+  editSection(val:number){
+    console.log ('edit section', val)
+  }
+
   getDocumentation(): void {
     this.documentationVisible = false;
     this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
