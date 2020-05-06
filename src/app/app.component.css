@@ -1,11 +1,12 @@
 .info {
-    background-color: #FAFAFA;
+    /* background-color: #FAFAFA; */
+    background-color: white;
     /* min-height: 100vh;    */
 }
 .scrollable{
     /* right column will have a max of 95%
        and a scroll bar will appear only when it is bigger */
-    max-height: 90vh; 
+    max-height: 95vh; 
     overflow: auto;
 }
 .app-base {
