@@ -19,6 +19,8 @@ export class ModelDocumentationComponent implements OnChanges {
   modelDocumentation = undefined;
   public documentationVisible = false;
 
+  levelLabels = ['General model information', 'Algorithms and software', 'Other information'];
+
   docLevel = [  ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
                   'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
                   'Limits_applicability', 'Experimental_protocol', 'Model_availability',
