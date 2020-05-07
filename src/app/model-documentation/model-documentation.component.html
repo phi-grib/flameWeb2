@@ -173,8 +173,12 @@
                                 <td>{{this.cleanStr(key)}}</td>
 
                                 <ng-container *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">
+
+                                    <!-- non-objects -->
                                     <td class="doc-value" *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
                                         {{this.modelDocumentation[key].value}}</td>
+                                    
+                                    <!-- objects -->
                                     <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">   
 
                                         <table class="table" id="documentationTable">
@@ -232,18 +236,50 @@
             </div>
 
             <div class="modal-body">
-                <div *ngFor="let key of this.docLevel[this.sectionActive]" >
-                    <div class="form-group row">
-                        <div class="col-7">
-                            <input id=#key class="form-control doc-value" [(ngModel)]="this.modelDocumentation[key].value" id="key" type='text-area' placeholder="{{this.cleanStr(key)}}">
-                            <!-- <small class="text-right text-muted">{{this.modelDocumentation[key].description}}</small>  -->
+                <div *ngFor="let key of this.editLevel[this.sectionActive]" >
+                    <!-- non objects -->
+                    <div class="form-group row" *ngIf="!isObject(this.modelDocumentation[key].value)">
+                        <div class="col-8">
+                            <input class="form-control doc-value" [(ngModel)]="this.modelDocumentation[key].value" 
+                            id="#key" type='text-area' placeholder="{{this.cleanStr(key)}}">
                         </div>
-                        <label for=key class="col-5 text-muted small">{{this.modelDocumentation[key].description}}</label> 
-
+                        <label for=key class="col-4 text-muted small pl-0">{{this.modelDocumentation[key].description}}</label> 
                     </div>
+
+                    <div class="form-group row" *ngIf="isObject(this.modelDocumentation[key].value)">
+                        <div class="col-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-2 col-sm-2">
+                                    <label for=key class="col-2 small pl-0">{{this.cleanStr(key)}}</label> 
+                                </div>
+
+                                <div class="col-8 col-sm-10">
+                                    <div *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
+                                        <div class="row">
+                                            <input class="col-sm-7 form-control doc-value-inner" *ngIf="isObject(this.modelDocumentation[key].value[key2])" 
+                                            [(ngModel)]="this.modelDocumentation[key].value[key2].value" 
+                                            id="key2" type='text-area' placeholder="{{this.cleanStr(key2)}}">
+
+                                            <input class="col-sm-7 form-control doc-value-inner" *ngIf="!isObject(this.modelDocumentation[key].value[key2])" 
+                                            [(ngModel)]="this.modelDocumentation[key].value[key2]" 
+                                            id="key2" type='text-area' placeholder="{{this.cleanStr(key2)}}">
+                                        
+                                            <label for=key class="col-sm-3 text-muted small" *ngIf="isObject(this.modelDocumentation[key].value[key2])" >
+                                                {{this.modelDocumentation[key].value[key2].description}}</label> 
+                                            <label for=key class="col-sm-3 text-muted small" *ngIf="!isObject(this.modelDocumentation[key].value[key2])" >
+                                                na</label> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>  
+                    </div>
+
                 </div>
             </div>
-
+            
+            <!-- <label for=key class="col-3 text-muted small">{{this.modelDocumentation[key2].description}}</label>  -->
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="this.cancelInput()">Cancel</button>

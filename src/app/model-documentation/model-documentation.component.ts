@@ -32,6 +32,18 @@ export class ModelDocumentationComponent implements OnChanges {
                   'Endpoint_data_quality_and_variability', 'Descriptor_selection']
                  ];
   
+  editLevel = [  ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
+                 'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
+                 'Limits_applicability', 'Experimental_protocol', 'Model_availability',
+                 'Data_info'],
+                ['Algorithm', 'Software', 'Descriptors', 'AD_method', 'AD_parameters',
+                 'Internal_validation_2', 'External_validation',
+                 'Comments'],
+                ['Other_related_models', 'Date_of_QMRF', 'Date_of_QMRF_updates',
+                 'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
+                 'Endpoint_data_quality_and_variability', 'Descriptor_selection']
+                ];
+
   sectionActive: number;
   modelDocumentationBackup: any;
 
@@ -76,6 +88,7 @@ export class ModelDocumentationComponent implements OnChanges {
         // for (var key in this.modelDocumentation) {
         //       console.log(key, this.modelDocumentation[key]);
         //   }
+
       },
       error => {
         this.modelDocumentation = undefined;

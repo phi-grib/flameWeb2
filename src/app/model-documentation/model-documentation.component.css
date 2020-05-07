@@ -38,6 +38,10 @@ table td {
   color: #0076a3;
 }
 
+.doc-value-inner {
+  margin-top: 5px;
+  color: #0076a3;
+}
 
 .documentation {
   /* table-layout: fixed; */
