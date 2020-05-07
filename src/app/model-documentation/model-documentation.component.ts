@@ -19,30 +19,22 @@ export class ModelDocumentationComponent implements OnChanges {
   modelDocumentation = undefined;
   public documentationVisible = false;
 
-  orderDocumentation = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
-  'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
-  'Limits_applicability', 'Experimental_protocol', 'Model_availability',
-  'Data_info', 'Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
-  'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics', 
-  'Internal_validation_1', 'Internal_validation_2', 'External_validation',
-  'Comments', 'Other_related_models', 'Date_of_QMRF', 'Data_of_QMRF_updates',
-  'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
-  'Endpoint_data_quality_and_variability', 'Descriptor_selection'];
-
-  docLevel1 = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
-  'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
-  'Limits_applicability', 'Experimental_protocol', 'Model_availability',
-  'Data_info'];
-
-  docLevel2 = ['Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
-  'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics', 
-  'Internal_validation_1', 'Internal_validation_2', 'External_validation',
-  'Comments'];
+  docLevel = [  ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
+                  'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
+                  'Limits_applicability', 'Experimental_protocol', 'Model_availability',
+                  'Data_info'],
+                 ['Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
+                  'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics', 
+                  'Internal_validation_1', 'Internal_validation_2', 'External_validation',
+                  'Comments'],
+                 ['Other_related_models', 'Date_of_QMRF', 'Date_of_QMRF_updates',
+                  'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
+                  'Endpoint_data_quality_and_variability', 'Descriptor_selection']
+                 ];
   
-  docLevel3 = ['Other_related_models', 'Date_of_QMRF', 'Data_of_QMRF_updates',
-  'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
-  'Endpoint_data_quality_and_variability', 'Descriptor_selection'];
-  
+  sectionActive: number;
+  modelDocumentationBackup: any;
+
   objectKeys = Object.keys;
 
   ngOnChanges(): void {
@@ -61,7 +53,18 @@ export class ModelDocumentationComponent implements OnChanges {
   }
 
   editSection(val:number){
-    console.log ('edit section', val)
+    this.sectionActive = val;
+    // deep copy modelDocumentation. In case of cancel we will restore it
+    this.modelDocumentationBackup = JSON.parse(JSON.stringify(this.modelDocumentation));
+
+  }
+
+  cancelInput(){
+    this.modelDocumentation = JSON.parse(JSON.stringify(this.modelDocumentationBackup));
+  }
+
+  applyInput(){
+    console.log ("not yet implemented")
   }
 
   getDocumentation(): void {
