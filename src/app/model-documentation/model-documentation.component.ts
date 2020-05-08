@@ -1,6 +1,8 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Model } from '../Globals';
 import { CommonService } from '../common.service';
+import { ToastrService } from 'ngx-toastr';
+import { ModelDocumentationService } from './model-documentation.service';
 
 @Component({
   selector: 'app-model-documentation',
@@ -11,6 +13,8 @@ import { CommonService } from '../common.service';
 export class ModelDocumentationComponent implements OnChanges {
 
   constructor( public model: Model,
+               public service: ModelDocumentationService,
+               private toastr: ToastrService,
                private commonService: CommonService) { }
   
   @Input() modelName;
@@ -66,6 +70,10 @@ export class ModelDocumentationComponent implements OnChanges {
     return str.replace(/_/g, ' ');
   }
 
+  private isDict(v) {
+    return typeof v === 'object' && v !== null && !(v instanceof Array) && !(v instanceof Date);
+  }
+
   editSection(val:number){
     this.sectionActive = val;
     // deep copy modelDocumentation. In case of cancel we will restore it
@@ -78,7 +86,43 @@ export class ModelDocumentationComponent implements OnChanges {
   }
 
   applyInput(){
-    console.log ("not yet implemented")
+    let delta = JSON.stringify(this.genDelta(this.modelDocumentation));
+    // console.log (delta)
+
+    this.service.updateDocumentation(this.model.name, this.model.version, delta).subscribe(
+      result => {
+        this.toastr.success('Model ' + this.model.name + '.v' + this.model.version , 'DOCUMENTATION UPDATED', {
+          timeOut: 5000, positionClass: 'toast-top-right'});
+      },
+      error => {
+        alert('Error updating documentation');
+      }
+    );
+  }
+
+  private genDelta(dict_in: {}) {
+    let dict_aux = {};
+    const dict_out = {};
+
+    for (const key of Object.keys(dict_in)) {
+      let val = dict_in[key]['value'];
+      if (!this.isDict(val)) {
+        dict_out[key] = val;
+      }
+      else {
+        dict_aux = {};
+        for (const key2 of Object.keys(val)) {
+            if (!this.isDict(val[key2])){
+              dict_aux[key2] = val[key2];
+            }
+            else {
+              dict_aux[key2] = val[key2]['value'];
+            }
+        }
+        dict_out[key] = dict_aux;
+      }
+    }
+    return dict_out;
   }
 
   getDocumentation(): void {
