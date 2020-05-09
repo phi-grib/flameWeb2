@@ -20,15 +20,13 @@ ul li a.active{
 }
 
 .logo-right {
-    /* display: flex;
-    justify-content: right;
-    padding: 5px; */
     
+    vertical-align: middle;
     position: absolute;
     right: 0px;
     /* width: 300px; */
     /* border: 3px solid #73AD21; */
-    padding: 5px;
+    padding: 5px; 
 
 }
 

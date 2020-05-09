@@ -4,8 +4,5 @@ import { Injectable, OnInit } from '@angular/core';
   providedIn: 'root'
 })
 export class ValidationsService  {
-
   constructor() {}
-
-  
 }

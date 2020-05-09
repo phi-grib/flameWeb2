@@ -1,14 +1,8 @@
 <div *ngIf="this.model.name !=undefined && this.model.trained">
-    <app-qualit-no-conformal *ngIf="!this.model.quantitative && !this.model.conformal" 
-                            [modelName]="this.model.name" [modelVersion]= "this.model.version"></app-qualit-no-conformal>
-
-    <app-qualit-conformal *ngIf="!this.model.quantitative && this.model.conformal"
+    <app-qualit-conformal *ngIf="!this.model.quantitative"
                             [modelName]="this.model.name" [modelVersion]= "this.model.version"></app-qualit-conformal>
 
-    <app-quantit-no-conformal *ngIf="this.model.quantitative && !this.model.conformal"
-                            [modelName]="this.model.name" [modelVersion]= "this.model.version"></app-quantit-no-conformal>
-
-    <app-quantit-conformal *ngIf="this.model.quantitative && this.model.conformal"
+    <app-quantit-conformal *ngIf="this.model.quantitative"
                             [modelName]="this.model.name" [modelVersion]= "this.model.version"></app-quantit-conformal>
 
     <app-model-documentation [modelName]="this.model.name" [modelVersion]="this.model.version" ></app-model-documentation>
