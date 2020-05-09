@@ -129,11 +129,15 @@
             <!--FITTING TAB END --->
 
             <!--SERIES TAB-->
-            <div class="tab-pane fade show active" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
+            <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
                 <div class="card-body">
-                    <div id="container">
-                        under development
-                    </div>
+                        <div>
+                            <plotly-plot 
+                                [data]="plotScores.data" 
+                                [layout]="plotCommonScores.layout" 
+                                [config]="plotCommonScores.config">
+                            </plotly-plot>  
+                        </div>
                 </div>
             </div>
             <!--SERIES TAB END-->

@@ -24,7 +24,7 @@ export class QuantitConformalComponent implements OnChanges {
     modelWarning = '';
     data: Array<any>;
 
-    public plotFittedConf = {
+    plotFittedConf = {
       data: [
         { x: [], 
           y: [], 
@@ -58,7 +58,8 @@ export class QuantitConformalComponent implements OnChanges {
         }
       ],
     }
-    public plotPredictedConf = {
+    
+    plotPredictedConf = {
       data: [
         { x: [], 
           y: [], 
@@ -93,7 +94,26 @@ export class QuantitConformalComponent implements OnChanges {
       ],
     }
 
-    public plotCommon = {
+    plotScores = {
+      data: [
+        { x: [], 
+          y: [], 
+          text: [],
+          type: 'scatter', 
+          mode: 'markers', 
+          marker: {
+            color: 'rgba(255,0,0,0.2)',
+            size: 12,
+            line: {
+              color: 'red',
+              width: 2
+            }
+          },
+        }
+      ],
+    }
+
+    plotCommon = {
       layout: { 
             width: 950,
             height: 600,
@@ -145,10 +165,64 @@ export class QuantitConformalComponent implements OnChanges {
             // responsive: true,
             displaylogo: false,
             modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d']    }
-          };
-          
-    ngOnChanges(): void {
+    };
+
+    plotCommonScores = {
+        layout: { 
+          width: 950,
+          height: 600,
+          margin: {
+            r: 10,
+            t: 30,
+            pad: 0
+          },
+          showlegend: false,
+          showtitle: false,
+          xaxis: {
+            hoverformat: '.2f',
+            zeroline: false,
+            showgrid: true,
+            showline: true,
+            gridwidth: 1,
+            linecolor: 'rgb(200,200,200)',
+            linewidth: 2,
+            title: 'PCA PC1',
+            titlefont: {
+              family: 'Barlow Semi Condensed, sans-serif',
+              size: 24,
+            },
+            tickfont: {
+              family: 'Barlow Semi Condensed, sans-serif',
+              size: 18,
+            },
+          },
+          yaxis: {
+            hoverformat: '.2f',
+            zeroline: false,
+            showgrid: true,
+            showline: true,
+            gridwidth: 1,
+            linecolor: 'rgb(200,200,200)',
+            linewidth: 2,
+            title: 'PCA PC2',
+            titlefont: {
+              family: 'Barlow Semi Condensed, sans-serif',
+              size: 24,
+            },
+            tickfont: {
+              family: 'Barlow Semi Condensed, sans-serif',
+              size: 18,
+          },
+        },
+      },
+      config: {
+        // responsive: true,
+        displaylogo: false,
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d']    }
+    };
       
+    ngOnChanges(): void {
+        
       this.modelWarning = '';
       this.plotFittedConf.data[0].x = [];
       this.plotFittedConf.data[0].y = [];
@@ -161,6 +235,10 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotPredictedConf.data[0].error_y.array = [];
       this.plotPredictedConf.data[0].error_y.arrayminus = [];
       this.plotPredictedConf.data[0].text = [];
+
+      this.plotScores.data[0].x =[];
+      this.plotScores.data[0].y =[];
+      this.plotScores.data[0].text =[];
       
       this.getValidation();
     }
@@ -182,13 +260,6 @@ export class QuantitConformalComponent implements OnChanges {
             this.modelWarning = info.warning;
           }
 
-          // for (const modelInfo of info['model_build_info']) {
-          //   if (typeof modelInfo[2] === 'number') {
-          //     modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
-          //   }
-          //   this.modelBuildInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
-          // }
-
           for (const modelInfo of info['model_valid_info']) {
             
             if (typeof modelInfo[2] === 'number') {
@@ -205,6 +276,13 @@ export class QuantitConformalComponent implements OnChanges {
           }
 
           setTimeout(() => {
+
+            // PCA scores plot
+            if ('PC1' in info) {
+              this.plotScores.data[0].x = info['PC1'];
+              this.plotScores.data[0].y = info['PC2'];
+              this.plotScores.data[0].text = info['obj_nam'];
+            }
 
             // predicted data
             if ('Y_pred' in info) {

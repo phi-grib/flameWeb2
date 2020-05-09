@@ -18,6 +18,9 @@
             <li class="nav-item">
                 <a class="nav-link" id="pills-fitting-tab" data-toggle="tab" href="#pills-fitting" role="tab" aria-controls="pills-fitting" aria-selected="false"><h4>GOF</h4></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-two-tab" data-toggle="tab" href="#pills-two" role="tab" aria-controls="pills-two" aria-selected="false"><h4>Series</h4></a>
+            </li>
         </ul>
  
         <!-- <div class="tab-content" id="pills-tabContent" [hidden] = "!this.modelVisible"> -->
@@ -113,6 +116,21 @@
                 </div>
             </div>
             <!-- FITTING TAB END -->
+
+            <!--SERIES TAB-->
+            <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
+                <div class="card-body">
+                        <div>
+                            <plotly-plot 
+                                [data]="plotScores.data" 
+                                [layout]="plotCommonScores.layout" 
+                                [config]="plotCommonScores.config">
+                            </plotly-plot>  
+                        </div>
+                </div>
+            </div>
+            <!--SERIES TAB END-->
+
         </div>
     </div>
 </div>
