@@ -1,9 +1,6 @@
 import { Component, Input, OnChanges} from '@angular/core';
 import { QualitConformalService } from './qualit-conformal.service';
 import { Model } from '../Globals';
-// import { SingleDataSet, Label } from 'ng2-charts';
-// import { ChartType, ChartOptions} from 'chart.js';
-// import { CommonService } from '../common.service';
 
 @Component({
   selector: 'app-qualit-conformal',
@@ -15,12 +12,11 @@ export class QualitConformalComponent implements OnChanges {
   constructor(private service: QualitConformalService,
     public model: Model) { }
     
-    
     @Input() modelName;
     @Input() modelVersion;
     
     // objectKeys = Object.keys;
-    modelBuildInfo = {};
+    // modelBuildInfo = {};
     modelValidationInfo = {};
     modelWarning = '';
     objectKeys = Object.keys;
@@ -87,7 +83,6 @@ export class QualitConformalComponent implements OnChanges {
       this.modelWarning = '';
       this.predictData[0].r = [0, 0, 0, 0];
       this.fittingData[0].r = [0, 0, 0, 0];
-    //   this.getDocumentation();
       this.getValidation();
     }
     
@@ -107,13 +102,14 @@ export class QualitConformalComponent implements OnChanges {
           if (info.warning){
             this.modelWarning = info.warning;
           }
-          // INFO ABOUT MODEL
-          for (const modelInfo of info['model_build_info']) {
-            if (typeof modelInfo[2] === 'number') {
-              modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
-            }
-            this.modelBuildInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
-          }
+          // // INFO ABOUT MODEL
+          // for (const modelInfo of info['model_build_info']) {
+          //   if (typeof modelInfo[2] === 'number') {
+          //     modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
+          //   }
+          //   this.modelBuildInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
+          // }
+
           // INFO ABOUT VALIDATION
           for (const modelInfo of info['model_valid_info']) {
             if (typeof modelInfo[2] === 'number') {
@@ -125,22 +121,12 @@ export class QualitConformalComponent implements OnChanges {
           }
           setTimeout(() => {
             if (this.modelValidationInfo['TP']) {
-              // this.polarAreaChartData = [this.modelValidationInfo['TP'][1], 
-              //                           this.modelValidationInfo['FP'][1],
-              //                           this.modelValidationInfo['TN'][1], 
-              //                           this.modelValidationInfo['FN'][1]];
-
               this.predictData[0].r = [this.modelValidationInfo['TP'][1], 
                                         this.modelValidationInfo['FN'][1],
                                         this.modelValidationInfo['TN'][1], 
                                         this.modelValidationInfo['FP'][1]];
             }
             if (this.modelValidationInfo['TP_f']) {
-              // this.polarAreaChartData2 = [this.modelValidationInfo['TP_f'][1], 
-              //                           this.modelValidationInfo['FP_f'][1],
-              //                           this.modelValidationInfo['TN_f'][1], 
-              //                           this.modelValidationInfo['FN_f'][1]];
-
               this.fittingData[0].r = [this.modelValidationInfo['TP_f'][1], 
                                         this.modelValidationInfo['FN_f'][1],
                                         this.modelValidationInfo['TN_f'][1], 
@@ -154,14 +140,4 @@ export class QualitConformalComponent implements OnChanges {
       );
     } 
 
-    // getDocumentation(): void {
-    //   this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
-    //     result => {
-    //       this.modelDocumentation = result;
-    //     },
-    //     error => {
-    //       this.modelDocumentation = undefined;
-    //     }
-    //   );
-    // }
 }

@@ -7,16 +7,14 @@
   <div class="btn-group mr-2" role="group" aria-label="second group">
     <button type="button" class="btn btn-outline-success btn-lg"  (click)="exportModel()" [ngClass]="{'disabled': model.name === undefined}">Export</button>
     <label class="btn btn-outline-success btn-lg mb-0" for="manager">
-            <input id="manager" type="file" style="display:none;" (change)="importModel($event.target.files)">
-            Import
-          </label>
+            <input id="manager" type="file" style="display:none;" (change)="importModel($event.target.files)">Import
+    </label>
   </div>
   <div class="btn-group mr-2" role="group" aria-label="third group">
     <button type="button" class="btn btn-outline-danger btn-lg" data-toggle="modal" data-target="#deleteModel" [ngClass]="{'disabled': model.name === undefined || model.version != '0'}">Delete Model </button>
     <button type="button" class="btn btn-outline-danger btn-lg" data-toggle="modal" data-target="#deleteVersion"[ngClass]="{'disabled': model.name === undefined || model.version == '0'}">Delete Version</button>
   </div>    
 </div>
-
 
 
 <!-- New Model -->

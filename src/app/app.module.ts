@@ -16,9 +16,9 @@ import { ConfigTrainingComponent } from './config-training/config-training.compo
 import { ConfigModelComponent } from './config-model/config-model.component';
 import { ConfigPreferencesComponent } from './config-preferences/config-preferences.component';
 import { ChecklistModule } from 'angular-checklist';
-import { QualitNoConformalComponent } from './qualit-no-conformal/qualit-no-conformal.component';
+// import { QualitNoConformalComponent } from './qualit-no-conformal/qualit-no-conformal.component';
 import { QualitConformalComponent } from './qualit-conformal/qualit-conformal.component';
-import { QuantitNoConformalComponent } from './quantit-no-conformal/quantit-no-conformal.component';
+// import { QuantitNoConformalComponent } from './quantit-no-conformal/quantit-no-conformal.component';
 import { QuantitConformalComponent } from './quantit-conformal/quantit-conformal.component';
 import { BuilderComponent } from './builder/builder.component';
 import { PredictorComponent } from './predictor/predictor.component';
@@ -56,9 +56,9 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ConfigTrainingComponent,
     ConfigModelComponent,
     ConfigPreferencesComponent,
-    QualitNoConformalComponent,
+    // QualitNoConformalComponent,
     QualitConformalComponent,
-    QuantitNoConformalComponent,
+    // QuantitNoConformalComponent,
     QuantitConformalComponent,
     BuilderComponent,
     PredictorComponent,
