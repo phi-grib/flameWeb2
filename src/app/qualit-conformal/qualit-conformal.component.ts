@@ -86,13 +86,24 @@ export class QualitConformalComponent implements OnChanges {
           type: 'scatter', 
           mode: 'markers', 
           marker: {
-            color: 'rgba(255,0,0,0.2)',
-            size: 12,
-            line: {
-              color: 'red',
-              width: 2
+            color: [],
+            opacity: 0.6,
+            colorscale: 'RdBu', 
+            showscale: true, 
+            cmax: 1.0,
+            cmin: 0.0,
+            size: 14,
+            // line: {
+            //   width: 2
+            // },
+            colorbar: {
+              tickfont: {
+                family: 'Barlow Semi Condensed, sans-serif',
+                size: 20
+              }
             }
           },
+          hovertemplate:'Activity: %{marker.color:.2f}<br><b>%{text}</b>',
         }
       ],
     }
@@ -101,6 +112,7 @@ export class QualitConformalComponent implements OnChanges {
       layout: { 
             width: 950,
             height: 600,
+            hovermode: 'closest',
             margin: {
               r: 10,
               t: 30,
@@ -110,7 +122,7 @@ export class QualitConformalComponent implements OnChanges {
             showtitle: false,
             xaxis: {
               hoverformat: '.2f',
-              zeroline: false,
+              zeroline: true,
               showgrid: true,
               showline: true,
               gridwidth: 1,
@@ -148,7 +160,7 @@ export class QualitConformalComponent implements OnChanges {
           config: {
             // responsive: true,
             displaylogo: false,
-            modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d']    }
+            modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    }
           };
 
     ngOnChanges(): void {
@@ -156,6 +168,7 @@ export class QualitConformalComponent implements OnChanges {
       this.plotScores.data[0].x =[];
       this.plotScores.data[0].y =[];
       this.plotScores.data[0].text =[];
+      this.plotScores.data[0].marker.color = [];
       this.predictData[0].r = [0, 0, 0, 0];
       this.fittingData[0].r = [0, 0, 0, 0];
       this.getValidation();
@@ -190,6 +203,7 @@ export class QualitConformalComponent implements OnChanges {
             this.plotScores.data[0].x = info['PC1'];
             this.plotScores.data[0].y = info['PC2'];
             this.plotScores.data[0].text = info['obj_nam'];
+            this.plotScores.data[0].marker.color = info['ymatrix'];
           }
 
           // INFO ABOUT VALIDATION
