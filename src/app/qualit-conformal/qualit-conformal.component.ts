@@ -72,15 +72,90 @@ export class QualitConformalComponent implements OnChanges {
           }
         }
       },
-
       config: {
         // responsive: true,
         displayModeBar: false
       }
     };  
 
+    public plotScores = {
+      data: [
+        { x: [], 
+          y: [], 
+          text: [],
+          type: 'scatter', 
+          mode: 'markers', 
+          marker: {
+            color: 'rgba(255,0,0,0.2)',
+            size: 12,
+            line: {
+              color: 'red',
+              width: 2
+            }
+          },
+        }
+      ],
+    }
+
+    public plotCommonScores = {
+      layout: { 
+            width: 950,
+            height: 600,
+            margin: {
+              r: 10,
+              t: 30,
+              pad: 0
+            },
+            showlegend: false,
+            showtitle: false,
+            xaxis: {
+              hoverformat: '.2f',
+              zeroline: false,
+              showgrid: true,
+              showline: true,
+              gridwidth: 1,
+              linecolor: 'rgb(200,200,200)',
+              linewidth: 2,
+              title: 'PCA PC1',
+              titlefont: {
+                family: 'Barlow Semi Condensed, sans-serif',
+                size: 24,
+              },
+              tickfont: {
+                family: 'Barlow Semi Condensed, sans-serif',
+                size: 18,
+              },
+            },
+            yaxis: {
+              hoverformat: '.2f',
+              zeroline: false,
+              showgrid: true,
+              showline: true,
+              gridwidth: 1,
+              linecolor: 'rgb(200,200,200)',
+              linewidth: 2,
+              title: 'PCA PC2',
+              titlefont: {
+                family: 'Barlow Semi Condensed, sans-serif',
+                size: 24,
+              },
+              tickfont: {
+                family: 'Barlow Semi Condensed, sans-serif',
+                size: 18,
+              },
+            },
+          },
+          config: {
+            // responsive: true,
+            displaylogo: false,
+            modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d']    }
+          };
+
     ngOnChanges(): void {
       this.modelWarning = '';
+      this.plotScores.data[0].x =[];
+      this.plotScores.data[0].y =[];
+      this.plotScores.data[0].text =[];
       this.predictData[0].r = [0, 0, 0, 0];
       this.fittingData[0].r = [0, 0, 0, 0];
       this.getValidation();
@@ -109,6 +184,13 @@ export class QualitConformalComponent implements OnChanges {
           //   }
           //   this.modelBuildInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
           // }
+
+          // PCA scores plot
+          if ('PC1' in info) {
+            this.plotScores.data[0].x = info['PC1'];
+            this.plotScores.data[0].y = info['PC2'];
+            this.plotScores.data[0].text = info['obj_nam'];
+          }
 
           // INFO ABOUT VALIDATION
           for (const modelInfo of info['model_valid_info']) {
