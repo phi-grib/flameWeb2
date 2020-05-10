@@ -88,8 +88,8 @@ export class QualitConformalComponent implements OnChanges {
           marker: {
             color: [],
             opacity: 0.6,
-            colorscale: 'RdBu', 
-            showscale: true, 
+            colorscale: 'Bluered', 
+            showscale: false, 
             cmax: 1.0,
             cmin: 0.0,
             size: 14,
@@ -103,15 +103,15 @@ export class QualitConformalComponent implements OnChanges {
               }
             }
           },
-          hovertemplate:'Activity: %{marker.color:.2f}<br><b>%{text}</b>',
+          hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
         }
       ],
     }
 
     public plotCommonScores = {
       layout: { 
-            width: 950,
-            height: 600,
+            width: 800,
+            height: 550,
             hovermode: 'closest',
             margin: {
               r: 10,
@@ -140,7 +140,7 @@ export class QualitConformalComponent implements OnChanges {
             },
             yaxis: {
               hoverformat: '.2f',
-              zeroline: false,
+              zeroline: true,
               showgrid: true,
               showline: true,
               gridwidth: 1,
@@ -163,6 +163,23 @@ export class QualitConformalComponent implements OnChanges {
             modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    }
           };
 
+
+    public plotPie = {
+      data:  [{
+            values: [],
+            labels: ['positive', 'negative'],
+            textinfo: "label+percent",
+            marker: {
+              colors: ["red", "blue"],
+            },
+            type: 'pie'
+          }],
+      layout: {
+            width: 350,
+            showlegend: false,
+          }
+    }
+          
     ngOnChanges(): void {
       this.modelWarning = '';
       this.plotScores.data[0].x =[];
@@ -171,6 +188,7 @@ export class QualitConformalComponent implements OnChanges {
       this.plotScores.data[0].marker.color = [];
       this.predictData[0].r = [0, 0, 0, 0];
       this.fittingData[0].r = [0, 0, 0, 0];
+      this.plotPie.data[0].values = []
       this.getValidation();
     }
     
@@ -221,12 +239,24 @@ export class QualitConformalComponent implements OnChanges {
                                         this.modelValidationInfo['FN'][1],
                                         this.modelValidationInfo['TN'][1], 
                                         this.modelValidationInfo['FP'][1]];
+
+              this.plotPie.data[0].values = [ this.modelValidationInfo['TP'][1]+
+                                        this.modelValidationInfo['FN'][1],
+                                        this.modelValidationInfo['TN'][1]+
+                                        this.modelValidationInfo['FP'][1],
+                                      ]
             }
             if (this.modelValidationInfo['TP_f']) {
               this.fittingData[0].r = [this.modelValidationInfo['TP_f'][1], 
                                         this.modelValidationInfo['FN_f'][1],
                                         this.modelValidationInfo['TN_f'][1], 
                                         this.modelValidationInfo['FP_f'][1]];
+              
+              this.plotPie.data[0].values = [ this.modelValidationInfo['TP_f'][1]+
+                                        this.modelValidationInfo['FN_f'][1],
+                                        this.modelValidationInfo['TN_f'][1]+
+                                        this.modelValidationInfo['FP_f'][1],
+                                      ]
             }
           }, 50);
         },

@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { QuantitConformalService } from './quantit-conformal.service';
 import { Model } from '../Globals';
 
@@ -15,7 +15,6 @@ export class QuantitConformalComponent implements OnChanges {
 
     @Input() modelName;
     @Input() modelVersion;
-    // @ViewChild('QuantitConformalChart') QuantitConformalChart;
 
     objectKeys = Object.keys;
     // modelBuildInfo = {};
@@ -119,19 +118,58 @@ export class QuantitConformalComponent implements OnChanges {
               }
             }
           },
-          hovertemplate:'Activity: %{marker.color:.2f}<br><b>%{text}</b>',
+          hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
         }
       ],
     }
 
-    // hovertemplate: '<i>Price</i>: $%{y:.2f}' +
-    //                     '<br><b>X</b>: %{x}<br>' +
-    //                     '<b>%{text}</b>',
+    plotViolin= {
+      data : [{
+      type: 'violin',
+      y: [],
+      text: [],
+      points: 'all',
+      pointpos: 2,
+      hoveron: "violins+points",
+      box: {
+        visible: true
+      },
+      boxpoints: true,
+      hoverlabel: {
+        bgcolor: "#22577",
+      },
+      line: {
+        color: '#22577',
+      },
+      hovertemplate: '<b>%{text}</b><br>%{y:.2f}<extra></extra>',
+      // fillcolor: "#0076a3",
+      fillcolor: "#B8DCED",
+      opacity: 0.8,
+      meanline: {
+        visible: true
+      },
+      x0: "activity"
+    }],
+    layout : {
+      width: 300,
+      height: 550,
+      hovermode: 'closest',
+      margin: {
+        r: 10,
+        t: 30,
+        pad: 0
+      },
+      yaxis: {
+        zeroline: false
+      }
+    }
+  }
 
     plotCommon = {
       layout: { 
-            width: 950,
-            height: 600,
+            width: 800,
+            height: 550,
+            hovermode: 'closest',
             margin: {
               r: 10,
               t: 30,
@@ -184,8 +222,8 @@ export class QuantitConformalComponent implements OnChanges {
 
     plotCommonScores = {
         layout: { 
-          width: 950,
-          height: 600,
+          width: 800,
+          height: 550,
           hovermode: 'closest',
           margin: {
             r: 10,
@@ -256,6 +294,9 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotScores.data[0].y =[];
       this.plotScores.data[0].text =[];
       this.plotScores.data[0].marker.color = [];
+      this.plotViolin.data[0].y =[];
+      this.plotViolin.data[0].text =[];
+
       
       this.getValidation();
     }
@@ -299,14 +340,15 @@ export class QuantitConformalComponent implements OnChanges {
               this.plotScores.data[0].x = info['PC1'];
               this.plotScores.data[0].y = info['PC2'];
               this.plotScores.data[0].text = info['obj_nam'];
-              // this.plotScores.data[0].meta = info['ymatrix'];
-              // var scale = [];
               var min = Math.min.apply(Math, info['ymatrix']);
               var max = Math.max.apply(Math, info['ymatrix'])
               this.plotScores.data[0].marker.cmin = min;
               this.plotScores.data[0].marker.cmax = max;
               this.plotScores.data[0].marker.color = info['ymatrix'];
             }
+
+            this.plotViolin.data[0].y = info['ymatrix'];
+            this.plotViolin.data[0].text = info['obj_nam'];
 
             // predicted data
             if ('Y_pred' in info) {

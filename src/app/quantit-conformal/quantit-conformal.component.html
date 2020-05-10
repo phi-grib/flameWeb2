@@ -120,10 +120,15 @@
             <!--SERIES TAB-->
             <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
                 <div class="card-body">
-                        <div>
+                        <div class="row">
                             <plotly-plot 
                                 [data]="plotScores.data" 
                                 [layout]="plotCommonScores.layout" 
+                                [config]="plotCommonScores.config">
+                            </plotly-plot>  
+                            <plotly-plot 
+                                [data]="plotViolin.data" 
+                                [layout]="plotViolin.layout" 
                                 [config]="plotCommonScores.config">
                             </plotly-plot>  
                         </div>
