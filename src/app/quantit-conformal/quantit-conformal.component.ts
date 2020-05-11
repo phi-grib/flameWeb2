@@ -2,7 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { QuantitConformalService } from './quantit-conformal.service';
 import * as SmilesDrawer from 'smiles-drawer';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
-import { Model } from '../Globals';
+import { Model, CustomHTMLElement } from '../Globals';
 
 @Component({
   selector: 'app-quantit-conformal',
@@ -374,6 +374,37 @@ export class QuantitConformalComponent implements OnChanges {
             //       context.clearRect(0, 0, canvas.width, canvas.height);
             //   });
 
+            const options = {'width': 300, 'height': 300};
+            const smilesDrawer = new SmilesDrawer.Drawer(options);
+                    
+            //       myPlot.on('plotly_hover', function(eventdata){ 
+            //         var points = eventdata.points[0];
+            //         SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+            //           smilesDrawer.draw(tree, 'scatter_canvas', 'light', false);
+            //   });
+            // })
+            // .on('plotly_unhover', function(data){
+            //   // const context = canvas.getContext('2d');
+            //   // context.clearRect(0, 0, canvas.width, canvas.height);
+            // });
+              
+            setTimeout( () => {
+              // Plotly.newPlot(this.plotContainerId, this.plotdata, this.ploylayout,{displayModeBar: false});
+              PlotlyJS.newPlot('scatterDIV', this.plotScores.data, this.plotCommonScores.layout, this.plotCommonScores.config);
+              let myPlot = <CustomHTMLElement>document.getElementById('scatterDIV');
+              myPlot.on('plotly_hover', function(eventdata){ 
+                var points = eventdata.points[0];
+                SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                  smilesDrawer.draw(tree, 'scatter_canvas', 'light', false);
+                });
+              })
+              // .on('plotly_unhover', function(data){
+              //   // const context = canvas.getContext('2d');
+              //   // context.clearRect(0, 0, canvas.width, canvas.height);
+              // });
+
+            },1);
+ 
             this.plotViolin.data[0].y = info['ymatrix'];
             this.plotViolin.data[0].text = info['obj_nam'];
 
