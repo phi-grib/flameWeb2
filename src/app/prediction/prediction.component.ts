@@ -2,6 +2,7 @@ import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, O
 import { Prediction} from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonService } from '../common.service';
+import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 // import { Subject } from 'rxjs';
 // import { SingleDataSet, Label } from 'ng2-charts';
 // import { ChartType} from 'chart.js';
@@ -146,6 +147,14 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     ],
   }
 
+  icon1 : {
+    'width': 500,
+    'height': 600,
+    'path': 'M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z'
+  }
+
+  // colored = true;
+
   plotCommonScores = {
     layout: { 
       width: 950,
@@ -198,6 +207,27 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     config: {
       // responsive: true,
       displaylogo: false,
+      // modeBarButtonsToAdd: [
+      //   { name: 'color toggler',
+      //     icon: this.icon1,
+      //     click: function(gd) {
+      //       if (this.colored) {
+      //         var update = {
+      //           'marker.colorscale': 'Greys'
+      //         };
+      //         PlotlyJS.restyle(gd, update, [0]);
+      //         PlotlyJS.restyle(gd, 'marker.color', 'red', [1]);
+      //         this.colored = false;
+      //       }
+      //       else {
+      //         var update = {
+      //           'marker.colorscale': 'Bluered'
+      //         };
+      //         PlotlyJS.restyle(gd, update, [0]);
+      //         PlotlyJS.restyle(gd, 'marker.color', 'black', [1]);
+      //         this.colored = true;
+      //       }
+      //     }}],
       modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    }
     };
 
@@ -346,6 +376,12 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.plotScores.data[0].text = info['obj_nam'];
           this.plotScores.data[0].marker.color = info['ymatrix'];
           this.plotScores.data[0].marker.showscale = this.isQuantitative;
+          if (this.isQuantitative) {
+            this.plotScores.data[0].marker.colorscale= 'RdBu';
+          }
+          else {
+            this.plotScores.data[0].marker.colorscale= 'Bluered';
+          } 
         }
       }
     )

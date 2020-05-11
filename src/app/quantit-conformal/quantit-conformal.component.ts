@@ -1,5 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { QuantitConformalService } from './quantit-conformal.service';
+import * as SmilesDrawer from 'smiles-drawer';
+import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { Model } from '../Globals';
 
 @Component({
@@ -98,6 +100,7 @@ export class QuantitConformalComponent implements OnChanges {
         { x: [], 
           y: [], 
           text: [],
+          meta: [],
           type: 'scatter', 
           mode: 'markers', 
           marker: {
@@ -340,11 +343,41 @@ export class QuantitConformalComponent implements OnChanges {
               this.plotScores.data[0].x = info['PC1'];
               this.plotScores.data[0].y = info['PC2'];
               this.plotScores.data[0].text = info['obj_nam'];
+              this.plotScores.data[0].meta = info['SMILES'];
               var min = Math.min.apply(Math, info['ymatrix']);
               var max = Math.max.apply(Math, info['ymatrix'])
               this.plotScores.data[0].marker.cmin = min;
               this.plotScores.data[0].marker.cmax = max;
               this.plotScores.data[0].marker.color = info['ymatrix'];
+
+              // var myPlot = document.getElementById('scatterDIV'),
+              // data = this.plotScores.data,
+              // layout = this.plotCommonScores.layout,
+              // config = this.plotCommonScores.config;
+              // PlotlyJS.newPlot('scatterDIV', data, layout, config);
+
+              const canvas = document.getElementById('scatter_canvas');
+              const myPlot = document.getElementById('scatterDIV'),
+                    data   = this.plotScores.data,
+                    layout = this.plotCommonScores.layout,
+                    config = this.plotCommonScores.config;
+
+              PlotlyJS.newPlot('scatterDIV', data, layout, config);
+              
+              const options = {'width': 300, 'height': 300};
+              const smilesDrawer = new SmilesDrawer.Drawer(options);
+
+              myPlot.on('plotly_hover', function(eventdata){ 
+                var points = eventdata.points[0];
+                SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                  smilesDrawer.draw(tree, 'scatter_canvas', 'light', false);
+                });
+              })
+              .on('plotly_unhover', function(data){
+                  const context = canvas.getContext('2d');
+                  context.clearRect(0, 0, canvas.width, canvas.height);
+              });
+
             }
 
             this.plotViolin.data[0].y = info['ymatrix'];
@@ -411,6 +444,11 @@ export class QuantitConformalComponent implements OnChanges {
           alert('Error getting model');
         }
         );
+
+
+            
+            
+        };
     }
 
-}
+
