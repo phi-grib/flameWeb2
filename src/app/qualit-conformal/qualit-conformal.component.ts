@@ -9,7 +9,8 @@ import { Model } from '../Globals';
 })
 export class QualitConformalComponent implements OnChanges {
   
-  constructor(private service: QualitConformalService,
+  constructor(
+    private service: QualitConformalService,
     public model: Model) { }
     
     @Input() modelName;

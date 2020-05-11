@@ -48,4 +48,9 @@ export class CommonService {
     return this.http.get(url);
   }
 
+  getValidation(model: string, version: string): Observable<any> {
+    const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/validation';
+    return this.http.get(url);
+  }
+
 }

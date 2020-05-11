@@ -49,6 +49,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   submodels = [];
   submodelsIndex = 0;
   predictionError = '';
+  isQuantitative = false;
 
   public predictData = [{
     offset: 45, 
@@ -92,6 +93,113 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         displayModeBar: false
       }
   };  
+
+  plotScores = {
+    data: [
+      { x: [], 
+        y: [], 
+        text: [],
+        type: 'scatter', 
+        mode: 'markers', 
+        marker: {
+          color: [],
+          opacity: 0.4,
+          size: 10,
+          colorscale: 'RdBu', 
+          showscale: true, 
+          colorbar: {
+            tickfont: {
+              family: 'Barlow Semi Condensed, sans-serif',
+              size: 20
+            }
+          }
+        },
+        hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
+        // hovertemplate:'<b>%{text}</b><extra></extra>',
+      },
+      { x: [], 
+        y: [], 
+        text: [],
+        meta: [],
+        type: 'scatter', 
+        mode: 'markers+text', 
+        textfont : {
+          fontStyle: 'Barlow Semi Condensed, sans-serif',
+          color: 'black',
+          size: 16
+        },
+        textposition: 'top right',
+        marker: {
+          color: 'black',
+          symbol: 'circle-open',
+          opacity: 0.9,
+          size: 14,
+          line: {
+            color: 'black',
+            width: 2
+          }
+
+        },
+        hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
+        // hovertemplate:'<b>%{text}</b><extra></extra>',
+      },
+    ],
+  }
+
+  plotCommonScores = {
+    layout: { 
+      width: 950,
+      height: 600,
+      hovermode: 'closest',
+      margin: {
+        r: 10,
+        t: 30,
+        pad: 0
+      },
+      showlegend: false,
+      showtitle: false,
+      xaxis: {
+        hoverformat: '.2f',
+        zeroline: true,
+        showgrid: true,
+        showline: true,
+        gridwidth: 1,
+        linecolor: 'rgb(200,200,200)',
+        linewidth: 2,
+        title: 'PCA PC1',
+        titlefont: {
+          family: 'Barlow Semi Condensed, sans-serif',
+          size: 24,
+        },
+        tickfont: {
+          family: 'Barlow Semi Condensed, sans-serif',
+          size: 18,
+        },
+      },
+      yaxis: {
+        hoverformat: '.2f',
+        zeroline: true,
+        showgrid: true,
+        showline: true,
+        gridwidth: 1,
+        linecolor: 'rgb(200,200,200)',
+        linewidth: 2,
+        title: 'PCA PC2',
+        titlefont: {
+          family: 'Barlow Semi Condensed, sans-serif',
+          size: 24,
+        },
+        tickfont: {
+          family: 'Barlow Semi Condensed, sans-serif',
+          size: 18,
+        },
+      },
+    },
+    config: {
+      // responsive: true,
+      displaylogo: false,
+      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    }
+    };
 
   constructor(public prediction: Prediction,
     public service: PredictionService,
@@ -178,9 +286,18 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.modelBuildInfo = {};
     this.predictData[0].r = [0, 0, 0, 0];
     this.predictionError = '';
+    this.plotScores.data[0].x = [];
+    this.plotScores.data[0].y = [];
+    this.plotScores.data[0].text = [];
+    this.plotScores.data[0].marker.color = [];
+    this.plotScores.data[1].x = [];
+    this.plotScores.data[1].y = [];
+    this.plotScores.data[1].text = [];
+    this.plotScores.data[1].meta = [];
     this.getInfo();
     this.getDocumentation();
     this.getPrediction();
+    this.getValidation();
   }
 
   tabClickHandler(info: any): void {
@@ -218,6 +335,22 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   }
 
+  getValidation() {
+    this.commonService.getValidation(this.prediction.modelName, this.prediction.modelVersion).subscribe(
+      result => {
+        const info = result;
+
+        if ('PC1' in info) {
+          this.plotScores.data[0].x = info['PC1'];
+          this.plotScores.data[0].y = info['PC2'];
+          this.plotScores.data[0].text = info['obj_nam'];
+          this.plotScores.data[0].marker.color = info['ymatrix'];
+          this.plotScores.data[0].marker.showscale = this.isQuantitative;
+        }
+      }
+    )
+  }
+
   getInfo(): void {
 
     this.commonService.getModel(this.prediction.modelName, this.prediction.modelVersion).subscribe(
@@ -226,6 +359,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         for (const info of result) {
           this.modelBuildInfo[info[0]] = info[2];
         }
+
+        this.isQuantitative = this.modelBuildInfo['quantitative'];
+
         if (this.modelBuildInfo['ensemble']) {
 
           let version = '0';
@@ -299,7 +435,16 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.predictionError = result['error']; 
         }
 
+        
+        if ('PC1proj' in result) {
+          this.plotScores.data[1].x = result['PC1proj'];
+          this.plotScores.data[1].y = result['PC2proj'];
+          this.plotScores.data[1].text = result['obj_nam'];
+          this.plotScores.data[1].meta = result['values'];
+        }
+        
         this.predictionResult = result;
+
         if ('external-validation' in this.predictionResult) {
           for (const modelInfo of this.predictionResult['external-validation']) {
             if (typeof modelInfo[2] === 'number') {
