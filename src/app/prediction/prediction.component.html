@@ -77,7 +77,10 @@
             <a class="nav-link active" id="pills-all-tab" data-toggle="tab" href="#pills-all" role="tab" aria-controls="pills-home" aria-selected="true"><h4>List</h4></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false"><h4>Reports</h4></a>
+            <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false"><h4>Report</h4></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-two-tab" data-toggle="tab" href="#pills-two" role="tab" aria-controls="pills-two" aria-selected="false"><h4>Projection</h4></a>
           </li>
         </ul>
 
@@ -130,7 +133,7 @@
               </table>
             </div>
           </div>
-           <!--END ALL PREDICTIONS-->
+          <!--ALL PREDICTIONS END-->
 
           <!--REPORT PREDICTIONS-->
           <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab" *ngIf="this.predictionResult != undefined ">
@@ -387,8 +390,24 @@
 
             </div>
           </div>
-        </div>
-        <!--END REPORT PREDICTIONS-->
+          <!--REPORT PREDICTIONS END-->
+
+          <!--PROJECT PREDICTIONS-->
+          <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab" *ngIf="this.predictionResult != undefined ">
+            <div class="card-body">
+              <div class="row">
+                <plotly-plot 
+                      [data]="plotScores.data" 
+                      [layout]="plotCommonScores.layout" 
+                      [config]="plotCommonScores.config">
+                </plotly-plot>  
+              </div>
+            </div>
+          </div>
+          <!--PROJECT PREDICTIONS END-->
+
+        </div><!--END TABS -->
+
       </div>
     <!-- </div> -->
   </div>
