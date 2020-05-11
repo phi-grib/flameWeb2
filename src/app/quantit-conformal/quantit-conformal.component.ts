@@ -296,6 +296,7 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotScores.data[0].x =[];
       this.plotScores.data[0].y =[];
       this.plotScores.data[0].text =[];
+      this.plotScores.data[0].meta = [];
       this.plotScores.data[0].marker.color = [];
       this.plotViolin.data[0].y =[];
       this.plotViolin.data[0].text =[];
@@ -350,12 +351,6 @@ export class QuantitConformalComponent implements OnChanges {
               this.plotScores.data[0].marker.cmax = max;
               this.plotScores.data[0].marker.color = info['ymatrix'];
 
-              // var myPlot = document.getElementById('scatterDIV'),
-              // data = this.plotScores.data,
-              // layout = this.plotCommonScores.layout,
-              // config = this.plotCommonScores.config;
-              // PlotlyJS.newPlot('scatterDIV', data, layout, config);
-
               const canvas = document.getElementById('scatter_canvas');
               const myPlot = document.getElementById('scatterDIV'),
                     data   = this.plotScores.data,
@@ -377,7 +372,6 @@ export class QuantitConformalComponent implements OnChanges {
                   const context = canvas.getContext('2d');
                   context.clearRect(0, 0, canvas.width, canvas.height);
               });
-
             }
 
             this.plotViolin.data[0].y = info['ymatrix'];
