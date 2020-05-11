@@ -350,29 +350,29 @@ export class QuantitConformalComponent implements OnChanges {
               this.plotScores.data[0].marker.cmin = min;
               this.plotScores.data[0].marker.cmax = max;
               this.plotScores.data[0].marker.color = info['ymatrix'];
-
-              const canvas = document.getElementById('scatter_canvas');
-              const myPlot = document.getElementById('scatterDIV'),
-                    data   = this.plotScores.data,
-                    layout = this.plotCommonScores.layout,
-                    config = this.plotCommonScores.config;
-
-              PlotlyJS.newPlot('scatterDIV', data, layout, config);
-              
-              const options = {'width': 300, 'height': 300};
-              const smilesDrawer = new SmilesDrawer.Drawer(options);
-
-              myPlot.on('plotly_hover', function(eventdata){ 
-                var points = eventdata.points[0];
-                SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                  smilesDrawer.draw(tree, 'scatter_canvas', 'light', false);
-                });
-              })
-              .on('plotly_unhover', function(data){
-                  const context = canvas.getContext('2d');
-                  context.clearRect(0, 0, canvas.width, canvas.height);
-              });
             }
+
+            //   const canvas = document.getElementById('scatter_canvas');
+            //   const myPlot = document.getElementById('scatterDIV'),
+            //         data   = this.plotScores.data,
+            //         layout = this.plotCommonScores.layout,
+            //         config = this.plotCommonScores.config;
+
+            //   PlotlyJS.newPlot('scatterDIV', data, layout, config);
+              
+            //   const options = {'width': 300, 'height': 300};
+            //   const smilesDrawer = new SmilesDrawer.Drawer(options);
+
+            //   myPlot.on('plotly_hover', function(eventdata){ 
+            //     var points = eventdata.points[0];
+            //     SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+            //       smilesDrawer.draw(tree, 'scatter_canvas', 'light', false);
+            //     });
+            //   })
+            //   .on('plotly_unhover', function(data){
+            //       const context = canvas.getContext('2d');
+            //       context.clearRect(0, 0, canvas.width, canvas.height);
+            //   });
 
             this.plotViolin.data[0].y = info['ymatrix'];
             this.plotViolin.data[0].text = info['obj_nam'];
