@@ -67,3 +67,12 @@ export class Similarity {
     nameSrc = undefined;
     smileSrc = undefined;
 }
+
+@Injectable()
+export class CustomHTMLElement extends HTMLElement {
+    constructor() {
+      super();
+    }
+    on(event_type, cb) {
+    }
+}
