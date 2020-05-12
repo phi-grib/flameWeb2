@@ -247,10 +247,7 @@ export class QuantitConformalComponent implements OnChanges {
         margin: {r: 10, t: 30, b: 0, l:10, pad: 0},
         xaxis: {
           zeroline: false,
-          tickfont: {
-            family: 'Barlow Semi Condensed, sans-serif',
-            size: 18,
-          },
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif' },
         }
       },
       config: {

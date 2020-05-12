@@ -395,12 +395,12 @@
           <!--PROJECT PREDICTIONS-->
           <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab" *ngIf="this.predictionResult != undefined ">
             <div class="card-body">
-              <div class="row">
-                <plotly-plot 
-                      [data]="plotScores.data" 
-                      [layout]="plotCommonScores.layout" 
-                      [config]="plotCommonScores.config">
-                </plotly-plot>  
+              <div class="row justify-content-between">
+                <div class="col">
+                  <canvas id="scores_canvas_ref"></canvas>
+                  <canvas id="scores_canvas"></canvas>
+                </div>
+               <div id="scoresDIV"></div>
               </div>
             </div>
           </div>

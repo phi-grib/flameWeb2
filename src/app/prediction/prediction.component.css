@@ -84,12 +84,11 @@ ul li.nav-item a.active{
   border-bottom: 4px solid #e59300;
 }
 
-#container {
+/* #container {
   display: flex;
-  /* height: 250px;  */
   justify-content: space-between;
   align-items: center;
-}
+} */
 
 .TP {
   background-color: rgba(0,255,0,0.3);
