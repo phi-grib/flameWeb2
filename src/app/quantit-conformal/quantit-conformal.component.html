@@ -50,14 +50,9 @@
 
                                 </tbody>
                             </table>    
+                            <canvas id="scatter_pred_canvas"></canvas>
                         </div>
-                        <div>
-                            <plotly-plot 
-                                [data]="plotPredicted.data" 
-                                [layout]="plotScatter.layout" 
-                                [config]="plotScatter.config">
-                            </plotly-plot>  
-                        </div>
+                        <div id="scatterPredDIV"></div>
                     </div>
                 </div>
             </div>
@@ -94,15 +89,10 @@
                                     </ng-container>
 
                                 </tbody>
-                            </table>    
+                            </table>
+                            <canvas id="scatter_fit_canvas"></canvas>    
                         </div>
-                        <div>
-                            <plotly-plot 
-                                [data]="plotFitted.data" 
-                                [layout]="plotScatter.layout" 
-                                [config]="plotScatter.config">
-                            </plotly-plot>  
-                        </div>
+                        <div id="scatterFitDIV"></div>
                     </div>
                 </div>
             </div>
@@ -112,13 +102,8 @@
             <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
                 <div class="card-body">
                     <div class="row">
-                        <canvas id="scatter_canvas"></canvas>
-                        <div id="scatterDIV"></div>
-                            <!-- <plotly-plot id="scatter_draw"
-                                [data]="plotScores.data" 
-                                [layout]="plotCommonScores.layout" 
-                                [config]="plotCommonScores.config">
-                            </plotly-plot>   -->
+                        <canvas id="scores_canvas"></canvas>
+                        <div id="scoresDIV"></div>
                     </div>
                     <plotly-plot 
                         [data]="plotViolin.data" 
