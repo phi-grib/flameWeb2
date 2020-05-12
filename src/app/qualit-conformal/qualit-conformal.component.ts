@@ -1,6 +1,8 @@
 import { Component, Input, OnChanges} from '@angular/core';
 import { QualitConformalService } from './qualit-conformal.service';
-import { Model } from '../Globals';
+import * as SmilesDrawer from 'smiles-drawer';
+import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+import { Model, CustomHTMLElement } from '../Globals';
 
 @Component({
   selector: 'app-qualit-conformal',
@@ -16,27 +18,24 @@ export class QualitConformalComponent implements OnChanges {
     @Input() modelName;
     @Input() modelVersion;
     
-    // objectKeys = Object.keys;
-    // modelBuildInfo = {};
+    objectKeys = Object.keys;
     modelValidationInfo = {};
     modelWarning = '';
-    objectKeys = Object.keys;
     
-    public predictData = [{
+    predictData = [{
         offset: 45, 
         r: [],
         theta: ["TP", "FN", "TN", "FP"],
         meta: ["TP", "FN", "TN", "FP"],
         marker: {
           opacity: 0.8,
-          // color: ['green','red','green','orange'],
           color: ["#468FB8", "#F2B90F", "#9CC6DD", "#F9DB84"],
         },
         type: "barpolar",
         hovertemplate: "%{meta}: %{r}<extra></extra>"
     }]
 
-    public fittingData = [{
+    fittingData = [{
       offset: 45, 
       r: [],
       theta: ["TP", "FP", "TN", "FN"],
@@ -44,13 +43,12 @@ export class QualitConformalComponent implements OnChanges {
       marker: {
         opacity: 0.8,
         color: ["#468FB8", "#F2B90F", "#9CC6DD", "#F9DB84"],
-        // color: ['green','red','green','orange'],
       },
       type: "barpolar",
       hovertemplate: "%{meta}: %{r}<extra></extra>"
     }]
 
-    public plotCommon = {
+    plotCommon = {
       layout :{
         width: 350,
         // height: 300,
@@ -61,11 +59,7 @@ export class QualitConformalComponent implements OnChanges {
           radialaxis: {
             angle: 90,
             ticks: '', 
-            tickfont: {
-              size: 12,
-              fontStyle: 'Barlow Semi Condensed, sans-serif',
-            },
-            // dtick: 20,
+            tickfont: { size: 12, fontStyle: 'Barlow Semi Condensed, sans-serif'},
           },
           angularaxis: {
             showticklabels: false, 
@@ -79,7 +73,7 @@ export class QualitConformalComponent implements OnChanges {
       }
     };  
 
-    public plotScores = {
+    plotScores = {
       data: [
         { x: [], 
           y: [], 
@@ -90,7 +84,7 @@ export class QualitConformalComponent implements OnChanges {
             color: [],
             opacity: 0.6,
             colorscale: 'Bluered', 
-            showscale: false, 
+            showscale: false,
             cmax: 1.0,
             cmin: 0.0,
             size: 14,
@@ -98,22 +92,16 @@ export class QualitConformalComponent implements OnChanges {
             //   width: 2
             // },
             colorbar: {
-              tickfont: {
-                family: 'Barlow Semi Condensed, sans-serif',
-                size: 20
-              }
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
             }
           },
           hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
         }
       ],
-    }
-
-    public plotCommonScores = {
       layout: { 
-            width: 800,
-            height: 550,
-            hovermode: 'closest',
+        width: 800,
+        height: 550,
+        hovermode: 'closest',
             margin: {
               r: 10,
               t: 30,
@@ -130,14 +118,8 @@ export class QualitConformalComponent implements OnChanges {
               linecolor: 'rgb(200,200,200)',
               linewidth: 2,
               title: 'PCA PC1',
-              titlefont: {
-                family: 'Barlow Semi Condensed, sans-serif',
-                size: 24,
-              },
-              tickfont: {
-                family: 'Barlow Semi Condensed, sans-serif',
-                size: 18,
-              },
+              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 24 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
             },
             yaxis: {
               hoverformat: '.2f',
@@ -148,37 +130,41 @@ export class QualitConformalComponent implements OnChanges {
               linecolor: 'rgb(200,200,200)',
               linewidth: 2,
               title: 'PCA PC2',
-              titlefont: {
-                family: 'Barlow Semi Condensed, sans-serif',
-                size: 24,
-              },
-              tickfont: {
-                family: 'Barlow Semi Condensed, sans-serif',
-                size: 18,
-              },
+              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 24 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
             },
-          },
-          config: {
-            // responsive: true,
+      },
+      config: {
             displaylogo: false,
-            modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    }
-          };
+            toImageButtonOptions: {
+              format: 'svg', // one of png, svg, jpeg, webp
+              filename: 'flame_scores',
+              width: 800,
+              height: 550,
+              scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+            },
+            modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+      }
+    };
 
-
-    public plotPie = {
+    plotPie = {
       data:  [{
             values: [],
             labels: ['positive', 'negative'],
             textinfo: "label+percent",
-            marker: {
-              colors: ["red", "blue"],
-            },
+            marker: { colors: ["red", "blue"] },
             type: 'pie'
-          }],
+      }],
       layout: {
-            width: 350,
+            width: 300,
+            height: 200,
             showlegend: false,
-          }
+            margin: { r: 30, t: 30, b: 10, l: 30, pad: 0 },
+      },
+      config: {
+        displaylogo: false,
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+      }
     }
           
     ngOnChanges(): void {
@@ -209,13 +195,6 @@ export class QualitConformalComponent implements OnChanges {
           if (info.warning){
             this.modelWarning = info.warning;
           }
-          // // INFO ABOUT MODEL
-          // for (const modelInfo of info['model_build_info']) {
-          //   if (typeof modelInfo[2] === 'number') {
-          //     modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
-          //   }
-          //   this.modelBuildInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
-          // }
 
           // PCA scores plot
           if ('PC1' in info) {
@@ -259,6 +238,32 @@ export class QualitConformalComponent implements OnChanges {
                                         this.modelValidationInfo['FP_f'][1],
                                       ]
             }
+
+            // common to all plots in this component
+            const options = {'width': 300, 'height': 300};
+            const smilesDrawer = new SmilesDrawer.Drawer(options);
+
+            // scores plot                 
+            const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
+            const context = canvas.getContext('2d');
+
+            PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+            
+            let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
+            
+            // on hover, draw the molecule
+            myPlot.on('plotly_hover', function(eventdata){ 
+              var points = eventdata.points[0];
+              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
+              });
+            });
+            // on onhover, clear the canvas
+            myPlot.on('plotly_unhover', function(data){
+              context.clearRect(0, 0, canvas.width, canvas.height);
+            });
+
+
           }, 50);
         },
         error => {

@@ -112,14 +112,8 @@ export class QuantitConformalComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'Experimental',
-          titlefont: {
-            family: 'Barlow Semi Condensed, sans-serif',
-            size: 24,
-          },
-          tickfont: {
-            family: 'Barlow Semi Condensed, sans-serif',
-            size: 18,
-          },
+          titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 24 },
+          tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
         },
         yaxis: {
           hoverformat: '.2f',
@@ -130,14 +124,8 @@ export class QuantitConformalComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'Model',
-          titlefont: {
-            family: 'Barlow Semi Condensed, sans-serif',
-            size: 24,
-          },
-          tickfont: {
-            family: 'Barlow Semi Condensed, sans-serif',
-            size: 18,
-          },
+          titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 24 },
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
         },
       },
       config: {
