@@ -54,7 +54,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     meta: ["TP", "FN", "TN", "FP"],
     marker: {
       opacity: 0.8,
-      // color: ['green','red','green','orange'],
       color: ["#468FB8", "#F2B90F", "#9CC6DD", "#F9DB84"]
     },
     type: "barpolar",
@@ -100,10 +99,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         mode: 'markers', 
         marker: {
           color: [],
-          opacity: 0.4,
+          opacity: 0.8,
           size: 10,
           colorscale: 'RdBu', 
           showscale: true, 
+          cauto: true,
           colorbar: {
             tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
           }
@@ -493,6 +493,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           // this.polarAreaChartData = [this.modelValidationInfo['TP'][1], this.modelValidationInfo['FP'][1],
           // this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
         }
+
+        // use a long timeout because this can take a lot of time
         setTimeout(() => {
 
           this.components.forEach((child) => {
@@ -541,12 +543,12 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           const smilesDrawerScores = new SmilesDrawer.Drawer(options);        
           const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
           const context_ref = canvas_ref.getContext('2d');
-          const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
+          const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
           const context = canvas.getContext('2d');
 
-          PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+          PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
 
-          let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
+          let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
 
           // on hover, draw the molecule
           myPlot.on('plotly_hover', function(eventdata){ 
@@ -559,7 +561,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             }
             else {
               SmilesDrawer.parse(points.meta, function(tree) {
-                smilesDrawerScores.draw(tree, 'scores_canvas', 'light', false);
+                smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
               });
             }
           });
@@ -579,7 +581,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
           this.predictionVisible = true;
 
-        }, 0);
+        }, 100);
       }
     );
   }
