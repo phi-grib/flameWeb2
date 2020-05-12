@@ -3,10 +3,8 @@ import { Prediction} from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonService } from '../common.service';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
-// import { Subject } from 'rxjs';
-// import { SingleDataSet, Label } from 'ng2-charts';
-// import { ChartType} from 'chart.js';
 import { PredictionService } from './prediction.service';
+import { CustomHTMLElement } from '../Globals';
 import 'datatables.net-bs4';
 // import 'datatables.net-buttons-bs4';
 
@@ -14,6 +12,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 import * as XLSX from 'xlsx';
+// import { isMainThread } from 'worker_threads';
 
 @Component({
   selector: 'app-prediction',
@@ -25,18 +24,15 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
 
   @Input() predictionName;
-  objectKeys = Object.keys;
-  predictionVisible = false;
-
-  q_measures = ['TP', 'FP', 'TN', 'FN'];
-
-  table: any = undefined;
   @ViewChildren('cmp') components: QueryList<ElementRef>;
   @ViewChildren('cmpone') componentOne: QueryList<ElementRef>;
-
+  
+  objectKeys = Object.keys;
+  predictionVisible = false;
+  q_measures = ['TP', 'FP', 'TN', 'FN'];
+  table: any = undefined;
   info = [];
   head = [];
-
   predictionResult: any;
   modelDocumentation: any = undefined;
   molIndex = 0;
@@ -44,7 +40,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   noPreviousMol = true;
   noNextModel = false;
   noPreviousModel = true;
-
   modelBuildInfo = {};
   modelValidationInfo = {};
   submodels = [];
@@ -100,6 +95,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       { x: [], 
         y: [], 
         text: [],
+        meta: [],
         type: 'scatter', 
         mode: 'markers', 
         marker: {
@@ -109,14 +105,10 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           colorscale: 'RdBu', 
           showscale: true, 
           colorbar: {
-            tickfont: {
-              family: 'Barlow Semi Condensed, sans-serif',
-              size: 20
-            }
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
           }
         },
         hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
-        // hovertemplate:'<b>%{text}</b><extra></extra>',
       },
       { x: [], 
         y: [], 
@@ -142,33 +134,16 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
         },
         hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
-        // hovertemplate:'<b>%{text}</b><extra></extra>',
       },
     ],
-  }
-
-  icon1 : {
-    'width': 500,
-    'height': 600,
-    'path': 'M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z'
-  }
-
-  // colored = true;
-
-  plotCommonScores = {
     layout: { 
-      width: 950,
+      width: 800,
       height: 600,
       hovermode: 'closest',
-      margin: {
-        r: 10,
-        t: 30,
-        pad: 0
-      },
+      margin: {r: 10, t: 30, pad: 0 },
       showlegend: false,
       showtitle: false,
       xaxis: {
-        hoverformat: '.2f',
         zeroline: true,
         showgrid: true,
         showline: true,
@@ -178,7 +153,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         title: 'PCA PC1',
         titlefont: {
           family: 'Barlow Semi Condensed, sans-serif',
-          size: 24,
+          size: 20,
         },
         tickfont: {
           family: 'Barlow Semi Condensed, sans-serif',
@@ -186,7 +161,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         },
       },
       yaxis: {
-        hoverformat: '.2f',
         zeroline: true,
         showgrid: true,
         showline: true,
@@ -196,7 +170,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         title: 'PCA PC2',
         titlefont: {
           family: 'Barlow Semi Condensed, sans-serif',
-          size: 24,
+          size: 20,
         },
         tickfont: {
           family: 'Barlow Semi Condensed, sans-serif',
@@ -228,8 +202,26 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       //         this.colored = true;
       //       }
       //     }}],
-      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    }
-    };
+      toImageButtonOptions: {
+        format: 'svg', // one of png, svg, jpeg, webp
+        filename: 'flame_prediction',
+        width: 800,
+        height: 600,
+        scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+      },
+      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']
+    }
+  };
+
+  // icon1 : {
+  //   'width': 500,
+  //   'height': 600,
+  //   'path': 'M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z'
+  // }
+
+  // colored = true;
+
+  
 
   constructor(public prediction: Prediction,
     public service: PredictionService,
@@ -319,6 +311,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.plotScores.data[0].x = [];
     this.plotScores.data[0].y = [];
     this.plotScores.data[0].text = [];
+    this.plotScores.data[0].meta = [];
     this.plotScores.data[0].marker.color = [];
     this.plotScores.data[1].x = [];
     this.plotScores.data[1].y = [];
@@ -374,6 +367,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.plotScores.data[0].x = info['PC1'];
           this.plotScores.data[0].y = info['PC2'];
           this.plotScores.data[0].text = info['obj_nam'];
+          this.plotScores.data[0].meta = info['SMILES'];
           this.plotScores.data[0].marker.color = info['ymatrix'];
           this.plotScores.data[0].marker.showscale = this.isQuantitative;
           if (this.isQuantitative) {
@@ -471,14 +465,13 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.predictionError = result['error']; 
         }
 
-        
         if ('PC1proj' in result) {
           this.plotScores.data[1].x = result['PC1proj'];
           this.plotScores.data[1].y = result['PC2proj'];
           this.plotScores.data[1].text = result['obj_nam'];
           this.plotScores.data[1].meta = result['values'];
         }
-        
+
         this.predictionResult = result;
 
         if ('external-validation' in this.predictionResult) {
@@ -543,6 +536,47 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             }
           });
           
+          // scores plot         
+          const options = {'width': 300, 'height': 300};
+          const smilesDrawerScores = new SmilesDrawer.Drawer(options);        
+          const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
+          const context_ref = canvas_ref.getContext('2d');
+          const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
+          const context = canvas.getContext('2d');
+
+          PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+
+          let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
+
+          // on hover, draw the molecule
+          myPlot.on('plotly_hover', function(eventdata){ 
+            var points = eventdata.points[0];
+            // console.log (points)
+            if (points.curveNumber === 1) {
+              SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
+                smilesDrawerScores.draw(tree, 'scores_canvas_ref', 'light', false);
+              });   
+            }
+            else {
+              SmilesDrawer.parse(points.meta, function(tree) {
+                smilesDrawerScores.draw(tree, 'scores_canvas', 'light', false);
+              });
+            }
+          });
+          // on onhover, clear the canvas
+          myPlot.on('plotly_unhover', function(eventdata){
+            var points = eventdata.points[0];
+            if (points.curveNumber === 0) {
+              context.clearRect(0, 0, canvas.width, canvas.height);
+            }
+          });
+          myPlot.on('plotly_click', function(eventdata){
+            var points = eventdata.points[0];
+            if (points.curveNumber === 1) {
+              context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
+            }
+          });
+
           this.predictionVisible = true;
 
         }, 0);
