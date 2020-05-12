@@ -100,13 +100,9 @@ export class QualitConformalComponent implements OnChanges {
       ],
       layout: { 
         width: 800,
-        height: 550,
+        height: 600,
         hovermode: 'closest',
-            margin: {
-              r: 10,
-              t: 30,
-              pad: 0
-            },
+            margin: {r: 10, t: 30, pad: 0 },
             showlegend: false,
             showtitle: false,
             xaxis: {
@@ -140,7 +136,7 @@ export class QualitConformalComponent implements OnChanges {
               format: 'svg', // one of png, svg, jpeg, webp
               filename: 'flame_scores',
               width: 800,
-              height: 550,
+              height: 600,
               scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
             },
             modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    

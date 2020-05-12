@@ -102,14 +102,16 @@
             <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
                 <div class="card-body">
                     <div class="row justify-content-between">
-                        <canvas id="scores_canvas"></canvas>
+                        <div class="col">
+                            <plotly-plot 
+                                [data]="plotViolin.data" 
+                                [layout]="plotViolin.layout" 
+                                [config]="plotViolin.config">
+                            </plotly-plot>  
+                            <canvas id="scores_canvas"></canvas>
+                        </div>
                         <div id="scoresDIV"></div>
                     </div>
-                    <plotly-plot 
-                        [data]="plotViolin.data" 
-                        [layout]="plotViolin.layout" 
-                        [config]="plotViolin.config">
-                    </plotly-plot>  
                 </div>
             </div>
             <!--SERIES TAB END-->
