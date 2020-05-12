@@ -129,10 +129,11 @@ export class QuantitConformalComponent implements OnChanges {
     plotViolin= {
       data : [{
       type: 'violin',
-      y: [],
+      orientation: 'h',
+      x: [],
       text: [],
       points: 'all',
-      pointpos: 2,
+      pointpos: -2,
       hoveron: "violins+points",
       box: {
         visible: true
@@ -144,23 +145,23 @@ export class QuantitConformalComponent implements OnChanges {
       line: {
         color: '#22577',
       },
-      hovertemplate: '<b>%{text}</b><br>%{y:.2f}<extra></extra>',
+      hovertemplate: '<b>%{text}</b><br>%{x:.2f}<extra></extra>',
       // fillcolor: "#0076a3",
       fillcolor: "#B8DCED",
       opacity: 0.8,
       meanline: {
         visible: true
       },
-      x0: "activity"
+      y0: "activity"
     }],
     layout : {
-      width: 300,
-      height: 550,
+      width: 900,
+      height: 400,
       hovermode: 'closest',
       margin: {
         r: 10,
         t: 30,
-        pad: 0
+        pad: 10
       },
       yaxis: {
         zeroline: false
@@ -176,7 +177,7 @@ export class QuantitConformalComponent implements OnChanges {
             margin: {
               r: 10,
               t: 30,
-              pad: 0
+              pad: 10
             },
             showlegend: false,
             showtitle: false,
@@ -298,7 +299,7 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotScores.data[0].text =[];
       this.plotScores.data[0].meta = [];
       this.plotScores.data[0].marker.color = [];
-      this.plotViolin.data[0].y =[];
+      this.plotViolin.data[0].x =[];
       this.plotViolin.data[0].text =[];
 
       
@@ -352,60 +353,54 @@ export class QuantitConformalComponent implements OnChanges {
               this.plotScores.data[0].marker.color = info['ymatrix'];
             }
 
-            //   const canvas = document.getElementById('scatter_canvas');
             //   const myPlot = document.getElementById('scatterDIV'),
             //         data   = this.plotScores.data,
             //         layout = this.plotCommonScores.layout,
             //         config = this.plotCommonScores.config;
-
+            
             //   PlotlyJS.newPlot('scatterDIV', data, layout, config);
-              
+            
             //   const options = {'width': 300, 'height': 300};
             //   const smilesDrawer = new SmilesDrawer.Drawer(options);
-
+            
             //   myPlot.on('plotly_hover', function(eventdata){ 
-            //     var points = eventdata.points[0];
-            //     SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-            //       smilesDrawer.draw(tree, 'scatter_canvas', 'light', false);
-            //     });
-            //   })
-            //   .on('plotly_unhover', function(data){
-            //       const context = canvas.getContext('2d');
-            //       context.clearRect(0, 0, canvas.width, canvas.height);
-            //   });
-
+              //     var points = eventdata.points[0];
+              //     SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                //       smilesDrawer.draw(tree, 'scatter_canvas', 'light', false);
+                //     });
+                //   })
+                //   .on('plotly_unhover', function(data){
+                  //       const context = canvas.getContext('2d');
+                  //       context.clearRect(0, 0, canvas.width, canvas.height);
+                  //   });
+                  
+            const canvas = <HTMLCanvasElement>document.getElementById('scatter_canvas');
+            const context = canvas.getContext('2d');
             const options = {'width': 300, 'height': 300};
             const smilesDrawer = new SmilesDrawer.Drawer(options);
-                    
-            //       myPlot.on('plotly_hover', function(eventdata){ 
-            //         var points = eventdata.points[0];
-            //         SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-            //           smilesDrawer.draw(tree, 'scatter_canvas', 'light', false);
-            //   });
-            // })
-            // .on('plotly_unhover', function(data){
-            //   // const context = canvas.getContext('2d');
-            //   // context.clearRect(0, 0, canvas.width, canvas.height);
-            // });
-              
-            setTimeout( () => {
-              // Plotly.newPlot(this.plotContainerId, this.plotdata, this.ploylayout,{displayModeBar: false});
-              PlotlyJS.newPlot('scatterDIV', this.plotScores.data, this.plotCommonScores.layout, this.plotCommonScores.config);
-              let myPlot = <CustomHTMLElement>document.getElementById('scatterDIV');
-              myPlot.on('plotly_hover', function(eventdata){ 
-                var points = eventdata.points[0];
-                SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                  smilesDrawer.draw(tree, 'scatter_canvas', 'light', false);
-                });
-              })
-              // .on('plotly_unhover', function(data){
-              //   // const context = canvas.getContext('2d');
-              //   // context.clearRect(0, 0, canvas.width, canvas.height);
-              // });
+                                 
+            // setTimeout( () => {
+            // },1);
 
-            },1);
+            PlotlyJS.newPlot('scatterDIV', this.plotScores.data, this.plotCommonScores.layout, this.plotCommonScores.config);
+            
+            let myPlot = <CustomHTMLElement>document.getElementById('scatterDIV');
+            
+            // on hover, draw the molecule
+            myPlot.on('plotly_hover', function(eventdata){ 
+              var points = eventdata.points[0];
+              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                smilesDrawer.draw(tree, 'scatter_canvas', 'light', false);
+              });
+            });
+
+            // on onhover, clear the canvas
+            myPlot.on('plotly_unhover', function(data){
+              context.clearRect(0, 0, canvas.width, canvas.height);
+            });
+
  
-            this.plotViolin.data[0].y = info['ymatrix'];
+            this.plotViolin.data[0].x = info['ymatrix'];
             this.plotViolin.data[0].text = info['obj_nam'];
 
             // predicted data
