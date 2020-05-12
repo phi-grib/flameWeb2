@@ -1,14 +1,6 @@
 <div class="row">
  
     <div class="card w-100">
-    <!-- <div class="card w-100" style="width: 18rem;"> -->
-
-        <!-- <div id="overlay" *ngIf="!this.modelVisible">
-            <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
-            <span class="sr-only">Loading...</span>
-            </div>
-        </div> -->
-
 
         <!--NAVS tables-->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -23,7 +15,6 @@
             </li>
         </ul>
  
-        <!-- <div class="tab-content" id="pills-tabContent" [hidden] = "!this.modelVisible"> -->
         <div class="tab-content" id="pills-tabContent">
  
             <!-- PREDICTION TAB START -->
@@ -62,9 +53,9 @@
                         </div>
                         <div>
                             <plotly-plot 
-                                [data]="plotPredictedConf.data" 
-                                [layout]="plotCommon.layout" 
-                                [config]="plotCommon.config">
+                                [data]="plotPredicted.data" 
+                                [layout]="plotScatter.layout" 
+                                [config]="plotScatter.config">
                             </plotly-plot>  
                         </div>
                     </div>
@@ -107,9 +98,9 @@
                         </div>
                         <div>
                             <plotly-plot 
-                                [data]="plotFittedConf.data" 
-                                [layout]="plotCommon.layout" 
-                                [config]="plotCommon.config">
+                                [data]="plotFitted.data" 
+                                [layout]="plotScatter.layout" 
+                                [config]="plotScatter.config">
                             </plotly-plot>  
                         </div>
                     </div>
@@ -132,7 +123,7 @@
                     <plotly-plot 
                         [data]="plotViolin.data" 
                         [layout]="plotViolin.layout" 
-                        [config]="plotCommon.config">
+                        [config]="plotViolin.config">
                     </plotly-plot>  
                 </div>
             </div>
