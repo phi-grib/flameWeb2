@@ -141,7 +141,6 @@ export class QuantitConformalComponent implements OnChanges {
       }
     };
 
-
     plotScores = {
       data: [
         { x: [], 
@@ -169,7 +168,7 @@ export class QuantitConformalComponent implements OnChanges {
       ],
       layout: { 
         width: 800,
-        height: 550,
+        height: 600,
         hovermode: 'closest',
         margin: { r: 10, t: 30, pad: 0  },
         showlegend: false,
@@ -215,7 +214,7 @@ export class QuantitConformalComponent implements OnChanges {
           format: 'svg', // one of png, svg, jpeg, webp
           filename: 'flame_scores',
           width: 800,
-          height: 550,
+          height: 600,
           scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
         },
         modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
@@ -225,27 +224,27 @@ export class QuantitConformalComponent implements OnChanges {
     plotViolin= {
       data : [{
         type: 'violin',
-        orientation: 'h',
-        x: [],
+        // orientation: 'h',
+        y: [],
         text: [],
         points: 'all',
-        pointpos: -2,
+        pointpos: 2,
         hoveron: "violins+points",
         box: { visible: true },
         boxpoints: true,
         hoverlabel: { bgcolor: "#22577"},
         line: {color: '#22577'},
-        hovertemplate: '<b>%{text}</b><br>%{x:.2f}<extra></extra>',
+        hovertemplate: '<b>%{text}</b><br>%{y:.2f}<extra></extra>',
         fillcolor: "#B8DCED",
         opacity: 0.8,
         meanline: {visible: true},
         name: 'Activity'
       }],
       layout : {
-        width: 900,
-        height: 400,
+        width: 300,
+        height: 250,
         hovermode: 'closest',
-        margin: {r: 10, t: 30, pad: 10},
+        margin: {r: 10, t: 30, b: 0, l:10, pad: 0},
         xaxis: {
           zeroline: false,
           tickfont: {
@@ -259,9 +258,9 @@ export class QuantitConformalComponent implements OnChanges {
         toImageButtonOptions: {
           format: 'svg', // one of png, svg, jpeg, webp
           filename: 'flame_violin',
-          width: 900,
-          height: 400,
-          scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+          width: 600,
+          height: 500,
+          scale: 2 // Multiply title/legend/axis/canvas sizes by this factor
         },
         modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
       }
@@ -288,7 +287,7 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotScores.data[0].text =[];
       this.plotScores.data[0].meta = [];
       this.plotScores.data[0].marker.color = [];
-      this.plotViolin.data[0].x =[];
+      this.plotViolin.data[0].y =[];
       this.plotViolin.data[0].text =[];
       
       this.getValidation();
@@ -361,7 +360,7 @@ export class QuantitConformalComponent implements OnChanges {
               context.clearRect(0, 0, canvas.width, canvas.height);
             });
 
-            this.plotViolin.data[0].x = info['ymatrix'];
+            this.plotViolin.data[0].y = info['ymatrix'];
             this.plotViolin.data[0].text = info['obj_nam'];
 
             // predicted data
