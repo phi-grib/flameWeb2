@@ -156,9 +156,9 @@ export class BuilderComponent implements OnInit {
         this.model.name = name;
         this.model.version = version;
 
-        const a = Object.keys(this.model.listModels).sort();
-        var modelIndex = a.indexOf(name+'-'+version);
-        this.model.page = Math.floor(modelIndex/this.model.pagelen);
+        // const a = Object.keys(this.model.listModels).sort();
+        // var modelIndex = a.indexOf(name+'-'+version);
+        // this.model.page = Math.floor(modelIndex/this.model.pagelen);
         
         this.func.getModelList();
         clearInterval(intervalId);

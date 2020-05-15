@@ -46,10 +46,12 @@ export class ManageModelsComponent implements OnInit {
     if (this.modelName.match(letters)) {
         this.service.createModel(this.modelName).subscribe(
           result => {
-            this.modelName = '';
+            // this.modelName = '';
             this.model.listModels = {};
             $('#dataTableModels').DataTable().destroy();
-
+            this.model.name = this.modelName;
+            this.model.version = 0;
+            this.model.trained = false;
             this.func.getModelList();
             this.toastr.success('Model ' + result.modelName, 'CREATED', {
               timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
@@ -75,9 +77,9 @@ export class ManageModelsComponent implements OnInit {
         });
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
-        this.func.getModelList();
         this.model.name = undefined ;
         this.model.version = undefined;
+        this.func.getModelList();
       },
       error => {
         alert('Delete ERROR');
@@ -94,13 +96,9 @@ export class ManageModelsComponent implements OnInit {
         });
         const table = $('#dataTableModels').DataTable();
         table.row('.selected').remove().draw(false);
-        $('#dataTableModels').DataTable().destroy();
-        
+        table.destroy();
 
-        const a = Object.keys(this.model.listModels).sort();
-        var modelIndex = a.indexOf(this.model.name+'-0');
-        this.model.page = Math.floor(modelIndex/this.model.pagelen);
-
+        // $('#dataTableModels').DataTable().destroy();
         this.model.name = this.model.name;
         this.model.version = 0;
         this.func.getModelList();
@@ -120,16 +118,10 @@ export class ManageModelsComponent implements OnInit {
     this.service.cloneModel(this.model.name).subscribe(
       result => {
         this.toastr.success('Model \'' + result['modelName'] + ' v.' + result['version'] + '\'', 'CREATED SUCCESFULLY', {
-          timeOut: 5000, positionClass: 'toast-top-right'});
-        
-        const a = Object.keys(this.model.listModels).sort();
-        var modelIndex = a.indexOf(this.model.name+'-0');
-        this.model.page = Math.floor(modelIndex/this.model.pagelen);
-        
+          timeOut: 5000, positionClass: 'toast-top-right'
+        });
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
-
-
         this.model.name = this.model.name;
         this.model.version = 0;
         this.func.getModelList();
