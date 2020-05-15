@@ -25,7 +25,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   @Input() predictionName;
   @ViewChildren('cmp') components: QueryList<ElementRef>;
-  @ViewChildren('cmpone') componentOne: QueryList<ElementRef>;
+  // @ViewChildren('cmpone') componentOne: QueryList<ElementRef>;
   
   objectKeys = Object.keys;
   predictionVisible = false;
@@ -299,6 +299,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.plotScores.data[1].y = [];
     this.plotScores.data[1].text = [];
     this.plotScores.data[1].meta = [];
+
+    console.log ('getting info for:', this.prediction.modelName, this.prediction.modelID );
+
     this.getInfo();
     this.getDocumentation();
     this.getPrediction();
@@ -370,6 +373,13 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
         for (const info of result) {
           this.modelBuildInfo[info[0]] = info[2];
+        }
+
+        if (this.modelBuildInfo['modelID'] != this.prediction.modelID) {
+          console.log ('***************** model mismatch *************', this.modelBuildInfo['modelID'], this.prediction.modelID );
+        }
+        else {
+          console.log ('================== model match ===============', this.modelBuildInfo['modelID'], this.prediction.modelID );
         }
 
         this.isQuantitative = this.modelBuildInfo['quantitative'];
@@ -506,11 +516,10 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               return row;
             },
             destroy: true,
-            deferRender: true
+            deferRender: true,
             // order: []
           };
 
-          // const table = $('#prediction').DataTable(settingsObj);
           $('#prediction').DataTable(settingsObj);
 
           const me = this;
@@ -523,9 +532,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           
           // scores plot         
           const options = {'width': 300, 'height': 300};
-          const smilesDrawerScores = new SmilesDrawer.Drawer(options);        
+          const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
+
           const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
           const context_ref = canvas_ref.getContext('2d');
+
           const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
           const context = canvas.getContext('2d');
           
