@@ -9,11 +9,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 
-
 export class AppComponent {
   title = 'flameweb';
   
-  constructor(public prediction: Prediction,
+  constructor(
+    public prediction: Prediction,
     public model: Model,
     private router: Router) {}
     

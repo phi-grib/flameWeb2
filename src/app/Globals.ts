@@ -24,6 +24,8 @@ export class Model {
   listModels = {};
   trained_models = [];
   selectedItems = [];
+  page = 0;
+  pagelen = 10;
 }
 
 @Injectable()

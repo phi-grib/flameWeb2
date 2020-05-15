@@ -99,7 +99,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         mode: 'markers', 
         marker: {
           color: [],
-          opacity: 0.8,
+          opacity: 0.6,
           size: 10,
           colorscale: 'RdBu', 
           showscale: true, 
@@ -118,18 +118,18 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         mode: 'markers+text', 
         textfont : {
           fontStyle: 'Barlow Semi Condensed, sans-serif',
-          color: 'black',
+          color: '#59c427',
           size: 16
         },
         textposition: 'top right',
         marker: {
-          color: 'black',
+          color: '#6be831',
           symbol: 'circle-open',
-          opacity: 0.9,
+          opacity: 1,
           size: 14,
           line: {
-            color: 'black',
-            width: 2
+            color: '#6be831',
+            width: 3
           }
 
         },
@@ -221,13 +221,10 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   // colored = true;
 
-  
-
   constructor(public prediction: Prediction,
     public service: PredictionService,
     private commonService: CommonService) { }
   
-  dtOptions: DataTables.Settings = {};
   message = '';
   
   drawReportHeader () {
@@ -455,7 +452,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.predictionVisible = false;
     this.predictionResult = undefined;
     $('#prediction').DataTable().destroy();
-    $('#predictionOne').DataTable().destroy();
+    // $('#predictionOne').DataTable().destroy();
 
     this.modelValidationInfo = {};
 
@@ -489,17 +486,15 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.modelValidationInfo['FN'][1],
           this.modelValidationInfo['TN'][1], 
           this.modelValidationInfo['FP'][1]];
-
-          // this.polarAreaChartData = [this.modelValidationInfo['TP'][1], this.modelValidationInfo['FP'][1],
-          // this.modelValidationInfo['TN'][1], this.modelValidationInfo['FN'][1]];
         }
 
         // use a long timeout because this can take a lot of time
         setTimeout(() => {
 
+          const options_list = {'width': 300, 'height': 150};
+          const smilesDrawer = new SmilesDrawer.Drawer(options_list);
+
           this.components.forEach((child) => {
-            const options = {'width': 300, 'height': 150};
-            const smilesDrawer = new SmilesDrawer.Drawer(options);
             SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
               smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
               }, function (err) {
@@ -525,10 +520,13 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               });
               return row;
             },
-            order: []
+            destroy: true,
+            deferRender: true
+            // order: []
           };
 
-          const table = $('#prediction').DataTable(settingsObj);
+          // const table = $('#prediction').DataTable(settingsObj);
+          $('#prediction').DataTable(settingsObj);
 
           const me = this;
           $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -545,11 +543,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           const context_ref = canvas_ref.getContext('2d');
           const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
           const context = canvas.getContext('2d');
-
+          
           PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
-
+          
           let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
-
+          
           // on hover, draw the molecule
           myPlot.on('plotly_hover', function(eventdata){ 
             var points = eventdata.points[0];
@@ -558,6 +556,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
                 smilesDrawerScores.draw(tree, 'scores_canvas_ref', 'light', false);
               });   
+              context_ref.font = "30px Barlow Semi Condensed";
+              context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
             }
             else {
               SmilesDrawer.parse(points.meta, function(tree) {
@@ -581,7 +581,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
           this.predictionVisible = true;
 
-        }, 100);
+        }, 500);
       }
     );
   }

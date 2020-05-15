@@ -37,10 +37,10 @@ tr.selected {
     100% { opacity: 0; }
 }
 
-.model-content {
+/* .model-content {
     max-width: 350px;
     max-height: 350px;
-}
+} */
 .scrolltable{
     max-height: 90vh;
     overflow: auto;
@@ -82,7 +82,7 @@ max-width:200px;
     100% { -webkit-transform: rotate(360deg); }
   } */
 
-  /* @keyframes spin {
+/* @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }  */
+}  */

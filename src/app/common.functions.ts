@@ -18,6 +18,27 @@ export class CommonFunctions {
 
   objectKeys = Object.keys;
 
+  selectModel(name: string, version: string, trained: boolean, type: string, quantitative: boolean,
+    conformal: boolean, ensemble: boolean, error: any) {
+
+    if (version === '-' || version === 'dev') {
+      version = '0';
+    }
+    this.model.name = name;
+    this.model.version = version;
+    this.model.trained = trained;
+    this.model.conformal = conformal;
+    this.model.quantitative = quantitative;
+    this.model.ensemble = ensemble;
+    this.model.error = error;
+    this.model.file = undefined;
+    this.model.file_info = undefined;
+    this.model.file_fields = undefined;
+    this.model.parameters = undefined;
+    
+
+  }
+
   getModelList() {
     this.globals.tableModelVisible = false;
     let num_models = 0;
@@ -85,17 +106,36 @@ export class CommonFunctions {
             }
             const intervalId = setInterval(() => {
               if (num_models <= 0) {
-                if (this.objectKeys(this.model.listModels).length > 0) {
-                  const a = this.objectKeys(this.model.listModels).sort();
-                  this.model.name = this.model.listModels[a[0]].name;
-                  this.model.version = this.model.listModels[a[0]].version;
-                  this.model.trained = this.model.listModels[a[0]].trained;
-                  this.model.conformal = this.model.listModels[a[0]].conformal;
-                  this.model.quantitative = this.model.listModels[a[0]].quantitative;
-                  this.model.ensemble = this.model.listModels[a[0]].ensemble;
-                  this.model.error = this.model.listModels[a[0]].error;
+                // if (this.objectKeys(this.model.listModels).length > 0) {
+                //   const a = this.objectKeys(this.model.listModels).sort();
+                //   this.model.name = this.model.listModels[a[0]].name;
+                //   this.model.version = this.model.listModels[a[0]].version;
+                //   this.model.trained = this.model.listModels[a[0]].trained;
+                //   this.model.conformal = this.model.listModels[a[0]].conformal;
+                //   this.model.quantitative = this.model.listModels[a[0]].quantitative;
+                //   this.model.ensemble = this.model.listModels[a[0]].ensemble;
+                //   this.model.error = this.model.listModels[a[0]].error;
+                // }
+
+                let aqui = this;
+                
+                const table = $('#dataTableModels').DataTable({
+                  autoWidth: false,
+                  destroy: true,
+                  deferRender: true,
+                  pageLength: this.model.pagelen
+
+                })
+                .on( 'length.dt', function () {
+                  aqui.model.pagelen =table.page.len();
+                  console.log ("change page len to:", aqui.model.pagelen)
+                });
+
+                if (this.model.page != 0) {
+                  table.page(this.model.page).draw('page');
+                  this.model.page = 0;
                 }
-                const table = $('#dataTableModels').DataTable({'autoWidth': false});
+
                 this.globals.tableModelVisible = true;
                 clearInterval(intervalId);
               }
@@ -113,20 +153,24 @@ export class CommonFunctions {
   }
 
   getPredictionList() {
-    this.globals.tablePredictionVisible = false;
     this.commonService.getPredictionList().subscribe(
       result => {
         if (result[0]) {
-            this.prediction.predictions = result[1];
-
-            // console.log(result[1])
-
+          this.prediction.predictions = result[1];
+          this.globals.tablePredictionVisible = false;
+          
+          // console.log(result[1])
+          
             setTimeout(() => {
               const table = $('#dataTablePredictions').DataTable({
-                // 'autoWidth': false,
                 /*Ordering by date */
+                // autoWidth: false,
+                deferRender: true,
+                ordering: true,
+                pageLength: 10,
+                columnDefs: [{ 'type': 'date-euro', 'targets': 4 }],
                 order: [[4, 'desc']],
-                columnDefs: [{ 'type': 'date-euro', 'targets': 4 }]
+                destroy: true
               });
 
               if (result[1].length > 0) {
@@ -135,11 +179,13 @@ export class CommonFunctions {
                 this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
                 this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
               }
-              $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
-                $('tr').removeClass('selected'); // removes all highlights from tr's
-                $(this).addClass('selected'); // adds the highlight to this row
-              });
-            }, 100);
+              // $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
+              //   $('tr').removeClass('selected'); // removes all highlights from tr's
+              //   $(this).addClass('selected'); // adds the highlight to this row
+              // });
+
+              this.globals.tablePredictionVisible = true;
+            }, 10);
           } 
           else {
             alert(result[1]);
@@ -149,7 +195,6 @@ export class CommonFunctions {
           alert(error.message);
         }
     );
-    this.globals.tablePredictionVisible = true;
   }
 
 

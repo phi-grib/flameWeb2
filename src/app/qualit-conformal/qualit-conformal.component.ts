@@ -260,7 +260,7 @@ export class QualitConformalComponent implements OnChanges {
             });
 
 
-          }, 50);
+          }, 100);
         },
         error => {
           alert('Error getting model');
