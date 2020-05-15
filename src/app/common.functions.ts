@@ -35,8 +35,16 @@ export class CommonFunctions {
     this.model.file_info = undefined;
     this.model.file_fields = undefined;
     this.model.parameters = undefined;
-    
+  }
 
+  selectModelID(index:any) {
+    this.model.name = this.model.listModels[index].name;
+    this.model.version = this.model.listModels[index].version;
+    this.model.trained = this.model.listModels[index].trained;
+    this.model.conformal = this.model.listModels[index].conformal;
+    this.model.quantitative = this.model.listModels[index].quantitative;
+    this.model.ensemble = this.model.listModels[index].ensemble;
+    this.model.error = this.model.listModels[index].error;
   }
 
   getModelList() {
@@ -47,6 +55,8 @@ export class CommonFunctions {
           if (result[0]) {
             this.model.trained_models = [];
             for (const model of result[1]) {
+
+              // get listModels key elements
               const modelName = model.modelname;
               const version = model.version;
               
@@ -61,11 +71,11 @@ export class CommonFunctions {
               // (a) dictionay with a code 0 or 1 and an error message
               // (b) an array of tuples of three elements 
               if (typeof(model.info) !== 'string') { // this should never happen, only in very old Flame versions
-                // console.log (model.info);
 
                 // option (a) some kind of controlled error
                 if (model.info['code'] == 0 || model.info['code'] == 1 ){
                   this.model.listModels[modelName + '-' + version].error = model.info['message'];
+                  this.model.listModels[modelName + '-' + version].trained = false;
                 }
                 // option (b) healthy 
                 else {
@@ -84,7 +94,8 @@ export class CommonFunctions {
 
                   this.model.listModels[modelName + '-' + version] = {
                     name: modelName, 
-                    version: version, trained: true,
+                    version: version, 
+                    trained: true,
                     numMols: dict_info['nobj'], 
                     variables: dict_info['nvarx'], 
                     type: dict_info['model'], 
@@ -106,34 +117,34 @@ export class CommonFunctions {
             }
             const intervalId = setInterval(() => {
               if (num_models <= 0) {
-                // if (this.objectKeys(this.model.listModels).length > 0) {
-                //   const a = this.objectKeys(this.model.listModels).sort();
-                //   this.model.name = this.model.listModels[a[0]].name;
-                //   this.model.version = this.model.listModels[a[0]].version;
-                //   this.model.trained = this.model.listModels[a[0]].trained;
-                //   this.model.conformal = this.model.listModels[a[0]].conformal;
-                //   this.model.quantitative = this.model.listModels[a[0]].quantitative;
-                //   this.model.ensemble = this.model.listModels[a[0]].ensemble;
-                //   this.model.error = this.model.listModels[a[0]].error;
-                // }
 
-                let aqui = this;
+                let currentPage = 0;
+                // console.log ('rendering: ', this.model.name, this.model.version);
                 
+                if (this.objectKeys(this.model.listModels).length > 0) {
+                  const a = this.objectKeys(this.model.listModels).sort();
+                  if (this.model.name == undefined) {
+                      this.selectModelID(a[0]);
+                  }
+                  else {
+                    var modelIndex = a.indexOf(this.model.name+'-'+this.model.version);
+                      currentPage = Math.floor(modelIndex/this.model.pagelen);
+                  }
+                }
+
+                let me = this;
                 const table = $('#dataTableModels').DataTable({
                   autoWidth: false,
                   destroy: true,
                   deferRender: true,
                   pageLength: this.model.pagelen
-
                 })
                 .on( 'length.dt', function () {
-                  aqui.model.pagelen =table.page.len();
-                  console.log ("change page len to:", aqui.model.pagelen)
+                  me.model.pagelen =table.page.len();
                 });
 
-                if (this.model.page != 0) {
-                  table.page(this.model.page).draw('page');
-                  this.model.page = 0;
+                if (currentPage != 0) {
+                  table.page(currentPage).draw('page');
                 }
 
                 this.globals.tableModelVisible = true;

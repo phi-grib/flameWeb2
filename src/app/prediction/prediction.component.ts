@@ -47,7 +47,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   predictionError = '';
   isQuantitative = false;
 
-  public predictData = [{
+  predictData = [{
     offset: 45, 
     r: [],
     theta: ["TP", "FN", "TN", "FP"],
@@ -60,10 +60,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     hovertemplate: "%{meta}: %{r}<extra></extra>"
   }]
 
-  public plotCommon = {
+  plotCommon = {
     layout :{
-      width: 350,
-      // height: 600,
+      width: 300,
+      height: 300,
+      margin: {r: 10, t: 30, b:0, pad: 0 },
       polar: {
         bargap: 0,
         gridcolor: "grey",
@@ -71,11 +72,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         radialaxis: {
           angle: 90,
           ticks: '', 
-          tickfont: {
-            size: 12,
-            fontStyle: 'Barlow Semi Condensed, sans-serif',
-          },
-          // dtick: 20,
+          tickfont: { size: 12, fontStyle: 'Barlow Semi Condensed, sans-serif' },
         },
         angularaxis: {
           showticklabels: false, 
@@ -151,14 +148,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         linecolor: 'rgb(200,200,200)',
         linewidth: 2,
         title: 'PCA PC1',
-        titlefont: {
-          family: 'Barlow Semi Condensed, sans-serif',
-          size: 20,
-        },
-        tickfont: {
-          family: 'Barlow Semi Condensed, sans-serif',
-          size: 18,
-        },
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18},
       },
       yaxis: {
         zeroline: true,
@@ -168,14 +159,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         linecolor: 'rgb(200,200,200)',
         linewidth: 2,
         title: 'PCA PC2',
-        titlefont: {
-          family: 'Barlow Semi Condensed, sans-serif',
-          size: 20,
-        },
-        tickfont: {
-          family: 'Barlow Semi Condensed, sans-serif',
-          size: 18,
-        },
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18},
       },
     },
     config: {

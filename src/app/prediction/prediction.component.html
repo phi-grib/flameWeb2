@@ -2,14 +2,12 @@
 <!-- <div > -->
   <div class="row" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
     <div class="card w-100" style="width: 18rem;">
-      <div class="card-body"> <h2 style="color: grey;">External validation</h2>
-        <!-- <div class="row ml-2">
-            <small class="h2 text-muted"><u>Fitting</u></small>
-        </div> -->
+      <div class="card-body"> 
+        <h2 style="color: grey;">External validation</h2>
         <!-- <div class="row justify-content-between"> -->
          <div id="container">
-          <div class="col-3 mt-1">
-            <table class="table table-sm mt-4">
+            <div class="col-3">
+              <table class="table table-sm">
               <tbody>
                 <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
                   

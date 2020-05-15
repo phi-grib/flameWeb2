@@ -52,6 +52,7 @@ export class QualitConformalComponent implements OnChanges {
       layout :{
         width: 350,
         // height: 300,
+        // margin: {r: 10, t: 30, b:30, pad: 0 },
         polar: {
           bargap: 0,
           gridcolor: "grey",
@@ -171,7 +172,7 @@ export class QualitConformalComponent implements OnChanges {
       this.plotScores.data[0].marker.color = [];
       this.predictData[0].r = [0, 0, 0, 0];
       this.fittingData[0].r = [0, 0, 0, 0];
-      this.plotPie.data[0].values = []
+      this.plotPie.data[0].values = [];
       this.getValidation();
     }
     
