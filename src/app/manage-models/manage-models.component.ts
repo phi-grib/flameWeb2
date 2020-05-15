@@ -36,6 +36,7 @@ export class ManageModelsComponent implements OnInit {
     const modalRef = this.modalService.open(BuilderComponent, {windowClass : 'modalClass'});
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.version = version;
+    
   }
   /**
    * Creates a new model with the given name and informs the user with a toastr
@@ -48,6 +49,7 @@ export class ManageModelsComponent implements OnInit {
             this.modelName = '';
             this.model.listModels = {};
             $('#dataTableModels').DataTable().destroy();
+
             this.func.getModelList();
             this.toastr.success('Model ' + result.modelName, 'CREATED', {
               timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
@@ -93,9 +95,15 @@ export class ManageModelsComponent implements OnInit {
         const table = $('#dataTableModels').DataTable();
         table.row('.selected').remove().draw(false);
         $('#dataTableModels').DataTable().destroy();
-       this.func.getModelList();
-        this.model.name = undefined;
-        this.model.version = undefined;
+        
+
+        const a = Object.keys(this.model.listModels).sort();
+        var modelIndex = a.indexOf(this.model.name+'-0');
+        this.model.page = Math.floor(modelIndex/this.model.pagelen);
+
+        this.model.name = this.model.name;
+        this.model.version = 0;
+        this.func.getModelList();
       },
       error => {
         console.log(error);
@@ -113,8 +121,17 @@ export class ManageModelsComponent implements OnInit {
       result => {
         this.toastr.success('Model \'' + result['modelName'] + ' v.' + result['version'] + '\'', 'CREATED SUCCESFULLY', {
           timeOut: 5000, positionClass: 'toast-top-right'});
+        
+        const a = Object.keys(this.model.listModels).sort();
+        var modelIndex = a.indexOf(this.model.name+'-0');
+        this.model.page = Math.floor(modelIndex/this.model.pagelen);
+        
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
+
+
+        this.model.name = this.model.name;
+        this.model.version = 0;
         this.func.getModelList();
       },
       error => {

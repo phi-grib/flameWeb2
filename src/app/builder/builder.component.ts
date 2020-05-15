@@ -72,12 +72,13 @@ export class BuilderComponent implements OnInit {
   buildModel(name, version): void {
     this.model.delta = {};
     this.model.delta = this.recursiveDelta(this.model.parameters);
+    
     this.model.listModels[name + '-' + version] = {name: name, version: version, trained: false, numMols: '-',
       variables: '-', type: '-', quality: {}, quantitative: false, conformal: false, ensemble: false};
     
     this.model.trainig_models.push(name + '-' + version);
     
-    const inserted = this.toastr.info('Running!', 'Model ' + name + '.v' + version , {
+    const inserted = this.toastr.info('Building', 'Model ' + name + '.v' + version , {
       disableTimeOut: true, positionClass: 'toast-top-right'});
     
     this.activeModal.close('Close click');
@@ -122,8 +123,9 @@ export class BuilderComponent implements OnInit {
   checkModel(name, version, inserted, intervalId) {
     this.commonService.getModel(name, version).subscribe(
       result => {
-        const table = $('#dataTableModels').DataTable();
-        table.destroy();
+
+        $('#dataTableModels').DataTable().destroy();
+
         const dict_info = {};
         for (const aux of  result) {
           dict_info[aux[0]] = aux[2];
@@ -149,12 +151,17 @@ export class BuilderComponent implements OnInit {
         this.model.trained_models.push(name + ' .v' + version);
         this.toastr.success('Model ' + name + '.v' + version + ' created' , 'MODEL CREATED', {
           timeOut: 5000, positionClass: 'toast-top-right'});
-        clearInterval(intervalId);
+        
+        // use the following code to make sure the new model list will show the model
+        this.model.name = name;
+        this.model.version = version;
+
+        const a = Object.keys(this.model.listModels).sort();
+        var modelIndex = a.indexOf(name+'-'+version);
+        this.model.page = Math.floor(modelIndex/this.model.pagelen);
+        
         this.func.getModelList();
-
-        console.log (table.row(20).data());
-        table.row(20).select();
-
+        clearInterval(intervalId);
 
       },
       error => { // CHECK what type of error
@@ -169,6 +176,7 @@ export class BuilderComponent implements OnInit {
         this.toastr.error( 'Model ' + name + '.v' + version + ' \n ' + error.error.message , 'ERROR!', {
           timeOut: 10000, positionClass: 'toast-top-right'});
         clearInterval(intervalId);
+
         this.func.getModelList();
        }
       }

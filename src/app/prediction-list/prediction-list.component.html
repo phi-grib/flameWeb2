@@ -22,7 +22,7 @@
       </thead>
       <tbody>
           <tr class="blink" *ngFor="let key of objectKeys(this.prediction.predicting)">
-              <td >{{key}}</td>
+              <td>{{key}}</td>
               <td>{{this.prediction.predicting[key][0]}}</td>
               <td>{{this.prediction.predicting[key][1]}}</td>
               <td>{{this.prediction.predicting[key][2].substring(this.prediction.predicting[key][2].lastIndexOf('/') + 1)}}</td>
