@@ -26,11 +26,12 @@ export class PredictionListComponent implements OnInit {
     this.func.getPredictionList();
   }
 
-  selectPrediction(name: string, modelName: string, modelVersion: string, date: any) {
+  selectPrediction(name: string, modelName: string, modelVersion: string, date: any, modelID: string) {
     this.prediction.name = name;
     this.prediction.modelName = modelName;
     this.prediction.modelVersion = modelVersion;
     this.prediction.date = date;
+    this.prediction.modelID = modelID;
   }
 
 }
