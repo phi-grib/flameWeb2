@@ -302,12 +302,10 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.plotScores.data[1].meta = [];
 
     this.getInfo();
+    this.getDocumentation();
     this.getPrediction();
-
-    if (this.modelMatch){
-      this.getDocumentation();
-      this.getValidation();
-    }
+    this.getValidation();
+    
   }
 
   tabClickHandler(info: any): void {
@@ -351,18 +349,20 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         const info = result;
 
         if ('PC1' in info) {
-          this.plotScores.data[0].x = info['PC1'];
-          this.plotScores.data[0].y = info['PC2'];
-          this.plotScores.data[0].text = info['obj_nam'];
-          this.plotScores.data[0].meta = info['SMILES'];
-          this.plotScores.data[0].marker.color = info['ymatrix'];
-          this.plotScores.data[0].marker.showscale = this.isQuantitative;
-          if (this.isQuantitative) {
-            this.plotScores.data[0].marker.colorscale= 'RdBu';
-          }
-          else {
-            this.plotScores.data[0].marker.colorscale= 'Bluered';
-          } 
+          setTimeout(() => {
+            this.plotScores.data[0].x = info['PC1'];
+            this.plotScores.data[0].y = info['PC2'];
+            this.plotScores.data[0].text = info['obj_nam'];
+            this.plotScores.data[0].meta = info['SMILES'];
+            this.plotScores.data[0].marker.color = info['ymatrix'];
+            this.plotScores.data[0].marker.showscale = this.isQuantitative;
+            if (this.isQuantitative) {
+              this.plotScores.data[0].marker.colorscale= 'RdBu';
+            }
+            else {
+              this.plotScores.data[0].marker.colorscale= 'Bluered';
+            } 
+          }, 100);
         }
       }
     )
@@ -454,15 +454,14 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.predictionError = result['error']; 
         }
 
-        if (this.modelMatch){
-          // scores plot         
+        setTimeout(() => {
           if ('PC1proj' in result) {
             this.plotScores.data[1].x = result['PC1proj'];
             this.plotScores.data[1].y = result['PC2proj'];
             this.plotScores.data[1].text = result['obj_nam'];
             this.plotScores.data[1].meta = result['values'];
-          }
-        }
+          };
+        }, 100);
 
         this.predictionResult = result;
 
@@ -482,7 +481,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.modelValidationInfo['TN'][1], 
           this.modelValidationInfo['FP'][1]];
         }
-
         
         const options_list = {'width': 300, 'height': 150};
         const smilesDrawer = new SmilesDrawer.Drawer(options_list);
@@ -532,8 +530,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           });
           
 
+          // if (this.modelMatch){
           if (this.modelMatch){
-            
 
             const options = {'width': 300, 'height': 300};
             const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
@@ -583,7 +581,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             
           this.predictionVisible = true;
             
-          }, 1000);
+          }, 500);
         }
     );
   }
