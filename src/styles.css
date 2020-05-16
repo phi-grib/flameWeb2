@@ -1,12 +1,13 @@
 body {
-    /*font-family: 'Roboto Condensed', sans-serif;*/
-    font-family: 'Barlow Semi Condensed', 'sans-serif';
+    /* font-family: 'Roboto Condensed', sans-serif; */
+    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
     font-size: 20px;
     /*height: 100%;*/
 }
 
 .dropdown {
-  font-family: 'Barlow Semi Condensed', 'sans-serif';
+  /* font-family: 'Barlow Semi Condensed', sans-serif; */
+  font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
   font-size: 20px;
 }
 
@@ -34,7 +35,7 @@ btn.bmd-btn-fab.btn-etransafe,
     font-size: 3vw;
 }
 
-.bg-estransafe{
+.bg-etransafe{
     background: #0076a3;
     color: white;
 }

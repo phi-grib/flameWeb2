@@ -1,44 +1,3 @@
- <!-- <div class="m-3" > -->
-<!-- <div > -->
-  <div class="row" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
-    <div class="card w-100" style="width: 18rem;">
-      <div class="card-body"> 
-        <h2 style="color: grey;">External validation</h2>
-        <!-- <div class="row justify-content-between"> -->
-         <div id="container">
-            <div class="col-3">
-              <table class="table table-sm">
-              <tbody>
-                <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
-                  
-                  <td *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key.split('_').join(' ')}}</strong></td>
-                  <td *ngIf="!this.q_measures.includes(key)" class="text-right text-capitalize">{{modelValidationInfo[key][1]}}</td>
-              </tr>
-              </tbody>
-            </table> 
-          </div>
-          <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
-            <!--CONFUSION MATRIX-->
-            <app-confusion-matrix 
-                  [TP] = "this.modelValidationInfo['TP'][1]"
-                  [FP] = "this.modelValidationInfo['FP'][1]"
-                  [FN] = "this.modelValidationInfo['FN'][1]"
-                  [TN] = "this.modelValidationInfo['TN'][1]"
-              ></app-confusion-matrix>                 
-          </div>
-          <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
-
-            <plotly-plot 
-              [data]="predictData" 
-              [layout]="plotCommon.layout"
-              [config]="plotCommon.config">
-            </plotly-plot> 
-          </div>
-        </div><!--row---->
-      </div><!--body-->
-    </div><!--card-->
-  </div>
-
   <div class="row" *ngIf="this.predictionResult != undefined && this.predictionResult.warning">
     <div class="card w-100">
       <div class="card-body"> 
@@ -59,6 +18,17 @@
     </div>
   </div>
  
+  <div class="row" *ngIf="!this.modelMatch">
+    <div class="card w-100">
+      <div class="card-body"> 
+        <div class="alert alert-danger text-center" role="alert">
+          Model ID mismatch 
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <div class="row" *ngIf="this.predictionResult != undefined && this.predictionError == ''">
     <!-- <div class="col scrollable" style="padding-left:0px;"> -->
 
@@ -72,13 +42,13 @@
       <!--NAVS tables-->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="pills-all-tab" data-toggle="tab" href="#pills-all" role="tab" aria-controls="pills-home" aria-selected="true"><h4>List</h4></a>
+            <a class="nav-link active" id="pills-all-tab" data-toggle="tab" href="#pills-all" role="tab" aria-controls="pills-home" aria-selected="true">List</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false"><h4>Report</h4></a>
+            <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false">Report</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" id="pills-two-tab" data-toggle="tab" href="#pills-two" role="tab" aria-controls="pills-two" aria-selected="false"><h4>Projection</h4></a>
+          <li class="nav-item" *ngIf="this.modelMatch">
+            <a class="nav-link" id="pills-two-tab" data-toggle="tab" href="#pills-two" role="tab" aria-controls="pills-two" aria-selected="false">Projection</a>
           </li>
         </ul>
 
@@ -86,9 +56,42 @@
 
           <!--ALL PREDICTIONS-->
           <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+            
+            <div class="row" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
+              <div class="card w-100" style="width: 18rem;">
+                <div class="card-body" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']"> 
+                  <div id="container">
+                    <div class="col-3">
+                      <table class="table table-sm">
+                        <tbody>
+                          <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
+                            <td *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key.split('_').join(' ')}}</strong></td>
+                            <td *ngIf="!this.q_measures.includes(key)" class="text-right text-capitalize">{{modelValidationInfo[key][1]}}</td>
+                          </tr>
+                        </tbody>
+                      </table> 
+                    </div>
+                    <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
+                      <app-confusion-matrix 
+                      [TP] = "this.modelValidationInfo['TP'][1]"
+                      [FP] = "this.modelValidationInfo['FP'][1]"
+                      [FN] = "this.modelValidationInfo['FN'][1]"
+                      [TN] = "this.modelValidationInfo['TN'][1]"
+                      ></app-confusion-matrix>                 
+                    </div>
+                    <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
+                      <plotly-plot 
+                      [data]="predictData" 
+                      [layout]="plotCommon.layout"
+                      [config]="plotCommon.config">
+                      </plotly-plot> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
             <div class="card-body">
-              
-              <!-- <table dataTable [dtOptions]="dtOptions" id="prediction" class="table m-0 table-light row-border hover"> -->
               <table id="prediction" class="table m-0">
                 <thead>
                   <tr>
@@ -168,7 +171,7 @@
                   {{this.prediction.name}}
                 </div>
                 <div class="col-6 border">
-                 Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}}
+                 Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} (ID:{{this.prediction.modelID}})
                 </div>
                 <div class="col-3 border">
                   {{this.prediction.date}}
@@ -182,7 +185,7 @@
                  {{this.predictionResult.obj_nam[molIndex]}}
                 </div>
               </div>
-              <div class="row">
+              <div class="row" *ngIf="this.predictionResult.obj_id[molIndex]!=''">
                 <div class="col-3 border">
                   <strong>ID</strong>
                 </div>
@@ -200,29 +203,28 @@
               </div>
               <div class="row">
                 <div class="col-3 border">
-                  <strong>Result</strong>
+                  <strong>Prediction</strong>
                 </div>
                 <div class="col-9 border">
                   <span *ngIf="this.predictionResult.values">{{castValue(this.predictionResult.values[molIndex])}}</span>
                   <span *ngIf="this.modelDocumentation != undefined && this.modelDocumentation['Endpoint_units']"> {{this.modelDocumentation['Endpoint_units'].value}}</span>
                 </div>
               </div>
-              <div class="row">
+              <div class="row" *ngIf="this.predictionResult.ymatrix">
                 <div class="col-3 border">
-                  <strong>Other</strong>
+                  <strong>Experimental activity</strong>
                 </div>
                 <div class="col-9 border">
-                  <span>Activity: </span>
                   <span *ngIf="this.predictionResult.ymatrix">{{this.predictionResult.ymatrix[molIndex]}}</span> 
-                  <span *ngIf="!this.predictionResult.ymatrix">-</span> 
+                  <!-- <span *ngIf="!this.predictionResult.ymatrix">-</span>  -->
                 </div>
               </div>
-              <div class="row">
+              <div class="row" *ngIf="this.modelBuildInfo['conformal']">
                 <div class="col-3 border">
                   <strong>Reliability</strong>
                 </div>
-                <div class="col-9 border">
-                  <span *ngIf="!this.modelBuildInfo['conformal']">-</span>
+                <div class="col-9 border" >
+                  <!-- <span *ngIf="!this.modelBuildInfo['conformal']">-</span> -->
                   <span *ngIf="this.modelBuildInfo['conformal']">{{(1.0-this.modelBuildInfo['conformal_significance'])*100}}%CI:</span>
                   <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">{{this.predictionResult.lower_limit[molIndex].toFixed(1)}} 
                      to {{this.predictionResult.upper_limit[molIndex].toFixed(3)}}
@@ -261,7 +263,7 @@
                 </div>
               </div>
 
-              <div class="row bg-light">
+              <div class="row bg-light" *ngIf="this.modelMatch">
                 <div class="col-3 border">
                   <strong>Interpretation</strong>
                 </div>
@@ -274,7 +276,7 @@
                   <p *ngIf="this.modelDocumentation['Species'].value != undefined"> <br>{{this.modelDocumentation['Species'].value}}</p>
                 </div>
               </div>
-              <div class="row bg-light" *ngIf="!this.modelBuildInfo['ensemble']">
+              <div class="row bg-light" *ngIf="!this.modelBuildInfo['ensemble'] && this.modelMatch" >
                 <div class="col-3 border">
                   <strong >Model</strong>
                 </div>
@@ -407,7 +409,5 @@
         </div><!--END TABS -->
 
       </div>
-    <!-- </div> -->
   </div>
 
-<!-- </div> -->
