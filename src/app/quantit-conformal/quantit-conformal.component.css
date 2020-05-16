@@ -10,13 +10,15 @@ ul li.nav-item a.active{
 
 ul li.nav-item a {
   background:white;
-  color: #B8DCED;
+  color: #0076a3;
+  font-size: 1.5rem;
 }
 
 ul li.nav-item a.active{
   background:white;
   color:#22577A;
   font-weight: bold;
+  font-size: 1.5rem;
   border-bottom: 4px solid #e59300;
 }
 

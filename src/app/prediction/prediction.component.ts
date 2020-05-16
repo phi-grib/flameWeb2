@@ -29,6 +29,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   
   objectKeys = Object.keys;
   predictionVisible = false;
+  modelMatch = true;
   q_measures = ['TP', 'FP', 'TN', 'FN'];
   table: any = undefined;
   info = [];
@@ -62,9 +63,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   plotCommon = {
     layout :{
-      width: 300,
-      height: 300,
-      margin: {r: 10, t: 30, b:0, pad: 0 },
+      width: 350,
+      height: 350,
+      // margin: {r: 10, t: 30, b:0, pad: 0 },
       polar: {
         bargap: 0,
         gridcolor: "grey",
@@ -300,12 +301,13 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.plotScores.data[1].text = [];
     this.plotScores.data[1].meta = [];
 
-    console.log ('getting info for:', this.prediction.modelName, this.prediction.modelID );
-
     this.getInfo();
-    this.getDocumentation();
     this.getPrediction();
-    this.getValidation();
+
+    if (this.modelMatch){
+      this.getDocumentation();
+      this.getValidation();
+    }
   }
 
   tabClickHandler(info: any): void {
@@ -375,12 +377,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.modelBuildInfo[info[0]] = info[2];
         }
 
-        if (this.modelBuildInfo['modelID'] != this.prediction.modelID) {
-          console.log ('***************** model mismatch *************', this.modelBuildInfo['modelID'], this.prediction.modelID );
-        }
-        else {
-          console.log ('================== model match ===============', this.modelBuildInfo['modelID'], this.prediction.modelID );
-        }
+        this.modelMatch = (this.modelBuildInfo['modelID'] === this.prediction.modelID);
 
         this.isQuantitative = this.modelBuildInfo['quantitative'];
 
@@ -457,11 +454,14 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.predictionError = result['error']; 
         }
 
-        if ('PC1proj' in result) {
-          this.plotScores.data[1].x = result['PC1proj'];
-          this.plotScores.data[1].y = result['PC2proj'];
-          this.plotScores.data[1].text = result['obj_nam'];
-          this.plotScores.data[1].meta = result['values'];
+        if (this.modelMatch){
+          // scores plot         
+          if ('PC1proj' in result) {
+            this.plotScores.data[1].x = result['PC1proj'];
+            this.plotScores.data[1].y = result['PC2proj'];
+            this.plotScores.data[1].text = result['obj_nam'];
+            this.plotScores.data[1].meta = result['values'];
+          }
         }
 
         this.predictionResult = result;
@@ -483,11 +483,12 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.modelValidationInfo['FP'][1]];
         }
 
+        
+        const options_list = {'width': 300, 'height': 150};
+        const smilesDrawer = new SmilesDrawer.Drawer(options_list);
+        
         // use a long timeout because this can take a lot of time
         setTimeout(() => {
-
-          const options_list = {'width': 300, 'height': 150};
-          const smilesDrawer = new SmilesDrawer.Drawer(options_list);
 
           this.components.forEach((child) => {
             SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
@@ -530,55 +531,60 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             }
           });
           
-          // scores plot         
-          const options = {'width': 300, 'height': 300};
-          const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
 
-          const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
-          const context_ref = canvas_ref.getContext('2d');
+          if (this.modelMatch){
+            
 
-          const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
-          const context = canvas.getContext('2d');
-          
-          PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
-          
-          let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
-          
-          // on hover, draw the molecule
-          myPlot.on('plotly_hover', function(eventdata){ 
-            var points = eventdata.points[0];
-            // console.log (points)
-            if (points.curveNumber === 1) {
-              SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
-                smilesDrawerScores.draw(tree, 'scores_canvas_ref', 'light', false);
-              });   
-              context_ref.font = "30px Barlow Semi Condensed";
-              context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
-            }
-            else {
-              SmilesDrawer.parse(points.meta, function(tree) {
-                smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
-              });
-            }
-          });
-          // on onhover, clear the canvas
-          myPlot.on('plotly_unhover', function(eventdata){
-            var points = eventdata.points[0];
-            if (points.curveNumber === 0) {
-              context.clearRect(0, 0, canvas.width, canvas.height);
-            }
-          });
-          myPlot.on('plotly_click', function(eventdata){
-            var points = eventdata.points[0];
-            if (points.curveNumber === 1) {
-              context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
-            }
-          });
-
+            const options = {'width': 300, 'height': 300};
+            const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
+    
+            const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
+            const context_ref = canvas_ref.getContext('2d');
+    
+            const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
+            const context = canvas.getContext('2d');
+            
+            PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+            
+            let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
+            
+            // on hover, draw the molecule
+            myPlot.on('plotly_hover', function(eventdata){ 
+              var points = eventdata.points[0];
+              // console.log (points)
+              if (points.curveNumber === 1) {
+                SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
+                  smilesDrawerScores.draw(tree, 'scores_canvas_ref', 'light', false);
+                });   
+                context_ref.font = "30px Barlow Semi Condensed";
+                context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
+              }
+              else {
+                SmilesDrawer.parse(points.meta, function(tree) {
+                  smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
+                });
+              }
+            });
+            // on onhover, clear the canvas
+            myPlot.on('plotly_unhover', function(eventdata){
+              var points = eventdata.points[0];
+              if (points.curveNumber === 0) {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+              }
+            });
+            myPlot.on('plotly_click', function(eventdata){
+              var points = eventdata.points[0];
+              if (points.curveNumber === 1) {
+                context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
+              }
+            });
+          }
+            
+            
           this.predictionVisible = true;
-
-        }, 500);
-      }
+            
+          }, 1000);
+        }
     );
   }
 

@@ -24,17 +24,23 @@ a{
     opacity: 0.4;
 }
 
-.card-header {
+/* .card-header {
     color: white;
     background: #22577a;
     background-color: #22577a;
     padding-top: 5px;
     padding-bottom: 5px;
-}
+} */
+
+/* .card-header {
+    padding-top: 10px;
+    padding-bottom: 10px;
+} */
 
 .card{
     padding-top: 0px;
     padding-bottom: 0px;
+    border-width: 0px;
 }
 
 .modal-body{
