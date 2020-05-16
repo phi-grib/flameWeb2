@@ -170,8 +170,6 @@ export class CommonFunctions {
           this.prediction.predictions = result[1];
           this.globals.tablePredictionVisible = false;
           
-          console.log(result[1])
-          
             setTimeout(() => {
               const table = $('#dataTablePredictions').DataTable({
                 /*Ordering by date */
