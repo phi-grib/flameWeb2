@@ -2,7 +2,7 @@
   <div class="btn-group mr-2" role="group" aria-label="First group">
     <button type="button" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#newModal">New</button>
     <button type="button" class="btn btn-outline-primary btn-lg" [ngClass]="{'disabled': model.name === undefined || model.version != '0'}" (click)="buildModel(model.name, model.version)">Build</button>
-    <button type="button" class="btn btn-outline-primary btn-lg" [ngClass]="{'disabled': model.name === undefined}" (click)="cloneModel()">Clone</button>
+    <button type="button" class="btn btn-outline-primary btn-lg" [ngClass]="{'disabled': model.name === undefined}" (click)="cloneModel()">Publish</button>
   </div>
   <div class="btn-group mr-2" role="group" aria-label="second group">
     <button type="button" class="btn btn-outline-success btn-lg"  (click)="exportModel()" [ngClass]="{'disabled': model.name === undefined}">Export</button>

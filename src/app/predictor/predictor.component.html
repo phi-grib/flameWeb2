@@ -40,7 +40,7 @@
     <div class="row">
       <div class="col -8">
         <div class="form-group">
-          <label for="model">Model</label>
+          <label for="model">Model (with published versions)</label>
             <select id="model" class="form-control" [(ngModel)]="this.modelName" name=""> 
               <option *ngFor="let value of objectKeys(this.models).sort()" [value]='value'>
               {{value}}
