@@ -65,7 +65,6 @@ export class PredictorComponent implements OnInit {
   }
 
   getModelListPredict() {
-
     this.commonService.getModelList().subscribe(
         result => {
           if (result[0]){
@@ -73,14 +72,26 @@ export class PredictorComponent implements OnInit {
             for (const model of result[1]) {
               if (typeof(model.info) === 'object' ) {
                 const modelName = model.modelname;
-                if (!(modelName in  this.models)) {
+                if (!(modelName in this.models)) {
                   this.models[modelName] = [];
                 }
                 if (model.info) {
-                  this.models[modelName].push(model.version);
+                  // do not add development versions
+                  if (model.version != 0){
+                    this.models[modelName].push(model.version);
+                  }
                 }
               }
             }
+
+            // remove items without a valid version
+            for (const model of this.objectKeys(this.models)){
+              console.log (model, this.models[model].length)
+              if (this.models[model].length===0) {
+                  delete(this.models[model]);
+              }
+            }
+
           }
           else {
             alert(result[1]);

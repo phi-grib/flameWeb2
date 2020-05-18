@@ -28,8 +28,9 @@
           (click)= "selectModel(model.listModels[key].name, model.listModels[key].version, model.listModels[key].trained,model.listModels[key].type,model.listModels[key].quantitative
           , model.listModels[key].conformal, model.listModels[key].ensemble, model.listModels[key].error)">
           <td class="text-center">
-            <i class = "fas" [ngClass]="{'fa-grip-lines': model.listModels[key].type.indexOf('qualitative') > -1 ||
-                                                        model.listModels[key].type.indexOf('majority') > -1,
+            <i class = "fas" 
+                        [ngClass]="{'fa-grip-lines': model.listModels[key].type.indexOf('qualitative') > -1 ||
+                                          model.listModels[key].type.indexOf('majority') > -1,
                         'fa-circle': model.listModels[key].type.indexOf('quantitative') >-1 ||
                                      model.listModels[key].type.indexOf('mean') > -1 ||
                                      model.listModels[key].type.indexOf('matrix') > -1 ||
