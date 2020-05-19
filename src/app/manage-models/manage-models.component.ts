@@ -94,11 +94,13 @@ export class ManageModelsComponent implements OnInit {
         this.toastr.success( 'Model ' + this.model.name + '.v' + this.model.version + ' deleted', 'DELETED', {
           timeOut: 4000, positionClass: 'toast-top-right'
         });
-        const table = $('#dataTableModels').DataTable();
-        table.row('.selected').remove().draw(false);
-        table.destroy();
-
-        // $('#dataTableModels').DataTable().destroy();
+        $('#dataTableModels').DataTable()
+        .row('.selected')
+        .remove().
+        draw(false);
+        
+        this.model.listModels = {};
+        $('#dataTableModels').DataTable().destroy();
         this.model.name = this.model.name;
         this.model.version = 0;
         this.func.getModelList();

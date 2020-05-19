@@ -20,7 +20,7 @@ export class QuantitConformalComponent implements OnChanges {
 
     objectKeys = Object.keys;
     modelValidationInfo = {};
-    modelConformal = {};
+    // modelConformal = {};
     modelWarning = '';
 
     plotFitted = {
@@ -315,11 +315,12 @@ export class QuantitConformalComponent implements OnChanges {
 
             if (typeof modelInfo[2] !== 'object') {
               this.modelValidationInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
-            } else {
-              if (this.model.conformal){
-                this.modelConformal[modelInfo[0]] = modelInfo[2];
-              }
-            }
+            } 
+            // else {
+            //   if (this.model.conformal){
+            //     this.modelConformal[modelInfo[0]] = modelInfo[2];
+            //   }
+            // }
           }
 
           setTimeout(() => {
@@ -367,34 +368,23 @@ export class QuantitConformalComponent implements OnChanges {
               
               if (this.model.conformal) {
 
-                const yintpred  = this.modelConformal['Conformal_prediction_ranges']; // (min, max)
-                for (const i in info['ymatrix']) {
-                  this.plotPredicted.data[0].error_y.array[i] = yintpred[i][1] - info['Y_pred'][i];
-                  this.plotPredicted.data[0].error_y.arrayminus[i] = info['Y_pred'][i] - yintpred[i][0];
+                // const yintpred  = this.modelConformal['Conformal_prediction_ranges']; // (min, max)
+                if ('Conformal_prediction_ranges' in info){
+                  const yintpred  = info['Conformal_prediction_ranges']; // (min, max)
+                  for (const i in info['ymatrix']) {
+                    this.plotPredicted.data[0].error_y.array[i] = yintpred[i][1] - info['Y_pred'][i];
+                    this.plotPredicted.data[0].error_y.arrayminus[i] = info['Y_pred'][i] - yintpred[i][0];
+                  }
+                  
+                }
+                else {
+                  alert('CI prediction info not found, please update your model');
                 }
               }
               
               this.plotPredicted.data[0].text = info['obj_nam'];
               this.plotPredicted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
               this.plotPredicted.data[1].y = [ Math.min.apply(Math, info['Y_pred']),Math.max.apply(Math, info['Y_pred'])];
-            }
-            else { // legacy method
-              if (this.model.conformal) {
-                const ymean = this.modelConformal['Conformal_interval_medians'];
-                const yint  = this.modelConformal['Conformal_prediction_ranges']; // (min, max)
-    
-                this.plotPredicted.data[0].x = info['ymatrix'] ;
-                this.plotPredicted.data[0].y = ymean;
-    
-                for (const i in info['ymatrix']) {
-                  this.plotPredicted.data[0].error_y.array[i] = yint[i][1] - ymean[i];
-                  this.plotPredicted.data[0].error_y.arrayminus[i] = ymean[i] - yint[i][0];
-                }
-                
-                this.plotPredicted.data[0].text = info['obj_nam'];
-                this.plotPredicted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
-                this.plotPredicted.data[1].y = [ Math.min.apply(Math, ymean),Math.max.apply(Math, ymean)];
-              }
             }
 
             // ajusted data
@@ -403,10 +393,16 @@ export class QuantitConformalComponent implements OnChanges {
               this.plotFitted.data[0].y = info['Y_adj'];
               
               if (this.model.conformal) {
-                const yintfit  = this.modelConformal['Conformal_prediction_ranges_fitting']; // (min, max)
-                for (const i in info['ymatrix']) {
-                  this.plotFitted.data[0].error_y.array[i] = yintfit[i][1] - info['Y_adj'][i];
-                  this.plotFitted.data[0].error_y.arrayminus[i] = info['Y_adj'][i] - yintfit[i][0];
+                if ('Conformal_prediction_ranges_fitting' in info){
+                  // const yintfit  = this.modelConformal['Conformal_prediction_ranges_fitting']; // (min, max)
+                  const yintfit  = info['Conformal_prediction_ranges_fitting']; // (min, max)
+                  for (const i in info['ymatrix']) {
+                    this.plotFitted.data[0].error_y.array[i] = yintfit[i][1] - info['Y_adj'][i];
+                    this.plotFitted.data[0].error_y.arrayminus[i] = info['Y_adj'][i] - yintfit[i][0];
+                  }
+                }
+                else {
+                  alert('CI fitting info not found, please update your model');
                 }
               }
               

@@ -67,6 +67,17 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
+  objID (i, j) {
+    const iresult = this.result[i];
+    if ('obj_id' in iresult) {
+      return (iresult.obj_id[j]);
+    }
+    else {
+      return ('-');
+    }
+  }
+
   search() {
      // CAST VERSION
     this.result = [];
