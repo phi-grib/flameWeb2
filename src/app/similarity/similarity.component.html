@@ -95,7 +95,7 @@
             <th>Index</th>
             <th s>Query name</th>
             <th data-toggle="tooltip" data-placement="top" data-html="true" title="Query molecule from query test set">Query molecule</th>
-              <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column ID from Reference training set">Reference ID</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column ID from Reference training set">Reference ID</th>
             <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column name from Reference training set">Reference name</th>
             <th data-toggle="tooltip" data-placement="top" data-html="true"  title="Reference molecule column from Reference training set">Reference molecule</th>
             <th data-toggle="tooltip" data-placement="top" data-html="true"  title="Similarity distance score: Tanimoto for binary descriptors and Euclidean for continues ones">Similarity</th>
@@ -107,7 +107,8 @@
               <td class="align-middle" width="">{{i}} - {{j}}</td>
               <td class="align-middle" >{{this.nameSrc[i]}}</td>
               <td class="align-middle"><canvas #cmp id="{{'query_' + i + '_' + j}}" width="300" height="150">{{this.smileSrc[i]}}</canvas></td>
-              <td class="align-middle">{{this.result[i].obj_id[j]}}</td>
+              <!-- <td class="align-middle">{{this.result[i].obj_id[j]}}</td> -->
+              <td class="align-middle">{{this.objID(i,j)}}</td>
               <td class="align-middle">{{this.result[i].obj_nam[j]}}</td>
               <td class="align-middle"><canvas #cmp id="{{'ref_' + i + '_' + j}}" width="300" height="150">{{this.result[i].SMILES[j]}}</canvas></td>
               <td class="align-middle">{{this.result[i].distances[j].toFixed(3)}}</td>

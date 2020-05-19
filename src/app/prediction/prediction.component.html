@@ -185,7 +185,7 @@
                  {{this.predictionResult.obj_nam[molIndex]}}
                 </div>
               </div>
-              <div class="row" *ngIf="this.predictionResult.obj_id[molIndex]!=''">
+              <div class="row" *ngIf="this.predictionResult.obj_id && this.predictionResult.obj_id[molIndex]!=''">
                 <div class="col-3 border">
                   <strong>ID</strong>
                 </div>
