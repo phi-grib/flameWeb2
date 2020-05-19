@@ -28,6 +28,16 @@
     </div>
   </div>
 
+  <div class="row" *ngIf="!this.modelPresent">
+    <div class="card w-100">
+      <div class="card-body"> 
+        <div class="alert alert-danger text-center" role="alert">
+          Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} not found. Model info not shown 
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <div class="row" *ngIf="this.predictionResult != undefined && this.predictionError == ''">
     <!-- <div class="col scrollable" style="padding-left:0px;"> -->
@@ -47,7 +57,7 @@
           <li class="nav-item">
             <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false">Report</a>
           </li>
-          <li class="nav-item" *ngIf="this.modelMatch">
+          <li class="nav-item" *ngIf="this.modelMatch && this.modelPresent">
             <a class="nav-link" id="pills-two-tab" data-toggle="tab" href="#pills-two" role="tab" aria-controls="pills-two" aria-selected="false">Projection</a>
           </li>
         </ul>
@@ -263,7 +273,7 @@
                 </div>
               </div>
 
-              <div class="row bg-light" *ngIf="this.modelMatch">
+              <div class="row bg-light" *ngIf="this.modelMatch && this.modelPresent">
                 <div class="col-3 border">
                   <strong>Interpretation</strong>
                 </div>
@@ -276,7 +286,7 @@
                   <p *ngIf="this.modelDocumentation['Species'].value != undefined"> <br>{{this.modelDocumentation['Species'].value}}</p>
                 </div>
               </div>
-              <div class="row bg-light" *ngIf="!this.modelBuildInfo['ensemble'] && this.modelMatch" >
+              <div class="row bg-light" *ngIf="!this.modelBuildInfo['ensemble'] && this.modelMatch && this.modelPresent" >
                 <div class="col-3 border">
                   <strong >Model</strong>
                 </div>
@@ -393,7 +403,7 @@
           <!--REPORT PREDICTIONS END-->
 
           <!--PROJECT PREDICTIONS-->
-          <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab" *ngIf="this.predictionResult != undefined ">
+          <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab" *ngIf="this.predictionResult != undefined">
             <div class="card-body">
               <div class="row justify-content-between">
                 <div class="col">

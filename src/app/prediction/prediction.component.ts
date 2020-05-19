@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges } from '@angular/core';
+import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges, OnInit } from '@angular/core';
 import { Prediction} from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonService } from '../common.service';
@@ -22,7 +22,6 @@ import * as XLSX from 'xlsx';
 })
 export class PredictionComponent implements AfterViewInit, OnChanges {
 
-
   @Input() predictionName;
   @ViewChildren('cmp') components: QueryList<ElementRef>;
   // @ViewChildren('cmpone') componentOne: QueryList<ElementRef>;
@@ -30,6 +29,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   objectKeys = Object.keys;
   predictionVisible = false;
   modelMatch = true;
+  modelPresent = true;
   q_measures = ['TP', 'FP', 'TN', 'FN'];
   table: any = undefined;
   info = [];
@@ -302,10 +302,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.plotScores.data[1].meta = [];
 
     this.getInfo();
-    this.getDocumentation();
+    this.getDocumentation();  
     this.getPrediction();
     this.getValidation();
-    
   }
 
   tabClickHandler(info: any): void {
@@ -347,7 +346,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.commonService.getValidation(this.prediction.modelName, this.prediction.modelVersion).subscribe(
       result => {
         const info = result;
-
         if ('PC1' in info) {
           setTimeout(() => {
             this.plotScores.data[0].x = info['PC1'];
@@ -372,10 +370,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
     this.commonService.getModel(this.prediction.modelName, this.prediction.modelVersion).subscribe(
       result => {
-
         for (const info of result) {
           this.modelBuildInfo[info[0]] = info[2];
         }
+
+        this.modelPresent = true;
 
         this.modelMatch = (this.modelBuildInfo['modelID'] === this.prediction.modelID);
 
@@ -408,6 +407,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         }
       },
       error => {
+        this.modelPresent = false;
+        this.modelMatch = true; // prevent showing also this error!
       }
     );
   }
