@@ -86,7 +86,6 @@ export class PredictorComponent implements OnInit {
 
             // remove items without a valid version
             for (const model of this.objectKeys(this.models)){
-              console.log (model, this.models[model].length)
               if (this.models[model].length===0) {
                   delete(this.models[model]);
               }
