@@ -155,8 +155,11 @@
 
 
 <!--MODEL PARAMETERS-->
-<fieldset class="border" *ngIf="this.model.parameters['model'].value != 'mean' && this.model.parameters['model'].value != 'majority' 
-&& this.model.parameters['model'].value != 'median'">  
+<fieldset class="border" *ngIf="this.model.parameters['model'].value != 'mean' && 
+                                this.model.parameters['model'].value != 'majority' &&
+                                this.model.parameters['model'].value != 'median' &&
+                                this.model.parameters['model'].value != 'matrix'
+    ">  
     <legend>{{this.model.parameters['model'].value}} parameters</legend>
       <div class="m-2 w-50" *ngFor="let key of objectKeys(this.model.parameters[parametersModel[this.model.parameters['model'].value]].value)" >
         <div class="form-group" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable">

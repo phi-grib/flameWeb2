@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Model} from '../Globals';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
-
-
 @Component({
   selector: 'app-config-training',
   templateUrl: './config-training.component.html',
@@ -17,7 +15,14 @@ export class ConfigTrainingComponent implements OnInit {
 
   dropdownList = [];
   selectedItems = [];
-  dropdownSettings: IDropdownSettings = {};
+  dropdownSettings: IDropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      itemsShowLimit: 5,
+      enableCheckAll: false,
+      allowSearchFilter: false
+  };
 
   infoSeries = {
     'molecule':       ['SDFile_name', 'SDFile_activity', 'SDFile_experimental', 'SDFile_complementary', 'quantitative', 'normalize_method',
@@ -28,11 +33,9 @@ export class ConfigTrainingComponent implements OnInit {
     'ext_data':       ['model_set']
   };
 
-
   ngOnInit() {
 
-    this.selectedItems = [
-    ];
+    this.selectedItems = [];
 
     if (this.model.parameters['ensemble_names'] !== undefined && this.model.parameters['ensemble_names'].value !== null) {
       for (const index of Object.keys(this.model.parameters['ensemble_names'].value)) {
@@ -41,16 +44,9 @@ export class ConfigTrainingComponent implements OnInit {
         if (this.model.parameters['ensemble_versions'].value !== null) {
           version = this.model.parameters['ensemble_versions'].value[index];
         }
-        this.selectedItems.push(name + ' v.' + version);
+        this.selectedItems.push(name + ' .v' + version);
       }
     }
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      itemsShowLimit: 5,
-      allowSearchFilter: true
-    };
   }
 
   saveModelsSelected () {
@@ -61,7 +57,7 @@ export class ConfigTrainingComponent implements OnInit {
 
     this.model.parameters['ensemble_names'].value = [];
     this.model.parameters['ensemble_versions'].value = [];
-
+    
     for (const model of this.selectedItems) {
       info = model.split(' .v');
       version = info[info.length - 1];
