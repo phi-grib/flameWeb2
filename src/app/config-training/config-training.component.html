@@ -7,7 +7,8 @@
       <option *ngFor="let value of this.model.parameters['input_type'].options">{{value}}</option>
     </select>
   </div>
-  <div class="form-group col-md-4" *ngIf="this.model.parameters['input_type'].value=='model_ensemble'">
+  <div id="multimodels" class="form-group col-md-4" *ngIf="this.model.parameters['input_type'].value=='model_ensemble'">
+    <label id="multimodels" class="bmd-label-static mb-1 p-0">Ensemble models/versions</label>
     <ng-multiselect-dropdown
       [placeholder]="'select models'"
       [data]="this.model.trained_models.sort()"
