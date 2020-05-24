@@ -28,9 +28,9 @@ export class ModelListComponent implements OnInit {
     this.func.getModelList();
   }
 
-  selectModel(name: string, version: string, trained: boolean, type: string, quantitative: boolean,
-      conformal: boolean, ensemble: boolean, error: any) {
-      this.func.selectModel(name, version, trained, type, quantitative, conformal, ensemble, error );
-  }
+  // selectModel(name: string, version: string, modelID: string, trained: boolean, type: string, quantitative: boolean,
+  //     conformal: boolean, ensemble: boolean, error: any) {
+  //     this.func.selectModel(name, version, modelID, trained, type, quantitative, conformal, ensemble, error );
+  // }
 
 }

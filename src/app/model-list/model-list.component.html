@@ -25,8 +25,9 @@
         <tr *ngFor="let key of objectKeys(model.listModels).sort()" 
           [ngClass]="{'selected': (model.listModels[key].name===this.model.name) && (model.listModels[key].version===this.model.version),
                       'version': model.listModels[key].version > 0}"
-          (click)= "selectModel(model.listModels[key].name, model.listModels[key].version, model.listModels[key].trained,model.listModels[key].type,model.listModels[key].quantitative
-          , model.listModels[key].conformal, model.listModels[key].ensemble, model.listModels[key].error)">
+          (click)= "this.func.selectModel(model.listModels[key].name, model.listModels[key].version, model.listModels[key].modelID, model.listModels[key].trained,model.listModels[key].type,model.listModels[key].quantitative
+          , model.listModels[key].conformal, model.listModels[key].ensemble, model.listModels[key].error)"
+          >
           <td class="text-center">
             <i class = "fas" 
                         [ngClass]="{'fa-grip-lines': model.listModels[key].type.indexOf('qualitative') > -1 ||

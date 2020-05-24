@@ -78,10 +78,13 @@ export class BuilderComponent implements OnInit {
     
     this.model.trainig_models.push(name + '-' + version);
     
+    this.model.modelID = undefined;
+
     const inserted = this.toastr.info('Building', 'Model ' + name + '.v' + version , {
       disableTimeOut: true, positionClass: 'toast-top-right'});
     
     this.activeModal.close('Close click');
+
 
     this.service.buildModel().subscribe(
       result => {
@@ -144,7 +147,7 @@ export class BuilderComponent implements OnInit {
         }
         this.toastr.clear(inserted.toastId);
 
-        this.model.listModels[name + '-' + version] = {name: name, version: version, trained: true,
+        this.model.listModels[name + '-' + version] = {name: name, version: version, modelID: dict_info['modelID'], trained: true,
         numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality,
         quantitative: dict_info['quantitative'], conformal: dict_info['conformal'], ensemble: dict_info['ensemble']};
 
@@ -153,13 +156,13 @@ export class BuilderComponent implements OnInit {
           timeOut: 5000, positionClass: 'toast-top-right'});
         
         // use the following code to make sure the new model list will show the model
-        this.model.name = name;
-        this.model.version = version;
-
+        
         // const a = Object.keys(this.model.listModels).sort();
         // var modelIndex = a.indexOf(name+'-'+version);
         // this.model.page = Math.floor(modelIndex/this.model.pagelen);
         
+        this.model.name = name;
+        this.model.version = version;
         this.func.getModelList();
         clearInterval(intervalId);
 

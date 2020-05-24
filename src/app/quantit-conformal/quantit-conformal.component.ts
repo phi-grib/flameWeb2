@@ -17,6 +17,7 @@ export class QuantitConformalComponent implements OnChanges {
 
     @Input() modelName;
     @Input() modelVersion;
+    @Input() modelID;
 
     objectKeys = Object.keys;
     modelValidationInfo = {};
@@ -265,6 +266,7 @@ export class QuantitConformalComponent implements OnChanges {
     }
 
     ngOnChanges(): void {
+      // console.log('onChanges', this.modelID);
         
       this.modelWarning = '';
       this.plotFitted.data[0].x = [];
@@ -301,6 +303,7 @@ export class QuantitConformalComponent implements OnChanges {
       this.service.getValidation(this.modelName, this.modelVersion).subscribe(
         result => {
           const info = result;
+          // console.log(this.modelID);
           
           // process warnings
           if (info.warning){
@@ -378,7 +381,7 @@ export class QuantitConformalComponent implements OnChanges {
                   
                 }
                 else {
-                  alert('CI prediction info not found, please update your model');
+                  console.log('CI prediction info not found, please update your model');
                 }
               }
               
@@ -402,7 +405,7 @@ export class QuantitConformalComponent implements OnChanges {
                   }
                 }
                 else {
-                  alert('CI fitting info not found, please update your model');
+                  console.log('CI fitting info not found, please update your model');
                 }
               }
               

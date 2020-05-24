@@ -18,7 +18,7 @@ export class CommonFunctions {
 
   objectKeys = Object.keys;
 
-  selectModel(name: string, version: string, trained: boolean, type: string, quantitative: boolean,
+  selectModel(name: string, version: string, modelID: string, trained: boolean, type: string, quantitative: boolean,
     conformal: boolean, ensemble: boolean, error: any) {
 
     if (version === '-' || version === 'dev') {
@@ -26,6 +26,7 @@ export class CommonFunctions {
     }
     this.model.name = name;
     this.model.version = version;
+    this.model.modelID = modelID;
     this.model.trained = trained;
     this.model.conformal = conformal;
     this.model.quantitative = quantitative;
@@ -40,6 +41,7 @@ export class CommonFunctions {
   selectModelID(index:any) {
     this.model.name = this.model.listModels[index].name;
     this.model.version = this.model.listModels[index].version;
+    this.model.modelID = this.model.listModels[index].modelID;
     this.model.trained = this.model.listModels[index].trained;
     this.model.conformal = this.model.listModels[index].conformal;
     this.model.quantitative = this.model.listModels[index].quantitative;
@@ -77,6 +79,7 @@ export class CommonFunctions {
                   this.model.listModels[modelName + '-' + version].error = model.info['message'];
                   this.model.listModels[modelName + '-' + version].trained = false;
                 }
+
                 // option (b) healthy 
                 else {
                   const dict_info = {};
@@ -95,6 +98,7 @@ export class CommonFunctions {
                   this.model.listModels[modelName + '-' + version] = {
                     name: modelName, 
                     version: version, 
+                    modelID: dict_info['modelID'],
                     trained: true,
                     numMols: dict_info['nobj'], 
                     variables: dict_info['nvarx'], 
@@ -116,19 +120,26 @@ export class CommonFunctions {
 
             }
             const intervalId = setInterval(() => {
+              
+              // if list reading was correct num_models == 0
               if (num_models <= 0) {
 
                 let currentPage = 0;
                 // console.log ('rendering: ', this.model.name, this.model.version);
                 
                 if (this.objectKeys(this.model.listModels).length > 0) {
+
+                  // a is the sorted list of modelkeys
                   const a = this.objectKeys(this.model.listModels).sort();
+
+                  // if no model selected, select the first one
                   if (this.model.name == undefined) {
                       this.selectModelID(a[0]);
                   }
                   else {
                     var modelIndex = a.indexOf(this.model.name+'-'+this.model.version);
-                      currentPage = Math.floor(modelIndex/this.model.pagelen);
+                    this.selectModelID(a[modelIndex]);
+                    currentPage = Math.floor(modelIndex/this.model.pagelen);
                   }
                 }
 
@@ -136,7 +147,7 @@ export class CommonFunctions {
                 const table = $('#dataTableModels').DataTable({
                   autoWidth: false,
                   destroy: true,
-                  deferRender: true,
+                  // deferRender: true,
                   pageLength: this.model.pagelen
                 })
                 .on( 'length.dt', function () {
