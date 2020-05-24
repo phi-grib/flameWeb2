@@ -19,6 +19,7 @@ export class ModelDocumentationComponent implements OnChanges {
   
   @Input() modelName;
   @Input() modelVersion;
+  @Input() modelID;
 
   modelDocumentation = undefined;
   public documentationVisible = false;
@@ -56,6 +57,7 @@ export class ModelDocumentationComponent implements OnChanges {
   objectKeys = Object.keys;
 
   ngOnChanges(): void {
+    // console.log('documentation', this.modelID)
     this.getDocumentation();
   }
 

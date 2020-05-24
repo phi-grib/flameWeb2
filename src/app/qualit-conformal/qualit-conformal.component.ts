@@ -17,6 +17,7 @@ export class QualitConformalComponent implements OnChanges {
     
     @Input() modelName;
     @Input() modelVersion;
+    @Input() modelID;
     
     objectKeys = Object.keys;
     modelValidationInfo = {};
@@ -165,6 +166,8 @@ export class QualitConformalComponent implements OnChanges {
     }
           
     ngOnChanges(): void {
+      // console.log('onChanges', this.modelID);
+
       this.modelWarning = '';
       this.plotScores.data[0].x =[];
       this.plotScores.data[0].y =[];

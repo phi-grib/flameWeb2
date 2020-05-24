@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 export class Model {
   name: string = undefined;   // Name of the model selected in the first step
   version: any = undefined; // Version of the model selected in the first step
+  modelID: string = undefined;
   file: any = undefined;  // Name of file uploaded in the second step
   type: string;
   trained = false; // Model is already trained
