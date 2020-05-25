@@ -19,8 +19,7 @@
 
 
   <!--CONFORMAL-->
-  <div class="form-group col-md-4" *ngIf="this.model.parameters['model'].value!='PLSDA' && this.model.parameters['model'].value!='median' 
-  && this.model.parameters['model'].value!='mean' && this.model.parameters['model'].value!='majority'">
+  <div class="form-group col-md-4" *ngIf="this.model.parameters['model'].value!='PLSDA'">
     <div class="checkbox">
       <label>
         <input  type="checkbox" [(ngModel)]="this.model.parameters['conformal'].value">
@@ -31,8 +30,9 @@
         {{this.model.parameters['conformal'].description}}
     </small>
   </div> 
-  <div class="form-group col-md-4" *ngIf="this.model.parameters['model'].value!='median' && this.model.parameters['model'].value!='mean' 
-  && this.model.parameters['model'].value!='majority'">
+  <!-- <div class="form-group col-md-4" *ngIf="this.model.parameters['model'].value!='median' && this.model.parameters['model'].value!='mean' 
+  && this.model.parameters['model'].value!='majority'"> -->
+  <div class="form-group col-md-4" *ngIf="!this.isComboModel()">
     <div *ngIf="(this.model.parameters['model'].value!='PLSDA') && (this.model.parameters['conformal'].value)" style="margin-top: 0px;">
         <label class="bmd-label-static" for="conformalSignificance" style="margin-top: 0px;">conformalSignificance</label>
       <input class="form-control" [(ngModel)]="this.model.parameters['conformalSignificance'].value" type='number' step="0.05">
@@ -44,8 +44,9 @@
   <!--Conformal significance-->
 </div>
 <!--'ModelValidationCV', 'ModelValidationN' ,'ModelValidationP'-->
-<div class="form-row" *ngIf="this.model.parameters['model'].value!='median' && this.model.parameters['model'].value!='mean' 
-  && this.model.parameters['model'].value!='majority'">
+<!-- <div class="form-row" *ngIf="this.model.parameters['model'].value!='median' && this.model.parameters['model'].value!='mean' 
+  && this.model.parameters['model'].value!='majority'"> -->
+<div class="form-row" *ngIf="!this.isComboModel()">
   <div class="form-group col-md-4">
     <label class="bmd-label-static" for="key">ModelValidationCV</label>
     <select id="ModelValidationCV" class="form-control" [(ngModel)]="this.model.parameters['ModelValidationCV'].value">
@@ -78,8 +79,9 @@
   </div>
 </div>
 <!--'feature_selection', 'feature_number'-->
-<div class="form-row" *ngIf="this.model.parameters['model'].value!='median' && this.model.parameters['model'].value!='mean' 
-  && this.model.parameters['model'].value!='majority'">
+<!-- <div class="form-row" *ngIf="this.model.parameters['model'].value!='median' && this.model.parameters['model'].value!='mean' 
+  && this.model.parameters['model'].value!='majority'"> -->
+<div class="form-row" *ngIf="!this.isComboModel()">
   <div class="form-group col-md-4">
     <label class="bmd-label-static" for="key">Feature selection</label>
     <select id="feature_selection" class="form-control" [(ngModel)]="this.model.parameters['feature_selection'].value">
@@ -105,8 +107,9 @@
   </div>
 </div>
 
-<div class="form-row" *ngIf="this.model.parameters['model'].value!='median' && this.model.parameters['model'].value!='mean' 
-  && this.model.parameters['model'].value!='majority'">
+<!-- <div class="form-row" *ngIf="this.model.parameters['model'].value!='median' && this.model.parameters['model'].value!='mean' 
+  && this.model.parameters['model'].value!='majority'"> -->
+<div class="form-row" *ngIf="!this.isComboModel()">
 
 <!--REST OF PARAMETERS-->
   <div *ngFor="let key of infoModel" class="form-group col-md-4">
@@ -155,11 +158,11 @@
 
 
 <!--MODEL PARAMETERS-->
-<fieldset class="border" *ngIf="this.model.parameters['model'].value != 'mean' && 
+<!-- <fieldset class="border" *ngIf="this.model.parameters['model'].value != 'mean' && 
                                 this.model.parameters['model'].value != 'majority' &&
                                 this.model.parameters['model'].value != 'median' &&
-                                this.model.parameters['model'].value != 'matrix'
-    ">  
+                                this.model.parameters['model'].value != 'matrix' -->
+    <fieldset class="border" *ngIf="!this.isComboModel()">  
     <legend>{{this.model.parameters['model'].value}} parameters</legend>
       <div class="m-2 w-50" *ngFor="let key of objectKeys(this.model.parameters[parametersModel[this.model.parameters['model'].value]].value)" >
         <div class="form-group" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable">
@@ -213,8 +216,6 @@
         </div>
 
          <!--CASE XGBOOST-->
-
-        
          <div *ngIf="this.model.parameters['model'].value=='XGBOOST' && !this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='list' ">
             <label id="key" class="bmd-label-static mb-2 p-0">{{key}}</label><br>
             <div class="form-check form-check-inline" *ngFor="let value of this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].options">
@@ -231,8 +232,9 @@
 </fieldset>
 <!-- TUNE HARDCODED-->
 <br>
-<div class="checkbox" *ngIf="this.model.parameters['model'].value != 'mean' && this.model.parameters['model'].value != 'majority' 
-&& this.model.parameters['model'].value != 'median'">
+<!-- <div class="checkbox" *ngIf="this.model.parameters['model'].value != 'mean' && this.model.parameters['model'].value != 'majority' 
+&& this.model.parameters['model'].value != 'median'"> -->
+<div class="checkbox" *ngIf="!this.isComboModel()">
  <label>
      <input type="checkbox" [(ngModel)]="this.model.parameters['tune'].value">
       Tune
