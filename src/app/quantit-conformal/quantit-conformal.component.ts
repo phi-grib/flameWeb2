@@ -369,25 +369,36 @@ export class QuantitConformalComponent implements OnChanges {
               this.plotPredicted.data[0].x = info['ymatrix'] ;
               this.plotPredicted.data[0].y = info['Y_pred'];
               
-              if (this.model.conformal) {
-
-                // const yintpred  = this.modelConformal['Conformal_prediction_ranges']; // (min, max)
-                if ('Conformal_prediction_ranges' in info){
-                  const yintpred  = info['Conformal_prediction_ranges']; // (min, max)
-                  for (const i in info['ymatrix']) {
-                    this.plotPredicted.data[0].error_y.array[i] = yintpred[i][1] - info['Y_pred'][i];
-                    this.plotPredicted.data[0].error_y.arrayminus[i] = info['Y_pred'][i] - yintpred[i][0];
-                  }
-                  
+              if (('upper_limit' in info) && ('lower_limit' in info)) {
+                for (const i in info['ymatrix']) {
+                  this.plotPredicted.data[0].error_y.array[i] = info['upper_limit'][i]- info['Y_pred'][i];
+                  this.plotPredicted.data[0].error_y.arrayminus[i] = info['Y_pred'][i] - info['lower_limit'][i];
                 }
-                else {
-                  console.log('CI prediction info not found, please update your model');
+              }
+              else {
+                if (this.model.conformal) {
+  
+                  // const yintpred  = this.modelConformal['Conformal_prediction_ranges']; // (min, max)
+                  if ('Conformal_prediction_ranges' in info){
+                    const yintpred  = info['Conformal_prediction_ranges']; // (min, max)
+                    for (const i in info['ymatrix']) {
+                      this.plotPredicted.data[0].error_y.array[i] = yintpred[i][1] - info['Y_pred'][i];
+                      this.plotPredicted.data[0].error_y.arrayminus[i] = info['Y_pred'][i] - yintpred[i][0];
+                    }
+                  }
+                  else {
+                    console.log('CI prediction info not found, please update your model');
+                  }
                 }
               }
               
               this.plotPredicted.data[0].text = info['obj_nam'];
-              this.plotPredicted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
-              this.plotPredicted.data[1].y = [ Math.min.apply(Math, info['Y_pred']),Math.max.apply(Math, info['Y_pred'])];
+              const plot_min = Math.min ( Math.min.apply(Math, info['ymatrix']), Math.min.apply(Math, info['Y_pred'])); 
+              const plot_max = Math.max ( Math.max.apply(Math, info['ymatrix']), Math.max.apply(Math, info['Y_pred'])); 
+              this.plotPredicted.data[1].x = [ plot_min, plot_max];
+              this.plotPredicted.data[1].y = [ plot_min, plot_max];
+              // this.plotPredicted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
+              // this.plotPredicted.data[1].y = [ Math.min.apply(Math, info['Y_pred']), Math.max.apply(Math, info['Y_pred'])];
             }
 
             // ajusted data
@@ -410,8 +421,13 @@ export class QuantitConformalComponent implements OnChanges {
               }
               
               this.plotFitted.data[0].text = info['obj_nam'];
-              this.plotFitted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
-              this.plotFitted.data[1].y = [ Math.min.apply(Math, info['Y_adj']),Math.max.apply(Math, info['Y_adj'])];
+              const plot_min = Math.min ( Math.min.apply(Math, info['ymatrix']), Math.min.apply(Math, info['Y_adj'])); 
+              const plot_max = Math.max ( Math.max.apply(Math, info['ymatrix']), Math.max.apply(Math, info['Y_adj'])); 
+              this.plotFitted.data[1].x = [ plot_min, plot_max];
+              this.plotFitted.data[1].y = [ plot_min, plot_max];
+
+              // this.plotFitted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
+              // this.plotFitted.data[1].y = [ Math.min.apply(Math, info['Y_adj']),Math.max.apply(Math, info['Y_adj'])];
             }
 
             // predicted plot                 

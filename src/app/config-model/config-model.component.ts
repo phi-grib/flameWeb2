@@ -34,12 +34,19 @@ export class ConfigModelComponent implements OnInit, AfterContentChecked {
   type_models = {
     data: ['RF',  'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
     molecule: ['RF',  'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
-    model_ensemble: ['RF', 'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM', 'mean', 'median', 'majority', 'matrix']
-
+    model_ensemble: ['RF', 'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM', 'mean', 'median', 'majority', 'matrix'],
+    combo_models: ['mean', 'median', 'majority', 'matrix']
   };
+
   ngOnInit() {
   }
 
+  isComboModel () {
+    if (this.type_models.combo_models.includes(this.model.parameters['model'].value)){
+      return true;
+    } 
+    return false;
+  }
   ngAfterContentChecked() {
     // CHECK DELTA DEPENDENCIES
     // NOWIS HARDCODED, BUT IT WILL BE AUTOMATED
@@ -48,11 +55,11 @@ export class ConfigModelComponent implements OnInit, AfterContentChecked {
     }
     if (this.model.parameters['model'].value === 'mean' || this.model.parameters['model'].value === 'median') {
       this.model.parameters['quantitative'].value = true;
-      this.model.parameters['conformal'].value = false;
+      // this.model.parameters['conformal'].value = false;
     }
     if (this.model.parameters['model'].value === 'majority') {
       this.model.parameters['quantitative'].value = false;
-      this.model.parameters['conformal'].value = false;
+      // this.model.parameters['conformal'].value = false;
     }
   }
 
