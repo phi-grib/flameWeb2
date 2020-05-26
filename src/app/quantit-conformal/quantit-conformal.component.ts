@@ -406,17 +406,25 @@ export class QuantitConformalComponent implements OnChanges {
               this.plotFitted.data[0].x = info['ymatrix'] ;
               this.plotFitted.data[0].y = info['Y_adj'];
               
-              if (this.model.conformal) {
-                if ('Conformal_prediction_ranges_fitting' in info){
-                  // const yintfit  = this.modelConformal['Conformal_prediction_ranges_fitting']; // (min, max)
-                  const yintfit  = info['Conformal_prediction_ranges_fitting']; // (min, max)
-                  for (const i in info['ymatrix']) {
-                    this.plotFitted.data[0].error_y.array[i] = yintfit[i][1] - info['Y_adj'][i];
-                    this.plotFitted.data[0].error_y.arrayminus[i] = info['Y_adj'][i] - yintfit[i][0];
-                  }
+              if (('upper_limit' in info) && ('lower_limit' in info)) {
+                for (const i in info['ymatrix']) {
+                  this.plotFitted.data[0].error_y.array[i] = info['upper_limit'][i]- info['Y_adj'][i];
+                  this.plotFitted.data[0].error_y.arrayminus[i] = info['Y_adj'][i] - info['lower_limit'][i];
                 }
-                else {
-                  console.log('CI fitting info not found, please update your model');
+              }
+              else {
+                if (this.model.conformal) {
+                  if ('Conformal_prediction_ranges_fitting' in info){
+                    // const yintfit  = this.modelConformal['Conformal_prediction_ranges_fitting']; // (min, max)
+                    const yintfit  = info['Conformal_prediction_ranges_fitting']; // (min, max)
+                    for (const i in info['ymatrix']) {
+                      this.plotFitted.data[0].error_y.array[i] = yintfit[i][1] - info['Y_adj'][i];
+                      this.plotFitted.data[0].error_y.arrayminus[i] = info['Y_adj'][i] - yintfit[i][0];
+                    }
+                  }
+                  else {
+                    console.log('CI fitting info not found, please update your model');
+                  }
                 }
               }
               
