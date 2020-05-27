@@ -35,7 +35,8 @@ export class ConfigModelComponent implements OnInit, AfterContentChecked {
     data: ['RF',  'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
     molecule: ['RF',  'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
     model_ensemble: ['RF', 'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM', 'mean', 'median', 'majority', 'matrix'],
-    combo_models: ['mean', 'median', 'majority', 'matrix']
+    combo_models: ['mean', 'median', 'majority', 'matrix'],
+    no_conformal: ['PLSDA', 'majority']
   };
 
   ngOnInit() {
@@ -47,6 +48,14 @@ export class ConfigModelComponent implements OnInit, AfterContentChecked {
     } 
     return false;
   }
+
+  isConformalPossible() {
+    if (this.type_models.no_conformal.includes(this.model.parameters['model'].value)){
+      return false;
+    } 
+    return true;
+  }
+
   ngAfterContentChecked() {
     // CHECK DELTA DEPENDENCIES
     // NOWIS HARDCODED, BUT IT WILL BE AUTOMATED
