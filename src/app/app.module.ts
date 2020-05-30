@@ -82,17 +82,17 @@ PlotlyModule.plotlyjs = PlotlyJS;
     NgMultiSelectDropDownModule.forRoot(),
     ChecklistModule,
     NgbModule,
-    // KeycloakAngularModule,
+    KeycloakAngularModule,
     // PlotlyViaCDNModule,
     PlotlyModule
   ],
   providers: [Model, Prediction, Globals, Manager, Similarity, 
-  // {
-  //   provide: APP_INITIALIZER,
-  //   useFactory: initializer,
-  //   multi: true,
-  //   deps: [KeycloakService]
-  // }
+  {
+    provide: APP_INITIALIZER,
+    useFactory: initializer,
+    multi: true,
+    deps: [KeycloakService]
+  }
   ],
   bootstrap: [AppComponent]
 })
