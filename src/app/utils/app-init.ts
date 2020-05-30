@@ -8,12 +8,16 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
       const { keycloakConfig } = environment;
       try {
         await keycloak.init({
-          config: keycloakConfig,
-          initOptions: {
+          // config: keycloakConfig,
+          config: '/assets/keycloak.json',
+          enableBearerInterceptor: true,
+          bearerPrefix: 'Bearer' // Tima thinks capital might be important here
+
+          /*initOptions: {
             onLoad: 'login-required',
             checkLoginIframe: false
           },
-          bearerExcludedUrls: []
+          bearerExcludedUrls: []*/
         });
         resolve();
       } catch (error) {
