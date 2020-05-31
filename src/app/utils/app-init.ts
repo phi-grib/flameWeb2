@@ -1,6 +1,15 @@
-import { KeycloakService } from 'keycloak-angular';
+import { KeycloakService, KeycloakConfig } from 'keycloak-angular';
 
 // import { environment } from '../../environments/environment';
+
+const keycloakConfig: KeycloakConfig = {
+    url: 'https://login.etransafe.eu/auth',
+    realm: "KH",
+    credentials: {
+      secret: "99402d5f-897e-4e27-881e-85cb04f75601"
+    },
+    clientId: "knowledge-hub"
+  };
 
 export function initializer(keycloak: KeycloakService): () => Promise<any> {
   return (): Promise<any> => {
@@ -8,8 +17,8 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
       // const { keycloakConfig } = environment;
       try {
         await keycloak.init({
-          // config: keycloakConfig,
-          config: '/assets/keycloak.json',
+          config: keycloakConfig,
+          // config: "/assets/keycloack.json",
           enableBearerInterceptor: true,
           bearerPrefix: 'Bearer' // Tima thinks capital might be important here
 
