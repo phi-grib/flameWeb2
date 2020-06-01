@@ -331,8 +331,17 @@
                       [layout]="this.plotComboQ.layout" 
                       [config]="this.plotComboQ.config">
                       </plotly-plot>
-                    </div>                   
-                    <div class="row" *ngIf="this.modelBuildInfo['quantitative'] == false" >
+                    </div>      
+                    
+                    <div class="row" *ngIf="this.modelBuildInfo['quantitative'] == false">
+                      <plotly-plot 
+                      [data]="this.plotComboC.data" 
+                      [layout]="this.plotComboC.layout" 
+                      [config]="this.plotComboC.config">
+                      </plotly-plot>
+                    </div>   
+
+                    <!-- <div class="row" *ngIf="this.modelBuildInfo['quantitative'] == false" >
                       <table class="table table-striped w-auto">
                         <thead>
                           <tr>
@@ -349,7 +358,7 @@
                           </tr>
                         </tbody>
                       </table>
-                    </div>                   
+                    </div>                    -->
 
 
                   <!--END SUBMODEL RESULTS-->
