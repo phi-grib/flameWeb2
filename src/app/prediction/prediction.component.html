@@ -250,8 +250,9 @@
                 </div>
                 
                 <div class="col-9 border">
+                <!-- <div class="row pl-3"> -->
 
-                  <table class="table">
+                  <table class="table ml-0">
                     <thead>
                       <tr>
                         <th class="pl-0 pb-2 pt-2 pr-2 text-left" scope="col">Distance</th>
@@ -323,7 +324,16 @@
                   <span class="text-capitalize">{{this.modelBuildInfo['model'].replace('combination:','')}}</span><span> using {{this.modelBuildInfo['nvarx']}} models</span>
                   <br><br>
                   <!--SUBMODEL RESULTS-->
-                    <table class="table table-striped w-auto">
+
+                    <div class="row" *ngIf="this.modelBuildInfo['quantitative']">
+                      <plotly-plot 
+                      [data]="this.plotComboQ.data" 
+                      [layout]="this.plotComboQ.layout" 
+                      [config]="this.plotComboQ.config">
+                      </plotly-plot>
+                    </div>                   
+                    <div class="row" *ngIf="this.modelBuildInfo['quantitative'] == false" >
+                      <table class="table table-striped w-auto">
                         <thead>
                           <tr>
                             <th class="pl-0 pb-2 pt-2 pr-2 text-left" scope="col">Model</th>
@@ -339,6 +349,9 @@
                           </tr>
                         </tbody>
                       </table>
+                    </div>                   
+
+
                   <!--END SUBMODEL RESULTS-->
                    
                   <br>
