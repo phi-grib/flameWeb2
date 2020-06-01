@@ -199,6 +199,86 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     }
   };
 
+  plotComboQ = {
+    data : [{
+      x: [],
+      y: [],
+      text: [],
+      type: 'scatter',
+      mode: 'markers', 
+      marker: {
+        symbol: 'diamond',
+        color: 'rgba(0,0,0,0.6)',
+        size: 18,
+        line: {
+          color: 'black',
+          width: 2
+        },
+        textfont: {family: 'Barlow Semi Condensed, sans-serif', 
+                  size: 20 },
+        // textposition: 'middle',
+        texttemplate: '{x:.2f}'
+      },
+      error_x: {
+        type: 'data',
+        color: 'rgba(0,0,0,0.6)',
+        symmetric: false,
+        array: [],
+        arrayminus: []
+      },
+      hovertemplate:'<b>%{y}</b>: %{x:.2f}<extra></extra>'
+    },
+      {x: [],
+       y: [],
+       type: 'scatter',
+       mode: 'lines',
+       line: {
+        color: 'red',
+        width: 3
+       },
+       hovertemplate:'<b>ensemble</b>: %{x:.2f}<extra></extra>'
+      },
+      {x: [],
+       y: [],
+       type: "scatter",
+       fill: "tozeroy", 
+       fillcolor: "rgba(255,0,0,0.2)", 
+       line: {color: "transparent"}, 
+       hovertemplate:'<b>ensemble CI</b>: %{x:.2f}<extra></extra>'
+      },
+    ],
+    layout : {
+      width: 800,
+      // height: 600,
+      hovermode: 'x',
+      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', 
+                              size: 20 } 
+                  },
+      // margin: {r: 10, t: 30, b: 0, l:10, pad: 0},
+      // margin: {r: 10, t: 30, b: , l:10, pad: 0},
+      xaxis: {
+        zeroline: false,
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+      },
+      yaxis: {
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+      },
+      showlegend: false
+    },
+    config: {
+      displaylogo: false,
+      toImageButtonOptions: {
+        format: 'svg', // one of png, svg, jpeg, webp
+        filename: 'flame_combo',
+        width: 600,
+        // height: 500,
+        scale: 2 // Multiply title/legend/axis/canvas sizes by this factor
+      },
+      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+    }
+
+  }
+
   // icon1 : {
   //   'width': 500,
   //   'height': 600,
@@ -253,6 +333,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     }
     this.drawReportHeader();
     this.drawSimilars();
+    this.updatePlotCombo();
   }
 
   PreviousMol() {
@@ -262,6 +343,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       this.noPreviousMol = true;
     }
     this.drawReportHeader();
+    this.updatePlotCombo();
     this.drawSimilars();
   }
 
@@ -300,6 +382,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.plotScores.data[1].y = [];
     this.plotScores.data[1].text = [];
     this.plotScores.data[1].meta = [];
+
+    this.plotComboQ.data[0].x = [];
+    this.plotComboQ.data[1].x = [];
+    this.plotComboQ.data[0].y = [];
+    this.plotComboQ.data[1].y = [];
 
     this.getInfo();
     this.getDocumentation();  
@@ -441,6 +528,41 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     }
   }
 
+  updatePlotCombo() {
+    if (this.isQuantitative) {
+      const xi = this.predictionResult.xmatrix[this.molIndex];
+      this.plotComboQ.data[0].x = xi;
+      for (let i=0; i<this.predictionResult.var_nam.length; i++) {
+        const varlist=String(this.predictionResult.var_nam[i]).split(':');
+        this.plotComboQ.data[0].y[i] = varlist[1]+'.v'+varlist[2];
+        this.plotComboQ.data[1].y[i] = varlist[1]+'.v'+varlist[2];
+        this.plotComboQ.data[1].x[i] = this.predictionResult.values[this.molIndex];
+      }
+      if (this.predictionResult['ensemble_confidence']){
+        const cilist = this.predictionResult.ensemble_confidence[this.molIndex];
+        for (let i=0; i<this.predictionResult.var_nam.length; i++) {
+          this.plotComboQ.data[0].error_x.array[i] = cilist[1+(i*2)] - xi[i];
+          this.plotComboQ.data[0].error_x.arrayminus[i] = xi[i] - cilist[i*2];
+        }
+        if (this.predictionResult['upper_limit']){
+          for (let i=0; i<this.predictionResult.var_nam.length; i++) {
+            const varlist=String(this.predictionResult.var_nam[i]).split(':');
+            this.plotComboQ.data[2].y[i] = varlist[1]+'.v'+varlist[2];
+            this.plotComboQ.data[2].x[i] = this.predictionResult.upper_limit[this.molIndex];
+          }
+          let j = this.predictionResult.var_nam.length;
+          for (let i=this.predictionResult.var_nam.length-1; i>-1; i--) {
+            const varlist=String(this.predictionResult.var_nam[i]).split(':');
+            this.plotComboQ.data[2].y[j] = varlist[1]+'.v'+varlist[2];
+            this.plotComboQ.data[2].x[j] = this.predictionResult.lower_limit[this.molIndex];
+            j++;
+          }
+        }
+
+      }
+    }
+  }
+
   getPrediction() {
     this.predictionVisible = false;
     this.predictionResult = undefined;
@@ -465,6 +587,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         }, 100);
 
         this.predictionResult = result;
+
+        this.updatePlotCombo();
 
         if ('external-validation' in this.predictionResult) {
           for (const modelInfo of this.predictionResult['external-validation']) {
