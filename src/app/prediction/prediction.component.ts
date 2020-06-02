@@ -257,6 +257,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       },
       yaxis: {
         tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        automargin: true
       },
       showlegend: false
     },
@@ -297,6 +298,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     layout : {
       width: 800,
       // height: 600,
+      // margin: {r: 10, t: 30, b:0, pad: 0 },
       barmode: 'relative',
       hovermode: 'closest',
       hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 20 } },
@@ -311,6 +313,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       },
       yaxis: {
         tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        automargin: true
       },
       showlegend: false
     },
