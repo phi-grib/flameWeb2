@@ -18,15 +18,15 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
       try {
         await keycloak.init({
           config: keycloakConfig,
-          // config: "/assets/keycloack.json",
+          // config: "/assets/keycloak.json",
           enableBearerInterceptor: true,
-          bearerPrefix: 'Bearer' // Tima thinks capital might be important here
+          bearerPrefix: 'Bearer', // Tima thinks capital might be important here
 
-          /*initOptions: {
-            onLoad: 'login-required',
-            checkLoginIframe: false
-          },
-          bearerExcludedUrls: []*/
+          // initOptions: {
+          //   onLoad: 'login-required',
+          //   checkLoginIframe: false
+          // },
+          // bearerExcludedUrls: []
         });
         resolve();
       } catch (error) {
