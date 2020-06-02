@@ -430,17 +430,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.plotScores.data[1].text = [];
     this.plotScores.data[1].meta = [];
 
-    this.plotComboQ.data[0].x = [];
-    this.plotComboQ.data[1].x = [];
-    this.plotComboQ.data[2].x = [];
-    this.plotComboQ.data[0].y = [];
-    this.plotComboQ.data[1].y = [];
-    this.plotComboQ.data[2].y = [];
-    this.plotComboC.data[0].x = [];
-    // this.plotComboC.data[1].x = [];
-    this.plotComboC.data[0].y = [];
-    // this.plotComboC.data[1].y = [];
-
     this.getInfo();
     this.getDocumentation();  
     this.getPrediction();
@@ -448,7 +437,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   }
 
   tabClickHandler(info: any): void {
-    // console.log(info[0], info[1]);
     
     this.molIndex=parseInt(info[0])-1;
 
@@ -585,7 +573,14 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
     //Quantitative
     if (this.isQuantitative) {
-      let xi = this.predictionResult.xmatrix[this.molIndex];
+      this.plotComboQ.data[0].x = [];
+      this.plotComboQ.data[1].x = [];
+      this.plotComboQ.data[2].x = [];
+      this.plotComboQ.data[0].y = [];
+      this.plotComboQ.data[1].y = [];
+      this.plotComboQ.data[2].y = [];
+
+      const xi = this.predictionResult.xmatrix[this.molIndex];
       this.plotComboQ.data[0].x = xi;
       for (let i=0; i<this.predictionResult.var_nam.length; i++) {
         const varlist=String(this.predictionResult.var_nam[i]).split(':');
@@ -617,14 +612,17 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       }
     }
     // Qualitative
+    // TODO: show ensemble prediction
     else {
-      let xi = this.predictionResult.xmatrix[this.molIndex];
-      console.log('xi', xi);
+      const xi = this.predictionResult.xmatrix[this.molIndex];
       this.plotComboC.data[0].x = [];
       this.plotComboC.data[1].x = [];
+      this.plotComboC.data[0].y = [];
+      this.plotComboC.data[1].y = [];
 
+      // Conformal, add classes
       if (this.predictionResult.ensemble_confidence) {
-        let class_list = this.predictionResult.ensemble_confidence[this.molIndex];
+        const class_list = this.predictionResult.ensemble_confidence[this.molIndex];
         for (let i=0; i<this.predictionResult.var_nam.length; i++) {
           const varlist=String(this.predictionResult.var_nam[i]).split(':');
           this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
@@ -634,33 +632,33 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.plotComboC.data[1].x[i] = 0;
         }
         for (let i=0; i<this.predictionResult.var_nam.length; i++) {
-          if (class_list[i*2] === 1) {
+          if (class_list[i*2]===1) {
             this.plotComboC.data[0].x[i] += -1;
           }
-          if (class_list[1+(i*2)] === 1) {
+          if (class_list[1+(i*2)]===1) {
             this.plotComboC.data[1].x[i] += 1;
           }
         }
 
       }
+      // non-conformal, just show final result (including uncertain)
       else {
         for (let i=0; i<this.predictionResult.var_nam.length; i++) {
           const varlist=String(this.predictionResult.var_nam[i]).split(':');
           this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
           this.plotComboC.data[1].y[i] = varlist[1]+'.v'+varlist[2];
   
-  
-            if (xi[i]===0) {
-              this.plotComboC.data[0].x[i] = -1;
-              this.plotComboC.data[1].x[i] = 0;
-            } else if (xi[i]===1) {
-              this.plotComboC.data[0].x[i] = 0;
-              this.plotComboC.data[1].x[i] = 1;
-            } else {
-              this.plotComboC.data[0].x[i] = 0;
-              this.plotComboC.data[1].x[i] = 0;
-            }
+          if (xi[i]===0) {
+            this.plotComboC.data[0].x[i] = -1;
+            this.plotComboC.data[1].x[i] = 0;
+          } else if (xi[i]===1) {
+            this.plotComboC.data[0].x[i] = 0;
+            this.plotComboC.data[1].x[i] = 1;
+          } else {
+            this.plotComboC.data[0].x[i] = 0;
+            this.plotComboC.data[1].x[i] = 0;
           }
+        }
       }
     }
   }
