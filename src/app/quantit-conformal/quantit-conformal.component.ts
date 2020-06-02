@@ -104,8 +104,9 @@ export class QuantitConformalComponent implements OnChanges {
         margin: { r: 10, t: 30, pad: 10 },
         showlegend: false,
         showtitle: false,
+
         xaxis: {
-          hoverformat: '.2f',
+          range: [],
           zeroline: false,
           showgrid: true,
           showline: true,
@@ -117,6 +118,7 @@ export class QuantitConformalComponent implements OnChanges {
           tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
         },
         yaxis: {
+          range: [],
           hoverformat: '.2f',
           zeroline: false,
           showgrid: true,
@@ -397,6 +399,19 @@ export class QuantitConformalComponent implements OnChanges {
               const plot_max = Math.max ( Math.max.apply(Math, info['ymatrix']), Math.max.apply(Math, info['Y_pred'])); 
               this.plotPredicted.data[1].x = [ plot_min, plot_max];
               this.plotPredicted.data[1].y = [ plot_min, plot_max];
+
+              let low_range;
+              let high_range;
+              if (plot_min>0) {
+                low_range = plot_min - (plot_min/10.0);
+                high_range = plot_max + (plot_max/10.0)
+              } else {
+                low_range = plot_min + (plot_min/10.0);
+                high_range = plot_max - (plot_max/10.0);
+              }
+
+              this.plotScatter.layout.yaxis.range = [low_range, high_range];
+
               // this.plotPredicted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
               // this.plotPredicted.data[1].y = [ Math.min.apply(Math, info['Y_pred']), Math.max.apply(Math, info['Y_pred'])];
             }

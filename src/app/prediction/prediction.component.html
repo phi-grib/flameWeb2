@@ -225,7 +225,7 @@
                   <strong>Experimental activity</strong>
                 </div>
                 <div class="col-9 border">
-                  <span *ngIf="this.predictionResult.ymatrix">{{this.predictionResult.ymatrix[molIndex]}}</span> 
+                  <span *ngIf="this.predictionResult.ymatrix">{{castValue(this.predictionResult.ymatrix[molIndex])}}</span> 
                   <!-- <span *ngIf="!this.predictionResult.ymatrix">-</span>  -->
                 </div>
               </div>
