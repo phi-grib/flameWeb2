@@ -144,15 +144,22 @@ export class ManageModelsComponent implements OnInit {
     this.manage.file = file;
     this.service.importModel().subscribe(
       result => {
-        this.toastr.success('Model \'' + result.Model + '\' imported' , 'IMPORTED SUCCESFULLY', {
-          timeOut: 5000, positionClass: 'toast-top-right'});
+        console.log(result);
+        if (result.error) {
+          this.toastr.warning(result.error + '\' ' , 'IMPORT ERRORS', {
+            timeOut: 15000, positionClass: 'toast-top-right'});
+        }
+        else {
+          this.toastr.success('Model \'' + result.Model + '\' imported' , 'IMPORTED SUCCESFULLY', {
+            timeOut: 5000, positionClass: 'toast-top-right'});
+        }
         this.manage.file = undefined;
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
         this.func.getModelList();
       },
       error => {
-        this.toastr.error('Model \'' + error.error.Model + '\' already exist' , 'ERROR IMPORTING', {
+        this.toastr.error('Error:\'' + error.error.error.toString() + '\' ' , 'ERROR IMPORTING', {
           timeOut: 5000, positionClass: 'toast-top-right'});
       }
     );
