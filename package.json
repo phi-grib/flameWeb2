@@ -51,7 +51,7 @@
     "jspdf": "^1.5.3",
     "jspdf-autotable": "^3.2.11",
     "keycloak-angular": "^7.1.0",
-    "keycloak-js": "^9.0.0",
+    "keycloak-js": "^6.0.1",
     "ng-multiselect-dropdown": "^0.2.10",
     "ng2-charts": "^2.3.0",
     "ngx-modal-dialog": "^3.0.0",
