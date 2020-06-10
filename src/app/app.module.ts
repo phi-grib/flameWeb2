@@ -16,9 +16,7 @@ import { ConfigTrainingComponent } from './config-training/config-training.compo
 import { ConfigModelComponent } from './config-model/config-model.component';
 import { ConfigPreferencesComponent } from './config-preferences/config-preferences.component';
 import { ChecklistModule } from 'angular-checklist';
-// import { QualitNoConformalComponent } from './qualit-no-conformal/qualit-no-conformal.component';
 import { QualitConformalComponent } from './qualit-conformal/qualit-conformal.component';
-// import { QuantitNoConformalComponent } from './quantit-no-conformal/quantit-no-conformal.component';
 import { QuantitConformalComponent } from './quantit-conformal/quantit-conformal.component';
 import { BuilderComponent } from './builder/builder.component';
 import { PredictorComponent } from './predictor/predictor.component';
@@ -35,8 +33,8 @@ import { DataTablesModule } from 'angular-datatables';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PlotlyModule } from 'angular-plotly.js';
 import { ModelDocumentationComponent } from './model-documentation/model-documentation.component';
-// import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
-// import { initializer } from './utils/app-init';
+import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
+import { initializer } from './utils/app-init';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -58,9 +56,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ConfigTrainingComponent,
     ConfigModelComponent,
     ConfigPreferencesComponent,
-    // QualitNoConformalComponent,
     QualitConformalComponent,
-    // QuantitNoConformalComponent,
     QuantitConformalComponent,
     BuilderComponent,
     PredictorComponent,
@@ -82,17 +78,17 @@ PlotlyModule.plotlyjs = PlotlyJS;
     NgMultiSelectDropDownModule.forRoot(),
     ChecklistModule,
     NgbModule,
-    // KeycloakAngularModule,
+    KeycloakAngularModule,
     // PlotlyViaCDNModule,
     PlotlyModule
   ],
   providers: [Model, Prediction, Globals, Manager, Similarity, 
-  // {
-  //   provide: APP_INITIALIZER,
-  //   useFactory: initializer,
-  //   multi: true,
-  //   deps: [KeycloakService]
-  // }
+  {
+    provide: APP_INITIALIZER,
+    useFactory: initializer,
+    multi: true,
+    deps: [KeycloakService]
+  }
   ],
   bootstrap: [AppComponent]
 })

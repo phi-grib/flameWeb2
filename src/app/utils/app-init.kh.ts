@@ -1,10 +1,12 @@
 import {KeycloakConfig, KeycloakEventType, KeycloakService} from 'keycloak-angular';
 import {filter} from "rxjs/operators";
 
-// dummy config for development
 const keycloakConfig: KeycloakConfig = {
-    url: 'URL',
+    url: 'https://login.etransafe.eu/auth',
     realm: "KH",
+    credentials: {
+        secret: "99402d5f-897e-4e27-881e-85cb04f75601"
+    },
     clientId: "knowledge-hub"
 };
 
@@ -26,8 +28,16 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
             try {
                 await keycloak.init({
                     config: keycloakConfig,
+                    // config: "/assets/keycloak.json", // there was a typo here 'keycloack.json' that's why it didn't work
                     enableBearerInterceptor: true,
-                    bearerPrefix: 'Bearer', 
+                    bearerPrefix: 'Bearer', // Tima thinks capital might be important here
+
+                    // I'm not sure if the lines below are really needed
+                    initOptions: {
+                        onLoad: 'login-required',
+                        //checkLoginIframe: false
+                    },/*
+                    bearerExcludedUrls: []*/
                 });
                 resolve();
             } catch (error) {
