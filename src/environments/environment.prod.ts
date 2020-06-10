@@ -2,17 +2,7 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-// import { KeycloakConfig } from 'keycloak-angular';
-
-//  // Add here your keycloak setup infos
-// const keycloakConfig: KeycloakConfig = {
-//   url: 'https://login.etransafe.eu/auth',
-//   realm: 'KH',
-//   clientId: 'flame'
-// };
-
 export const environment = {
-  // keycloakConfig,
   production: true,
   baseUrl_manage: '/api/v1/manage/',
   baseUrl_build: '/api/v1/build/',
