@@ -28,7 +28,6 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
             try {
                 await keycloak.init({
                     config: keycloakConfig,
-                    // config: "/assets/keycloak.json", // there was a typo here 'keycloack.json' that's why it didn't work
                     enableBearerInterceptor: true,
                     bearerPrefix: 'Bearer', // Tima thinks capital might be important here
 

@@ -6,13 +6,11 @@ import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PredictionService } from './prediction.service';
 import { CustomHTMLElement } from '../Globals';
 import 'datatables.net-bs4';
-// import 'datatables.net-buttons-bs4';
-
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-
 import * as XLSX from 'xlsx';
-// import { isMainThread } from 'worker_threads';
+
+declare var $: any;
 
 @Component({
   selector: 'app-prediction',
