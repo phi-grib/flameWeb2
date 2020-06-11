@@ -205,12 +205,13 @@ export class QualitConformalComponent implements OnChanges {
           }
 
           // INFO ABOUT VALIDATION
+          this.modelValidationInfo = {};
           for (const modelInfo of info['model_valid_info']) {
             if (typeof modelInfo[2] === 'number') {
               modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
             }
             if (typeof modelInfo[2] !== 'object') {
-              this.modelValidationInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
+              this.modelValidationInfo[modelInfo[0]] = [modelInfo[1], modelInfo[2]];
             }
           }
           setTimeout(() => {
