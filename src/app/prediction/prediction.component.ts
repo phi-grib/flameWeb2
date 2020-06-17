@@ -650,13 +650,13 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.plotComboC.data[1].y[i] = varlist[1]+'.v'+varlist[2];
   
           if (xi[i]===0) {
-            this.plotComboC.data[0].x[i] = -1;
+            this.plotComboC.data[0].x[i] = 0;
             this.plotComboC.data[1].x[i] = 0;
           } else if (xi[i]===1) {
             this.plotComboC.data[0].x[i] = 0;
             this.plotComboC.data[1].x[i] = 1;
           } else {
-            this.plotComboC.data[0].x[i] = 0;
+            this.plotComboC.data[0].x[i] = -1;
             this.plotComboC.data[1].x[i] = 0;
           }
         }

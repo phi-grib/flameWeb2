@@ -21,8 +21,10 @@ export class QuantitConformalComponent implements OnChanges {
 
     objectKeys = Object.keys;
     modelValidationInfo = {};
-    // modelConformal = {};
+    modelTypeInfo = {};
+    modelBuildInfo = {};
     modelWarning = '';
+    modelVisible = false;
 
     plotFitted = {
       data: [{ x: [], 
@@ -266,10 +268,50 @@ export class QuantitConformalComponent implements OnChanges {
       }
 
     }
+    plotSummary = {
+      data:  [{
+            x: ['R2/Q2', 'Conformal accuracy'],
+            y: [],
+            name:'fitting',
+            type: 'bar',
+            texttemplate: "%{y:.2f}",
+            textposition: 'auto',
+            marker: {
+              color: 'rgba(70,143,184,0.8)',
+            }
+          },{
+            x: ['R2/Q2', 'Conformal accuracy'],
+            y: [],
+            name:'prediction',
+            type: 'bar',
+            texttemplate: "%{y:.2f}",
+            textposition: 'auto',
+            marker: {
+              color: 'rgba(156,198,221,0.8)',
+            }
+          }],
+      layout: {
+            yaxis: {
+              range: [0.0,1.0],
+              // titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 24 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            },
+            xaxis: {
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            },
+            width: 600,
+            height: 400,
+            showlegend: true,
+            barmode: 'group'
+      },
+      config: {
+        displaylogo: false,
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+      }
+    }
 
     ngOnChanges(): void {
-      // console.log('onChanges', this.modelID);
-        
+      this.modelVisible = false;
       this.modelWarning = '';
       this.plotFitted.data[0].x = [];
       this.plotFitted.data[0].y = [];
@@ -290,8 +332,11 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotScores.data[0].marker.color = [];
       this.plotViolin.data[0].y =[];
       this.plotViolin.data[0].text =[];
+      this.plotSummary.data[0].y = [];
+      this.plotSummary.data[1].y = [];
       
       this.getValidation();
+      this.modelVisible = true;
     }
 
     isObject(val) {
@@ -312,6 +357,8 @@ export class QuantitConformalComponent implements OnChanges {
             this.modelWarning = info.warning;
           }
 
+          this.modelValidationInfo = {};
+
           for (const modelInfo of info['model_valid_info']) {
             
             if (typeof modelInfo[2] === 'number') {
@@ -326,6 +373,13 @@ export class QuantitConformalComponent implements OnChanges {
             //     this.modelConformal[modelInfo[0]] = modelInfo[2];
             //   }
             // }
+          }
+
+          for (let ielement of info['model_build_info']) {
+            this.modelBuildInfo[ielement[0]]=[ielement[1], ielement[2]]
+          }
+          for (let ielement of info['model_type_info']) {
+            this.modelTypeInfo[ielement[0]]=[ielement[1], ielement[2]]
           }
 
           setTimeout(() => {
@@ -363,8 +417,25 @@ export class QuantitConformalComponent implements OnChanges {
               context.clearRect(0, 0, canvas.width, canvas.height);
             });
 
+
             this.plotViolin.data[0].y = info['ymatrix'];
             this.plotViolin.data[0].text = info['obj_nam'];
+
+            if (this.modelValidationInfo['Conformal_accuracy'] && this.modelValidationInfo['Conformal_accuracy_fitting']) {
+              this.plotSummary.data[1].y = [
+                this.modelValidationInfo['Q2'][1],
+                this.modelValidationInfo['Conformal_accuracy'][1]];
+              
+              this.plotSummary.data[0].y = [
+                this.modelValidationInfo['R2'][1],
+                this.modelValidationInfo['Conformal_accuracy_fitting'][1]];
+            }
+            else {
+              this.plotSummary.data[1].y = [
+                this.modelValidationInfo['Q2'][1]];
+              this.plotSummary.data[0].y = [
+                this.modelValidationInfo['R2'][1]];
+            }
 
             // predicted data
             if ('Y_pred' in info) {

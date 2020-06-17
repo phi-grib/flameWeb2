@@ -21,7 +21,10 @@ export class QualitConformalComponent implements OnChanges {
     
     objectKeys = Object.keys;
     modelValidationInfo = {};
+    modelTypeInfo = {};
+    modelBuildInfo = {};
     modelWarning = '';
+    modelVisible = false;
     
     predictData = [{
         offset: 45, 
@@ -164,10 +167,52 @@ export class QualitConformalComponent implements OnChanges {
         modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
       }
     }
+
+    plotSummary = {
+      data:  [{
+            x: ['Sensitivity', 'Specificity', 'MCC'],
+            y: [],
+            name:'fitting',
+            type: 'bar',
+            texttemplate: "%{y:.2f}",
+            textposition: 'auto',
+            marker: {
+              color: 'rgba(70,143,184,0.8)',
+            }
+          },{
+            x: ['Sensitivity', 'Specificity', 'MCC'],
+            y: [],
+            name:'prediction',
+            type: 'bar',
+            texttemplate: "%{y:.2f}",
+            textposition: 'auto',
+            marker: {
+              color: 'rgba(156,198,221,0.8)',
+            }
+          }],
+      layout: {
+            yaxis: {
+              range: [0.0,1.0],
+              // titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 24 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            },
+            xaxis: {
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            },
+            width: 600,
+            height: 400,
+            showlegend: true,
+            barmode: 'group'
+      },
+      config: {
+        displaylogo: false,
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+      }
+    }
+   
           
     ngOnChanges(): void {
-      // console.log('onChanges', this.modelID);
-
+      this.modelVisible = false;
       this.modelWarning = '';
       this.plotScores.data[0].x =[];
       this.plotScores.data[0].y =[];
@@ -176,7 +221,10 @@ export class QualitConformalComponent implements OnChanges {
       this.predictData[0].r = [0, 0, 0, 0];
       this.fittingData[0].r = [0, 0, 0, 0];
       this.plotPie.data[0].values = [];
+      this.plotSummary.data[0].y = [];
+      this.plotSummary.data[1].y = [];
       this.getValidation();
+      this.modelVisible = true;
     }
     
     isObject(val) {
@@ -214,6 +262,15 @@ export class QualitConformalComponent implements OnChanges {
               this.modelValidationInfo[modelInfo[0]] = [modelInfo[1], modelInfo[2]];
             }
           }
+
+          for (let ielement of info['model_build_info']) {
+            this.modelBuildInfo[ielement[0]]=[ielement[1], ielement[2]]
+          }
+
+          for (let ielement of info['model_type_info']) {
+            this.modelTypeInfo[ielement[0]]=[ielement[1], ielement[2]]
+          }
+
           setTimeout(() => {
             if (this.modelValidationInfo['TP']) {
               this.predictData[0].r = [this.modelValidationInfo['TP'][1], 
@@ -224,8 +281,15 @@ export class QualitConformalComponent implements OnChanges {
               this.plotPie.data[0].values = [ this.modelValidationInfo['TP'][1]+
                                         this.modelValidationInfo['FN'][1],
                                         this.modelValidationInfo['TN'][1]+
-                                        this.modelValidationInfo['FP'][1],
-                                      ]
+                                        this.modelValidationInfo['FP'][1]];
+              this.plotSummary.data[1].y = [
+                                        this.modelValidationInfo['Sensitivity'][1],
+                                        this.modelValidationInfo['Specificity'][1],
+                                        this.modelValidationInfo['MCC'][1]];
+              if (this.modelValidationInfo['Conformal_coverage']) {
+                this.plotSummary.data[1].x.push('Coverage');
+                this.plotSummary.data[1].y.push((this.modelValidationInfo['Conformal_coverage'][1]));
+              }
             }
             if (this.modelValidationInfo['TP_f']) {
               this.fittingData[0].r = [this.modelValidationInfo['TP_f'][1], 
@@ -236,8 +300,15 @@ export class QualitConformalComponent implements OnChanges {
               this.plotPie.data[0].values = [ this.modelValidationInfo['TP_f'][1]+
                                         this.modelValidationInfo['FN_f'][1],
                                         this.modelValidationInfo['TN_f'][1]+
-                                        this.modelValidationInfo['FP_f'][1],
-                                      ]
+                                        this.modelValidationInfo['FP_f'][1]];
+              this.plotSummary.data[0].y = [
+                                        this.modelValidationInfo['Sensitivity_f'][1],
+                                        this.modelValidationInfo['Specificity_f'][1],
+                                        this.modelValidationInfo['MCC_f'][1]];
+              if (this.modelValidationInfo['Conformal_coverage_f']) {
+                this.plotSummary.data[0].x.push('Coverage');
+                this.plotSummary.data[0].y.push((this.modelValidationInfo['Conformal_coverage_f'][1]));
+              }
             }
 
             // common to all plots in this component
