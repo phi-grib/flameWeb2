@@ -25,6 +25,19 @@
   border-width: 0px;
 }
 
+.model_name {
+  color:#e59300;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+table td {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
 #matrix * {
 padding: 0px;
 text-align: center;
@@ -52,35 +65,24 @@ ul li.nav-item a.active{
   border-radius: 0;
 }
 
-
-/* ul {
-  background: #0076a3;
-}
-ul li a {
-  background: #0076a3;
-  color: #B8DCED;
- 
+/* rotating circle to show progress */
+.spinner-border {
+  display: block;
+  position: absolute;
+  z-index: 1031;
+  top: 25%; /* where ... is the element's height */
 }
 
-ul li a.active{
-  background: #22577a;
-  color: white;
-  border-bottom: 3px solid #e59300;
-} */
-
-/* .rotate > span {
-transform: rotate(-90deg);
-position:absolute;
-left:10;
-right:0;
-top: 10px;
-margin:auto;
-
-} */
-
-table td {
-  padding-top: 1px;
-  padding-bottom: 1px;
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #FAFAFA;
+  opacity: 0.8;
+  z-index: 2;
+  cursor: pointer;
 }
 
 
