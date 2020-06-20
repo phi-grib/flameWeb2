@@ -1,13 +1,13 @@
 <div class="row" *ngIf="this.modelDocumentation !== undefined" >
     <div class="card w-100" style="width: 18rem;">
 
-        <div id="overlay" *ngIf="!this.documentationVisible">
-            <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
-            <span class="sr-only">Loading...</span>
+        <div  id="overlay" *ngIf="!this.documentationVisible">
+            <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
+              <span class="sr-only">Loading...</span>
             </div>
         </div>
 
-        <div class="accordion" id="docAccordion" >
+        <div class="accordion" id="docAccordion"  *ngIf="this.documentationVisible">
 
             <!-- block level 1 start -->
             <div class="card">

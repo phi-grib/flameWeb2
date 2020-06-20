@@ -170,22 +170,24 @@ export class QualitConformalComponent implements OnChanges {
 
     plotSummary = {
       data:  [{
-            x: ['Sensitivity', 'Specificity', 'MCC'],
+            x: ['Sensitivity', 'Specificity', 'MCC', 'Coverage'],
             y: [],
             name:'fitting',
             type: 'bar',
             texttemplate: "%{y:.2f}",
             textposition: 'auto',
+            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
             marker: {
               color: 'rgba(70,143,184,0.8)',
             }
           },{
-            x: ['Sensitivity', 'Specificity', 'MCC'],
+            x: ['Sensitivity', 'Specificity', 'MCC', 'Coverage'],
             y: [],
             name:'prediction',
             type: 'bar',
             texttemplate: "%{y:.2f}",
             textposition: 'auto',
+            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
             marker: {
               color: 'rgba(156,198,221,0.8)',
             }
@@ -205,8 +207,9 @@ export class QualitConformalComponent implements OnChanges {
             barmode: 'group'
       },
       config: {
-        displaylogo: false,
-        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+        // displaylogo: false,
+        displayModeBar: false
+        // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
       }
     }
    
@@ -224,7 +227,7 @@ export class QualitConformalComponent implements OnChanges {
       this.plotSummary.data[0].y = [];
       this.plotSummary.data[1].y = [];
       this.getValidation();
-      this.modelVisible = true;
+      // this.modelVisible = true;
     }
     
     isObject(val) {
@@ -287,7 +290,7 @@ export class QualitConformalComponent implements OnChanges {
                                         this.modelValidationInfo['Specificity'][1],
                                         this.modelValidationInfo['MCC'][1]];
               if (this.modelValidationInfo['Conformal_coverage']) {
-                this.plotSummary.data[1].x.push('Coverage');
+                // this.plotSummary.data[1].x.push('Coverage');
                 this.plotSummary.data[1].y.push((this.modelValidationInfo['Conformal_coverage'][1]));
               }
             }
@@ -306,11 +309,13 @@ export class QualitConformalComponent implements OnChanges {
                                         this.modelValidationInfo['Specificity_f'][1],
                                         this.modelValidationInfo['MCC_f'][1]];
               if (this.modelValidationInfo['Conformal_coverage_f']) {
-                this.plotSummary.data[0].x.push('Coverage');
+                // this.plotSummary.data[0].x.push('Coverage');
                 this.plotSummary.data[0].y.push((this.modelValidationInfo['Conformal_coverage_f'][1]));
               }
             }
 
+            const me = this;
+            
             // common to all plots in this component
             const options = {'width': 300, 'height': 300};
             const smilesDrawer = new SmilesDrawer.Drawer(options);
@@ -335,6 +340,10 @@ export class QualitConformalComponent implements OnChanges {
               context.clearRect(0, 0, canvas.width, canvas.height);
             });
 
+            myPlot.on ('plotly_afterplot', function(data){
+              console.log ('now I am visible');
+              me.modelVisible = true;
+            });
 
           }, 100);
         },

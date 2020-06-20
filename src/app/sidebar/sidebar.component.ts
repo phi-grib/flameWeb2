@@ -12,7 +12,11 @@ import { fade, slideUp } from '../animations/animations';
     slideUp
   ]
 })
+
+
 export class SidebarComponent implements OnInit {
+  
+  tabselected = 'similar';
 
   constructor(public model: Model,
     public globals: Globals,
@@ -24,7 +28,6 @@ export class SidebarComponent implements OnInit {
 
   isActive(url: string) {
      return this.router.url.includes(url);
-
   }
 
 }

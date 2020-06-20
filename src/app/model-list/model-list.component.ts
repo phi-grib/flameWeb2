@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModelListService } from './model-list.service';
+// import { ModelListService } from './model-list.service';
 import { Model, Prediction, Globals } from '../Globals';
 import { CommonFunctions } from '../common.functions';
 import 'datatables.net-bs4';
@@ -12,7 +12,8 @@ declare var $: any;
 })
 export class ModelListComponent implements OnInit {
 
-  constructor(private service: ModelListService,
+  constructor(
+    // private service: ModelListService,
     public model: Model,
     public globals: Globals,
     public prediction: Prediction,

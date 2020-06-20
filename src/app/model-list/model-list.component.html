@@ -2,8 +2,8 @@
 
 <app-manage-models></app-manage-models>
 
-<div class ="text-center spinner-table" *ngIf = "!this.globals.tableModelVisible">
-  <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
+<div  id="overlay" *ngIf="!this.globals.tableModelVisible">
+  <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
     <span class="sr-only">Loading...</span>
   </div>
 </div>
