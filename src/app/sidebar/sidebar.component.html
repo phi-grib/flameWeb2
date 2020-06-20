@@ -1,25 +1,12 @@
 
-<!-- <ul class="nav nav-pills pl-2" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link" id="predict-tab" data-toggle="tab" href="#predict" role="tab" aria-controls="predict" aria-selected="true" [routerLink]="['/predictions']" [class.active]="isActive('predictions')">Predictions</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="build-tab" data-toggle="tab" href="#build" role="tab" aria-controls="build" aria-selected="false" [routerLink]="['/models']" [class.active]="isActive('models')">Models</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="similarity-tab" data-toggle="tab" href="#similarity" role="tab" aria-controls="similarity" aria-selected="false" [routerLink]="['/similarity']" [class.active]="isActive('similarity')">Similarity</a>
-  </li>
-</ul> -->
-
-
 <div class="row" id="top-bar">
   <div class="col p-0">
-    <ul class="nav nav-pills pl-2" role="tablist">
+    <ul class="nav nav-pills pl-2" id="top-tab" role="tablist">
       <li class="nav-item">
-        <a class="nav-link" id="predict-tab" data-toggle="tab" href="#predict" role="tab" aria-controls="predict" aria-selected="true" [routerLink]="['/predictions']" [class.active]="isActive('predictions')">Predictions</a>
+        <a class="nav-link" id="build-tab" data-toggle="tab" href="#build" role="tab" aria-controls="build" aria-selected="true" [routerLink]="['/models']" [class.active]="isActive('models')">Models</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="build-tab" data-toggle="tab" href="#build" role="tab" aria-controls="build" aria-selected="false" [routerLink]="['/models']" [class.active]="isActive('models')">Models</a>
+        <a class="nav-link" id="predict-tab" data-toggle="tab" href="#predict" role="tab" aria-controls="predict" aria-selected="false" [routerLink]="['/predictions']" [class.active]="isActive('predictions')">Predictions</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" id="similarity-tab" data-toggle="tab" href="#similarity" role="tab" aria-controls="similarity" aria-selected="false" [routerLink]="['/similarity']" [class.active]="isActive('similarity')">Similarity</a>

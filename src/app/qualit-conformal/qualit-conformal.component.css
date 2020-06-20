@@ -45,7 +45,7 @@ text-align: center;
 
 #container {
   display: flex;
-  height: 300px; 
+  height: 500px; 
   justify-content: space-between;
   align-items: center;
 }
@@ -65,12 +65,16 @@ ul li.nav-item a.active{
   border-radius: 0;
 }
 
-/* rotating circle to show progress */
+.text-etransafe {
+  color:#e59300;
+}
+
 .spinner-border {
+  position: absolute; 
   display: block;
-  position: absolute;
+  right: 45%; 
+  top: 200%; 
   z-index: 1031;
-  top: 25%; /* where ... is the element's height */
 }
 
 #overlay {

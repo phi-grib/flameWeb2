@@ -18,8 +18,8 @@ export class PredictorComponent implements OnInit {
   objectKeys = Object.keys;
   models: {};
   modelName = '';
-  predictName = '';
   version = '0';
+  predictName = '';
   file = undefined;
   isvalid = false;
   predictionsNames = {};
@@ -33,8 +33,8 @@ export class PredictorComponent implements OnInit {
               private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.models = {};
-    this.getModelListPredict();
+    // this.models = {};
+    // this.getModelListPredict();
     for (const name of this.prediction.predictions) {
       this.predictionsNames[name[0]] = true;
     }
@@ -64,40 +64,40 @@ export class PredictorComponent implements OnInit {
     }
   }
 
-  getModelListPredict() {
-    this.commonService.getModelList().subscribe(
-        result => {
-          if (result[0]){
+  // getModelListPredict() {
+  //   this.commonService.getModelList().subscribe(
+  //       result => {
+  //         if (result[0]){
 
-            for (const model of result[1]) {
-              if (typeof(model.info) === 'object' ) {
-                const modelName = model.modelname;
-                if (!(modelName in this.models)) {
-                  this.models[modelName] = [];
-                }
-                if (model.info) {
-                  // do not add development versions
-                  if (model.version != 0){
-                    this.models[modelName].push(model.version);
-                  }
-                }
-              }
-            }
+  //           for (const model of result[1]) {
+  //             if (typeof(model.info) === 'object' ) {
+  //               const modelName = model.modelname;
+  //               if (!(modelName in this.models)) {
+  //                 this.models[modelName] = [];
+  //               }
+  //               if (model.info) {
+  //                 // do not add development versions
+  //                 if (model.version != 0){
+  //                   this.models[modelName].push(model.version);
+  //                 }
+  //               }
+  //             }
+  //           }
 
-            // remove items without a valid version
-            for (const model of this.objectKeys(this.models)){
-              if (this.models[model].length===0) {
-                  delete(this.models[model]);
-              }
-            }
+  //           // remove items without a valid version
+  //           for (const model of this.objectKeys(this.models)){
+  //             if (this.models[model].length===0) {
+  //                 delete(this.models[model]);
+  //             }
+  //           }
 
-          }
-          else {
-            alert(result[1]);
-          }
-        }
-    );
-  }
+  //         }
+  //         else {
+  //           alert(result[1]);
+  //         }
+  //       }
+  //   );
+  // }
 
   predict() {
     this.activeModal.close('Close click');

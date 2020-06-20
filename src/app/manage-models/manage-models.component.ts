@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderComponent} from '../builder/builder.component';
+import { PredictorComponent} from '../predictor/predictor.component';
 import { CommonFunctions } from '../common.functions';
 declare var $: any;
 
@@ -21,11 +22,11 @@ export class ManageModelsComponent implements OnInit {
 
   constructor(public manage: Manager,
               private commonService: CommonService,
+              private modalService: NgbModal,
               public service: ManageModelService,
               public model: Model,
               public globals: Globals,
               private toastr: ToastrService,
-              private modalService: NgbModal,
               public func: CommonFunctions) { }
 
 
@@ -164,4 +165,11 @@ export class ManageModelsComponent implements OnInit {
       }
     );
   }
+
+  newPrediction(name: string, version: string) {
+    const modalRef = this.modalService.open(PredictorComponent, { size: 'lg'});
+    modalRef.componentInstance.modelName = name;
+    modalRef.componentInstance.version = version;
+  }
+
 }

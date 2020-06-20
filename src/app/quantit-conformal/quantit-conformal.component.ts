@@ -276,6 +276,7 @@ export class QuantitConformalComponent implements OnChanges {
             type: 'bar',
             texttemplate: "%{y:.2f}",
             textposition: 'auto',
+            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
             marker: {
               color: 'rgba(70,143,184,0.8)',
             }
@@ -286,6 +287,7 @@ export class QuantitConformalComponent implements OnChanges {
             type: 'bar',
             texttemplate: "%{y:.2f}",
             textposition: 'auto',
+            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
             marker: {
               color: 'rgba(156,198,221,0.8)',
             }
@@ -293,7 +295,6 @@ export class QuantitConformalComponent implements OnChanges {
       layout: {
             yaxis: {
               range: [0.0,1.0],
-              // titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 24 },
               tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
             },
             xaxis: {
@@ -305,8 +306,9 @@ export class QuantitConformalComponent implements OnChanges {
             barmode: 'group'
       },
       config: {
-        displaylogo: false,
-        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+        displayModeBar: false
+        // displaylogo: false,
+        // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
       }
     }
 
@@ -336,7 +338,7 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotSummary.data[1].y = [];
       
       this.getValidation();
-      this.modelVisible = true;
+      // this.modelVisible = true;
     }
 
     isObject(val) {
@@ -524,6 +526,7 @@ export class QuantitConformalComponent implements OnChanges {
               // this.plotFitted.data[1].y = [ Math.min.apply(Math, info['Y_adj']),Math.max.apply(Math, info['Y_adj'])];
             }
 
+            const me = this;
             // predicted plot                 
             const canvas_pred = <HTMLCanvasElement>document.getElementById('scatter_pred_canvas');
             const context_pred = canvas_pred.getContext('2d');
@@ -531,7 +534,7 @@ export class QuantitConformalComponent implements OnChanges {
             PlotlyJS.newPlot('scatterPredDIV', this.plotPredicted.data, this.plotScatter.layout, this.plotScatter.config);
             
             let myPlotPred = <CustomHTMLElement>document.getElementById('scatterPredDIV');
-            
+
             // on hover, draw the molecule
             myPlotPred.on('plotly_hover', function(eventdata){ 
               var points = eventdata.points[0];
@@ -544,6 +547,9 @@ export class QuantitConformalComponent implements OnChanges {
             myPlotPred.on('plotly_unhover', function(data){
               context_pred.clearRect(0, 0, canvas_pred.width, canvas_pred.height);
             });
+
+
+
             // fitted plott
             const canvas_fit = <HTMLCanvasElement>document.getElementById('scatter_fit_canvas');
             const context_fit = canvas_fit.getContext('2d');
@@ -562,6 +568,11 @@ export class QuantitConformalComponent implements OnChanges {
             // on onhover, clear the canvas
             myPlotFit.on('plotly_unhover', function(data){
               context_fit.clearRect(0, 0, canvas_fit.width, canvas_fit.height);
+            });
+
+            myPlotFit.on ('plotly_afterplot', function(data){
+              console.log ('now I am visible');
+              me.modelVisible = true;
             });
 
 

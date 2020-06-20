@@ -46,12 +46,29 @@ tr.selected {
     overflow: auto;
 }
 
-.spinner-table {
+.text-etransafe {
+    color:#e59300;
+}
+
+.spinner-border {
+    display: block;
     position: absolute; 
     right: 45%; 
-    top: 30%; 
+    top: 200%; 
     z-index: 1031;
 }
+
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #FAFAFA;
+    opacity: 0.7;
+    z-index: 2;
+    cursor: pointer;
+  }
 
 .iffyTip {
   overflow:hidden;
@@ -61,28 +78,3 @@ tr.selected {
 .hideText{
 max-width:200px;
 }
-
-/* .loading {
-    position: relative;
-    left: 50%;
-    z-index: 1;
-    width: 20px;
-    height: 20px;
-    margin: 0 0 0 0px;
-    border: 5px solid #e6901a;
-    border-radius: 60%;
-    border-top: 5px solid #B8DCED;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 1s linear infinite;
-} */
-
-  /* Safari */
-  /* @-webkit-keyframes spin {
-    0% { -webkit-transform: rotate(0deg); }
-    100% { -webkit-transform: rotate(360deg); }
-  } */
-
-/* @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}  */

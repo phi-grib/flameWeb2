@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'builder', component: BuilderComponent },
   { path: 'validation', component: ValidationsComponent },
   { path: 'prediction', component: PredictionComponent },
-  { path: '', redirectTo: '/predictions', pathMatch: 'full'},
+  { path: '', redirectTo: '/models', pathMatch: 'full'},
   { path: '**', redirectTo: '' }
 ];
 

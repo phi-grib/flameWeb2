@@ -48,18 +48,20 @@ table td {
   width: 100%;
 }
 
-/* rotating circle to show progress */
+.text-etransafe {
+  color:#e59300;
+}
+
 .spinner-border {
+  position: absolute; 
   display: block;
-  position: absolute;
+  right: 45%; 
+  top: 30%; 
   z-index: 1031;
-  top: 25%; /* where ... is the element's height */
-  right: 45%; /* where ... is the element's width */
 }
 
 #overlay {
   position: absolute;
-  /*display: none;*/
   top: 0;
   left: 0;
   right: 0;

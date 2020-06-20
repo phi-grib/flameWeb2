@@ -2,8 +2,8 @@
  
     <div class="card w-100">
 
-        <div class="d-flex justify-content-center" id="overlay" *ngIf="!this.modelVisible">
-            <div class="spinner-border text-secondary"  style="width: 10rem; height: 10rem;"  role="status">
+        <div id="overlay" *ngIf="!this.modelVisible">
+            <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
               <span class="sr-only">Loading...</span>
             </div>
         </div>
@@ -24,7 +24,7 @@
             </li>
         </ul>
  
-        <div class="tab-content" id="pills-tabContent">
+        <div class="tab-content" id="pills-tabContent" [hidden]="!this.modelVisible">
             <!--SUMMARY TAB-->
             <div class="tab-pane fade show active" id="pills-summary" role="tabpanel" aria-labelledby="pills-summary-tab">
                 <div class="card-body">
