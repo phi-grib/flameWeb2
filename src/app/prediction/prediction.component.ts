@@ -1,10 +1,9 @@
 import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges } from '@angular/core';
-import { Prediction} from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonService } from '../common.service';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PredictionService } from './prediction.service';
-import { CustomHTMLElement, Globals } from '../Globals';
+import { Prediction, CustomHTMLElement, Globals } from '../Globals';
 import 'datatables.net-bs4';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -714,19 +713,13 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         
         // use a long timeout because this can take a lot of time
         setTimeout(() => {
-            // if ( this.globals.mainTabActive == "#predict") {
-            // $('#predict-tab-line').attr("aria-selected") == "true") {
-              // let molcount = 0;
-              this.components.forEach((child) => {
-                SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
-                // SmilesDrawer.parse(this.predictionResult.SMILES[molcount], function (tree) {
-                  smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-                  }, function (err) {
-                    console.log(err);
-                  });
-                // molcount++;
+          this.components.forEach((child) => {
+            SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
+              smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
+              }, function (err) {
+                console.log(err);
               });
-            // }
+          });
           
           const settingsObj: any = {
             dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
@@ -762,7 +755,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           });
 
           if (this.modelMatch){
-          // if (this.modelMatch && this.globals.mainTabActive == "#predict" ){
 
             const options = {'width': 300, 'height': 300};
             const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
