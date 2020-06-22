@@ -16,7 +16,7 @@ i {
 }
 .table td {
     padding: 5px;
-    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
     border-bottom: 1px solid #B8DCED;
     vertical-align: middle;
 }
@@ -69,5 +69,6 @@ tr.selected {
   text-overflow:ellipsis;
 }
 .hideText{
-max-width:200px;
+  max-width:200px;
 }
+

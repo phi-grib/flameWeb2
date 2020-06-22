@@ -10,7 +10,7 @@
 
 <div class ="ml-3 mr-3" [hidden] = "!this.globals.tableModelVisible">
   <div class="col-12 scrolltable">
-    <table id ="dataTableModels" class="table">
+    <table id ="dataTableModels" class="table display compact" style="width:100%">
       <thead>
         <tr>
           <th style="width: 5%" class="text-center"></th>
@@ -49,6 +49,16 @@
           <td class="text-capitalize text-truncate iffyTip hideText">{{model.listModels[key].type}}</td>
         </tr>
       </tbody>
+      <tfoot>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Version</th>
+          <th>#Molecules</th>
+          <th>#Variables</th>3
+          <th>Type</th>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </div>
