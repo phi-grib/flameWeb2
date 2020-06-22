@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-import { Model, Prediction } from './Globals';
-import { Router } from '@angular/router';
-
+import { Component, OnInit } from '@angular/core';
+import { Model, Prediction, Globals } from './Globals';
+declare var $: any;
 
 @Component({
   selector: 'app-root',
@@ -9,15 +8,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'flameweb';
   
   constructor(
     public prediction: Prediction,
     public model: Model,
-    private router: Router) {}
+    public globals: Globals
+    ) {}
     
-    isActive(url: string) {
-      return this.router.url.includes(url);
+    ngOnInit() {
+      const me = this;
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var target = $(e.target).attr("href") // activated tab
+        me.globals.mainTabActive = target;
+      });
     }
+
 }

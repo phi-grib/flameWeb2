@@ -341,7 +341,6 @@ export class QualitConformalComponent implements OnChanges {
             });
 
             myPlot.on ('plotly_afterplot', function(data){
-              console.log ('now I am visible');
               me.modelVisible = true;
             });
 

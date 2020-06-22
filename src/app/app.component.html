@@ -47,8 +47,9 @@
                         <app-prediction-list></app-prediction-list>
                     </div>
 
-                    <div class="col-7 info scrollable v-100">
-                        <div *ngIf="(this.prediction.name != undefined)">
+                    <div class="col-7 info scrollable v-100" >
+                        <!-- <div *ngIf="(this.prediction.name != undefined) && (this.predictionTabActive)"> -->
+                        <div *ngIf="(this.prediction.name != undefined) && (this.globals.mainTabActive=='#predict')">
                             <app-prediction [predictionName]=this.prediction.name></app-prediction>
                         </div>
                     </div>
