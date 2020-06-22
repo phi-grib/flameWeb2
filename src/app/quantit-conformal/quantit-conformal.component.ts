@@ -571,7 +571,6 @@ export class QuantitConformalComponent implements OnChanges {
             });
 
             myPlotFit.on ('plotly_afterplot', function(data){
-              console.log ('now I am visible');
               me.modelVisible = true;
             });
 
