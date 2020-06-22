@@ -56,6 +56,7 @@ export class Manager {
 export class Globals {
     tableModelVisible = false;
     tablePredictionVisible = false;
+    mainTabActive: string = undefined;
 }
 
 @Injectable()

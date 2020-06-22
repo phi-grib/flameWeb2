@@ -1,10 +1,10 @@
-import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges } from '@angular/core';
 import { Prediction} from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonService } from '../common.service';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PredictionService } from './prediction.service';
-import { CustomHTMLElement } from '../Globals';
+import { CustomHTMLElement, Globals } from '../Globals';
 import 'datatables.net-bs4';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -22,7 +22,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   @Input() predictionName;
   @ViewChildren('cmp') components: QueryList<ElementRef>;
-  // @ViewChildren('cmpone') componentOne: QueryList<ElementRef>;
   
   objectKeys = Object.keys;
   predictionVisible = false;
@@ -337,7 +336,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   constructor(public prediction: Prediction,
     public service: PredictionService,
-    private commonService: CommonService) { }
+    private commonService: CommonService,
+    public globals: Globals) { }
   
   message = '';
   
@@ -708,20 +708,26 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.modelValidationInfo['FP'][1]];
         }
         
+        
         const options_list = {'width': 300, 'height': 150};
         const smilesDrawer = new SmilesDrawer.Drawer(options_list);
         
         // use a long timeout because this can take a lot of time
         setTimeout(() => {
-
-          this.components.forEach((child) => {
-            SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
-              smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-              }, function (err) {
-                console.log(err);
+            // if ( this.globals.mainTabActive == "#predict") {
+            // $('#predict-tab-line').attr("aria-selected") == "true") {
+              // let molcount = 0;
+              this.components.forEach((child) => {
+                SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
+                // SmilesDrawer.parse(this.predictionResult.SMILES[molcount], function (tree) {
+                  smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
+                  }, function (err) {
+                    console.log(err);
+                  });
+                // molcount++;
               });
-          });
-
+            // }
+          
           const settingsObj: any = {
             dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
             '<"row"<"col-sm-12"tr>>' +
@@ -754,10 +760,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               me.drawSimilars();
             }
           });
-          
 
-          // if (this.modelMatch){
           if (this.modelMatch){
+          // if (this.modelMatch && this.globals.mainTabActive == "#predict" ){
 
             const options = {'width': 300, 'height': 300};
             const smilesDrawerScores = new SmilesDrawer.Drawer(options);    

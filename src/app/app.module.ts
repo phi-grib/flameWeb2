@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ModelListComponent } from './model-list/model-list.component';
 import { TrainingSeriesComponent } from './training-series/training-series.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
+// import { SidebarComponent } from './sidebar/sidebar.component';
 import { ValidationsComponent } from './validations/validations.component';
 import { ToastrModule } from 'ngx-toastr';
 import { Model, Prediction, Globals, Manager, Similarity } from './Globals';
@@ -49,7 +49,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     AppComponent,
     ModelListComponent,
     TrainingSeriesComponent,
-    SidebarComponent,
+    // SidebarComponent,
     ValidationsComponent,
     ConfigTrainingComponent,
     ConfigModelComponent,
