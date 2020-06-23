@@ -1,0 +1,16 @@
+.btn-ets-delete {
+    background-color: #fa1750;
+    color: #ffffff;
+    border-width: 0;
+    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+    /* font-weight: bold; */
+    letter-spacing: 0.05em;
+    border-radius: 0;
+}
+.btn-ets-delete:hover,
+.btn-ets-delete:focus,
+.btn-ets-delete.active {
+    background-color:#b41147 ;
+    color: #ffffff;
+}
+
