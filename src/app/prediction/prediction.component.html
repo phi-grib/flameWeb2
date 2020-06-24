@@ -139,7 +139,7 @@
                       <canvas #cmp id="{{i}}">{{this.predictionResult.SMILES[i]}}</canvas>
                     </td>
                    <!--<td class="align-middle text-center" *ngIf="this.predictionResult.ymatrix" >{{this.predictionResult.ymatrix[i].toFixed(3)}}</td>-->
-                    <td class="align-middle text-center" *ngIf="this.predictionResult.values">{{castValue(this.predictionResult.values[i])}}</td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.values"><span class="prediction_text">{{castValue(this.predictionResult.values[i])}}</span></td>
                     <td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">
                       {{this.predictionResult.lower_limit[i].toFixed(3)}} to {{this.predictionResult.upper_limit[i].toFixed(3)}}
                     </td>
@@ -225,7 +225,7 @@
                   <strong>Prediction</strong>
                 </div>
                 <div class="col-9 border">
-                  <span *ngIf="this.predictionResult.values">{{castValue(this.predictionResult.values[molIndex])}}</span>
+                  <span *ngIf="this.predictionResult.values" class="prediction_text">{{castValue(this.predictionResult.values[molIndex])}}</span>
                   <span *ngIf="this.modelDocumentation != undefined && this.modelDocumentation['Endpoint_units']"> {{this.modelDocumentation['Endpoint_units'].value}}</span>
                 </div>
               </div>
@@ -253,7 +253,7 @@
                 </div>
               </div>
               
-              <div class="row bg-light" *ngIf="this.modelBuildInfo['ensemble']">
+              <div class="row " *ngIf="this.modelBuildInfo['ensemble']">
                 <div class="col-3 border">
                   <strong >Combined Model </strong>
                 </div>
@@ -307,7 +307,7 @@
               </div>
 
 
-              <div class="row bg-light" *ngIf="this.predictionResult['search_results']">
+              <div class="row " *ngIf="this.predictionResult['search_results']">
                 <div class="col-3 border" >
                   <strong >Similars</strong>
                 </div>
@@ -338,7 +338,7 @@
                 </div>
               </div>
 
-              <div class="row bg-light" *ngIf="this.modelMatch && this.modelPresent">
+              <div class="row " *ngIf="this.modelMatch && this.modelPresent">
                 <div class="col-3 border">
                   <strong>Interpretation</strong>
                 </div>
@@ -351,7 +351,7 @@
                   <p *ngIf="this.modelDocumentation['Species'].value != undefined"> <br>{{this.modelDocumentation['Species'].value}}</p>
                 </div>
               </div>
-              <div class="row bg-light" *ngIf="!this.modelBuildInfo['ensemble'] && this.modelMatch && this.modelPresent" >
+              <div class="row " *ngIf="!this.modelBuildInfo['ensemble'] && this.modelMatch && this.modelPresent" >
                 <div class="col-3 border">
                   <strong >Model</strong>
                 </div>
@@ -380,7 +380,7 @@
 
               </div>
 
-              <div class="row bg-light" *ngIf="this.modelBuildInfo['ensemble'] && this.submodels.length > 0">
+              <div class="row " *ngIf="this.modelBuildInfo['ensemble'] && this.submodels.length > 0">
                 <div class="col-3 border">
                   <div class="row justify-content-between">
                     <div class="col">

@@ -86,6 +86,19 @@ export class CommonFunctions {
                   for (const aux of model.info) {
                     dict_info[aux[0]] = aux[2];
                   }
+                  
+                  var dict_label = {};
+
+                  if ('label' in model){
+                    dict_label = model.label;
+                  }
+                  else {
+                    dict_label = {  'maturity' : 'dev',
+                                    'type' : 'unk',
+                                    'subtype' : 'unk',
+                                    'endpoint' : 'unk',
+                                    'species' : 'unk' }
+                  };
 
                   const quality = {};
                   for (const info of (Object.keys(dict_info))) {
@@ -106,7 +119,12 @@ export class CommonFunctions {
                     quantitative: dict_info['quantitative'], 
                     conformal: dict_info['conformal'], 
                     ensemble: dict_info['ensemble'], 
-                    error: undefined 
+                    maturity : dict_label['maturity'],
+                    bio_type : dict_label['type'],
+                    bio_subtype : dict_label['subtype'],
+                    bio_endpoint : dict_label['endpoint'],
+                    bio_species : dict_label['species'],
+                    error: undefined
                   };
 
                   this.model.trained_models.push(modelName + ' .v' + version);

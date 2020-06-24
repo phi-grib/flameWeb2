@@ -10,7 +10,8 @@ body {
 
 .model_selector {
   font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
-  font-size: 18px;
+  max-width: 100px;
+  font-size: 16px;
 }
 
 #toast-container > div {
@@ -53,14 +54,16 @@ btn.bmd-btn-fab.btn-etransafe,
     max-width: 70vw;
     min-height: 90vh;
     max-height: 90vh;
-  }
+}
 
+.page-link {
+    color: black !important;
+}
+  
 .page-item.active .page-link {
   background-color: #e59300 !important;
-  border: 1px solid black;
-}
-.page-link {
-  color: black !important;
+  /* border: 1px solid black; */
+  border: 1px solid  #e59300;
 }
 
 table.dataTable thead .sorting:before,

@@ -34,6 +34,7 @@ tr.selected {
     max-width: 350px;
     max-height: 350px;
 }
+
 .scrolltable{
     max-height: 90vh;
     overflow: auto;
@@ -69,6 +70,6 @@ tr.selected {
   text-overflow:ellipsis;
 }
 .hideText{
-  max-width:200px;
+  max-width:150px;
 }
 

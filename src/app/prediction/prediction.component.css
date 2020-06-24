@@ -93,6 +93,20 @@ ul li.nav-item a.active{
   align-items: center;
 }
 
+.prediction_text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e59300;
+}
+
+.model_name {
+  color:#e59300;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .TP {
   background-color: rgba(0,255,0,0.3);
 }

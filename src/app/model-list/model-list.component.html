@@ -13,12 +13,14 @@
     <table id ="dataTableModels" class="table display compact" style="width:100%">
       <thead>
         <tr>
-          <th style="width: 5%" class="text-center"></th>
-          <th style="width: 35%">Name</th>
-          <th style="width: 10%">Version</th>
-          <th style="width: 12.5%">#Molecules</th>
-          <th style="width: 12.5%">#Variables</th>3
-          <th style="width: 25%">Type</th>
+          <th style="max-width: 5%" class="text-center"></th>
+          <th >Name</th>
+          <th style="max-width: 5%">Ver</th>
+          <th style="width: 12%">Maturity</th>
+          <th style="width: 12%">Type</th>
+          <th style="width: 12%">Subtype</th>
+          <th style="width: 12%">Endpoint</th>
+          <th style="width: 12%">Species</th>
         </tr>
       </thead>
       <tbody>
@@ -44,19 +46,29 @@
 
           <td class="text-truncate iffyTip hideText">{{model.listModels[key].name}}</td>
           <td>{{model.listModels[key].version}}</td>
-          <td>{{model.listModels[key].numMols}}</td>
+
+          <!-- <td>{{model.listModels[key].numMols}}</td>
           <td>{{model.listModels[key].variables}}</td>
-          <td class="text-capitalize text-truncate iffyTip hideText">{{model.listModels[key].type}}</td>
+          <td class="text-capitalize text-truncate iffyTip hideText">{{model.listModels[key].type}}</td> -->
+
+          <td>{{model.listModels[key].maturity}}</td>
+          <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_type}}</td>
+          <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_subtype}}</td>
+          <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_endpoint}}</td>
+          <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_species}}</td>
+
         </tr>
       </tbody>
       <tfoot>
         <tr>
           <th></th>
           <th>Name</th>
-          <th>Version</th>
-          <th>#Molecules</th>
-          <th>#Variables</th>3
-          <th>Type</th>
+          <th>Ver</th>
+          <th>Maturity</th>
+          <th>Type</th>3
+          <th>Subtype</th>
+          <th>Endpoint</th>
+          <th>Species</th>
         </tr>
       </tfoot>
     </table>
