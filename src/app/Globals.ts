@@ -23,6 +23,7 @@ export class Model {
   delta: any = {};
   trainig_models = [];
   listModels = {};
+  listLabels = {};
   trained_models = [];
   selectedItems = [];
   page = 0;

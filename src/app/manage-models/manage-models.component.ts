@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Manager, Model, Globals } from '../Globals';
 import { CommonService } from '../common.service';
 import { ManageModelService } from './manage-models.service';
@@ -15,7 +15,7 @@ declare var $: any;
   templateUrl: './manage-models.component.html',
   styleUrls: ['./manage-models.component.css']
 })
-export class ManageModelsComponent implements OnInit {
+export class ManageModelsComponent {
 
   modelName: string;
   objectKeys = Object.keys;
@@ -30,15 +30,13 @@ export class ManageModelsComponent implements OnInit {
               public func: CommonFunctions) { }
 
 
-  ngOnInit() {
-  }
-
   buildModel(name: string, version: string) {
     const modalRef = this.modalService.open(BuilderComponent, {windowClass : 'modalClass'});
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.version = version;
     
   }
+
   /**
    * Creates a new model with the given name and informs the user with a toastr
    */
@@ -67,6 +65,29 @@ export class ManageModelsComponent implements OnInit {
     } else {
         alert('Invalid name');
     }
+  }
+
+  labelModel() {
+    const imodel = this.model.listModels[this.model.name+'-'+String(this.model.version)];
+    let labelDelta = {
+      maturity : imodel.maturity,
+      type : imodel.bio_type,
+      subtype : imodel.bio_subtype,
+      endpoint : imodel.bio_endpoint,
+      species : imodel.bio_species
+    };
+    let delta = JSON.stringify(labelDelta);
+  
+    this.service.updateLabels(this.model.name, this.model.version, delta).subscribe(
+      result => {
+        this.toastr.success('Model ' + this.model.name + '.v' + this.model.version , 'LABELS UPDATED', {
+          timeOut: 5000, positionClass: 'toast-top-right'});
+      },
+      error => {
+        alert('Error updating labels');
+      }
+    );
+
   }
 
   deleteModel() {

@@ -34,8 +34,8 @@ export class ManageModelService {
     const url: string = environment.baseUrl_manage + 'model/' + model;
     return this.http.put(url,null);
   }
-  importModel(): Observable<any> {
 
+  importModel(): Observable<any> {
     const formData = new FormData();
     formData.append('model', this.manager.file);
     // formData.append('parameters',  this.model.parameters);
@@ -44,8 +44,11 @@ export class ManageModelService {
 
   }
 
-  /*exportModel(model string): Observable<Blob> {
-    const url: string = environment.baseUrl_manage + 'model/' + model + '/export';
-    return this.http.get(url, {responseType: 'blob'});
-  }*/
+  updateLabels(model: string, version: number, labels: string) {
+      const formData = new FormData();
+      formData.append('labels', labels);
+      const url: string = environment.baseUrl_manage + 'model/' + model +'/version/' + version + '/labels';
+      return this.http.post(url, formData);
+  }
+
 }

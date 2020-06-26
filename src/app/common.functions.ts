@@ -141,6 +141,36 @@ export class CommonFunctions {
               // if list reading was correct num_models == 0
               if (num_models <= 0) {
 
+                // compile a list of labels, required for the selectors
+                let labelCollection = {
+                  bio_type : [''],
+                  bio_subtype : [''],
+                  bio_endpoint : [''],
+                  bio_species : [''],
+                };
+                for (const imodel of Object.keys(this.model.listModels)){
+                  const modelIndex = this.model.listModels[imodel];
+                  if (labelCollection.bio_type.indexOf(modelIndex.bio_type) == -1){
+                    labelCollection.bio_type.push(modelIndex.bio_type);
+                  } 
+                  if (labelCollection.bio_subtype.indexOf(modelIndex.bio_subtype) == -1){
+                    labelCollection.bio_subtype.push(modelIndex.bio_subtype);
+                  } 
+                  if (labelCollection.bio_endpoint.indexOf(modelIndex.bio_endpoint) == -1){
+                    labelCollection.bio_endpoint.push(modelIndex.bio_endpoint);
+                  } 
+                  if (labelCollection.bio_species.indexOf(modelIndex.bio_species) == -1){
+                    labelCollection.bio_species.push(modelIndex.bio_species);
+                  } 
+                }
+                labelCollection.bio_type.sort();
+                labelCollection.bio_subtype.sort();
+                labelCollection.bio_endpoint.sort();
+                labelCollection.bio_species.sort();
+
+                this.model.listLabels = labelCollection;
+
+
                 let currentPage = 0;
                 // console.log ('rendering: ', this.model.name, this.model.version);
                 
