@@ -45,10 +45,10 @@ export class ManageModelService {
   }
 
   updateLabels(model: string, version: number, labels: string) {
-      const formData = new FormData();
-      formData.append('labels', labels);
-      const url: string = environment.baseUrl_manage + 'model/' + model +'/version/' + version + '/labels';
-      return this.http.post(url, formData);
-  }
+    const formData = new FormData();
+    formData.append('labels', labels);
+    const url: string = environment.baseUrl_manage + 'model/' + model +'/version/' + version + '/labels';
+    return this.http.post(url, formData);
+}
 
 }

@@ -1,0 +1,135 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Edit model labels for <span class="model_name">'{{this.model.name}} v.{{this.model.version}}'</span></h5>
+    <button type="button" class="close" (click)="cancelInput()">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body"  *ngIf="model.name != undefined">
+
+    <div class="form-group col">
+
+    <div class="form-row">
+        <div class="form-group col-md-8">
+        <label for="maturity_sel" class="bmd-label-floating">Model maturity</label>
+        <select id="maturity_sel" class="form-control" [(ngModel)]="this.model.listModels[model.name+'-'+model.version].maturity">
+            <option *ngFor="let value of ['','dev','mature','validated']" [value]='value'>
+            <div *ngIf="value!=null">
+                {{value}}
+            </div>   
+            </option>
+        </select>
+        </div>
+    </div>
+    
+
+    <!-- endpoint type -->
+    <div class="form-row">
+        
+        <div class="form-group col-md-8">
+        <label for="bio_type_sel">Endpoint type</label>
+        <select id="bio_type_sel" class="form-control" 
+            [(ngModel)]="this.model.listModels[model.name+'-'+model.version].bio_type" 
+            (ngModelChange)="labelChange()">
+            <option *ngFor="let value of this.model.listLabels['bio_type']" [value]='value'>
+            <div *ngIf="value!=null">
+                {{value}}
+            </div>   
+            </option>
+        </select>
+        </div>
+        
+        <div class="form-group col-md-4">
+        <label for="bio_type_inp">new type</label>
+        <input type="text" pattern=".{3,15}" required title="3 to 15 chars" class="form-control" id="bio_type_inp" 
+            [(ngModel)]="this.model.listModels[model.name+'-'+model.version].bio_type"
+            (ngModelChange)="labelChange()"> 
+        </div>
+    </div>
+    <!-- endpoint type end-->
+
+    <!-- endpoint subtype -->
+    <div class="form-row">
+
+        <div class="form-group col-md-8">
+        <label for="bio_subtype_sel">Endpoint subtype</label>
+        <select id="bio_subtype_sel" class="form-control" 
+            [(ngModel)]="this.model.listModels[model.name+'-'+model.version].bio_subtype"
+            (ngModelChange)="labelChange()">
+            <option *ngFor="let value of this.model.listLabels['bio_subtype']" [value]='value'>
+            <div *ngIf="value!=null">
+                {{value}}
+            </div>   
+            </option>
+        </select>
+        </div>
+        
+        <div class="form-group col-md-4">
+        <label for="bio_subtype_inp">new subtype</label>
+        <input type="text" pattern=".{3,15}" required title="3 to 15 chars" class="form-control" id="bio_subtype_inp" 
+            [(ngModel)]="this.model.listModels[model.name+'-'+model.version].bio_subtype"
+            (ngModelChange)="labelChange()">
+        </div>
+    </div>
+    <!-- endpoint subtype end -->
+
+    <!-- endpoint name -->
+    <div class="form-row">
+
+        <div class="form-group col-md-8">
+        <label for="bio_endpoint_sel">Endpoint name</label>
+        <select id="bio_endpoint_sel" class="form-control" 
+            [(ngModel)]="this.model.listModels[model.name+'-'+model.version].bio_endpoint"
+            (ngModelChange)="labelChange()">
+            <option *ngFor="let value of this.model.listLabels['bio_endpoint']" [value]='value'>
+            <div *ngIf="value!=null">
+                {{value}}
+            </div>   
+            </option>
+        </select>
+        </div>
+        
+        <div class="form-group col-md-4">
+        <label for="bio_endpoint_inp">new endpoint</label>
+        <input type="text" pattern=".{3,15}" required title="3 to 15 chars" class="form-control" id="bio_endpoint" 
+            [(ngModel)]="this.model.listModels[model.name+'-'+model.version].bio_endpoint"
+            (ngModelChange)="labelChange()">
+        </div>
+    </div>
+    <!-- endpoint name end -->
+
+    <!-- species -->
+    <div class="form-row">
+
+        <div class="form-group col-md-8">
+        <label for="bio_species_sel">Species</label>
+        <select id="bio_species_sel" class="form-control" 
+            [(ngModel)]="this.model.listModels[model.name+'-'+model.version].bio_species"
+            (ngModelChange)="labelChange()">
+            <option *ngFor="let value of this.model.listLabels['bio_species']" [value]='value'>
+            <div *ngIf="value!=null">
+                {{value}}
+            </div>   
+            </option>
+        </select>
+        </div>
+        
+        <div class="form-group col-md-4">
+        <label for="bio_species_inp">new species</label>
+        <input type="text" pattern=".{3,15}" required title="3 to 15 chars" class="form-control" id="bio_species" 
+            [(ngModel)]="this.model.listModels[model.name+'-'+model.version].bio_species"
+            (ngModelChange)="labelChange()">
+        </div>
+    </div>
+    <!-- species end -->
+
+    </div>
+
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancelInput()">Cancel</button>
+    <button type="button" class="btn btn-primary" [disabled]="!isvalid" (click)="applyLabels()">Apply Labels</button>
+</div>
+
+

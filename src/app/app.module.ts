@@ -33,6 +33,7 @@ import { PlotlyModule } from 'angular-plotly.js';
 import { ModelDocumentationComponent } from './model-documentation/model-documentation.component';
 import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
 import { initializer } from './utils/app-init';
+import { LabelerComponent } from './labeler/labeler.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -64,7 +65,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ManageModelsComponent,
     ManagePredictionsComponent,
     ConfusionMatrixComponent,
-    ModelDocumentationComponent
+    ModelDocumentationComponent,
+    LabelerComponent
   ],
   imports: [
     BrowserModule,

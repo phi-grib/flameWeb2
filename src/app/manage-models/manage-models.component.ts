@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderComponent} from '../builder/builder.component';
+import { LabelerComponent} from '../labeler/labeler.component';
 import { PredictorComponent} from '../predictor/predictor.component';
 import { CommonFunctions } from '../common.functions';
 declare var $: any;
@@ -34,7 +35,12 @@ export class ManageModelsComponent {
     const modalRef = this.modalService.open(BuilderComponent, {windowClass : 'modalClass'});
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.version = version;
-    
+  }
+
+  labelModel(name: string, version: string) {
+    const modalRef = this.modalService.open(LabelerComponent, {windowClass : 'modalClass'});
+    modalRef.componentInstance.name = name;
+    modalRef.componentInstance.version = version;
   }
 
   /**
@@ -67,29 +73,7 @@ export class ManageModelsComponent {
     }
   }
 
-  labelModel() {
-    const imodel = this.model.listModels[this.model.name+'-'+String(this.model.version)];
-    let labelDelta = {
-      maturity : imodel.maturity,
-      type : imodel.bio_type,
-      subtype : imodel.bio_subtype,
-      endpoint : imodel.bio_endpoint,
-      species : imodel.bio_species
-    };
-    let delta = JSON.stringify(labelDelta);
   
-    this.service.updateLabels(this.model.name, this.model.version, delta).subscribe(
-      result => {
-        this.toastr.success('Model ' + this.model.name + '.v' + this.model.version , 'LABELS UPDATED', {
-          timeOut: 5000, positionClass: 'toast-top-right'});
-      },
-      error => {
-        alert('Error updating labels');
-      }
-    );
-
-  }
-
   deleteModel() {
 
     this.service.deleteModel(this.model.name).subscribe(
