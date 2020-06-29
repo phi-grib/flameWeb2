@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">Predict with model <span class="model_name">{{this.modelName}} ver.{{this.version}}</span></h4>
+  <h5 class="modal-title">Predict using model <span class="model_name">{{this.modelName}} ver.{{this.version}}</span></h5>
   <button type="button" class="close" aria-label="Cancel" (click)="activeModal.dismiss('Cross click')">
   <span aria-hidden="true">&times;</span>
   </button>
@@ -68,8 +68,8 @@
   </div>
 </div>
 <div class="modal-footer">
-<button type="button" class="btn btn-secondary btn-lg" (click)="activeModal.close('Close click')">Cancel</button>
-<button type="button" class="btn btn-primary btn-lg" (click)="predict()" [disabled]="(this.modelName==''|| this.file==undefined )">Predict</button>
+<button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cancel</button>
+<button type="button" class="btn btn-primary" (click)="predict()" [disabled]="(this.modelName==''|| this.file==undefined )">Predict</button>
 </div>
 
 

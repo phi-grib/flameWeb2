@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">Build</h4>
+    <h5 class="modal-title">Build model <span class="model_name">{{this.model.name}}</span></h5>
     <button type="button" class="close" aria-label="Cancel" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
     </button>
@@ -78,6 +78,6 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary btn-lg" (click)="activeModal.close('Close click')">Cancel</button>
-  <button type="button" class="btn btn-primary btn-lg"  (click)="buildModel(this.model.name, this.model.version)">Build</button>
+  <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cancel</button>
+  <button type="button" class="btn btn-primary"  (click)="buildModel(this.model.name, this.model.version)">Build</button>
 </div>

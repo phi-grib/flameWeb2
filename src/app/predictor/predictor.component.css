@@ -14,14 +14,6 @@ a {
     border-bottom: 1px solid #0076a3;
 }
    
-.model_name {
-    color:#e59300;
-    font-weight: bold;
-    font-size: 1.5rem;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
 .formControl{
     font-family: 'Barlow Semi Condensed', 'sans-serif';
     font-size: 20px;

@@ -64,42 +64,61 @@ export class CommonFunctions {
               // INFO OF EACH MODEL
               num_models++;
 
-              // fallback
-              this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
-                  variables: '-', type: '-', quality: {}, quantitative: false, conformal: false, ensemble: false, error: model.info};
+              // // fallback
+              // this.model.listModels[modelName + '-' + version] = {name: modelName, version: version, trained: false, numMols: '-',
+              //     variables: '-', type: '-', quality: {}, quantitative: false, conformal: false, ensemble: false, error: model.info};
 
               // model.info should be 
               // (a) dictionay with a code 0 or 1 and an error message
               // (b) an array of tuples of three elements 
               if (typeof(model.info) !== 'string') { // this should never happen, only in very old Flame versions
 
-                // option (a) some kind of controlled error
-                if (model.info['code'] == 0 || model.info['code'] == 1 ){
-                  this.model.listModels[modelName + '-' + version].error = model.info['message'];
-                  this.model.listModels[modelName + '-' + version].trained = false;
-                }
+                // process labels or assign default values
+                var dict_label = {};
 
-                // option (b) healthy 
+                if ('label' in model){
+                  dict_label = model.label;
+                }
                 else {
-                  const dict_info = {};
+                  dict_label = {  'maturity' : 'dev',
+                  'type' : 'unk',
+                  'subtype' : 'unk',
+                  'endpoint' : 'unk',
+                  'species' : 'unk' }
+                };
+                
+                // (a) the info file was not found
+                if (model.info['code'] == 0 || model.info['code'] == 1 ){
+
+                  this.model.listModels[modelName + '-' + version] = {
+                    error: model.info['message'],
+                    trained: false,
+                    name: modelName, 
+                    version: version, 
+                    numMols: '-',
+                    variables: '-', 
+                    type: '-', 
+                    quality: {}, 
+                    quantitative: false, 
+                    conformal: false, 
+                    ensemble: false, 
+                    maturity : dict_label['maturity'],
+                    bio_type : dict_label['type'],
+                    bio_subtype : dict_label['subtype'],
+                    bio_endpoint : dict_label['endpoint'],
+                    bio_species : dict_label['species'],
+                  };
+                }
+                // (b) healthy 
+                else {
                   
+                  // info
+                  const dict_info = {};
                   for (const aux of model.info) {
                     dict_info[aux[0]] = aux[2];
                   }
-                  
-                  var dict_label = {};
 
-                  if ('label' in model){
-                    dict_label = model.label;
-                  }
-                  else {
-                    dict_label = {  'maturity' : 'dev',
-                                    'type' : 'unk',
-                                    'subtype' : 'unk',
-                                    'endpoint' : 'unk',
-                                    'species' : 'unk' }
-                  };
-
+                  // quality
                   const quality = {};
                   for (const info of (Object.keys(dict_info))) {
                     if (typeof(dict_info[info]) === 'number') {

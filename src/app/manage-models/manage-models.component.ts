@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Manager, Model, Globals } from '../Globals';
-import { CommonService } from '../common.service';
 import { ManageModelService } from './manage-models.service';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../environments/environment';
@@ -22,7 +21,6 @@ export class ManageModelsComponent {
   objectKeys = Object.keys;
 
   constructor(public manage: Manager,
-              private commonService: CommonService,
               private modalService: NgbModal,
               public service: ManageModelService,
               public model: Model,
@@ -30,22 +28,24 @@ export class ManageModelsComponent {
               private toastr: ToastrService,
               public func: CommonFunctions) { }
 
-
   buildModel(name: string, version: string) {
-    const modalRef = this.modalService.open(BuilderComponent, {windowClass : 'modalClass'});
+    const modalRef = this.modalService.open(BuilderComponent, { windowClass : 'modalClass' });
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.version = version;
   }
 
   labelModel(name: string, version: string) {
-    const modalRef = this.modalService.open(LabelerComponent, {windowClass : 'modalClass'});
+    const modalRef = this.modalService.open(LabelerComponent, { size: 'lg'});
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.version = version;
   }
 
-  /**
-   * Creates a new model with the given name and informs the user with a toastr
-   */
+  newPrediction(name: string, version: string) {
+    const modalRef = this.modalService.open(PredictorComponent, { size: 'lg'});
+    modalRef.componentInstance.modelName = name;
+    modalRef.componentInstance.version = version;
+  }
+
   createModel(): void {
     const letters = /^[A-Za-z0-9_]+$/;
     if (this.modelName.match(letters)) {
@@ -73,9 +73,7 @@ export class ManageModelsComponent {
     }
   }
 
-  
   deleteModel() {
-
     this.service.deleteModel(this.model.name).subscribe(
       result => {
         this.toastr.success( 'Model ' + this.model.name + ' deleted', 'DELETED' , {
@@ -94,7 +92,6 @@ export class ManageModelsComponent {
   }
 
   deleteVersion() {
-
     this.service.deleteVersion(this.model.name, this.model.version).subscribe(
       result => {
         this.toastr.success( 'Model ' + this.model.name + '.v' + this.model.version + ' deleted', 'DELETED', {
@@ -107,7 +104,7 @@ export class ManageModelsComponent {
         
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
-        this.model.name = this.model.name;
+        // this.model.name = this.model.name;
         this.model.version = 0;
         this.func.getModelList();
       },
@@ -122,7 +119,6 @@ export class ManageModelsComponent {
   }
 
   cloneModel() {
-
     this.service.cloneModel(this.model.name).subscribe(
       result => {
         this.toastr.success('Model \'' + result['modelName'] + ' v.' + result['version'] + '\'', 'CREATED SUCCESFULLY', {
@@ -130,7 +126,7 @@ export class ManageModelsComponent {
         });
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
-        this.model.name = this.model.name;
+        // this.model.name = this.model.name;
         this.model.version = 0;
         this.func.getModelList();
       },
@@ -169,12 +165,6 @@ export class ManageModelsComponent {
           timeOut: 5000, positionClass: 'toast-top-right'});
       }
     );
-  }
-
-  newPrediction(name: string, version: string) {
-    const modalRef = this.modalService.open(PredictorComponent, { size: 'lg'});
-    modalRef.componentInstance.modelName = name;
-    modalRef.componentInstance.version = version;
   }
 
 }
