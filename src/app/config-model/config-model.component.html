@@ -34,14 +34,14 @@
 
   <div class="form-group col-md-4" >
     <div *ngIf="this.isConformalPossible() && this.model.parameters['conformal'].value" style="margin-top: 0px;">
-      <label class="bmd-label-static" for="conformalSignificance" style="margin-top: 0px;">conformalSignificance</label>
-      <input class="form-control" [(ngModel)]="this.model.parameters['conformalSignificance'].value" type='number' step="0.05">
-      <small id="conformalSignificance" class="text-muted">
-          {{this.model.parameters['conformalSignificance'].description}}
+      <label class="bmd-label-static" for="conformalConfidence" style="margin-top: 0px;">Conformal confidence</label>
+      <input class="form-control" [(ngModel)]="this.model.parameters['conformalConfidence'].value" type='number' step="0.05">
+      <small id="conformalConfidence" class="text-muted">
+          {{this.model.parameters['conformalConfidence'].description}}
       </small>
     </div>
   </div> 
-  <!--Conformal significance-->
+  <!--Conformal confidence-->
 </div>
 
 

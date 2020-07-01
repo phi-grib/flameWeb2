@@ -502,6 +502,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           this.modelBuildInfo[info[0]] = info[2];
         }
 
+        //support for legacy models using significance instead of confidence
+        if (this.modelBuildInfo['conformal_significance']!=undefined){
+          this.modelBuildInfo['conformal_confidence'] = 1.0 - this.modelBuildInfo["conformal_significance"];
+        }
+
         this.modelPresent = true;
 
         this.modelMatch = (this.modelBuildInfo['modelID'] === this.prediction.modelID);
