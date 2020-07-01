@@ -100,8 +100,8 @@ export class QuantitConformalComponent implements OnChanges {
 
     plotScatter = {
       layout: { 
-        width: 800,
-        height: 550,
+        width: 700,
+        height: 500,
         hovermode: 'closest',
         margin: { r: 10, t: 30, pad: 10 },
         showlegend: false,
@@ -116,8 +116,8 @@ export class QuantitConformalComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'Experimental',
-          titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 24 },
-          tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+          titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+          tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
         },
         yaxis: {
           range: [],
@@ -129,8 +129,8 @@ export class QuantitConformalComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'Model',
-          titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 24 },
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+          titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
         },
       },
       config: {
@@ -162,18 +162,15 @@ export class QuantitConformalComponent implements OnChanges {
             cauto: true,
             size: 14,
             colorbar: {
-              tickfont: {
-                family: 'Barlow Semi Condensed, sans-serif',
-                size: 20
-              }
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 }
             }
           },
           hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
         }
       ],
       layout: { 
-        width: 800,
-        height: 600,
+        width: 700,
+        height: 500,
         hovermode: 'closest',
         margin: { r: 10, t: 30, pad: 0  },
         showlegend: false,
@@ -186,14 +183,8 @@ export class QuantitConformalComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'PCA PC1',
-          titlefont: {
-            family: 'Barlow Semi Condensed, sans-serif',
-            size: 24,
-          },
-          tickfont: {
-            family: 'Barlow Semi Condensed, sans-serif',
-            size: 18,
-          },
+          titlefont: {family: 'Barlow Semi Condensed, sans-serif',size: 18},
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif',size: 16},
         },
         yaxis: {
           zeroline: true,
@@ -203,14 +194,8 @@ export class QuantitConformalComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'PCA PC2',
-          titlefont: {
-            family: 'Barlow Semi Condensed, sans-serif',
-            size: 24,
-          },
-          tickfont: {
-            family: 'Barlow Semi Condensed, sans-serif',
-            size: 18,
-          },
+          titlefont: {family: 'Barlow Semi Condensed, sans-serif',size: 18},
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif',size: 16},
         },
       },
       config: {
@@ -218,8 +203,8 @@ export class QuantitConformalComponent implements OnChanges {
         toImageButtonOptions: {
           format: 'svg', // one of png, svg, jpeg, webp
           filename: 'flame_scores',
-          width: 800,
-          height: 600,
+          width: 700,
+          height: 500,
           scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
         },
         modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
@@ -396,7 +381,7 @@ export class QuantitConformalComponent implements OnChanges {
             }
 
             // common to all plots in this component
-            const options = {'width': 300, 'height': 300};
+            const options = {'width': 300, 'height': 250};
             const smilesDrawer = new SmilesDrawer.Drawer(options);
 
             // scores plot                 

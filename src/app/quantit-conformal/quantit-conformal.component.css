@@ -43,7 +43,7 @@ table td {
   position: absolute; 
   display: block;
   right: 45%; 
-  top: 200%; 
+  top: 35%; 
   z-index: 1031;
 }
 
@@ -54,7 +54,7 @@ table td {
   right: 0;
   bottom: 0;
   background-color: #FAFAFA;
-  opacity: 0.8;
+  opacity: 0.6;
   z-index: 2;
   cursor: pointer;
 }

@@ -1,6 +1,6 @@
 <div class="row">
 
-    <div class="card w-100">
+    <div class="card w-100" style="min-height: 600px">
 
         <div id="overlay" *ngIf="!this.modelVisible">
             <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
@@ -95,6 +95,7 @@
                     <div id="container">
                     <!-- <div class="row justify-content-between"> -->
                         <div class="col-3" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
+                            <div class="model_name">{{modelName}} ver.{{modelVersion}}</div>
                             <table class="table table-sm">
                                 <tbody>
                                     <tr>
@@ -149,6 +150,7 @@
                     <!-- <div class="row justify-content-between"> -->
                     
                         <div class="col-3" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
+                            <div class="model_name">{{modelName}} ver.{{modelVersion}}</div>
                             <table class="table table-sm">
                                 <tbody>
                                     <tr>

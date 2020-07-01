@@ -29,7 +29,7 @@ export class ManageModelsComponent {
               public func: CommonFunctions) { }
 
   buildModel(name: string, version: string) {
-    const modalRef = this.modalService.open(BuilderComponent, { windowClass : 'modalClass' });
+    const modalRef = this.modalService.open(BuilderComponent, { windowClass : 'modalClass'});
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.version = version;
   }

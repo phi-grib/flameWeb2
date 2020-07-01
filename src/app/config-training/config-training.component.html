@@ -1,4 +1,3 @@
-
 <!--Input type-->
 <div class="form-row">
   <div class="form-group col-md-4">
@@ -24,8 +23,8 @@
 
 <div class="form-row">
   <div *ngFor="let key of infoSeries[this.model.parameters['input_type'].value]" class="form-group col-md-4 mb-4 is-filled">
-    <div *ngIf="this.model.parameters[key].writable" style="margin-top: 11px;">
-      <label class="bmd-label-static" for="key" style="margin-top: 11px;">{{key.replace('_',' ')}}</label>
+    <div *ngIf="this.model.parameters[key].writable">
+      <label class="bmd-label-static" for="key">{{key.replace('_',' ')}}</label>
         <input class="form-control" [(ngModel)]="this.model.parameters[key].value" *ngIf="this.model.parameters[key].object_type==='int'" id="key" type='number'  >
         <input class="form-control" [(ngModel)]="this.model.parameters[key].value" *ngIf="this.model.parameters[key].object_type==='float'" id="key" type='number' step=0.01 >
         <input class="form-control" [(ngModel)]="this.model.parameters[key].value" *ngIf="this.model.parameters[key].object_type==='string'" id="key" type='text'>
@@ -62,6 +61,5 @@
     <small id="key" class="text-muted">
       {{this.model.parameters[key].description}}
     </small>
-    <!--<span class="bmd-help">{{this.model.parameters['computeMD_method'].description}}</span>--> 
   </div>
 </div>
