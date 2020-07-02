@@ -245,6 +245,13 @@ export class CommonFunctions {
                   me.model.pagelen =table.page.len()
                 });
 
+                // table.$('td').tooltip( {
+                //   "delay": 0,
+                //   "track": true,
+                //   "fade": 100
+                // } );
+                
+
                 if (currentPage != 0) {
                   table.page(currentPage).draw('page');
                 }
