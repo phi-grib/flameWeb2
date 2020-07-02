@@ -28,10 +28,9 @@
           [ngClass]="{'selected': (model.listModels[key].name===this.model.name) && (model.listModels[key].version===this.model.version),
                       'version': model.listModels[key].version > 0}"
           (click)= "this.func.selectModel(model.listModels[key].name, model.listModels[key].version, model.listModels[key].modelID, model.listModels[key].trained,model.listModels[key].type,model.listModels[key].quantitative
-          , model.listModels[key].conformal, model.listModels[key].ensemble, model.listModels[key].error)"
-          >
+          , model.listModels[key].conformal, model.listModels[key].ensemble, model.listModels[key].error)">
           <td class="text-center">
-            <i class = "fas" 
+            <!-- <i class = "fas" 
                         [ngClass]="{'fa-grip-lines': model.listModels[key].type.indexOf('qualitative') > -1 ||
                                           model.listModels[key].type.indexOf('majority') > -1,
                         'fa-circle': model.listModels[key].type.indexOf('quantitative') >-1 ||
@@ -41,11 +40,22 @@
                         'fa-times': model.listModels[key].type == '-',
                         'faa-flash animated': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version)}"
                         [ngStyle]="{'color': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version) ? '#E69400' : (model.listModels[key].trained ? '#51cf66' : 'red' ) }" 
+                        aria-hidden="true"></i>  -->
+            <i class = "fas" 
+                        [ngClass]="{
+                          'fa-grip-lines': !model.listModels[key].quantitative,
+                          'fa-circle': model.listModels[key].quantitative,
+                          'fa-times': model.listModels[key].type == '-',
+                          'faa-flash animated': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version)}"
+                        [ngStyle]="{'color': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version) ? '#E69400' : (model.listModels[key].trained ? '#51cf66' : 'red' ) }" 
                         aria-hidden="true"></i> 
           </td>
 
-          <td class="text-truncate iffyTip hideText">{{model.listModels[key].name}}</td>
-          <td>{{model.listModels[key].version}}</td>
+          <td title="{{model.listModels[key].type}} conformal: {{model.listModels[key].conformal}} | {{model.listModels[key].numMols}} mols | {{model.listModels[key].variables}} vars ">
+          {{model.listModels[key].name}}
+          </td>
+          
+            <td>{{model.listModels[key].version}}</td>
 
           <!-- <td>{{model.listModels[key].numMols}}</td>
           <td>{{model.listModels[key].variables}}</td>
