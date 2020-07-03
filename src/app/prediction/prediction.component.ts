@@ -593,8 +593,18 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         this.plotComboQ.data[1].y[i] = varlist[1]+'.v'+varlist[2];
         this.plotComboQ.data[1].x[i] = this.predictionResult.values[this.molIndex];
       }
-      if (this.predictionResult['ensemble_confidence']){
-        const cilist = this.predictionResult.ensemble_confidence[this.molIndex];
+      var drawCI = false;
+      if (this.predictionResult['ensemble_ci']){
+        drawCI = true
+        var cilist = this.predictionResult.ensemble_ci[this.molIndex];
+      }
+      else {  // support for legacy models where we used ensemble_confidence
+         if (this.predictionResult['ensemble_confidence']){
+          drawCI = true
+          var cilist = this.predictionResult.ensemble_confidence[this.molIndex];
+         }
+      }
+      if (drawCI){
         for (let i=0; i<this.predictionResult.var_nam.length; i++) {
           this.plotComboQ.data[0].error_x.array[i] = cilist[1+(i*2)] - xi[i];
           this.plotComboQ.data[0].error_x.arrayminus[i] = xi[i] - cilist[i*2];
@@ -613,7 +623,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             j++;
           }
         }
-
       }
     }
     // Qualitative
@@ -626,8 +635,19 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       this.plotComboC.data[1].y = [];
 
       // Conformal, add classes
-      if (this.predictionResult.ensemble_confidence) {
-        const class_list = this.predictionResult.ensemble_confidence[this.molIndex];
+      var drawCI = false;
+      if (this.predictionResult['ensemble_ci']){
+        drawCI = true
+        var class_list = this.predictionResult.ensemble_ci[this.molIndex];
+      }
+      else {  // support for legacy models where we used ensemble_confidence
+         if (this.predictionResult['ensemble_confidence']){
+          drawCI = true
+          var class_list = this.predictionResult.ensemble_confidence[this.molIndex];
+         }
+      }
+
+      if (drawCI) {
         for (let i=0; i<this.predictionResult.var_nam.length; i++) {
           const varlist=String(this.predictionResult.var_nam[i]).split(':');
           this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
