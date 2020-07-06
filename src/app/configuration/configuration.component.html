@@ -1,0 +1,26 @@
+<div class="container mt-5">
+    <div class="row align-items-centermt-4">
+        <div class="col-6">   
+            <div class="form-row">
+                <label class="bmd-label-floating" for="modroot">Model root directory</label>
+                <input class="form-control" [(ngModel)]="this.modelRoot" id="modroot" type='text' placeholder="this.modelRoot">
+                <br>
+                <br>
+                <button type="button" class="btn btn-primary"  [ngClass]="{'disabled': this.modelRoot === undefined }" (click) = "applyChanges()" >Apply changes</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row align-items-centermt-4">
+        <div class="col-6">   
+            <h5>About...</h5>
+            <p>Flame version 0.9.0</p>
+            <p>Authors: Manuel Pastor, José Carlos Gómez Tamayo, Biel Stela, Ignacio Pasamontes</p>
+            <p>PharmacoInformatics laboratory (https://grib.upf.edu)</p>
+            <p>Flame is Open Source, distributed under license MIT</p>
+        </div>
+    </div>
+
+
+</div>
