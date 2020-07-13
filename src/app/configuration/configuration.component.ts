@@ -34,7 +34,7 @@ export class ConfigurationComponent implements OnInit {
       result => {
           this.modelRoot = result[0];
           this.flameConf = result[1];
-          console.log(result);
+          // console.log(result);
       },
       error => {
           alert('Error obtaining Flame configuration');
@@ -43,10 +43,24 @@ export class ConfigurationComponent implements OnInit {
   }
 
   applyChanges(){
-    console.log(this.modelRoot);
+    // console.log(this.modelRoot);
+    // console.log(location.href)
     this.confservice.setConfiguration(this.modelRoot).subscribe(
       result => {
-        window.location.reload();
+
+        // the best method to refresh the whole app is reloading the page
+        var http_page = location.href;
+        const n = http_page.lastIndexOf("static/");
+
+        // if the page http does not contain "static"
+        if  (n == -1){
+          window.location.reload();
+        }
+        // else, remove the static and reload without
+        else {
+          location.assign(http_page.slice(0,n));
+        }
+
         // this.model.listModels = {};
         // $('#dataTableModels').DataTable().destroy();
         // this.func.getModelList();
