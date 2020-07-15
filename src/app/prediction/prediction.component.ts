@@ -125,7 +125,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             color: '#6be831',
             width: 3
           }
-
         },
         hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
       },
@@ -340,6 +339,79 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   
   message = '';
   
+  bwcolorscale = [
+    [0.0, 'rgb(160, 160, 160)'],
+    [0.5, 'rgb(160, 160, 160)'],
+    [1.0, 'rgb(160, 160, 160)'],
+  ];
+
+  public changeProjectStyle (value:string) {
+    var update0 = {};
+    var update1 = {};
+    
+    const backup_colors = this.plotScores.data[0].marker.color;
+
+    if (value=='points') {
+      
+      update0 = {
+        marker: {
+          color: backup_colors,
+          opacity: 0.6,
+          size: 10,
+          colorscale: this.bwcolorscale, 
+          showscale: this.isQuantitative, 
+          cauto: true,
+          colorbar: {
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+          }
+        }
+      };
+      update1 =  {
+        mode: 'markers', 
+        marker: {
+          symbol: 'circle',
+          color: 'Red',
+          opacity: 0.6,
+          size: 14,
+        }
+      };
+    }
+    else {
+      var newcolorscale = 'Bluered';
+      if (this.isQuantitative) newcolorscale = 'RdBu';
+
+      update0 = {
+        marker: {
+          color: backup_colors,
+          opacity: 0.6,
+          size: 10,
+          colorscale: newcolorscale,
+          showscale: this.isQuantitative, 
+          cauto: true,
+          colorbar: {
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+          }
+        }
+      }
+
+      update1 = {
+        mode: 'markers+text', 
+        marker: {
+          symbol: 'circle-open',
+          color: '#6be831',
+          opacity: 1,
+          size: 14,
+          line: {
+            color: '#6be831',
+            width: 3
+          }
+        },
+      };
+    }
+    PlotlyJS.restyle('scoresPreDIV', update0, [0])
+    PlotlyJS.restyle('scoresPreDIV', update1, [1])
+  }
+
   drawReportHeader () {
     const options = {'width': 600, 'height': 300};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
@@ -420,6 +492,27 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.modelBuildInfo = {};
     this.predictData[0].r = [0, 0, 0, 0];
     this.predictionError = '';
+
+    this.plotScores.data[0].marker = {
+            color: [],
+            opacity: 0.6,
+            size: 10,
+            colorscale: 'RdBu', 
+            showscale: true, 
+            cauto: true,
+            colorbar: {
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+            }
+          };
+    this.plotScores.data[1].mode = 'markers+text';
+    this.plotScores.data[1].marker = {
+            color: '#6be831',
+            symbol: 'circle-open',
+            opacity: 1,
+            size: 14,
+            line: {color: '#6be831', width: 3 }
+          };
+
     this.plotScores.data[0].x = [];
     this.plotScores.data[0].y = [];
     this.plotScores.data[0].text = [];
@@ -434,6 +527,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.getDocumentation();  
     this.getPrediction();
     this.getValidation();
+
+ 
   }
 
   tabClickHandler(info: any): void {
@@ -487,7 +582,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             }
             else {
               this.plotScores.data[0].marker.colorscale= 'Bluered';
-            } 
+            }; 
+            
           }, 100);
         }
       }
@@ -709,6 +805,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             this.plotScores.data[1].text = result['obj_nam'];
             this.plotScores.data[1].meta = result['values'];
           };
+
         }, 100);
 
         this.predictionResult = result;

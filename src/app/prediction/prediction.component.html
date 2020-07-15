@@ -445,7 +445,15 @@
                   <canvas id="scores_canvas_ref"></canvas>
                   <canvas id="scores_canvas_pre"></canvas>
                 </div>
-               <div id="scoresPreDIV"></div>
+                <div class="col">
+                  <label for="projectStyle">Style</label>
+                  <select id="projectStyle" (change)="changeProjectStyle($event.target.value)">
+                    <option value='names'>circles and names</option>
+                    <option value='points'>dots</option>
+                  </select>
+                 <div id="scoresPreDIV"></div>
+                </div>
+
               </div>
             </div>
           </div>
