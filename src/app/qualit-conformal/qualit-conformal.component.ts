@@ -253,6 +253,18 @@ export class QualitConformalComponent implements OnChanges {
             this.plotScores.data[0].y = info['PC2'];
             this.plotScores.data[0].text = info['obj_nam'];
             this.plotScores.data[0].marker.color = info['ymatrix'];
+
+            if ('VarX' in info) {
+              this.plotScores.layout.xaxis.title = 'PCA PC1 ('+String(100.0*(info['VarX'][0]).toFixed(3))+'% var)';
+              this.plotScores.layout.yaxis.title = 'PCA PC2 ('+String(100.0*(info['VarX'][1]).toFixed(3))+'% var)';
+              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+            } else {
+              this.plotScores.layout.xaxis.title = 'PCA PC1'
+              this.plotScores.layout.yaxis.title = 'PCA PC2'
+              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+            }
           }
 
           // INFO ABOUT VALIDATION
