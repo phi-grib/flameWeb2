@@ -81,7 +81,21 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       // responsive: true,
         displayModeBar: false
       }
-  };  
+    };  
+    
+    bwcolorscale = [
+      [0.0, 'rgb(160, 160, 160)'],
+      [0.5, 'rgb(160, 160, 160)'],
+      [1.0, 'rgb(160, 160, 160)'],
+    ];
+  
+    flatcolorscale = [
+      [0.0, 'rgb(107, 232, 49)'],
+      [0.5, 'rgb(107, 232, 49)'],
+      [1.0, 'rgb(107, 232, 49)'],
+    ];
+
+    // [0.1, '#6be831'],
 
   plotScores = {
     data: [
@@ -117,8 +131,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         },
         textposition: 'top right',
         marker: {
-          color: '#6be831',
+          // color: '#6be831',
+          color: [],
           symbol: 'circle-open',
+          colorscale: this.flatcolorscale, 
+          showscale: true, 
           opacity: 1,
           size: 14,
           line: {
@@ -339,27 +356,25 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   
   message = '';
   
-  bwcolorscale = [
-    [0.0, 'rgb(160, 160, 160)'],
-    [0.5, 'rgb(160, 160, 160)'],
-    [1.0, 'rgb(160, 160, 160)'],
-  ];
 
   public changeProjectStyle (value:string) {
     var update0 = {};
     var update1 = {};
     
-    const backup_colors = this.plotScores.data[0].marker.color;
+    const backup_colors0 = this.plotScores.data[0].marker.color;
+    const backup_colors1 = this.plotScores.data[1].marker.color;
 
     if (value=='points') {
       
+      // grey background
       update0 = {
         marker: {
-          color: backup_colors,
+          color: backup_colors0,
           opacity: 0.6,
           size: 10,
           colorscale: this.bwcolorscale, 
-          showscale: this.isQuantitative, 
+          // showscale: this.isQuantitative, 
+          showscale: false, 
           cauto: true,
           colorbar: {
             tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
@@ -370,9 +385,15 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         mode: 'markers', 
         marker: {
           symbol: 'circle',
-          color: 'Red',
+          color: backup_colors1,
           opacity: 0.6,
           size: 14,
+          colorscale: 'RdBu',
+          showscale: true,
+          cauto: true,
+          colorbar: {
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+          }
         }
       };
     }
@@ -382,7 +403,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
       update0 = {
         marker: {
-          color: backup_colors,
+          color: backup_colors0,
           opacity: 0.6,
           size: 10,
           colorscale: newcolorscale,
@@ -398,11 +419,14 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         mode: 'markers+text', 
         marker: {
           symbol: 'circle-open',
-          color: '#6be831',
+          color: backup_colors1,
+          // color: '#6be831',
+          colorscale: this.flatcolorscale,
+          showscale: false,
           opacity: 1,
           size: 14,
           line: {
-            color: '#6be831',
+            // color: '#6be831',
             width: 3
           }
         },
@@ -506,7 +530,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           };
     this.plotScores.data[1].mode = 'markers+text';
     this.plotScores.data[1].marker = {
-            color: '#6be831',
+            color: [],
+            colorscale: this.flatcolorscale, 
             symbol: 'circle-open',
             opacity: 1,
             size: 14,
@@ -522,6 +547,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.plotScores.data[1].y = [];
     this.plotScores.data[1].text = [];
     this.plotScores.data[1].meta = [];
+    this.plotScores.data[1].marker.color = [];
+
 
     this.getInfo();
     this.getDocumentation();  
@@ -583,6 +610,18 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             else {
               this.plotScores.data[0].marker.colorscale= 'Bluered';
             }; 
+            if ('VarX' in info) {
+              this.plotScores.layout.xaxis.title = 'PCA PC1 ('+String(100.0*(info['VarX'][0]).toFixed(3))+'% var)';
+              this.plotScores.layout.yaxis.title = 'PCA PC2 ('+String(100.0*(info['VarX'][1]).toFixed(3))+'% var)';
+              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+            } else {
+              this.plotScores.layout.xaxis.title = 'PCA PC1'
+              this.plotScores.layout.yaxis.title = 'PCA PC2'
+              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+            }
+
             
           }, 100);
         }
@@ -804,8 +843,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             this.plotScores.data[1].y = result['PC2proj'];
             this.plotScores.data[1].text = result['obj_nam'];
             this.plotScores.data[1].meta = result['values'];
+            if ('PCDMODX' in result) {
+              this.plotScores.data[1].marker.color = result['PCDMODX'];
+            }
           };
-
+          
         }, 100);
 
         this.predictionResult = result;
