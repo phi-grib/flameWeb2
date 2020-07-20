@@ -449,7 +449,8 @@
                   <label for="projectStyle">Style</label>
                   <select id="projectStyle" (change)="changeProjectStyle($event.target.value)">
                     <option value='names'>circles and names</option>
-                    <option value='points'>dots</option>
+                    <option value='points'>dots (red)</option>
+                    <option *ngIf="this.dmodx==true" value='dmodx'>dots (colored by DModX)</option>
                   </select>
                  <div id="scoresPreDIV"></div>
                 </div>

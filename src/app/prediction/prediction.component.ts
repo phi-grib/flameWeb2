@@ -8,6 +8,7 @@ import 'datatables.net-bs4';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
+import { flatten } from '@angular/compiler';
 
 declare var $: any;
 
@@ -26,6 +27,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   predictionVisible = false;
   modelMatch = true;
   modelPresent = true;
+  dmodx = false;
   q_measures = ['TP', 'FP', 'TN', 'FN'];
   table: any = undefined;
   info = [];
@@ -89,13 +91,20 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       [1.0, 'rgb(160, 160, 160)'],
     ];
   
-    flatcolorscale = [
+    greencolorscale = [
       [0.0, 'rgb(107, 232, 49)'],
       [0.5, 'rgb(107, 232, 49)'],
       [1.0, 'rgb(107, 232, 49)'],
     ];
 
+    redcolorscale = [
+      [0.0, 'rgb(255, 0, 0)'],
+      [0.5, 'rgb(255, 0, 0)'],
+      [1.0, 'rgb(255, 0, 0)'],
+    ];
+
     // [0.1, '#6be831'],
+
 
   plotScores = {
     data: [
@@ -131,10 +140,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         },
         textposition: 'top right',
         marker: {
-          // color: '#6be831',
           color: [],
           symbol: 'circle-open',
-          colorscale: this.flatcolorscale, 
+          colorscale: this.greencolorscale, 
           showscale: true, 
           opacity: 1,
           size: 14,
@@ -179,27 +187,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     config: {
       // responsive: true,
       displaylogo: false,
-      // modeBarButtonsToAdd: [
-      //   { name: 'color toggler',
-      //     icon: this.icon1,
-      //     click: function(gd) {
-      //       if (this.colored) {
-      //         var update = {
-      //           'marker.colorscale': 'Greys'
-      //         };
-      //         PlotlyJS.restyle(gd, update, [0]);
-      //         PlotlyJS.restyle(gd, 'marker.color', 'red', [1]);
-      //         this.colored = false;
-      //       }
-      //       else {
-      //         var update = {
-      //           'marker.colorscale': 'Bluered'
-      //         };
-      //         PlotlyJS.restyle(gd, update, [0]);
-      //         PlotlyJS.restyle(gd, 'marker.color', 'black', [1]);
-      //         this.colored = true;
-      //       }
-      //     }}],
       toImageButtonOptions: {
         format: 'svg', // one of png, svg, jpeg, webp
         filename: 'flame_prediction',
@@ -364,7 +351,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     const backup_colors0 = this.plotScores.data[0].marker.color;
     const backup_colors1 = this.plotScores.data[1].marker.color;
 
-    if (value=='points') {
+    if (value=='points' || value=='dmodx') {
       
       // grey background
       update0 = {
@@ -373,7 +360,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           opacity: 0.6,
           size: 10,
           colorscale: this.bwcolorscale, 
-          // showscale: this.isQuantitative, 
           showscale: false, 
           cauto: true,
           colorbar: {
@@ -381,21 +367,45 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           }
         }
       };
-      update1 =  {
-        mode: 'markers', 
-        marker: {
-          symbol: 'circle',
-          color: backup_colors1,
-          opacity: 0.6,
-          size: 14,
-          colorscale: 'RdBu',
-          showscale: true,
-          cauto: true,
-          colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+
+      // red points if not DModX or colored points otherwyse
+      if (this.dmodx && value=='dmodx') {
+        update1 =  {
+          mode: 'markers', 
+          marker: {
+            color: backup_colors1,
+            symbol: 'circle',
+            opacity: 0.6,
+            size: 14,
+            colorscale: 'RdBu',
+            showscale: true,
+            cauto: true,
+            colorbar: {
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+            }
           }
-        }
-      };
+        };
+      }
+      else {
+        update1 =  {
+          mode: 'markers', 
+          marker: {
+            color: backup_colors1,
+            symbol: 'circle',
+            opacity: 0.6,
+            size: 14,
+            colorscale: this.redcolorscale,
+            showscale: false,
+            // cauto: true,
+            // colorbar: {
+            //   tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+            // }
+          }
+        };
+
+
+      }
+
     }
     else {
       var newcolorscale = 'Bluered';
@@ -420,13 +430,12 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         marker: {
           symbol: 'circle-open',
           color: backup_colors1,
-          // color: '#6be831',
-          colorscale: this.flatcolorscale,
+          colorscale: this.greencolorscale,
           showscale: false,
           opacity: 1,
           size: 14,
           line: {
-            // color: '#6be831',
+            color: '#6be831',
             width: 3
           }
         },
@@ -517,6 +526,10 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.predictData[0].r = [0, 0, 0, 0];
     this.predictionError = '';
 
+    this.plotScores.data[0].x = [];
+    this.plotScores.data[0].y = [];
+    this.plotScores.data[0].text = [];
+    this.plotScores.data[0].meta = [];
     this.plotScores.data[0].marker = {
             color: [],
             opacity: 0.6,
@@ -528,27 +541,21 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
             }
           };
+
+    this.plotScores.data[1].x = [];
+    this.plotScores.data[1].y = [];
+    this.plotScores.data[1].text = [];
+    this.plotScores.data[1].meta = [];
     this.plotScores.data[1].mode = 'markers+text';
     this.plotScores.data[1].marker = {
             color: [],
-            colorscale: this.flatcolorscale, 
+            colorscale: this.greencolorscale, 
+            showscale: false, 
             symbol: 'circle-open',
             opacity: 1,
             size: 14,
             line: {color: '#6be831', width: 3 }
           };
-
-    this.plotScores.data[0].x = [];
-    this.plotScores.data[0].y = [];
-    this.plotScores.data[0].text = [];
-    this.plotScores.data[0].meta = [];
-    this.plotScores.data[0].marker.color = [];
-    this.plotScores.data[1].x = [];
-    this.plotScores.data[1].y = [];
-    this.plotScores.data[1].text = [];
-    this.plotScores.data[1].meta = [];
-    this.plotScores.data[1].marker.color = [];
-
 
     this.getInfo();
     this.getDocumentation();  
@@ -845,7 +852,15 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             this.plotScores.data[1].meta = result['values'];
             if ('PCDMODX' in result) {
               this.plotScores.data[1].marker.color = result['PCDMODX'];
+              this.dmodx = true;
             }
+            else {
+              for (var i=0; i<result['obj_nam'].length; i++) {
+                this.plotScores.data[1].marker.color[i] = 0.0;
+              }
+              this.dmodx = false;
+            }
+
           };
           
         }, 100);
