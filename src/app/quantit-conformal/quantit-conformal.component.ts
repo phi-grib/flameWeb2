@@ -379,9 +379,9 @@ export class QuantitConformalComponent implements OnChanges {
               this.plotScores.data[0].meta = info['SMILES'];
               this.plotScores.data[0].marker.color = info['ymatrix'];
 
-              if ('VarX' in info) {
-                this.plotScores.layout.xaxis.title = 'PCA PC1 ('+String(100.0*(info['VarX'][0]).toFixed(3))+'% var)';
-                this.plotScores.layout.yaxis.title = 'PCA PC2 ('+String(100.0*(info['VarX'][1]).toFixed(3))+'% var)';
+              if ('SSX' in info) {
+                this.plotScores.layout.xaxis.title = 'PCA PC1 ('+String(100.0*(info['SSX'][0]).toFixed(3))+'% SSX)';
+                this.plotScores.layout.yaxis.title = 'PCA PC2 ('+String(100.0*(info['SSX'][1]).toFixed(3))+'% SSX)';
                 this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
                 this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
               } else {
