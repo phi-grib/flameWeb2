@@ -618,8 +618,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               this.plotScores.data[0].marker.colorscale= 'Bluered';
             }; 
             if ('SSX' in info) {
-              this.plotScores.layout.xaxis.title = 'PCA PC1 ('+String(100.0*(info['SSX'][0]).toFixed(3))+'% SSX)';
-              this.plotScores.layout.yaxis.title = 'PCA PC2 ('+String(100.0*(info['SSX'][1]).toFixed(3))+'% SSX)';
+              this.plotScores.layout.xaxis.title = 'PCA PC1 ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
+              this.plotScores.layout.yaxis.title = 'PCA PC2 ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
               this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
               this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
             } else {
@@ -628,7 +628,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
               this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
             }
-
             
           }, 100);
         }
