@@ -245,7 +245,8 @@
                 <div class="col-9 border" >
                   <!-- <span *ngIf="!this.modelBuildInfo['conformal']">-</span> -->
                   <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']" >{{(this.modelBuildInfo['conformal_confidence'])*100}}%CI: </span>
-                  <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">{{this.predictionResult.lower_limit[molIndex].toFixed(1)}} 
+                  <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">
+                        {{this.predictionResult.lower_limit[molIndex].toFixed(3)}} 
                      to {{this.predictionResult.upper_limit[molIndex].toFixed(3)}}</span>
                   <span *ngIf="this.modelBuildInfo['conformal'] && !this.modelBuildInfo['quantitative']">{{(this.modelBuildInfo['conformal_confidence'])*100}}% confidence</span>
 
