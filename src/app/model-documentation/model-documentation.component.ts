@@ -13,20 +13,20 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 
 export class ModelDocumentationComponent implements OnChanges {
-  
-  @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;files  = [];  
-  
-  constructor( public model: Model,
-               public service: ModelDocumentationService,
-               private toastr: ToastrService,
-               private commonService: CommonService,
-               private sanitizer: DomSanitizer) { }
-  
+
+  @ViewChild("fileUpload", { static: false }) fileUpload: ElementRef; files = [];
+
+  constructor(public model: Model,
+    public service: ModelDocumentationService,
+    private toastr: ToastrService,
+    private commonService: CommonService,
+    private sanitizer: DomSanitizer) { }
+
   @Input() modelName;
   @Input() modelVersion;
   @Input() modelID;
-  
-  
+
+
 
   modelDocumentation = undefined;
   downloadLink = undefined;
@@ -35,30 +35,30 @@ export class ModelDocumentationComponent implements OnChanges {
 
   levelLabels = ['General model information', 'Algorithms and software', 'Other information'];
 
-  docLevel = [  ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
-                  'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
-                  'Limits_applicability', 'Experimental_protocol', 'Model_availability',
-                  'Data_info'],
-                 ['Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
-                  'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics', 
-                  'Internal_validation_1', 'Internal_validation_2', 'External_validation',
-                  'Comments'],
-                 ['Other_related_models', 'Date_of_QMRF', 'Date_of_QMRF_updates',
-                  'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
-                  'Endpoint_data_quality_and_variability', 'Descriptor_selection']
-                 ];
-  
-  editLevel = [  ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
-                 'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
-                 'Limits_applicability', 'Experimental_protocol', 'Model_availability',
-                 'Data_info'],
-                ['Algorithm', 'Software', 'Descriptors', 'AD_method', 'AD_parameters',
-                 'Internal_validation_2', 'External_validation',
-                 'Comments'],
-                ['Other_related_models', 'Date_of_QMRF', 'Date_of_QMRF_updates',
-                 'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
-                 'Endpoint_data_quality_and_variability', 'Descriptor_selection']
-                ];
+  docLevel = [['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
+    'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
+    'Limits_applicability', 'Experimental_protocol', 'Model_availability',
+    'Data_info'],
+  ['Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
+    'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics',
+    'Internal_validation_1', 'Internal_validation_2', 'External_validation',
+    'Comments'],
+  ['Other_related_models', 'Date_of_QMRF', 'Date_of_QMRF_updates',
+    'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
+    'Endpoint_data_quality_and_variability', 'Descriptor_selection']
+  ];
+
+  editLevel = [['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
+    'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
+    'Limits_applicability', 'Experimental_protocol', 'Model_availability',
+    'Data_info'],
+  ['Algorithm', 'Software', 'Descriptors', 'AD_method', 'AD_parameters',
+    'Internal_validation_2', 'External_validation',
+    'Comments'],
+  ['Other_related_models', 'Date_of_QMRF', 'Date_of_QMRF_updates',
+    'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
+    'Endpoint_data_quality_and_variability', 'Descriptor_selection']
+  ];
 
   sectionActive: number;
   modelDocumentationBackup: any;
@@ -68,17 +68,17 @@ export class ModelDocumentationComponent implements OnChanges {
   ngOnChanges(): void {
     // console.log('documentation', this.modelID)
     this.getDocumentation();
-    
+
   }
 
-  isObject(val:any) {
+  isObject(val: any) {
     if (val === null) {
       return false;
     }
     return typeof val === 'object';
   }
 
-  cleanStr (str:string) {
+  cleanStr(str: string) {
     return str.replace(/_/g, ' ');
   }
 
@@ -86,25 +86,26 @@ export class ModelDocumentationComponent implements OnChanges {
     return typeof v === 'object' && v !== null && !(v instanceof Array) && !(v instanceof Date);
   }
 
-  editSection(val:number){
+  editSection(val: number) {
     this.sectionActive = val;
     // deep copy modelDocumentation. In case of cancel we will restore it
     this.modelDocumentationBackup = JSON.parse(JSON.stringify(this.modelDocumentation));
 
   }
 
-  cancelInput(){
+  cancelInput() {
     this.modelDocumentation = JSON.parse(JSON.stringify(this.modelDocumentationBackup));
   }
 
-  applyInput(){
+  applyInput() {
     let delta = JSON.stringify(this.genDelta(this.modelDocumentation));
     // console.log (delta)
 
     this.service.updateDocumentation(this.model.name, this.model.version, delta).subscribe(
       result => {
-        this.toastr.success('Model ' + this.model.name + '.v' + this.model.version , 'DOCUMENTATION UPDATED', {
-          timeOut: 5000, positionClass: 'toast-top-right'});
+        this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
+          timeOut: 5000, positionClass: 'toast-top-right'
+        });
       },
       error => {
         alert('Error updating documentation');
@@ -124,12 +125,12 @@ export class ModelDocumentationComponent implements OnChanges {
       else {
         dict_aux = {};
         for (const key2 of Object.keys(val)) {
-            if (!this.isDict(val[key2])){
-              dict_aux[key2] = val[key2];
-            }
-            else {
-              dict_aux[key2] = val[key2]['value'];
-            }
+          if (!this.isDict(val[key2])) {
+            dict_aux[key2] = val[key2];
+          }
+          else {
+            dict_aux[key2] = val[key2]['value'];
+          }
         }
         dict_out[key] = dict_aux;
       }
@@ -157,51 +158,46 @@ export class ModelDocumentationComponent implements OnChanges {
     this.documentationVisible = true;
   }
 
-  exportToFile(){
-    
+  exportToFile() {
+
     let order = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
-    'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
-   'Limits_applicability', 'Experimental_protocol', 'Model_availability',
-   'Data_info', 'Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
-   'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics', 
-   'Internal_validation_1', 'Internal_validation_2', 'External_validation',
-   'Comments', 'Other_related_models', 'Date_of_QMRF', 'Data_of_QMRF_updates',
-   'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
-   'Endpoint_data_quality_and_variability', 'Descriptor_selection'
-   ];
+      'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
+      'Limits_applicability', 'Experimental_protocol', 'Model_availability',
+      'Data_info', 'Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
+      'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics',
+      'Internal_validation_1', 'Internal_validation_2', 'External_validation',
+      'Comments', 'Other_related_models', 'Date_of_QMRF', 'Data_of_QMRF_updates',
+      'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
+      'Endpoint_data_quality_and_variability', 'Descriptor_selection'
+    ];
 
-    let finalDict = [];
-      for (let item of order){
-        console.log(item);
-        
-        finalDict.push({ item, value: JSON.stringify(this.modelDocumentation[item])})
-      };
-      console.log(finalDict);
-    let text = "";
-    for(var obj in finalDict){
-      if(finalDict.hasOwnProperty(obj)){
-      for(var prop in finalDict[obj]){
-          if(finalDict[obj].hasOwnProperty(prop)){
-             console.log(prop + ':' + finalDict[obj][prop]);
-             text = text + prop + ':' + finalDict[obj][prop] + "\n";
+    let finalDict = "";
+    for (let item of order) {
+      console.log(item);
+      console.log(typeof(this.modelDocumentation[item]));
+      let val = this.modelDocumentation[item];
+      if (typeof(val) != "string") {
+        finalDict = finalDict + item + "\t:\t" + JSON.stringify(val);
+      } else {
+        for (let key of val) {
+          if  (typeof(val[key]) != "string") {
+            finalDict = finalDict + key + "\t:\t" + JSON.stringify(val[key]);
+          } else {
+            for (let key2 of val[key]) {
+              finalDict = finalDict + key2 + "\t:\t" + JSON.stringify(val[key][key2]);
+            }
           }
+        }
       }
-    let re1 = /key:/gi;
-    let re2 = /value:/gi;
-    text = text.replace(re1, "");
-    text = text.replace(re2, "");
-  
-  }
-      
     }
-    console.log(text);
-    
-     let blob = new Blob([text], { type: 'text/yaml' });
-     
+    console.log(finalDict);
 
-    this.downloadLink =  this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-      //once the file is created the download link saves the file to the computer
-    }
+    let blob = new Blob([JSON.stringify(finalDict)], { type: 'text/yaml' });
+
+
+    this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+    //once the file is created the download link saves the file to the computer
+  }
 
   uploadFile(event) {
     if (event.target.files.length !== 1) {
@@ -210,15 +206,16 @@ export class ModelDocumentationComponent implements OnChanges {
       const reader = new FileReader();
       reader.onloadend = (e) => {
         console.log(this.modelDocumentation);
-        this.modelDocumentation =reader.result.toString();
+        this.modelDocumentation = reader.result.toString();
         let delta = JSON.stringify(this.genDelta(this.modelDocumentation));
-        
+
         this.service.updateDocumentation(this.model.name, this.model.version, delta).subscribe(
           result => {
-            this.toastr.success('Model ' + this.model.name + '.v' + this.model.version , 'DOCUMENTATION UPDATED', {
-              timeOut: 5000, positionClass: 'toast-top-right'});
-              console.log("fin update");
-              console.log(this.modelDocumentation);
+            this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
+              timeOut: 5000, positionClass: 'toast-top-right'
+            });
+            console.log("fin update");
+            console.log(this.modelDocumentation);
           },
           error => {
             alert('Error updating documentation');
@@ -228,7 +225,7 @@ export class ModelDocumentationComponent implements OnChanges {
       reader.readAsText(event.target.files[0]);
     }
   }
-  
 
-  
+
+
 }
