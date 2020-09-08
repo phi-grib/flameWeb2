@@ -8,8 +8,14 @@
         </div>
 
         <div class="accordion" id="docAccordion"  *ngIf="this.documentationVisible">
+                <a (click)=exportToFile() class="btn btn-ets-do" [href]= "downloadLink" download= "modelName.txt"
+                >Download to file</a>
+                <br>
+                <input class="btn btn-ets-do" type="file" name="files" (change)="uploadFile($event)" />
+                <p>lalala</p>
+            
 
-            <!-- block level 1 start -->
+                <!-- block level 1 start -->
             <div class="card">
                 <div class="card-header collapsed" id="headingOneDoc" data-toggle="collapse" data-target="#collapseOneDoc" aria-expanded="false" aria-controls="collapseOneDoc">
                     <h5 class="mb-0">
@@ -27,7 +33,9 @@
                             <tr style ="vertical-align: middle;">
                                 <th style="width: 25%"><button type="button" class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" 
                                     (click)=editSection(0) data-target="#docSection">Edit</button></th>
-                                <th style="width: 60%">Value</th>
+                                
+                                
+                                    <th style="width: 60%">Value</th>
                                 <th style="width: 15%" class="text-right" >Description</th>
                             </tr>
                         </thead>

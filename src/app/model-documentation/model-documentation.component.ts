@@ -1,8 +1,10 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { Model } from '../Globals';
 import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModelDocumentationService } from './model-documentation.service';
+import { DomSanitizer } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-model-documentation',
@@ -11,17 +13,24 @@ import { ModelDocumentationService } from './model-documentation.service';
 })
 
 export class ModelDocumentationComponent implements OnChanges {
-
+  
+  @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;files  = [];  
+  
   constructor( public model: Model,
                public service: ModelDocumentationService,
                private toastr: ToastrService,
-               private commonService: CommonService) { }
+               private commonService: CommonService,
+               private sanitizer: DomSanitizer) { }
   
   @Input() modelName;
   @Input() modelVersion;
   @Input() modelID;
+  
+  
 
   modelDocumentation = undefined;
+  downloadLink = undefined;
+  fileToUpload: File = null;
   public documentationVisible = false;
 
   levelLabels = ['General model information', 'Algorithms and software', 'Other information'];
@@ -59,6 +68,7 @@ export class ModelDocumentationComponent implements OnChanges {
   ngOnChanges(): void {
     // console.log('documentation', this.modelID)
     this.getDocumentation();
+    
   }
 
   isObject(val:any) {
@@ -136,6 +146,8 @@ export class ModelDocumentationComponent implements OnChanges {
         // for (var key in this.modelDocumentation) {
         //       console.log(key, this.modelDocumentation[key]);
         //   }
+        let data = JSON.stringify(this.modelDocumentation);
+        let blob = new Blob([data], { type: 'text/plain' });
 
       },
       error => {
@@ -145,4 +157,78 @@ export class ModelDocumentationComponent implements OnChanges {
     this.documentationVisible = true;
   }
 
+  exportToFile(){
+    
+    let order = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
+    'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
+   'Limits_applicability', 'Experimental_protocol', 'Model_availability',
+   'Data_info', 'Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
+   'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics', 
+   'Internal_validation_1', 'Internal_validation_2', 'External_validation',
+   'Comments', 'Other_related_models', 'Date_of_QMRF', 'Data_of_QMRF_updates',
+   'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
+   'Endpoint_data_quality_and_variability', 'Descriptor_selection'
+   ];
+
+    let finalDict = [];
+      for (let item of order){
+        console.log(item);
+        
+        finalDict.push({ item, value: JSON.stringify(this.modelDocumentation[item])})
+      };
+      console.log(finalDict);
+    let text = "";
+    for(var obj in finalDict){
+      if(finalDict.hasOwnProperty(obj)){
+      for(var prop in finalDict[obj]){
+          if(finalDict[obj].hasOwnProperty(prop)){
+             console.log(prop + ':' + finalDict[obj][prop]);
+             text = text + prop + ':' + finalDict[obj][prop] + "\n";
+          }
+      }
+    let re1 = /key:/gi;
+    let re2 = /value:/gi;
+    text = text.replace(re1, "");
+    text = text.replace(re2, "");
+  
+  }
+      
+    }
+    console.log(text);
+    
+     let blob = new Blob([text], { type: 'text/yaml' });
+     
+
+    this.downloadLink =  this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+      //once the file is created the download link saves the file to the computer
+    }
+
+  uploadFile(event) {
+    if (event.target.files.length !== 1) {
+      console.error('No file selected');
+    } else {
+      const reader = new FileReader();
+      reader.onloadend = (e) => {
+        console.log(this.modelDocumentation);
+        this.modelDocumentation =reader.result.toString();
+        let delta = JSON.stringify(this.genDelta(this.modelDocumentation));
+        
+        this.service.updateDocumentation(this.model.name, this.model.version, delta).subscribe(
+          result => {
+            this.toastr.success('Model ' + this.model.name + '.v' + this.model.version , 'DOCUMENTATION UPDATED', {
+              timeOut: 5000, positionClass: 'toast-top-right'});
+              console.log("fin update");
+              console.log(this.modelDocumentation);
+          },
+          error => {
+            alert('Error updating documentation');
+          }
+        );
+      };
+      reader.readAsText(event.target.files[0]);
+    }
+  }
+  
+
+  
 }
