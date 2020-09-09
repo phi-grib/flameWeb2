@@ -175,13 +175,7 @@ export class ModelDocumentationComponent implements OnChanges {
 
     let finalDict = "";
     for (let item of order) {
-      console.log(item);
-      console.log(typeof (this.modelDocumentation[item]));
-      
-      finalDict = this.getValue(this.modelDocumentation[item]);
-
-
-
+      finalDict = finalDict + item + "\t:\t" + this.getValue(this.modelDocumentation[item]);
       console.log(finalDict);
 
       let blob = new Blob([finalDict], { type: 'text/yaml' });
@@ -197,7 +191,7 @@ export class ModelDocumentationComponent implements OnChanges {
     } else {
       const reader = new FileReader();
       reader.onloadend = (e) => {
-        console.log(this.modelDocumentation);
+
         this.modelDocumentation = reader.result.toString();
         let delta = JSON.stringify(this.genDelta(this.modelDocumentation));
 
@@ -206,8 +200,6 @@ export class ModelDocumentationComponent implements OnChanges {
             this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
               timeOut: 5000, positionClass: 'toast-top-right'
             });
-            console.log("fin update");
-            console.log(this.modelDocumentation);
           },
           error => {
             alert('Error updating documentation');
@@ -220,22 +212,27 @@ export class ModelDocumentationComponent implements OnChanges {
   getValue(dict_in: {}) {
     let myValue = "";
     console.log(dict_in);
-    for (const key of Object.keys(dict_in)) {
-      console.log(dict_in[key]);
-      let val = dict_in[key]['value'];
-      if (!this.isDict(val)) {
-        myValue = myValue + key + ':' + val;
 
-      } else {
-        for (const key2 of Object.keys(val)) {
-          if (!this.isDict(val[key2])) {
-            myValue = myValue + key2 + '\t:\t' + val[key2]['value'];
+    let val = dict_in['value'];
+    if (!this.isDict(val)) {
+      myValue = myValue + val;
+    } else {
+      for (const key of Object.keys(val)) {
+        console.log(key);
+        if (!this.isDict(val[key])) {
+          myValue = myValue + val['value'];
+        } else {
+          for (const key2 of Object.keys(val[key])) {
+            console.log(key2);
+            if (!this.isDict(val[key][key2])) {
+              myValue = myValue + val[key]['value'];
+            }
           }
-
         }
       }
     }
-    myValue = myValue + '\n';
+
+    myValue = myValue + "\n";
     return myValue;
   }
 }
