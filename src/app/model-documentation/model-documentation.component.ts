@@ -4,6 +4,7 @@ import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModelDocumentationService } from './model-documentation.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { getValueInRange } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 
 @Component({
@@ -135,6 +136,7 @@ export class ModelDocumentationComponent implements OnChanges {
         dict_out[key] = dict_aux;
       }
     }
+
     return dict_out;
   }
 
@@ -174,33 +176,21 @@ export class ModelDocumentationComponent implements OnChanges {
     let finalDict = "";
     for (let item of order) {
       console.log(item);
-      console.log(typeof(this.modelDocumentation[item]));
-      let val = this.modelDocumentation[item];
-      if (typeof(val) == "string") {
-        finalDict = finalDict + item + "\t:\t" + JSON.stringify(this.getValue(val));
-      } else {
-        for (let key of val) {
-          if  (typeof(val[key]) == "string") {
-            finalDict = finalDict + key + "\t:\t" + JSON.stringify(this.getValue(val[key]));
-          // } else {
-          //   for (let key2 of val[key]) {
-          //     finalDict = finalDict + key2 + "\t:\t" + JSON.stringify(this.getValue(val[key][key2]));
-          //   }
-           }
-        }
-      }
-      finalDict = finalDict + "\n";
+      console.log(typeof (this.modelDocumentation[item]));
+      
+      finalDict = this.getValue(this.modelDocumentation[item]);
+
+
+
+      console.log(finalDict);
+
+      let blob = new Blob([finalDict], { type: 'text/yaml' });
+
+
+      this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+      //once the file is created the download link saves the file to the computer
     }
-    
-    console.log(finalDict);
-
-    let blob = new Blob([finalDict], { type: 'text/yaml' });
-
-
-    this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-    //once the file is created the download link saves the file to the computer
   }
-
   uploadFile(event) {
     if (event.target.files.length !== 1) {
       console.error('No file selected');
@@ -227,14 +217,27 @@ export class ModelDocumentationComponent implements OnChanges {
       reader.readAsText(event.target.files[0]);
     }
   }
-  getValue(dict_in){
+  getValue(dict_in: {}) {
     let myValue = "";
-    for (let key in dict_in){
-      if(key=="value"){
-        myValue = dict_in[key];
+    console.log(dict_in);
+    for (const key of Object.keys(dict_in)) {
+      console.log(dict_in[key]);
+      let val = dict_in[key]['value'];
+      if (!this.isDict(val)) {
+        myValue = myValue + key + ':' + val;
+
+      } else {
+        for (const key2 of Object.keys(val)) {
+          if (!this.isDict(val[key2])) {
+            myValue = myValue + key2 + '\t:\t' + val[key2]['value'];
+          }
+
+        }
       }
     }
+    myValue = myValue + '\n';
     return myValue;
   }
- 
 }
+
+
