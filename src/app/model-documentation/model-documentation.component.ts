@@ -211,19 +211,16 @@ export class ModelDocumentationComponent implements OnChanges {
   }
   getValue(dict_in: {}) {
     let myValue = "";
-    console.log(dict_in);
     try{
     let val = dict_in['value'];
     if (!this.isDict(val)) {
       myValue = myValue + val;
     } else {
       for (const key of Object.keys(val)) {
-        console.log(key);
         if (!this.isDict(val[key])) {
           myValue = myValue + val['value'];
         } else {
           for (const key2 of Object.keys(val[key])) {
-            console.log(key2);
             if (!this.isDict(val[key][key2])) {
               myValue = myValue + val[key]['value'];
             }
@@ -235,7 +232,7 @@ export class ModelDocumentationComponent implements OnChanges {
 
     myValue = myValue + "\n";
   }catch (e){
-    
+
   }
     return myValue;
   }
