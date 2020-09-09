@@ -212,7 +212,7 @@ export class ModelDocumentationComponent implements OnChanges {
   getValue(dict_in: {}) {
     let myValue = "";
     console.log(dict_in);
-
+    try{
     let val = dict_in['value'];
     if (!this.isDict(val)) {
       myValue = myValue + val;
@@ -231,8 +231,12 @@ export class ModelDocumentationComponent implements OnChanges {
         }
       }
     }
+  
 
     myValue = myValue + "\n";
+  }catch (e){
+    
+  }
     return myValue;
   }
 }
