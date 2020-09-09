@@ -176,23 +176,25 @@ export class ModelDocumentationComponent implements OnChanges {
       console.log(item);
       console.log(typeof(this.modelDocumentation[item]));
       let val = this.modelDocumentation[item];
-      if (typeof(val) != "string") {
-        finalDict = finalDict + item + "\t:\t" + JSON.stringify(val);
+      if (typeof(val) == "string") {
+        finalDict = finalDict + item + "\t:\t" + JSON.stringify(this.getValue(val));
       } else {
         for (let key of val) {
-          if  (typeof(val[key]) != "string") {
-            finalDict = finalDict + key + "\t:\t" + JSON.stringify(val[key]);
-          } else {
-            for (let key2 of val[key]) {
-              finalDict = finalDict + key2 + "\t:\t" + JSON.stringify(val[key][key2]);
-            }
-          }
+          if  (typeof(val[key]) == "string") {
+            finalDict = finalDict + key + "\t:\t" + JSON.stringify(this.getValue(val[key]));
+          // } else {
+          //   for (let key2 of val[key]) {
+          //     finalDict = finalDict + key2 + "\t:\t" + JSON.stringify(this.getValue(val[key][key2]));
+          //   }
+           }
         }
       }
+      finalDict = finalDict + "\n";
     }
+    
     console.log(finalDict);
 
-    let blob = new Blob([JSON.stringify(finalDict)], { type: 'text/yaml' });
+    let blob = new Blob([finalDict], { type: 'text/yaml' });
 
 
     this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
@@ -225,7 +227,14 @@ export class ModelDocumentationComponent implements OnChanges {
       reader.readAsText(event.target.files[0]);
     }
   }
-
-
-
+  getValue(dict_in){
+    let myValue = "";
+    for (let key in dict_in){
+      if(key=="value"){
+        myValue = dict_in[key];
+      }
+    }
+    return myValue;
+  }
+ 
 }
