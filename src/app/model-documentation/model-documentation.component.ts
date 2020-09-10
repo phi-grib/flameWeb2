@@ -161,18 +161,17 @@ export class ModelDocumentationComponent implements OnChanges {
   }
 
   exportToFile() {
-    console.log(this.modelDocumentation);
     let order = [];
 
       for (const key in this.docLevel) {
         order = order.concat(this.docLevel[key]);
       }
-      console.log(order);
 
       let finalDict = "";
 
       for (let key of order) {
-        if ('value' in this.modelDocumentation[key]) {
+        if (this.modelDocumentation[key] 
+          && 'value' in this.modelDocumentation[key]) {
           let val = this.modelDocumentation[key]['value'];
           if (!this.isDict(val)) {
             if (val == null) {
@@ -196,7 +195,6 @@ export class ModelDocumentationComponent implements OnChanges {
                 }
               }
               else {
-                //creo que tengo que controlar algo aqui, pero no sé el qué
                 if ('value' in val[key2]) {
                   if (val[key2]['value'] == null) {
                     val[key2]['value'] = "None";
@@ -268,10 +266,7 @@ export class ModelDocumentationComponent implements OnChanges {
       } else if (strain[i] == "#") {
         label3 = label3 + strain[i];
         formatedString = formatedString + label3.padStart(66);
-      } else if (strain[i] == "#") {
-        label3 = label3 + strain[i];
-        formatedString = formatedString + label3.padStart(66);
-      }
+      } 
       return formatedString;
     }
 

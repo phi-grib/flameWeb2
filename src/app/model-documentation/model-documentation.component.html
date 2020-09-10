@@ -11,7 +11,7 @@
                 <a (click)=exportToFile() class="btn btn-ets-do" [href]= "downloadLink" [download]= "this.model.name"
                 >Download to file</a>
                 <br>
-                <input class="btn btn-ets-do" type="file" name="files" (change)="uploadFile($event)" />
+                <input id= "inputFile" class="btn btn-ets-do" type="file" name="files" (change)="uploadFile($event)" />
             
 
                 <!-- block level 1 start -->
