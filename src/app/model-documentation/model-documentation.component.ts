@@ -182,20 +182,28 @@ export class ModelDocumentationComponent implements OnChanges {
         else {
           for (const key2 of Object.keys(val)) {
             if (!this.isDict(val[key2])) {
-              if (val[key2] == null) {
-                val[key2] = "none";
-                finalDict = finalDict + key2 + "\t:\t" + val[key2] + '\n';
-              } else {
-                finalDict = finalDict + key2 + "\t:\t" + val[key2] + '\n';
+              if (key2 == key) {
+                if (val[key2] == null) {
+                  val[key2] = "none";
+                  finalDict = finalDict + key2 + "\t:\t" + val[key2] + '\n';
+                } else {
+                  finalDict = finalDict + key2 + "\t:\t" + val[key2] + '\n';
+                }
               }
             }
             else {
+              finalDict = finalDict + key + "\t:\t";
               if ('value' in val[key2]) {
-                if ( val[key2]['value'] == null) {
+                if (val[key2]['value'] == null) {
                   val[key2]['value'] = "none";
                   finalDict = finalDict + key2 + "\t:\t" + val[key2]['value'] + '\n';
                 } else {
                   finalDict = finalDict + key2 + "\t:\t" + val[key2]['value'] + '\n';
+                }
+              } else {
+                if (val[key2]['value'] == null) {
+                  val[key2]['value'] == "none";
+                  finalDict = finalDict + "\n    " + key2 + "\t:\t" + val[key]['value'] + '\n';
                 }
               }
             }
