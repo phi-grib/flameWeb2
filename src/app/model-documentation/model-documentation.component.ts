@@ -168,22 +168,62 @@ export class ModelDocumentationComponent implements OnChanges {
       'Data_info', 'Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
       'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics',
       'Internal_validation_1', 'Internal_validation_2', 'External_validation',
-      'Comments', 'Other_related_models', 'Date_of_QMRF', 'Data_of_QMRF_updates',
+      'Comments', 'Other_related_models', 'Date_of_QMRF', 'Date_of_QMRF_updates',
       'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
       'Endpoint_data_quality_and_variability', 'Descriptor_selection'
     ];
 
+    let dict_aux = {};
     let finalDict = "";
-    for (let item of order) {
-      finalDict = finalDict + item + "\t:\t" + this.getValue(this.modelDocumentation[item]);
-      console.log(finalDict);
-
-      let blob = new Blob([finalDict], { type: 'text/yaml' });
 
 
-      this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-      //once the file is created the download link saves the file to the computer
+    for (let key of order) {
+      if ('value' in this.modelDocumentation[key]) {
+        let val = this.modelDocumentation[key]['value'];
+        if (!this.isDict(val)) {
+          // dict_out[key] = val;
+          console.log ('external '+key+':'+val);
+          finalDict = finalDict + key + "\t:\t" + val +'\n';
+
+        }
+        else {
+          dict_aux = {};
+          for (const key2 of Object.keys(val)) {
+            if (!this.isDict(val[key2])) {
+              // dict_aux[key2] = val[key2];
+              console.log ('internal 1 '+ key2 + ':' + val[key2]);
+              finalDict = finalDict + key2 + "\t:\t" + val[key2] + '\n';
+
+            }
+            else {
+              if ('value' in val[key2] ) {
+
+                // dict_aux[key2] = val[key2]['value'];
+                console.log ('internal 2 '+ key2 + ':' + val[key2]['value']);
+                finalDict = finalDict + key2 + "\t:\t" + val[key2]['value']+ '\n';
+
+              }
+            }
+          }
+        }
+        
+      }
     }
+    
+    let blob = new Blob([finalDict], { type: 'text/yaml' });
+    this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+
+    // let finalDict = "";
+    // for (let item of order) {
+    //   finalDict = finalDict + item + "\t:\t" + this.getValue(this.modelDocumentation[item]);
+    //   console.log(finalDict);
+
+    //   let blob = new Blob([finalDict], { type: 'text/yaml' });
+
+
+    //   this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+    //   //once the file is created the download link saves the file to the computer
+    // }
   }
   uploadFile(event) {
     if (event.target.files.length !== 1) {
