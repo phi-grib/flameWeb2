@@ -161,70 +161,55 @@ export class ModelDocumentationComponent implements OnChanges {
   }
 
   exportToFile() {
+    let order = [];
+    for (const key in this.docLevel) {
+      order = order.concat(this.docLevel[key]);
+    }
 
-    let order = ['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
-      'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
-      'Limits_applicability', 'Experimental_protocol', 'Model_availability',
-      'Data_info', 'Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
-      'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics',
-      'Internal_validation_1', 'Internal_validation_2', 'External_validation',
-      'Comments', 'Other_related_models', 'Date_of_QMRF', 'Date_of_QMRF_updates',
-      'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
-      'Endpoint_data_quality_and_variability', 'Descriptor_selection'
-    ];
-
-    let dict_aux = {};
     let finalDict = "";
-
 
     for (let key of order) {
       if ('value' in this.modelDocumentation[key]) {
         let val = this.modelDocumentation[key]['value'];
         if (!this.isDict(val)) {
-          // dict_out[key] = val;
-          console.log ('external '+key+':'+val);
-          finalDict = finalDict + key + "\t:\t" + val +'\n';
-
+          if (val == null) {
+            val = "none";
+            finalDict = finalDict + key + "\t:\t" + val + '\n';
+          } else {
+            finalDict = finalDict + key + "\t:\t" + val + '\n';
+          }
         }
         else {
-          dict_aux = {};
           for (const key2 of Object.keys(val)) {
             if (!this.isDict(val[key2])) {
-              // dict_aux[key2] = val[key2];
-              console.log ('internal 1 '+ key2 + ':' + val[key2]);
-              finalDict = finalDict + key2 + "\t:\t" + val[key2] + '\n';
-
+              if (val[key2] == null) {
+                val[key2] = "none";
+                finalDict = finalDict + key2 + "\t:\t" + val[key2] + '\n';
+              } else {
+                finalDict = finalDict + key2 + "\t:\t" + val[key2] + '\n';
+              }
             }
             else {
-              if ('value' in val[key2] ) {
-
-                // dict_aux[key2] = val[key2]['value'];
-                console.log ('internal 2 '+ key2 + ':' + val[key2]['value']);
-                finalDict = finalDict + key2 + "\t:\t" + val[key2]['value']+ '\n';
-
+              if ('value' in val[key2]) {
+                if ( val[key2]['value'] == null) {
+                  val[key2]['value'] = "none";
+                  finalDict = finalDict + key2 + "\t:\t" + val[key2]['value'] + '\n';
+                } else {
+                  finalDict = finalDict + key2 + "\t:\t" + val[key2]['value'] + '\n';
+                }
               }
             }
           }
         }
-        
       }
     }
-    
+
     let blob = new Blob([finalDict], { type: 'text/yaml' });
     this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
 
-    // let finalDict = "";
-    // for (let item of order) {
-    //   finalDict = finalDict + item + "\t:\t" + this.getValue(this.modelDocumentation[item]);
-    //   console.log(finalDict);
 
-    //   let blob = new Blob([finalDict], { type: 'text/yaml' });
-
-
-    //   this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-    //   //once the file is created the download link saves the file to the computer
-    // }
   }
+
   uploadFile(event) {
     if (event.target.files.length !== 1) {
       console.error('No file selected');
@@ -249,31 +234,30 @@ export class ModelDocumentationComponent implements OnChanges {
       reader.readAsText(event.target.files[0]);
     }
   }
+
   getValue(dict_in: {}) {
     let myValue = "";
-    try{
-    let val = dict_in['value'];
-    if (!this.isDict(val)) {
-      myValue = myValue + val;
-    } else {
-      for (const key of Object.keys(val)) {
-        if (!this.isDict(val[key])) {
-          myValue = myValue + val['value'];
-        } else {
-          for (const key2 of Object.keys(val[key])) {
-            if (!this.isDict(val[key][key2])) {
-              myValue = myValue + val[key]['value'];
+    try {
+      let val = dict_in['value'];
+      if (!this.isDict(val)) {
+        myValue = myValue + val;
+      } else {
+        for (const key of Object.keys(val)) {
+          if (!this.isDict(val[key])) {
+            myValue = myValue + val['value'];
+          } else {
+            for (const key2 of Object.keys(val[key])) {
+              if (!this.isDict(val[key][key2])) {
+                myValue = myValue + val[key]['value'];
+              }
             }
           }
         }
       }
+      myValue = myValue + "\n";
+    } catch (e) {
+
     }
-  
-
-    myValue = myValue + "\n";
-  }catch (e){
-
-  }
     return myValue;
   }
 }
