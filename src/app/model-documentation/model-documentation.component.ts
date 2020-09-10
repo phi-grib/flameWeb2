@@ -161,65 +161,69 @@ export class ModelDocumentationComponent implements OnChanges {
   }
 
   exportToFile() {
+    console.log(this.modelDocumentation);
     let order = [];
-    for (const key in this.docLevel) {
-      order = order.concat(this.docLevel[key]);
-    }
 
-    let finalDict = "";
+      for (const key in this.docLevel) {
+        order = order.concat(this.docLevel[key]);
+      }
+      console.log(order);
 
-    for (let key of order) {
-      if ('value' in this.modelDocumentation[key]) {
-        let val = this.modelDocumentation[key]['value'];
-        if (!this.isDict(val)) {
-          if (val == null) {
-            val = "None";
-            finalDict = finalDict + key + "     :     " + val + '\n';
-          } else {
-            finalDict = finalDict + key + "     :     " + val + '\n';
+      let finalDict = "";
+
+      for (let key of order) {
+        if ('value' in this.modelDocumentation[key]) {
+          let val = this.modelDocumentation[key]['value'];
+          if (!this.isDict(val)) {
+            if (val == null) {
+              val = "None";
+              finalDict = finalDict + key + "     :     " + val + '\n';
+            } else {
+              finalDict = finalDict + key + "     :     " + val + '\n';
+            }
           }
-        }
-        else {
-          finalDict = finalDict + key + ":\n";
-          for (const key2 of Object.keys(val)) {
-            if (!this.isDict(val[key2])) {
-              if (key2 == key) {
-                if (val[key2] == null) {
-                  val[key2] = "None";
-                  finalDict = finalDict + key2 + "     :     " + val[key2] + '\n';
-                } else {
-                  finalDict = finalDict + key2 + "     :     " + val[key2] + '\n';
+          else {
+            finalDict = finalDict + key + ":\n";
+            for (const key2 of Object.keys(val)) {
+              if (!this.isDict(val[key2])) {
+                if (key2 == key) {
+                  if (val[key2] == null) {
+                    val[key2] = "None";
+                    finalDict = finalDict + key2 + "     :     " + val[key2] + '\n';
+                  } else {
+                    finalDict = finalDict + key2 + "     :     " + val[key2] + '\n';
+                  }
                 }
               }
-            }
-            else {
-              //creo que tengo que controlar algo aqui, pero no sé el qué
-              if ('value' in val[key2]) {
-                if (val[key2]['value'] == null) {
-                  val[key2]['value'] = "None";
-                  finalDict = finalDict + "    " +key2 + "     :     " + val[key2]['value'] + '\n';
+              else {
+                //creo que tengo que controlar algo aqui, pero no sé el qué
+                if ('value' in val[key2]) {
+                  if (val[key2]['value'] == null) {
+                    val[key2]['value'] = "None";
+                    finalDict = finalDict + "    " + key2 + "     :     " + val[key2]['value'] + '\n';
+                  } else {
+                    finalDict = finalDict + "    " + key2 + "     :     " + val[key2]['value'] + '\n';
+                  }
                 } else {
-                  finalDict = finalDict + "    " +key2 + "     :     " + val[key2]['value'] + '\n';
-                }
-              } else {
-                if (val[key2]['value'] == null) {
-                  val[key2]['value'] == "None";
-                  finalDict = finalDict + "    " + key2 + "     :     " + val[key]['value'] + '\n';
+                  if (val[key2]['value'] == null) {
+                    val[key2]['value'] == "None";
+                    finalDict = finalDict + "    " + key2 + "     :     " + val[key]['value'] + '\n';
+                  }
                 }
               }
             }
           }
         }
       }
-    }
 
-    let blob = new Blob([finalDict], { type: 'text/yaml' });
-    this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-
-
+      let blob = new Blob([finalDict], { type: 'text/yaml' });
+      this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+   
+   
   }
 
   uploadFile(event) {
+    console.log(this.modelDocumentation);
     if (event.target.files.length !== 1) {
       console.error('No file selected');
     } else {
@@ -234,6 +238,7 @@ export class ModelDocumentationComponent implements OnChanges {
             this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
               timeOut: 5000, positionClass: 'toast-top-right'
             });
+            console.log(this.modelDocumentation);
           },
           error => {
             alert('Error updating documentation');
@@ -244,7 +249,7 @@ export class ModelDocumentationComponent implements OnChanges {
     }
   }
 
-  prettiFy(strain : String){
+  prettiFy(strain: String) {
     let maxLine = 280;
     let firstStop = 33;
     let secondStop = 66;
@@ -253,22 +258,22 @@ export class ModelDocumentationComponent implements OnChanges {
     let label3 = "";
     let formatedString = "";
 
-    for(const i in strain){
+    for (const i in strain) {
       label1 = label1 + strain[i];
-      if(strain[i]== ":"){
+      if (strain[i] == ":") {
         formatedString = formatedString + label1.padStart(33);
-      }else if(strain[i].startsWith(":")){
+      } else if (strain[i].startsWith(":")) {
         label2 = label2 + strain[i];
         formatedString = formatedString + label2.padStart(34);
-      }else if(strain[i] == "#"){
-      label3 = label3 + strain[i];
-      formatedString = formatedString + label3.padStart(66);
-    }else if(strain[i] == "#"){
-      label3 = label3 + strain[i];
-      formatedString = formatedString + label3.padStart(66);
+      } else if (strain[i] == "#") {
+        label3 = label3 + strain[i];
+        formatedString = formatedString + label3.padStart(66);
+      } else if (strain[i] == "#") {
+        label3 = label3 + strain[i];
+        formatedString = formatedString + label3.padStart(66);
+      }
+      return formatedString;
     }
-    return formatedString;
-}
 
-}
+  }
 }
