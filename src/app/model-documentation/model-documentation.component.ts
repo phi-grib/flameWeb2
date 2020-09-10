@@ -173,37 +173,38 @@ export class ModelDocumentationComponent implements OnChanges {
         let val = this.modelDocumentation[key]['value'];
         if (!this.isDict(val)) {
           if (val == null) {
-            val = "none";
-            finalDict = finalDict + key + "\t:\t" + val + '\n';
+            val = "None";
+            finalDict = finalDict + key + "     :     " + val + '\n';
           } else {
-            finalDict = finalDict + key + "\t:\t" + val + '\n';
+            finalDict = finalDict + key + "     :     " + val + '\n';
           }
         }
         else {
+          finalDict = finalDict + key + ":\n";
           for (const key2 of Object.keys(val)) {
             if (!this.isDict(val[key2])) {
               if (key2 == key) {
                 if (val[key2] == null) {
-                  val[key2] = "none";
-                  finalDict = finalDict + key2 + "\t:\t" + val[key2] + '\n';
+                  val[key2] = "None";
+                  finalDict = finalDict + key2 + "     :     " + val[key2] + '\n';
                 } else {
-                  finalDict = finalDict + key2 + "\t:\t" + val[key2] + '\n';
+                  finalDict = finalDict + key2 + "     :     " + val[key2] + '\n';
                 }
               }
             }
             else {
-              finalDict = finalDict + key + "\t:\t";
+              //creo que tengo que controlar algo aqui, pero no sé el qué
               if ('value' in val[key2]) {
                 if (val[key2]['value'] == null) {
-                  val[key2]['value'] = "none";
-                  finalDict = finalDict + key2 + "\t:\t" + val[key2]['value'] + '\n';
+                  val[key2]['value'] = "None";
+                  finalDict = finalDict + "    " +key2 + "     :     " + val[key2]['value'] + '\n';
                 } else {
-                  finalDict = finalDict + key2 + "\t:\t" + val[key2]['value'] + '\n';
+                  finalDict = finalDict + "    " +key2 + "     :     " + val[key2]['value'] + '\n';
                 }
               } else {
                 if (val[key2]['value'] == null) {
-                  val[key2]['value'] == "none";
-                  finalDict = finalDict + "\n    " + key2 + "\t:\t" + val[key]['value'] + '\n';
+                  val[key2]['value'] == "None";
+                  finalDict = finalDict + "    " + key2 + "     :     " + val[key]['value'] + '\n';
                 }
               }
             }
@@ -243,31 +244,31 @@ export class ModelDocumentationComponent implements OnChanges {
     }
   }
 
-  getValue(dict_in: {}) {
-    let myValue = "";
-    try {
-      let val = dict_in['value'];
-      if (!this.isDict(val)) {
-        myValue = myValue + val;
-      } else {
-        for (const key of Object.keys(val)) {
-          if (!this.isDict(val[key])) {
-            myValue = myValue + val['value'];
-          } else {
-            for (const key2 of Object.keys(val[key])) {
-              if (!this.isDict(val[key][key2])) {
-                myValue = myValue + val[key]['value'];
-              }
-            }
-          }
-        }
-      }
-      myValue = myValue + "\n";
-    } catch (e) {
+  prettiFy(strain : String){
+    let maxLine = 280;
+    let firstStop = 33;
+    let secondStop = 66;
+    let label1 = "";
+    let label2 = "";
+    let label3 = "";
+    let formatedString = "";
 
+    for(const i in strain){
+      label1 = label1 + strain[i];
+      if(strain[i]== ":"){
+        formatedString = formatedString + label1.padStart(33);
+      }else if(strain[i].startsWith(":")){
+        label2 = label2 + strain[i];
+        formatedString = formatedString + label2.padStart(34);
+      }else if(strain[i] == "#"){
+      label3 = label3 + strain[i];
+      formatedString = formatedString + label3.padStart(66);
+    }else if(strain[i] == "#"){
+      label3 = label3 + strain[i];
+      formatedString = formatedString + label3.padStart(66);
     }
-    return myValue;
-  }
+    return formatedString;
 }
 
-
+}
+}
