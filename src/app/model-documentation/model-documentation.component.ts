@@ -163,61 +163,65 @@ export class ModelDocumentationComponent implements OnChanges {
   exportToFile() {
     let order = [];
 
-      for (const key in this.docLevel) {
-        order = order.concat(this.docLevel[key]);
-      }
+    for (const key in this.docLevel) {
+      order = order.concat(this.docLevel[key]);
+    }
 
-      let finalDict = "";
+    let finalDict = "";
+    if(this.modelDocumentation){
 
-      for (let key of order) {
-        if (this.modelDocumentation[key] 
-          && 'value' in this.modelDocumentation[key]) {
-          let val = this.modelDocumentation[key]['value'];
-          if (!this.isDict(val)) {
-            if (val == null) {
-              val = "None";
-              finalDict = finalDict + key + "     :     " + val + '\n';
-            } else {
-              finalDict = finalDict + key + "     :     " + val + '\n';
-            }
+    for (let key of order) {
+      if (this.modelDocumentation[key]
+        && 'value' in this.modelDocumentation[key]) {
+        let val = this.modelDocumentation[key]['value'];
+        if (!this.isDict(val)) {
+          if (val == null) {
+            val = "None";
+            finalDict = finalDict + key + "     :     " + val + '\n';
+          } else {
+            finalDict = finalDict + key + "     :     " + val + '\n';
           }
-          else {
-            finalDict = finalDict + key + ":\n";
-            for (const key2 of Object.keys(val)) {
-              if (!this.isDict(val[key2])) {
-                if (key2 == key) {
-                  if (val[key2] == null) {
-                    val[key2] = "None";
-                    finalDict = finalDict + key2 + "     :     " + val[key2] + '\n';
-                  } else {
-                    finalDict = finalDict + key2 + "     :     " + val[key2] + '\n';
-                  }
+        }
+        else {
+          finalDict = finalDict + key + ":\n";
+          for (const key2 of Object.keys(val)) {
+            if (!this.isDict(val[key2])) {
+              if (key2 == key) {
+                if (val[key2] == null) {
+                  val[key2] = "None";
+                  finalDict = finalDict + key2 + "     :     " + val[key2] + '\n';
+                } else {
+                  finalDict = finalDict + key2 + "     :     " + val[key2] + '\n';
                 }
               }
-              else {
-                if ('value' in val[key2]) {
-                  if (val[key2]['value'] == null) {
-                    val[key2]['value'] = "None";
-                    finalDict = finalDict + "    " + key2 + "     :     " + val[key2]['value'] + '\n';
-                  } else {
-                    finalDict = finalDict + "    " + key2 + "     :     " + val[key2]['value'] + '\n';
-                  }
+            }
+            else {
+              if ('value' in val[key2]) {
+                if (val[key2]['value'] == null) {
+                  val[key2]['value'] = "None";
+                  finalDict = finalDict + "    " + key2 + "     :     " + val[key2]['value'] + '\n';
                 } else {
-                  if (val[key2]['value'] == null) {
-                    val[key2]['value'] == "None";
-                    finalDict = finalDict + "    " + key2 + "     :     " + val[key]['value'] + '\n';
-                  }
+                  finalDict = finalDict + "    " + key2 + "     :     " + val[key2]['value'] + '\n';
+                }
+              } else {
+                if (val[key2]['value'] == null) {
+                  val[key2]['value'] == "None";
+                  finalDict = finalDict + "    " + key2 + "     :     " + val[key]['value'] + '\n';
                 }
               }
             }
           }
         }
       }
+    }
+  }else{
+    console.log("model not found");
+  }
 
-      let blob = new Blob([finalDict], { type: 'text/yaml' });
-      this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-   
-   
+    let blob = new Blob([finalDict], { type: 'text/yaml' });
+    this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+
+
   }
 
   uploadFile(event) {
@@ -257,18 +261,18 @@ export class ModelDocumentationComponent implements OnChanges {
     let formatedString = "";
 
     for (const i in strain) {
-      label1 = label1 + strain[i];
+
       if (strain[i] == ":") {
-        formatedString = formatedString + label1.padStart(33);
+        label1 = label1 + strain[i];
       } else if (strain[i].startsWith(":")) {
         label2 = label2 + strain[i];
-        formatedString = formatedString + label2.padStart(34);
-      } else if (strain[i] == "#") {
+
+      } else if (strain[i].startsWith("#")) {
         label3 = label3 + strain[i];
         formatedString = formatedString + label3.padStart(66);
-      } 
-      return formatedString;
+      }
     }
+    formatedString = formatedString + label1.padStart(33) + label2.padStart(34) + label3.padStart(66) + "\n";
 
   }
 }
