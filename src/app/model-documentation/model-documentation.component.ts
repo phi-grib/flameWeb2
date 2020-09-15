@@ -233,9 +233,9 @@ export class ModelDocumentationComponent implements OnChanges {
       reader.onloadend = (e) => {
 
         this.modelDocumentation = reader.result.toString();
-        let delta = JSON.stringify(this.genDelta(this.modelDocumentation));
+        
 
-        this.service.updateDocumentation(this.model.name, this.model.version, delta).subscribe(
+        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation).subscribe(
           result => {
             this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
               timeOut: 5000, positionClass: 'toast-top-right'
@@ -266,10 +266,8 @@ export class ModelDocumentationComponent implements OnChanges {
         label1 = label1 + strain[i];
       } else if (strain[i].startsWith(":")) {
         label2 = label2 + strain[i];
-
       } else if (strain[i].startsWith("#")) {
         label3 = label3 + strain[i];
-        formatedString = formatedString + label3.padStart(66);
       }
     }
     formatedString = formatedString + label1.padStart(33) + label2.padStart(34) + label3.padStart(66) + "\n";
