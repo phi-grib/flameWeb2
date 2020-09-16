@@ -43,7 +43,7 @@ export class CommonService {
     return this.http.get(url);
   }
 
-  getDocumentation(modelName: string, modelVersion: string): Observable<any> {
+  getDocumentation(modelName: string, modelVersion: string, modelFormat: string): Observable<any> {
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/documentation';
     return this.http.get(url);
   }

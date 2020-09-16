@@ -26,6 +26,7 @@ export class ModelDocumentationComponent implements OnChanges {
   @Input() modelName;
   @Input() modelVersion;
   @Input() modelID;
+  @Input() modelFormat;
 
 
 
@@ -102,7 +103,7 @@ export class ModelDocumentationComponent implements OnChanges {
     let delta = JSON.stringify(this.genDelta(this.modelDocumentation));
     // console.log (delta)
 
-    this.service.updateDocumentation(this.model.name, this.model.version, delta).subscribe(
+    this.service.updateDocumentation(this.model.name, this.model.version, delta, this.modelFormat).subscribe(
       result => {
         this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
           timeOut: 5000, positionClass: 'toast-top-right'
@@ -141,8 +142,9 @@ export class ModelDocumentationComponent implements OnChanges {
   }
 
   getDocumentation(): void {
+    console.log("this.getDocumentation");
     this.documentationVisible = false;
-    this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
+    this.commonService.getDocumentation(this.modelName, this.modelVersion, this.modelFormat).subscribe(
       result => {
         this.modelDocumentation = result;
 
@@ -161,66 +163,24 @@ export class ModelDocumentationComponent implements OnChanges {
   }
 
   exportToFile() {
-    let order = [];
-
-    for (const key in this.docLevel) {
-      order = order.concat(this.docLevel[key]);
-    }
-
     let finalDict = "";
-    if(this.modelDocumentation){
+    this.commonService.getDocumentation(this.modelName, this.modelVersion, this.modelFormat).subscribe(
+      result=> {
+        this.modelDocumentation = result;
+        finalDict = JSON.stringify(this.modelDocumentation);
 
-    for (let key of order) {
-      if (this.modelDocumentation[key]
-        && 'value' in this.modelDocumentation[key]) {
-        let val = this.modelDocumentation[key]['value'];
-        if (!this.isDict(val)) {
-          if (val == null) {
-            val = "None";
-            finalDict = finalDict + key + "     :     " + val + '\n';
-          } else {
-            finalDict = finalDict + key + "     :     " + val + '\n';
-          }
-        }
-        else {
-          finalDict = finalDict + key + ":\n";
-          for (const key2 of Object.keys(val)) {
-            if (!this.isDict(val[key2])) {
-              if (key2 == key) {
-                if (val[key2] == null) {
-                  val[key2] = "None";
-                  finalDict = finalDict + key2 + "     :     " + val[key2] + '\n';
-                } else {
-                  finalDict = finalDict + key2 + "     :     " + val[key2] + '\n';
-                }
-              }
-            }
-            else {
-              if ('value' in val[key2]) {
-                if (val[key2]['value'] == null) {
-                  val[key2]['value'] = "None";
-                  finalDict = finalDict + "    " + key2 + "     :     " + val[key2]['value'] + '\n';
-                } else {
-                  finalDict = finalDict + "    " + key2 + "     :     " + val[key2]['value'] + '\n';
-                }
-              } else {
-                if (val[key2]['value'] == null) {
-                  val[key2]['value'] == "None";
-                  finalDict = finalDict + "    " + key2 + "     :     " + val[key]['value'] + '\n';
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }else{
-    console.log("model not found");
-  }
+    
 
     let blob = new Blob([finalDict], { type: 'text/yaml' });
     this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
 
+      },
+      error=> {
+        this.modelDocumentation = undefined;
+      }
+    )
+
+      
 
   }
 
@@ -233,14 +193,15 @@ export class ModelDocumentationComponent implements OnChanges {
       reader.onloadend = (e) => {
 
         this.modelDocumentation = reader.result.toString();
-        
 
-        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation).subscribe(
+
+        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation, this.modelFormat).subscribe(
           result => {
             this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
               timeOut: 5000, positionClass: 'toast-top-right'
             });
             console.log(this.modelDocumentation);
+            this.getDocumentation();
           },
           error => {
             alert('Error updating documentation');
@@ -248,6 +209,7 @@ export class ModelDocumentationComponent implements OnChanges {
         );
       };
       reader.readAsText(event.target.files[0]);
+
     }
   }
 
