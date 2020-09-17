@@ -213,26 +213,5 @@ export class ModelDocumentationComponent implements OnChanges {
     }
   }
 
-  prettiFy(strain: String) {
-    let maxLine = 280;
-    let firstStop = 33;
-    let secondStop = 66;
-    let label1 = "";
-    let label2 = "";
-    let label3 = "";
-    let formatedString = "";
 
-    for (const i in strain) {
-
-      if (strain[i] == ":") {
-        label1 = label1 + strain[i];
-      } else if (strain[i].startsWith(":")) {
-        label2 = label2 + strain[i];
-      } else if (strain[i].startsWith("#")) {
-        label3 = label3 + strain[i];
-      }
-    }
-    formatedString = formatedString + label1.padStart(33) + label2.padStart(34) + label3.padStart(66) + "\n";
-
-  }
 }
