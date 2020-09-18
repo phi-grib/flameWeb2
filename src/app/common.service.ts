@@ -54,4 +54,9 @@ export class CommonService {
     return this.http.get(url);
   }
 
+  getProperty(obj, prop){
+    if(obj[prop] !== undefined) return obj[prop];
+    else return 'JSON'
+  }
+
 }

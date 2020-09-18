@@ -162,27 +162,28 @@ export class ModelDocumentationComponent implements OnChanges {
     this.documentationVisible = true;
   }
 
+
   exportToFile() {
-    let finalDict = "";
+
+    this.modelDocumentation.modelFormat ='YAML';
+    console.log(this.modelDocumentation.modelFormat);
+
     this.commonService.getDocumentation(this.modelName, this.modelVersion, this.modelFormat).subscribe(
-      result=> {
-        this.modelDocumentation = result;
-        finalDict = JSON.stringify(this.modelDocumentation);
 
-    
+      result => {
+        console.log(this.modelDocumentation.modelFormat);
+        
+        let blob = new Blob([JSON.stringify(this.modelDocumentation)], { type: 'text/yaml' });
 
-    let blob = new Blob([finalDict], { type: 'text/yaml' });
-    this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-
+        this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
       },
-      error=> {
+
+      error => {
         this.modelDocumentation = undefined;
       }
-    )
+      );
 
-      
-
-  }
+}
 
   uploadFile(event) {
     console.log(this.modelDocumentation);
