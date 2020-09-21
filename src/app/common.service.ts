@@ -56,7 +56,7 @@ export class CommonService {
 
   getProperty(obj, prop){
     if(obj[prop] !== undefined) return obj[prop];
-    else return 'JSON'
+    else return 
   }
 
 }

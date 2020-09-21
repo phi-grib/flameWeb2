@@ -142,7 +142,6 @@ export class ModelDocumentationComponent implements OnChanges {
   }
 
   getDocumentation(): void {
-    console.log("this.getDocumentation");
     this.documentationVisible = false;
     this.commonService.getDocumentation(this.modelName, this.modelVersion, this.modelFormat).subscribe(
       result => {
@@ -164,10 +163,7 @@ export class ModelDocumentationComponent implements OnChanges {
 
 
   exportToFile() {
-
-    this.modelDocumentation.modelFormat ='YAML';
-    console.log(this.modelDocumentation.modelFormat);
-
+    this.modelFormat = 'YAML';
     this.commonService.getDocumentation(this.modelName, this.modelVersion, this.modelFormat).subscribe(
 
       result => {
