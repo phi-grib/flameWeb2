@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ModelDocumentationService } from './model-documentation.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { getValueInRange } from '@ng-bootstrap/ng-bootstrap/util/util';
+import { URL } from 'url';
 
 
 @Component({
@@ -163,23 +164,22 @@ export class ModelDocumentationComponent implements OnChanges {
 
 
   exportToFile() {
-    this.modelFormat = 'YAML';
-    this.commonService.getDocumentation(this.modelName, this.modelVersion, this.modelFormat).subscribe(
-
+    this.commonService.getDocumentation(this.modelName, this.modelVersion, 'YAML').subscribe(
+      
       result => {
-        console.log(this.modelDocumentation.modelFormat);
-        
-        let blob = new Blob([JSON.stringify(this.modelDocumentation)], { type: 'text/yaml' });
+       console.log(result);
+      
+      }
+      ()=>{ this.createFileToDownload(result)},
 
-        this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-      },
-
-      error => {
-        this.modelDocumentation = undefined;
+      reject => {
+        console.log('error')
       }
       );
 
 }
+
+
 
   uploadFile(event) {
     console.log(this.modelDocumentation);
@@ -192,7 +192,7 @@ export class ModelDocumentationComponent implements OnChanges {
         this.modelDocumentation = reader.result.toString();
 
 
-        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation, this.modelFormat).subscribe(
+        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation, 'YAML').subscribe(
           result => {
             this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
               timeOut: 5000, positionClass: 'toast-top-right'
@@ -207,6 +207,17 @@ export class ModelDocumentationComponent implements OnChanges {
       };
       reader.readAsText(event.target.files[0]);
 
+    }
+  }
+
+  createFileToDownload(result){
+    if(result!= undefined){
+    let blob = new Blob([result], { type: 'text/yaml' });
+        
+    this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+    window.URL.revokeObjectURL;
+    }else{
+      console.log('error')
     }
   }
 
