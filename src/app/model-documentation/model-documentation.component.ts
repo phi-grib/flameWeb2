@@ -142,15 +142,15 @@ export class ModelDocumentationComponent implements OnChanges {
 
   getDocumentation(): void {
     this.documentationVisible = false;
-    this.commonService.getDocumentation(this.modelName, this.modelVersion).subscribe(
+    this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
       result => {
         this.modelDocumentation = result;
 
         // for (var key in this.modelDocumentation) {
         //       console.log(key, this.modelDocumentation[key]);
         //   }
-        let data = JSON.stringify(this.modelDocumentation);
-        let blob = new Blob([data], { type: 'text/plain' });
+        // let data = JSON.stringify(this.modelDocumentation);
+        // let blob = new Blob([data], { type: 'text/plain' });
 
       },
       error => {
@@ -233,14 +233,16 @@ export class ModelDocumentationComponent implements OnChanges {
       reader.onloadend = (e) => {
 
         this.modelDocumentation = reader.result.toString();
+
         let delta = JSON.stringify(this.genDelta(this.modelDocumentation));
 
-        this.service.updateDocumentation(this.model.name, this.model.version, delta).subscribe(
+        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation).subscribe(
           result => {
             this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
               timeOut: 5000, positionClass: 'toast-top-right'
             });
-            console.log(this.modelDocumentation);
+            // console.log(this.modelDocumentation);
+            console.log(delta);
           },
           error => {
             alert('Error updating documentation');
