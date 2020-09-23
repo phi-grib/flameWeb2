@@ -185,7 +185,7 @@ export class ModelDocumentationComponent implements OnChanges {
         this.modelDocumentation = reader.result.toString();
 
 
-        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation, 'YAML').subscribe(
+        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation, 'JSON').subscribe(
           result => {
             this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
               timeOut: 5000, positionClass: 'toast-top-right'
