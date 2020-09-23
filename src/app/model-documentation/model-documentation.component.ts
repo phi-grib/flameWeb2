@@ -144,7 +144,7 @@ export class ModelDocumentationComponent implements OnChanges {
 
   getDocumentation(): void {
     this.documentationVisible = false;
-    this.commonService.getDocumentation(this.modelName, this.modelVersion, this.modelFormat).subscribe(
+    this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
       result => {
         this.modelDocumentation = result;
 
@@ -169,7 +169,7 @@ export class ModelDocumentationComponent implements OnChanges {
       result => {
        console.log(result);
       
-      }
+      },
       ()=>{ this.createFileToDownload(result)},
 
       reject => {
