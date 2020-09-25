@@ -16,7 +16,7 @@ export class ModelDocumentationService {
   updateDocumentation(model: string, version: number, doc: string, format: string) {
     const formData = new FormData();
     formData.append('documentation', doc);
-    const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/format/' + format + '/documentation';
+    const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/oformat/' + format + '/documentation';
     return this.http.post(url, formData);
   }
 
