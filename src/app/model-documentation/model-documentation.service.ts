@@ -28,9 +28,10 @@ export class ModelDocumentationService {
     let reader = new FileReader();
     reader.onloadend = (e) => {
       let text = reader.result.toString();
+      console.log(text);
       text = text.split("[").join("");
       text = text.split("]").join("");
-      text = text.split(",").join("\n");
+      text = text.split('","').join("\n");
       text = text.split('"').join("");
       console.log(text);
       let parsedBlob = new Blob([text]);
