@@ -164,12 +164,8 @@ export class ModelDocumentationComponent implements OnChanges {
   }
 
 
-  async exportToFile() {
-    this.modelFormat = 'YAML';
-    const url: string = environment.baseUrl_manage + 'model/' + this.model.name + '/version/' + this.model.version + '/oformat/' + this.modelFormat +  '/documentation';
-    let blob = new Blob()
-    blob = await fetch(url).then(r=> r.blob());
-    window.saveAs(blob, this.model.name + '.yaml')
+  downloadFile(){
+      this.service.exportToFile(this.modelName, this.modelVersion, this.modelFormat);
   }
 
 
@@ -203,16 +199,7 @@ export class ModelDocumentationComponent implements OnChanges {
     }
   }
 
-  createFileToDownload(result){
-    if(result!= undefined){
-    let blob = new Blob([result], { type: 'text/yaml' });
-        
-    this.downloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-    window.URL.revokeObjectURL;
-    }else{
-      console.log('error')
-    }
-  }
+  
 
 
 }

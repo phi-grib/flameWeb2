@@ -8,7 +8,7 @@
         </div>
 
         <div class="accordion" id="docAccordion"  *ngIf="this.documentationVisible">
-            <button type="button" class="btn btn-ets-ext"  (click)="exportToFile()" [ngClass]="{'disabled': model.name === undefined}" 
+            <button type="button" class="btn btn-ets-ext"  (click)="downloadFile()" [ngClass]="{'disabled': model.name === undefined}" 
             (download)= 'this.modelname'>Download file</button>
                 <br>
                 <input id= "inputFile" class="btn btn-ets-do" type="file" name="files" (change)="uploadFile($event)" />

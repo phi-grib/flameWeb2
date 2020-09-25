@@ -45,7 +45,6 @@ export class CommonService {
 
   getDocumentation(modelName: string, modelVersion: string, oformat: string): Observable<any> {
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/oformat/' + oformat + '/documentation';
-    console.log(url);
     return this.http.get(url);
   }
 
@@ -58,5 +57,7 @@ export class CommonService {
     if(obj[prop] !== undefined) return obj[prop];
     else return 
   }
+
+
 
 }
