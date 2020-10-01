@@ -171,7 +171,6 @@ export class ModelDocumentationComponent implements OnChanges {
 
 
   uploadFile(event) {
-    console.log(this.modelDocumentation);
     if (event.target.files.length !== 1) {
       console.error('No file selected');
     } else {
@@ -181,12 +180,11 @@ export class ModelDocumentationComponent implements OnChanges {
         this.modelDocumentation = reader.result.toString();
 
 
-        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation, 'JSON').subscribe(
+        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation, this.modelFormat).subscribe(
           result => {
             this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
               timeOut: 5000, positionClass: 'toast-top-right'
             });
-            console.log(this.modelDocumentation);
             this.getDocumentation();
           },
           error => {

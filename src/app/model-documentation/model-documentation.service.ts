@@ -13,7 +13,7 @@ export class ModelDocumentationService {
 
   constructor(private http: HttpClient) { }
 
-  updateDocumentation(model: string, version: number, doc: string, format: string) {
+  updateDocumentation(model: string, version: number, doc: string, format: string = 'YAML') {
     const formData = new FormData();
     formData.append('documentation', doc);
     const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/oformat/' + format + '/documentation';
@@ -28,12 +28,10 @@ export class ModelDocumentationService {
     let reader = new FileReader();
     reader.onloadend = (e) => {
       let text = reader.result.toString();
-      console.log(text);
       text = text.split("[").join("");
       text = text.split("]").join("");
       text = text.split('","').join("\n");
       text = text.split('"').join("");
-      console.log(text);
       let parsedBlob = new Blob([text]);
       window.saveAs(parsedBlob, modelName + '.yaml');
     }
