@@ -1,304 +1,358 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<div class="row" *ngIf="this.modelDocumentation !== undefined" >
+<div class="row" *ngIf="this.modelDocumentation !== undefined">
     <div class="card w-100" style="width: 18rem;">
 
-        <div  id="overlay" *ngIf="!this.documentationVisible">
-            <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
-              <span class="sr-only">Loading...</span>
+        <div id="overlay" *ngIf="!this.documentationVisible">
+            <div class="spinner-border text-etransafe" style="width: 10rem; height: 10rem;" role="status">
+                <span class="sr-only">Loading...</span>
             </div>
         </div>
 
-        <div class="accordion" id="docAccordion"  *ngIf="this.documentationVisible">
-            
+        <div class="accordion" id="docAccordion" *ngIf="this.documentationVisible">
 
-                <!-- block level 1 start -->
+
+            <!-- block level 1 start -->
             <div class="card">
-                <div class="card-header collapsed" id="headingOneDoc" data-toggle="collapse" data-target="#collapseOneDoc" aria-expanded="false" aria-controls="collapseOneDoc">
+                <div class="card-header collapsed" id="headingOneDoc" data-toggle="collapse"
+                    data-target="#collapseOneDoc" aria-expanded="false" aria-controls="collapseOneDoc">
                     <h5 class="mb-0">
-                    General model information <span class=comment>({{this.modelID}})</span>
-                    <button class="btn btn-link pt-0 pb-0 float-right"  type="button" >
-                    </button>
-                </h5>
-            </div>
-            
-            <div id="collapseOneDoc" class="collapse" aria-labelledby="headingOneDoc" data-parent="#docAccordion">
-                <div class="card-body pt-0 pb-0 pl-0 pr-0">
-                    
-                    <table class="table documentation">
-                        <thead>
-                            <tr style ="vertical-align: middle;">
-                                <th style="width: 25%"><button type="button" class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" 
-                                    (click)=editSection(0) data-target="#docSection">Edit</button></th>
-                                
-                                
-                                    <th style="width: 60%">Value</th>
-                                <th style="width: 15%" class="text-right" >Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let key of this.docLevel[0]">
-                                <td>{{this.cleanStr(key)}}</td>
-        
-                                <ng-container *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">
-                                    <td class="doc-value" *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
-                                        {{this.modelDocumentation[key].value}}</td>
-                                        <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">   
-                                            
-                                            <table class="table" id="documentationTable">
-                                            <tbody>
-                                                <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
-                                                    <td style="width: 25%">{{this.cleanStr(key2)}}</td>
-                                                    
-                                                    <td style="width: 50%" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
-                                                        {{this.modelDocumentation[key].value[key2].value}}</td>
-                                                    <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
-                                                        {{this.modelDocumentation[key].value[key2]}}</td>
-                                                                
-                                                    <td style="width: 25%" class="text-right comment" *ngIf="isObject(this.modelDocumentation[key].value[key2])" >
-                                                        {{this.modelDocumentation[key].value[key2].description}}</td>
-                                                    <td style="width: 25%" class="text-right comment" *ngIf="!isObject(this.modelDocumentation[key].value[key2])" >
-                                                        na</td>
-                                                </tr>
-                                            </tbody>
-                                        </table> 
-        
-                                    </td>
-                                    <td *ngIf="!this.modelDocumentation[key].value"></td>
-                                    <td class="text-right comment" >{{this.modelDocumentation[key].description}}</td>
-                                </ng-container>
-                                
-                                <ng-container *ngIf="!this.objectKeys(this.modelDocumentation).includes(key)">
-                                    <td></td>
-                                    <td class="text-right comment"></td>
-                                </ng-container>
-                                
-                            </tr>
-                        </tbody>
-                    </table> 
-                    
-                    
+                        General model information <span class=comment>({{this.modelID}})</span>
+                        <button class="btn btn-link pt-0 pb-0 float-right" type="button">
+                        </button>
+                    </h5>
                 </div>
+
+                <div id="collapseOneDoc" class="collapse" aria-labelledby="headingOneDoc" data-parent="#docAccordion">
+                    <div class="card-body pt-0 pb-0 pl-0 pr-0">
+
+                        <table class="table documentation">
+                            <thead>
+                                <tr style="vertical-align: middle;">
+                                    <th style="width: 25%"><button type="button"
+                                            class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal"
+                                            (click)=editSection(0) data-target="#docSection">Edit</button></th>
+
+
+                                    <th style="width: 60%">Value</th>
+                                    <th style="width: 15%" class="text-right">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let key of this.docLevel[0]">
+                                    <td>{{this.cleanStr(key)}}</td>
+
+                                    <ng-container *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">
+                                        <td class="doc-value"
+                                            *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
+                                            {{this.modelDocumentation[key].value}}</td>
+                                        <td
+                                            *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
+
+                                            <table class="table" id="documentationTable">
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
+                                                        <td style="width: 25%">{{this.cleanStr(key2)}}</td>
+
+                                                        <td style="width: 50%" class="doc-value"
+                                                            *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                            {{this.modelDocumentation[key].value[key2].value}}</td>
+                                                        <td style="width: 50%" class="doc-value"
+                                                            *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                            {{this.modelDocumentation[key].value[key2]}}</td>
+
+                                                        <td style="width: 25%" class="text-right comment"
+                                                            *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                            {{this.modelDocumentation[key].value[key2].description}}
+                                                        </td>
+                                                        <td style="width: 25%" class="text-right comment"
+                                                            *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                            na</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </td>
+                                        <td *ngIf="!this.modelDocumentation[key].value"></td>
+                                        <td class="text-right comment">{{this.modelDocumentation[key].description}}</td>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="!this.objectKeys(this.modelDocumentation).includes(key)">
+                                        <td></td>
+                                        <td class="text-right comment"></td>
+                                    </ng-container>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
                 </div>
             </div>
             <!-- block level 1 end -->
 
             <!-- block level 2 start -->
             <div class="card">
-                <div class="card-header collapsed" id="headingTwoDoc" data-toggle="collapse" data-target="#collapseTwoDoc" aria-expanded="false" aria-controls="collapseTwoDoc">
-                <h5 class="mb-0">
-                    Algorithm and software
-                    <button class="btn btn-link pt-0 pb-0 float-right"  type="button" >
-                    </button>
-                </h5>
+                <div class="card-header collapsed" id="headingTwoDoc" data-toggle="collapse"
+                    data-target="#collapseTwoDoc" aria-expanded="false" aria-controls="collapseTwoDoc">
+                    <h5 class="mb-0">
+                        Algorithm and software
+                        <button class="btn btn-link pt-0 pb-0 float-right" type="button">
+                        </button>
+                    </h5>
                 </div>
 
                 <div id="collapseTwoDoc" class="collapse" aria-labelledby="headingTwoDoc" data-parent="#docAccordion">
-                <div class="card-body pt-0 pb-0 pl-0 pr-0">
+                    <div class="card-body pt-0 pb-0 pl-0 pr-0">
 
-                    <table class="table documentation">
-                        <thead>
-                            <tr style ="vertical-align: middle;">
-                                <th style="width: 25%"><button type="button" class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" 
-                                    (click)=editSection(1) data-target="#docSection">Edit</button></th>
-                                <th style="width: 60%">Value</th>
-                                <th style="width: 15%" class="text-right" >Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let key of this.docLevel[1]">
-                                <td>{{this.cleanStr(key)}}</td>
+                        <table class="table documentation">
+                            <thead>
+                                <tr style="vertical-align: middle;">
+                                    <th style="width: 25%"><button type="button"
+                                            class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal"
+                                            (click)=editSection(1) data-target="#docSection">Edit</button></th>
+                                    <th style="width: 60%">Value</th>
+                                    <th style="width: 15%" class="text-right">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let key of this.docLevel[1]">
+                                    <td>{{this.cleanStr(key)}}</td>
 
-                                <ng-container *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">
-                                    <td class="doc-value" *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
-                                        {{this.modelDocumentation[key].value}}</td>
-                                    <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">   
+                                    <ng-container *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">
+                                        <td class="doc-value"
+                                            *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
+                                            {{this.modelDocumentation[key].value}}</td>
+                                        <td
+                                            *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
 
-                                        <table class="table" id="documentationTable">
-                                            <tbody>
-                                                <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
-                                                    <td style="width: 25%">{{this.cleanStr(key2)}}</td>
+                                            <table class="table" id="documentationTable">
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
+                                                        <td style="width: 25%">{{this.cleanStr(key2)}}</td>
 
-                                                    <td style="width: 50%" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
-                                                        {{this.modelDocumentation[key].value[key2].value}}</td>
-                                                    <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
-                                                        {{this.modelDocumentation[key].value[key2]}}</td>
+                                                        <td style="width: 50%" class="doc-value"
+                                                            *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                            {{this.modelDocumentation[key].value[key2].value}}</td>
+                                                        <td style="width: 50%" class="doc-value"
+                                                            *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                            {{this.modelDocumentation[key].value[key2]}}</td>
 
-                                                    <td style="width: 25%" class="text-right comment" *ngIf="isObject(this.modelDocumentation[key].value[key2])" >
-                                                        {{this.modelDocumentation[key].value[key2].description}}</td>
-                                                    <td style="width: 25%" class="text-right comment" *ngIf="!isObject(this.modelDocumentation[key].value[key2])" >
-                                                        na</td>
-                                                </tr>
-                                            </tbody>
-                                        </table> 
+                                                        <td style="width: 25%" class="text-right comment"
+                                                            *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                            {{this.modelDocumentation[key].value[key2].description}}
+                                                        </td>
+                                                        <td style="width: 25%" class="text-right comment"
+                                                            *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                            na</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
 
-                                    </td>
-                                    <td *ngIf="!this.modelDocumentation[key].value"></td>
-                                    <td class="text-right comment" >{{this.modelDocumentation[key].description}}</td>
-                                </ng-container>
+                                        </td>
+                                        <td *ngIf="!this.modelDocumentation[key].value"></td>
+                                        <td class="text-right comment">{{this.modelDocumentation[key].description}}</td>
+                                    </ng-container>
 
-                                <ng-container *ngIf="!this.objectKeys(this.modelDocumentation).includes(key)">
-                                    <td></td>
-                                    <td class="text-right comment"></td>
-                                </ng-container>
+                                    <ng-container *ngIf="!this.objectKeys(this.modelDocumentation).includes(key)">
+                                        <td></td>
+                                        <td class="text-right comment"></td>
+                                    </ng-container>
 
-                            </tr>
-                        </tbody>
-                    </table> 
+                                </tr>
+                            </tbody>
+                        </table>
 
-                </div>
+                    </div>
                 </div>
             </div>
             <!-- block level 2 end -->
 
             <!-- block level 3 start -->
             <div class="card">
-                <div class="card-header collapsed" id="headingThreeDoc" data-toggle="collapse" data-target="#collapseThreeDoc" aria-expanded="false" aria-controls="collapseThreeDoc">
-                <h5 class="mb-0">
-                    Other information
-                    <button class="btn btn-link pt-0 pb-0 float-right" type="button" >
+                <div class="card-header collapsed" id="headingThreeDoc" data-toggle="collapse"
+                    data-target="#collapseThreeDoc" aria-expanded="false" aria-controls="collapseThreeDoc">
+                    <h5 class="mb-0">
+                        Other information
+                        <button class="btn btn-link pt-0 pb-0 float-right" type="button">
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseThreeDoc" class="collapse" aria-labelledby="headingThreeDoc"
+                    data-parent="#docAccordion">
+                    <div class="card-body pt-0 pb-0 pl-0 pr-0">
+
+                        <table class="table documentation">
+                            <thead>
+                                <tr style="vertical-align: middle;">
+                                    <th style="width: 25%"><button type="button"
+                                            class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal"
+                                            (click)=editSection(2) data-target="#docSection">Edit</button></th>
+                                    <th style="width: 60%">Value</th>
+                                    <th style="width: 15%" class="text-right">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let key of this.docLevel[2]">
+                                    <td>{{this.cleanStr(key)}}</td>
+
+                                    <ng-container *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">
+
+                                        <!-- non-objects -->
+                                        <td class="doc-value"
+                                            *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
+                                            {{this.modelDocumentation[key].value}}</td>
+
+                                        <!-- objects -->
+                                        <td
+                                            *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
+
+                                            <table class="table" id="documentationTable">
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
+                                                        <td style="width: 25%">{{this.cleanStr(key2)}}</td>
+
+                                                        <td style="width: 50%" class="doc-value"
+                                                            *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                            {{this.modelDocumentation[key].value[key2].value}}</td>
+                                                        <td style="width: 50%" class="doc-value"
+                                                            *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                            {{this.modelDocumentation[key].value[key2]}}</td>
+
+                                                        <td style="width: 25%" class="text-right comment"
+                                                            *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                            {{this.modelDocumentation[key].value[key2].description}}
+                                                        </td>
+                                                        <td style="width: 25%" class="text-right comment"
+                                                            *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                            na</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </td>
+                                        <td *ngIf="!this.modelDocumentation[key].value"></td>
+                                        <td class="text-right comment">{{this.modelDocumentation[key].description}}</td>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="!this.objectKeys(this.modelDocumentation).includes(key)">
+                                        <td></td>
+                                        <td class="text-right comment"></td>
+                                    </ng-container>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <!-- block level 3 end -->
+                <div class="card-header">
+                    <h5 class="card-body pt-0 pb-0 pl-0 pr-0 float-left" id="doc-download">Documentation</h5>
+                    <button type="button" class="btn btn-primary btn-sm">
+                        Download
+                        <span class="material-icons"></span>
                     </button>
-                </h5>
+
+                    <button class="material-icons" (click)="downloadFile()"
+                        [ngClass]="{'disabled': model.name === undefined}">cloud_download</button>
+                    <label for="inputFile" hidden="true">Upload file</label>
+                    <input id="inputFile" class="btn btn-ets-ext" type="file" name="files" (click)="uploadFile($event)"
+                        accept="text/yml, text/yaml" />
+                    <button id="uploadButton" class="material-icons"
+                        onclick="$('#inputFile').click()">cloud_upload</button>
                 </div>
 
-                <div id="collapseThreeDoc" class="collapse" aria-labelledby="headingThreeDoc" data-parent="#docAccordion">
-                <div class="card-body pt-0 pb-0 pl-0 pr-0">
-
-                    <table class="table documentation">
-                        <thead>
-                            <tr style ="vertical-align: middle;">
-                                <th style="width: 25%"><button type="button" class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" 
-                                    (click)=editSection(2) data-target="#docSection">Edit</button></th>
-                                <th style="width: 60%">Value</th>
-                                <th style="width: 15%" class="text-right" >Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let key of this.docLevel[2]">
-                                <td>{{this.cleanStr(key)}}</td>
-
-                                <ng-container *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">
-
-                                    <!-- non-objects -->
-                                    <td class="doc-value" *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
-                                        {{this.modelDocumentation[key].value}}</td>
-                                    
-                                    <!-- objects -->
-                                    <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">   
-
-                                        <table class="table" id="documentationTable">
-                                            <tbody>
-                                                <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
-                                                    <td style="width: 25%">{{this.cleanStr(key2)}}</td>
-
-                                                    <td style="width: 50%" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
-                                                        {{this.modelDocumentation[key].value[key2].value}}</td>
-                                                    <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
-                                                        {{this.modelDocumentation[key].value[key2]}}</td>
-
-                                                    <td style="width: 25%" class="text-right comment" *ngIf="isObject(this.modelDocumentation[key].value[key2])" >
-                                                        {{this.modelDocumentation[key].value[key2].description}}</td>
-                                                    <td style="width: 25%" class="text-right comment" *ngIf="!isObject(this.modelDocumentation[key].value[key2])" >
-                                                        na</td>
-                                                </tr>
-                                            </tbody>
-                                        </table> 
-
-                                    </td>
-                                    <td *ngIf="!this.modelDocumentation[key].value"></td>
-                                    <td class="text-right comment" >{{this.modelDocumentation[key].description}}</td>
-                                </ng-container>
-
-                                <ng-container *ngIf="!this.objectKeys(this.modelDocumentation).includes(key)">
-                                    <td></td>
-                                    <td class="text-right comment"></td>
-                                </ng-container>
-
-                            </tr>
-                        </tbody>
-                    </table> 
-
-                </div>
             </div>
-            </div>
-            <!-- block level 3 end -->
-            <div class="files-block">
-            <button type="button" class="btn btn-ets-ext" id="download">Documentation</button>
-            <button class="material-icons" (click)="downloadFile()" [ngClass]="{'disabled': model.name === undefined}"  [ngClass]="{'disabled': model.name === undefined}">cloud_download</button>
-                <br>
-                <label for="inputFile" hidden="true">Upload file</label>
-                <input id= "inputFile" class="btn btn-ets-ext" type="file" name="files"  title=" "/>
-                <button class= "material-icons" (change)="uploadFile($event)" (click)="uploadFile($event)" accept="text/yml, text/yaml">cloud_upload</button>
-            </div>
+
+
         </div>
     </div>
 </div>
 
 
 <!-- New Model -->
-<div  class="modal fade" id="docSection" tabindex="-1" role="dialog" aria-labelledby="docSectionLabel" aria-hidden="true">
+<div class="modal fade" id="docSection" tabindex="-1" role="dialog" aria-labelledby="docSectionLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title" id="docSectionLabel">Documentation editor for section {{this.levelLabels[this.sectionActive]}}</h5>
+                <h5 class="modal-title" id="docSectionLabel">Documentation editor for section
+                    {{this.levelLabels[this.sectionActive]}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
-                        <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
             <div class="modal-body">
-                <div *ngFor="let key of this.editLevel[this.sectionActive]" >
+                <div *ngFor="let key of this.editLevel[this.sectionActive]">
                     <!-- non objects -->
                     <div class="form-group row" *ngIf="!isObject(this.modelDocumentation[key].value)">
                         <div class="col-8">
-                            <input class="form-control doc-value" [(ngModel)]="this.modelDocumentation[key].value" 
-                            data-toggle="tooltip" data-placement="top" title="{{this.cleanStr(key)}}"
-                            id="#key" type='text-area' placeholder="{{this.cleanStr(key)}}">
+                            <input class="form-control doc-value" [(ngModel)]="this.modelDocumentation[key].value"
+                                data-toggle="tooltip" data-placement="top" title="{{this.cleanStr(key)}}" id="#key"
+                                type='text-area' placeholder="{{this.cleanStr(key)}}">
                         </div>
-                        <label for=key class="col-4 text-muted small pl-0">{{this.modelDocumentation[key].description}}</label> 
+                        <label for=key
+                            class="col-4 text-muted small pl-0">{{this.modelDocumentation[key].description}}</label>
                     </div>
 
                     <div class="form-group row" *ngIf="isObject(this.modelDocumentation[key].value)">
                         <div class="col-12 col-sm-12">
                             <div class="row">
                                 <div class="col-2 col-sm-2">
-                                    <label for=key class="col-2 small pl-0">{{this.cleanStr(key)}}</label> 
+                                    <label for=key class="col-2 small pl-0">{{this.cleanStr(key)}}</label>
                                 </div>
 
                                 <div class="col-8 col-sm-10">
                                     <div *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
                                         <div class="row">
-                                            <input class="col-sm-7 form-control doc-value-inner" *ngIf="isObject(this.modelDocumentation[key].value[key2])" 
-                                            [(ngModel)]="this.modelDocumentation[key].value[key2].value" 
-                                            data-toggle="tooltip" data-placement="top" title="{{this.cleanStr(key+' : '+key2)}}"
-                                            id="key2" type='text-area' placeholder="{{this.cleanStr(key2)}}">
+                                            <input class="col-sm-7 form-control doc-value-inner"
+                                                *ngIf="isObject(this.modelDocumentation[key].value[key2])"
+                                                [(ngModel)]="this.modelDocumentation[key].value[key2].value"
+                                                data-toggle="tooltip" data-placement="top"
+                                                title="{{this.cleanStr(key+' : '+key2)}}" id="key2" type='text-area'
+                                                placeholder="{{this.cleanStr(key2)}}">
 
-                                            <input class="col-sm-7 form-control doc-value-inner" *ngIf="!isObject(this.modelDocumentation[key].value[key2])" 
-                                            [(ngModel)]="this.modelDocumentation[key].value[key2]" 
-                                            data-toggle="tooltip" data-placement="top" title="{{this.cleanStr(key+' : '+key2)}}"
-                                            id="key2" type='text-area' placeholder="{{this.cleanStr(key2)}}">
-                                        
-                                            <label for=key class="col-sm-3 text-muted small" *ngIf="isObject(this.modelDocumentation[key].value[key2])" >
-                                                {{this.modelDocumentation[key].value[key2].description}}</label> 
-                                            <label for=key class="col-sm-3 text-muted small" *ngIf="!isObject(this.modelDocumentation[key].value[key2])" >
-                                                na</label> 
+                                            <input class="col-sm-7 form-control doc-value-inner"
+                                                *ngIf="!isObject(this.modelDocumentation[key].value[key2])"
+                                                [(ngModel)]="this.modelDocumentation[key].value[key2]"
+                                                data-toggle="tooltip" data-placement="top"
+                                                title="{{this.cleanStr(key+' : '+key2)}}" id="key2" type='text-area'
+                                                placeholder="{{this.cleanStr(key2)}}">
+
+                                            <label for=key class="col-sm-3 text-muted small"
+                                                *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                {{this.modelDocumentation[key].value[key2].description}}</label>
+                                            <label for=key class="col-sm-3 text-muted small"
+                                                *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                na</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>  
+                        </div>
                     </div>
 
                 </div>
             </div>
-            
+
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="this.cancelInput()">Cancel</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="this.applyInput()">Apply</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    (click)="this.cancelInput()">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                    (click)="this.applyInput()">Apply</button>
             </div>
 
         </div>
     </div>
 </div>
-

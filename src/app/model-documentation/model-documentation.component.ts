@@ -4,7 +4,7 @@ import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModelDocumentationService } from './model-documentation.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -201,6 +201,8 @@ export class ModelDocumentationComponent implements OnChanges {
       }
     
   }
+
+  
 
   
 

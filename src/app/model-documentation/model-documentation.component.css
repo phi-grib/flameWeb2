@@ -80,25 +80,17 @@ table td {
   border-width: 0px;
 }
 
-.files-block {
-  font: normal normal normal 10px/1 FontAwesome;
-  font-size: 28px;
-  font-family: Arial, Helvetica, sans-serif;
+#files-block {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: "\f056";
   text-rendering: auto;;
   text-rendering: auto;
-  background-color: #f6f6f6;
-  border: 
+  font-size: 20px; 
 }
 
-#inputFile::-webkit-file-upload-button {
+#inputFile {
   display: none;
-}
-
-#download {
-  margin-left: 8px;
 }
 
 #inputFileLabel {
@@ -120,4 +112,8 @@ table td {
   border: red;
   color: #E5A01E;
   background-color: #f6f6f6;
+ }
+
+ #uploadButton{
+
  }

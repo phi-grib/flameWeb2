@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Subject, Observable } from 'rxjs';
+import * as FileSaver from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,7 @@ export class ModelDocumentationService {
       text = text.split('","').join("\n");
       text = text.split('"').join("");
       let parsedBlob = new Blob([text]);
-      window.saveAs(parsedBlob, modelName + '.yaml');
+      FileSaver.saveAs(parsedBlob, modelName + '.yaml');
     }
     reader.readAsText(blob);
   }

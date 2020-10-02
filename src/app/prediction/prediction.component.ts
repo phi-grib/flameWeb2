@@ -558,7 +558,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           };
 
     this.getInfo();
-    this.getDocumentation();  
+    // this.getDocumentation();  
     this.getPrediction();
     this.getValidation();
 
