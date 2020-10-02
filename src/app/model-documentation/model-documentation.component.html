@@ -1,3 +1,5 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 <div class="row" *ngIf="this.modelDocumentation !== undefined" >
     <div class="card w-100" style="width: 18rem;">
 
@@ -8,10 +10,6 @@
         </div>
 
         <div class="accordion" id="docAccordion"  *ngIf="this.documentationVisible">
-            <button type="button" class="btn btn-ets-ext"  (click)="downloadFile()" [ngClass]="{'disabled': model.name === undefined}" 
-            (download)= 'this.modelname'>Download file</button>
-                <br>
-                <input id= "inputFile" class="btn btn-ets-do" type="file" name="files" (change)="uploadFile($event)" />
             
 
                 <!-- block level 1 start -->
@@ -224,7 +222,14 @@
             </div>
             </div>
             <!-- block level 3 end -->
-
+            <div class="files-block">
+            <button type="button" class="btn btn-ets-ext" id="download">Documentation</button>
+            <button class="material-icons" (click)="downloadFile()" [ngClass]="{'disabled': model.name === undefined}"  [ngClass]="{'disabled': model.name === undefined}">cloud_download</button>
+                <br>
+                <label for="inputFile" hidden="true">Upload file</label>
+                <input id= "inputFile" class="btn btn-ets-ext" type="file" name="files"  title=" "/>
+                <button class= "material-icons" (change)="uploadFile($event)" (click)="uploadFile($event)" accept="text/yml, text/yaml">cloud_upload</button>
+            </div>
         </div>
     </div>
 </div>

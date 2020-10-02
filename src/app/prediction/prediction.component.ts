@@ -687,18 +687,18 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     );
   }
 
-  getDocumentation() {
+  // getDocumentation() {
 
-    this.commonService.getDocumentation(this.prediction.modelName, this.prediction.modelVersion).subscribe(
-      result => {
-        this.modelDocumentation = result;
-      },
-      error => {
-        this.modelDocumentation = undefined;
-      }
-    );
+  //   this.commonService.getDocumentation(this.prediction.modelName, this.prediction.modelVersion).subscribe(
+  //     result => {
+  //       this.modelDocumentation = result;
+  //     },
+  //     error => {
+  //       this.modelDocumentation = undefined;
+  //     }
+  //   );
 
-  }
+  // }
 
   castValue(value: any) {
 

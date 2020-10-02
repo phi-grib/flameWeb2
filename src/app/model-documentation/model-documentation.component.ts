@@ -4,9 +4,7 @@ import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModelDocumentationService } from './model-documentation.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { getValueInRange } from '@ng-bootstrap/ng-bootstrap/util/util';
-import { URL } from 'url';
-import { environment } from 'src/environments/environment';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @Component({
@@ -31,7 +29,7 @@ export class ModelDocumentationComponent implements OnChanges {
   @Input() modelFormat;
 
 
-
+  materialModules = [MatIconModule];
   modelDocumentation = undefined;
   downloadLink = undefined;
   fileToUpload: File = null;
@@ -193,8 +191,15 @@ export class ModelDocumentationComponent implements OnChanges {
         );
       };
       reader.readAsText(event.target.files[0]);
-
-    }
+      let re = '/(\.\w+)/i';
+      
+      let fileName = event.target.files[0]['name'];
+      console.log(fileName);
+      let format =  fileName.match(re);
+      console.log(format);
+          
+      }
+    
   }
 
   
