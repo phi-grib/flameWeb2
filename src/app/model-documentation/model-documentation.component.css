@@ -9,7 +9,7 @@
   align-content: flex-end;
   transform: rotate(0deg) ;
   transition: all linear 0.25s;
-  color: #e59300;
+  color: #E9A933;
 }   
 ::ng-deep .card-header[data-toggle="collapse"].collapsed button:after {
   transform: rotate(90deg) ;
@@ -49,7 +49,7 @@ table td {
 }
 
 .text-etransafe {
-  color:#e59300;
+  color:#E9A933;
 }
 
 .spinner-border {
@@ -108,12 +108,26 @@ table td {
   width: 30px;
   border-radius: 50%;
   float: right;
-  margin-right: 30px;
+  margin-right: 11px;
   border: red;
-  color: #E5A01E;
+  color: #E9A933;
   background-color: #f6f6f6;
+  position: relative;
  }
 
- #uploadButton{
+ #uploadButton:focus {
+   outline:none !important;
+  }
 
+  #downloadButton:focus {
+    outline:none !important;
+   }
+
+ .uploadFile{
+   float: left;
+   margin-left: 43em;
+ }
+
+ #uploadDetails{
+   margin-left: 50.7em;
  }

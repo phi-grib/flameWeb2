@@ -4,7 +4,7 @@ a:hover {
 }
 
 a.active {
-    background: #EBAB39;
+    background: #E9A933;
     border-bottom: 1px solid #0076a3;
 }
 a {
@@ -88,6 +88,6 @@ label.disabled {
 .btn-ets-ext:active,
 .btn-ets-ext:focus,
 .btn-ets-ext.active {
-    background: #e59300 ;
+    background: #E9A933 ;
     color: #ffffff;
 }

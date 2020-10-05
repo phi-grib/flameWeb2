@@ -257,16 +257,14 @@
                 <!-- block level 3 end -->
                 <div class="card-header">
                     <h5 class="card-body pt-0 pb-0 pl-0 pr-0 float-left" id="doc-download">Documentation</h5>
-                    <button type="button" class="btn btn-primary btn-sm">
-                        Download
-                        <span class="material-icons"></span>
-                    </button>
-
+                    <label for="downloadButton" class="uploadFile">Download file</label>
                     <button class="material-icons" (click)="downloadFile()"
-                        [ngClass]="{'disabled': model.name === undefined}">cloud_download</button>
-                    <label for="inputFile" hidden="true">Upload file</label>
+                [ngClass]="{'disabled': model.name === undefined}" id="downloadButton">cloud_download</button>
+                        <br>
+                        <label for="inputFile" class="uploadFile" id="uploadDetails">Upload file</label>
                     <input id="inputFile" class="btn btn-ets-ext" type="file" name="files" (click)="uploadFile($event)"
                         accept="text/yml, text/yaml" />
+                      
                     <button id="uploadButton" class="material-icons"
                         onclick="$('#inputFile').click()">cloud_upload</button>
                 </div>
