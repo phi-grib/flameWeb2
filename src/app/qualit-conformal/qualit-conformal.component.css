@@ -53,12 +53,12 @@ ul li.nav-item a.active{
   color:#22577A;
   font-weight: bold;
   font-size: 1.2rem;
-  border-bottom: 4px solid #e59300;
+  border-bottom: 4px solid #e59333;
   border-radius: 0;
 }
 
 .text-etransafe {
-  color:#e59300;
+  color:#e59333;
 }
 
 .spinner-border {

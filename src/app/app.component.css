@@ -32,7 +32,7 @@ ul li a {
 ul li a.active{
     background: #22577a;
     color: white;
-    border-bottom: 3px solid #e59300;
+    border-bottom: 3px solid #e59333;
     border-radius: 0;
 }
 
