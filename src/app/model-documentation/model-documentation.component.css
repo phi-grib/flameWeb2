@@ -1,133 +1,156 @@
 ::ng-deep .card-header[data-toggle="collapse"] button:after {
-  display: inline-block;
-  font: normal normal normal 10px/1 FontAwesome;
-  font-size: 25px;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  content: "\f056";
-  align-content: flex-end;
-  transform: rotate(0deg) ;
-  transition: all linear 0.25s;
-  color: #E9A933;
-}   
-::ng-deep .card-header[data-toggle="collapse"].collapsed button:after {
-  transform: rotate(90deg) ;
-  content: "\f055";
+    display: inline-block;
+    font: normal normal normal 10px/1 FontAwesome;
+    font-size: 25px;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\f056";
+    align-content: flex-end;
+    transform: rotate(0deg);
+    transition: all linear 0.25s;
+    color: #E9A933;
 }
-a{
-  text-align: end;
+
+::ng-deep .card-header[data-toggle="collapse"].collapsed button:after {
+    transform: rotate(90deg);
+    content: "\f055";
+}
+
+a {
+    text-align: end;
 }
 
 table td {
     padding-top: 1px;
     padding-bottom: 1px;
 }
-  
+
 .docAccordion {
-  /* scroll-behavior: auto; */
-  overflow: auto;
+    /* scroll-behavior: auto; */
+    overflow: auto;
 }
 
 .comment {
-  color: grey;
+    color: grey;
 }
 
 .doc-value {
-  margin-top: 0px;
-  color: #0076a3;
+    margin-top: 0px;
+    color: #0076a3;
 }
 
 .doc-value-inner {
-  margin-top: 5px;
-  color: #0076a3;
+    margin-top: 5px;
+    color: #0076a3;
 }
 
 .documentation {
-  /* table-layout: fixed; */
-  width: 100%;
+    /* table-layout: fixed; */
+    width: 100%;
 }
 
 .text-etransafe {
-  color:#E9A933;
+    color: #E9A933;
 }
 
 .spinner-border {
-  position: absolute; 
-  display: block;
-  right: 45%; 
-  top: 30%; 
-  z-index: 1031;
+    position: absolute;
+    display: block;
+    right: 45%;
+    top: 30%;
+    z-index: 1031;
 }
 
 #overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #FAFAFA;
-  opacity: 0.7;
-  z-index: 2;
-  cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #FAFAFA;
+    opacity: 0.7;
+    z-index: 2;
+    cursor: pointer;
 }
 
 .card-body {
-  border-width: 0px;
+    border-width: 0px;
 }
 
 .card {
-  border-width: 0px;
+    border-width: 0px;
 }
 
 #files-block {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  content: "\f056";
-  text-rendering: auto;;
-  text-rendering: auto;
-  font-size: 20px; 
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\f056";
+    text-rendering: auto;
+    ;
+    text-rendering: auto;
+    font-size: 20px;
 }
 
 #inputFile {
-  display: none;
+    display: none;
 }
 
 #inputFileLabel {
-  margin-left: 22px;
-  font: normal normal normal 10px/1 FontAwesome;
-  font-size: 16px;
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: left;
- }
+    margin-left: 22px;
+    font: normal normal normal 10px/1 FontAwesome;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: left;
+}
 
- .material-icons {
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-  float: right;
-  margin-right: 11px;
-  border: red;
-  color: #E9A933;
-  background-color: #f6f6f6;
-  position: relative;
- }
+.material-icons {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    color: #E9A933;
+    background-color: white;
+    position: relative;
+    align-self: auto;
+    border-width: 0px;
+}
 
- #uploadButton:focus {
-   outline:none !important;
-  }
+#uploadButton:focus {
+    outline: none !important;
+    border-style: none;
+}
 
-  #downloadButton:focus {
-    outline:none !important;
-   }
+#downloadButton:focus {
+    outline: none !important;
+}
 
- .uploadFile{
-   float: left;
-   margin-left: 43em;
- }
+.downloadFile {
+    flex-direction: row;
+    margin-top: -2px;
+    margin-left: 50px;
+    position: relative;
+    float: inline-start;
+    font-size: 20px;
+}
 
- #uploadDetails{
-   margin-left: 50.7em;
- }
+.uploadFile {
+    flex-direction: row;
+    position: relative;
+    float: inline-start;
+    margin-left: 65px;
+    margin-top: -35px;
+    font-size: 20px;
+}
+
+#uploadButton {
+    margin-left: 5px;
+    position: absolute;
+    margin-top: -1.4em;
+    color: #4A90D9;
+}
+
+#documentation {
+    background-color: white;
+}
