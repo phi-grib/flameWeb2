@@ -224,9 +224,9 @@
 
             <div class="card">
                 <!-- block level 3 end -->
-                <div id="documentation" class="card-header">
+                <div class="card-header" id="documentation">
                     <h5 class="card-body pt-0 pb-0 pl-0 pr-0 float-left" id="doc-download">Documentation</h5>
-                    <label for="downloadButton" class="downloadFile">Download</label>
+                    <label for="downloadButton" class="downloadFile" id="downloadLabel">Download</label>
                     <button class="material-icons" (click)="downloadFile()" [ngClass]="{'disabled': model.name === undefined}" id="downloadButton">cloud_download</button>
                     <br>
                     <label for="inputFile" class="uploadFile" id="uploadDetails">Upload</label>
