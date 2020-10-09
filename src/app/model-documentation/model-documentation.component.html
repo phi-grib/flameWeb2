@@ -1,5 +1,3 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 <div class="row" *ngIf="this.modelDocumentation !== undefined">
     <div class="card w-100" style="width: 18rem;">
 
@@ -222,24 +220,50 @@
                 </div>
             </div>
 
-            <div class="card">
-                <!-- block level 3 end -->
-                <div class="card-header" id="documentation">
-                    <h5 class="card-body pt-0 pb-0 pl-0 pr-0 float-left" id="doc-download">Documentation</h5>
-                    <label for="downloadButton" class="downloadFile" id="downloadLabel">Download</label>
-                    <button class="material-icons" (click)="downloadFile()" [ngClass]="{'disabled': model.name === undefined}" id="downloadButton">cloud_download</button>
-                    <br>
-                    <label for="inputFile" class="uploadFile" id="uploadDetails">Upload</label>
-                    <input id="inputFile" class="btn btn-ets-ext" type="file" name="files" (click)="uploadFile($event)" accept="text/yml, text/yaml" />
-
-                    <button id="uploadButton" class="material-icons" onclick="$('#inputFile').click()">cloud_upload</button>
-                </div>
-
-            </div>
 
 
         </div>
+        <div class="card">
+            <div class="card-header collapsed" id="headingThreeDoc" data-toggle="collapse" data-target="#exportImport" aria-expanded="false" aria-controls="collapseThreeDoc">
+                <h5 class="mb-0">
+                    Export/Import
+                    <button class="btn btn-link pt-0 pb-0 float-right" type="button">
+                </button>
+                </h5>
+            </div>
+            <div id="exportImport" class="collapse" aria-labelledby="headingThreeDoc" data-parent="#docAccordion">
+                <div class="card-body pt-0 pb-0 pl-0 pr-0">
+                    <div class="buttons">
+                        <div class="btn-group" role="group" aria-label="First group">
+                            <button id="downloadButton" type="button" class="btn btn-ets-down ml-2" (click)="downloadFile()" [ngClass]="{'disabled': model.name === undefined}">Download</button>
+
+                            <input id="inputFile" class="btn btn-ets-ext" type="file" name="files" (click)="uploadFile($event)" accept="text/yml, text/yaml" />
+
+                            <button id="uploadButton" type="button" class="btn btn-ets-up" onclick="$('#inputFile').click()">Upload</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- block level 3 end -->
+    <!-- <div class="card-header">
+                            <h5 class="card-body pt-0 pb-0 pl-0 pr-0 float-left" id="doc-download">Documentation</h5>
+                            <button type="button" class="btn btn-primary btn-sm">
+                                Download
+                                <span class="material-icons"></span>
+                            </button>
+        
+                            <button class="material-icons" (click)="downloadFile()"
+                                [ngClass]="{'disabled': model.name === undefined}">cloud_download</button>
+                            <label for="inputFile" hidden="true">Upload file</label>
+                            <input id="inputFile" class="btn btn-ets-ext" type="file" name="files" (click)="uploadFile($event)"
+                                accept="text/yml, text/yaml" />
+                            <button id="uploadButton" class="material-icons"
+                                onclick="$('#inputFile').click()">cloud_upload</button>
+                        </div> -->
+
 </div>
 
 
