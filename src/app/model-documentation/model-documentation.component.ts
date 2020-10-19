@@ -68,9 +68,7 @@ export class ModelDocumentationComponent implements OnChanges {
   objectKeys = Object.keys;
 
   ngOnChanges(): void {
-    // console.log('documentation', this.modelID)
     this.getDocumentation();
-
   }
 
   isObject(val: any) {
@@ -141,15 +139,13 @@ export class ModelDocumentationComponent implements OnChanges {
     return dict_out;
   }
 
+  //requests documentation from the API
   getDocumentation(): void {
     this.documentationVisible = false;
     this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
       result => {
         this.modelDocumentation = result;
 
-        // for (var key in this.modelDocumentation) {
-        //       console.log(key, this.modelDocumentation[key]);
-        //   }
         let data = JSON.stringify(this.modelDocumentation);
         let blob = new Blob([data], { type: 'text/plain' });
 
@@ -161,13 +157,13 @@ export class ModelDocumentationComponent implements OnChanges {
     this.documentationVisible = true;
   }
 
-
+  //calls exportToFile from model-documentation-service
   downloadFile(){
       this.service.exportToFile(this.modelName, this.modelVersion, this.modelFormat);
   }
 
 
-
+  //loads a yaml file to be read and update the documentation from it
   uploadFile(event) {
     if (event.target.files.length !== 1) {
       console.error('No file selected');
@@ -190,14 +186,7 @@ export class ModelDocumentationComponent implements OnChanges {
           }
         );
       };
-      reader.readAsText(event.target.files[0]);
-      let re = '/(\.\w+)/i';
-      
-      let fileName = event.target.files[0]['name'];
-      console.log(fileName);
-      let format =  fileName.match(re);
-      console.log(format);
-          
+      reader.readAsText(event.target.files[0]);        
       }
     
   }

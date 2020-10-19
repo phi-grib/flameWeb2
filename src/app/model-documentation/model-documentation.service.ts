@@ -14,6 +14,7 @@ export class ModelDocumentationService {
 
   constructor(private http: HttpClient) { }
 
+  //updates documentation from yaml file (throught post method in the API)
   updateDocumentation(model: string, version: number, doc: string, format: string = 'YAML') {
     const formData = new FormData();
     formData.append('documentation', doc);
@@ -21,6 +22,7 @@ export class ModelDocumentationService {
     return this.http.post(url, formData);
   }
 
+  //downloads and parse a documentation yaml file to be HR
   async exportToFile(modelName: string, modelVersion: string, modelFormat: string) {
     modelFormat = 'YAML';
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/oformat/' + modelFormat + '/documentation';
