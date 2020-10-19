@@ -22,7 +22,7 @@ export class ModelDocumentationService {
     return this.http.post(url, formData);
   }
 
-  //downloads and parse a documentation yaml file to be HR
+  //downloads and parses a documentation yaml file to be HR
   async exportToFile(modelName: string, modelVersion: string, modelFormat: string) {
     modelFormat = 'YAML';
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/oformat/' + modelFormat + '/documentation';

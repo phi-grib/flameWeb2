@@ -7,15 +7,17 @@
     -moz-osx-font-smoothing: grayscale;
     content: "\f056";
     align-content: flex-end;
-    transform: rotate(0deg) ;
+    transform: rotate(0deg);
     transition: all linear 0.25s;
     color: #e59333;
-}   
+}
+
 ::ng-deep .card-header[data-toggle="collapse"].collapsed button:after {
-    transform: rotate(90deg) ;
+    transform: rotate(90deg);
     content: "\f055";
 }
-a{
+
+a {
     text-align: end;
 }
 
@@ -23,6 +25,7 @@ a{
     pointer-events: none;
     opacity: 0.4;
 }
+
 
 /* .card-header {
     color: white;
@@ -32,17 +35,22 @@ a{
     padding-bottom: 5px;
 } */
 
+
 /* .card-header {
     padding-top: 10px;
     padding-bottom: 10px;
 } */
 
-.card{
+.card {
     padding-top: 0px;
     padding-bottom: 0px;
     border-width: 0px;
 }
 
-.modal-body{
+.modal-body {
     padding: 0px;
+}
+
+.card-header {
+    border-bottom: 0px;
 }
