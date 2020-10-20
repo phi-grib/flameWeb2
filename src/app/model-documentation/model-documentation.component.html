@@ -237,9 +237,9 @@
                         <div class="btn-group" role="group" aria-label="First group">
                             <button id="downloadButton" type="button" class="btn btn-ets-down ml-2" (click)="downloadFile()" [ngClass]="{'disabled': model.name === undefined}">Download</button>
 
-                            <input id="inputFile" class="btn btn-ets-ext" type="file" name="files" (click)="uploadFile($event)" accept="text/yml, text/yaml" />
+                            <input id="inputFile" class="btn btn-ets-ext" type="file" name="files" (change)="uploadFile($event)" accept="text/yml, text/yaml" #uploader/>
 
-                            <button id="uploadButton" type="button" class="btn btn-ets-up" onclick="$('#inputFile').click()">Upload</button>
+                            <button id="uploadButton" type="button" class="btn btn-ets-up" (click)="uploader.click()">Upload</button>
                         </div>
                     </div>
                 </div>
