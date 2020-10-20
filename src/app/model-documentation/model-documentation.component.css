@@ -1,190 +1,8 @@
-/* 
-html5doctor.com Reset Stylesheet
-v1.6.1
-Last Updated: 2010-09-17
-Author: Richard Clark - http://richclarkdesign.com 
-Twitter: @rich_clark
-*/
-
-html,
-body,
-div,
-span,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-abbr,
-address,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-samp,
-small,
-strong,
-sub,
-sup,
-var,
-b,
-i,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section,
-summary,
-time,
-mark,
-audio,
-video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    font-size: 20px;
-    vertical-align: baseline;
-}
-
-body {
-    line-height: 1;
-}
-
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-    display: block;
-}
-
-nav ul {
-    list-style: none;
-}
-
-blockquote,
-q {
-    quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-    content: '';
-    content: none;
-}
-
-a {
-    margin: 0;
-    padding: 0;
-    font-size: 100%;
-    vertical-align: baseline;
-    background: transparent;
-}
-
-
-/* change colours to suit your needs */
-
-ins {
-    background-color: #ff9;
-    color: #000;
-    text-decoration: none;
-}
-
-
-/* change colours to suit your needs */
-
-mark {
-    background-color: #ff9;
-    color: #000;
-    font-style: italic;
-    font-weight: bold;
-}
-
-del {
-    text-decoration: line-through;
-}
-
-abbr[title],
-dfn[title] {
-    border-bottom: 1px dotted;
-    cursor: help;
-}
-
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-    background-color: white;
-}
-
-
-/* change border colour to suit your needs */
-
-hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #cccccc;
-    margin: 1em 0;
-    padding: 0;
-}
-
-input,
-select {
-    vertical-align: middle;
-}
-
 ::ng-deep .card-header[data-toggle="collapse"] button:after {
     display: inline-block;
     font: normal normal normal 10px/1 FontAwesome;
     font-size: 25px;
     text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     content: "\f056";
     align-content: flex-end;
     transform: rotate(0deg);
@@ -256,25 +74,10 @@ table td {
 
 .card-body {
     border-width: 0px;
-    background-color: white;
 }
 
 .card {
     border-width: 0px;
-}
-
-#files-block {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    content: "\f056";
-    text-rendering: auto;
-    ;
-    text-rendering: auto;
-    font-size: 20px;
-}
-
-#inputFile {
-    display: none;
 }
 
 .btn-ets-up {
@@ -285,21 +88,28 @@ table td {
     letter-spacing: 0.05em;
     border-radius: 0;
 }
+.btn-ets-up:hover,
+.btn-ets-up:active,
+.btn-ets-up:focus,
+.btn-ets-up.active {
+    background: #0076a3;
+    color: #ffffff;
+}
 
 .btn-ets-down {
     background: #e9a933;
-    ;
     color: #ffffff;
     border-width: 0;
     font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
     letter-spacing: 0.05em;
     border-radius: 0;
 }
-
-.row {
-    align: left;
+.btn-ets-down:hover,
+.btn-ets-down:active,
+.btn-ets-down:focus,
+.btn-ets-down.active {
+    background: #E9A933 ;
+    color: #ffffff;
 }
 
-.buttons {
-    float: right;
-}
+

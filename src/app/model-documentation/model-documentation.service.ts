@@ -15,7 +15,7 @@ export class ModelDocumentationService {
   constructor(private http: HttpClient) { }
 
   //updates documentation from yaml file (throught ManageDocumentation post method)
-  updateDocumentation(model: string, version: number, doc: string, format: string = 'YAML') {
+  updateDocumentation(model: string, version: number, doc: string, format: string ) {
     const formData = new FormData();
     formData.append('documentation', doc);
     const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/oformat/' + format + '/documentation';
@@ -24,7 +24,6 @@ export class ModelDocumentationService {
 
   //downloads and parses a documentation yaml file to be human readable (modelName.yaml)
   async exportToFile(modelName: string, modelVersion: string, modelFormat: string) {
-    modelFormat = 'YAML';
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/oformat/' + modelFormat + '/documentation';
     let blob = new Blob()
     blob = await fetch(url).then(r => r.blob());

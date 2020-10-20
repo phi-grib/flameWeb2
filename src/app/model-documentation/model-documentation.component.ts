@@ -3,7 +3,6 @@ import { Model } from '../Globals';
 import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModelDocumentationService } from './model-documentation.service';
-import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconModule } from '@angular/material/icon';
 
 
@@ -15,18 +14,16 @@ import { MatIconModule } from '@angular/material/icon';
 
 export class ModelDocumentationComponent implements OnChanges {
 
-  @ViewChild("fileUpload", { static: false }) fileUpload: ElementRef; files = [];
+  // @ViewChild("fileUpload", { static: false }) fileUpload: ElementRef; files = [];
 
   constructor(public model: Model,
     public service: ModelDocumentationService,
     private toastr: ToastrService,
-    private commonService: CommonService,
-    private sanitizer: DomSanitizer) { }
+    private commonService: CommonService) { }
 
   @Input() modelName;
   @Input() modelVersion;
   @Input() modelID;
-  @Input() modelFormat;
 
 
   materialModules = [MatIconModule];
@@ -101,7 +98,7 @@ export class ModelDocumentationComponent implements OnChanges {
     let delta = JSON.stringify(this.genDelta(this.modelDocumentation));
     // console.log (delta)
 
-    this.service.updateDocumentation(this.model.name, this.model.version, delta, this.modelFormat).subscribe(
+    this.service.updateDocumentation(this.model.name, this.model.version, delta, 'JSON').subscribe(
       result => {
         this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
           timeOut: 5000, positionClass: 'toast-top-right'
@@ -145,10 +142,6 @@ export class ModelDocumentationComponent implements OnChanges {
     this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
       result => {
         this.modelDocumentation = result;
-
-        let data = JSON.stringify(this.modelDocumentation);
-        let blob = new Blob([data], { type: 'text/plain' });
-
       },
       error => {
         this.modelDocumentation = undefined;
@@ -159,9 +152,8 @@ export class ModelDocumentationComponent implements OnChanges {
 
   //calls exportToFile from model-documentation-service to trigger file download (file format modelName.yaml)
   downloadFile(){
-      this.service.exportToFile(this.modelName, this.modelVersion, this.modelFormat);
+      this.service.exportToFile(this.modelName, this.modelVersion, 'YAML');
   }
-
 
   //loads a yaml file to be read and used to update the documentation from ManageDocumentation post method params(modelName, modelVersion, 'YAML')
   uploadFile(event) {
@@ -173,13 +165,12 @@ export class ModelDocumentationComponent implements OnChanges {
 
         this.modelDocumentation = reader.result.toString();
 
-
-        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation, this.modelFormat).subscribe(
+        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation, 'YAML').subscribe(
           result => {
+            this.getDocumentation();
             this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
               timeOut: 5000, positionClass: 'toast-top-right'
             });
-            this.getDocumentation();
           },
           error => {
             alert('Error updating documentation');
