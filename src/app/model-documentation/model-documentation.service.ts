@@ -30,7 +30,7 @@ export class ModelDocumentationService {
     blob = await fetch(url).then(r => r.blob());
     let reader = new FileReader();
     reader.onloadend = (e) => {
-      let text = reader.result.toString();//to be human readable this handles the spacing and line breaks
+      let text = reader.result.toString();//to be human readable this 4 string modifications handle the spacing and line breaks
       text = text.split("[").join("");
       text = text.split("]").join("");
       text = text.split('","').join("\n");
