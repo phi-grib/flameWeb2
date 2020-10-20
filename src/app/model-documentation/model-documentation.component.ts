@@ -139,7 +139,7 @@ export class ModelDocumentationComponent implements OnChanges {
     return dict_out;
   }
 
-  //requests documentation from the API
+  //requests documentation from the API through ManageDocumentation get method params(modelName, modelVersion, 'JSON')
   getDocumentation(): void {
     this.documentationVisible = false;
     this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
@@ -157,13 +157,13 @@ export class ModelDocumentationComponent implements OnChanges {
     this.documentationVisible = true;
   }
 
-  //calls exportToFile from model-documentation-service
+  //calls exportToFile from model-documentation-service to trigger file download (file format modelName.yaml)
   downloadFile(){
       this.service.exportToFile(this.modelName, this.modelVersion, this.modelFormat);
   }
 
 
-  //loads a yaml file to be read and update the documentation from it
+  //loads a yaml file to be read and used to update the documentation from ManageDocumentation post method params(modelName, modelVersion, 'YAML')
   uploadFile(event) {
     if (event.target.files.length !== 1) {
       console.error('No file selected');

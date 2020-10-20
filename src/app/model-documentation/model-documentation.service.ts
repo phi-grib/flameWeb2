@@ -14,7 +14,7 @@ export class ModelDocumentationService {
 
   constructor(private http: HttpClient) { }
 
-  //updates documentation from yaml file (throught post method in the API)
+  //updates documentation from yaml file (throught ManageDocumentation post method)
   updateDocumentation(model: string, version: number, doc: string, format: string = 'YAML') {
     const formData = new FormData();
     formData.append('documentation', doc);
@@ -22,7 +22,7 @@ export class ModelDocumentationService {
     return this.http.post(url, formData);
   }
 
-  //downloads and parses a documentation yaml file to be HR
+  //downloads and parses a documentation yaml file to be human readable (modelName.yaml)
   async exportToFile(modelName: string, modelVersion: string, modelFormat: string) {
     modelFormat = 'YAML';
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/oformat/' + modelFormat + '/documentation';
@@ -30,7 +30,7 @@ export class ModelDocumentationService {
     blob = await fetch(url).then(r => r.blob());
     let reader = new FileReader();
     reader.onloadend = (e) => {
-      let text = reader.result.toString();
+      let text = reader.result.toString();//to be human readable this handles the spacing and line breaks
       text = text.split("[").join("");
       text = text.split("]").join("");
       text = text.split('","').join("\n");
