@@ -4,6 +4,8 @@ import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModelDocumentationService } from './model-documentation.service';
 import { MatIconModule } from '@angular/material/icon';
+// import * as FileSaver from 'file-saver';
+import {saveAs} from 'file-saver';
 
 
 @Component({
@@ -94,22 +96,38 @@ export class ModelDocumentationComponent implements OnChanges {
     this.modelDocumentation = JSON.parse(JSON.stringify(this.modelDocumentationBackup));
   }
 
-  applyInput() {
-    let delta = JSON.stringify(this.genDelta(this.modelDocumentation));
-    // console.log (delta)
-
-    this.service.updateDocumentation(this.model.name, this.model.version, delta, 'JSON').subscribe(
+  //requests documentation from the API through ManageDocumentation get method params(modelName, modelVersion, 'JSON')
+  getDocumentation(): void {
+    this.documentationVisible = false;
+    this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
       result => {
-        this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
-          timeOut: 5000, positionClass: 'toast-top-right'
-        });
+        this.modelDocumentation = result;
       },
       error => {
-        alert('Error updating documentation');
+        this.modelDocumentation = undefined;
       }
     );
+    this.documentationVisible = true;
   }
 
+  //calls exportToFile from model-documentation-service to trigger file download (file format modelName.yaml)
+  downloadFile(): void {
+      this.service.exportToFile(this.modelName, this.modelVersion, 'YAML').subscribe (
+          result => {
+            let text : string = '';
+            for (const x in result){
+              text = text + result[x] + '\n';
+            }
+            let blob = new Blob ([text],  {type: "text/plain;charset=utf-8"})
+            saveAs(blob, this.modelName + '.yaml');
+          },
+          error => {
+            alert('Error updating documentation');
+          }
+      );
+  }
+
+  // compresses the changes in the GUI into a JSON delta file
   private genDelta(dict_in: {}) {
     let dict_aux = {};
     const dict_out = {};
@@ -136,26 +154,23 @@ export class ModelDocumentationComponent implements OnChanges {
     return dict_out;
   }
 
-  //requests documentation from the API through ManageDocumentation get method params(modelName, modelVersion, 'JSON')
-  getDocumentation(): void {
-    this.documentationVisible = false;
-    this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
+  // updates the documentation in the backend using the changes introduced in the GUI
+  applyInput() {
+    let delta = JSON.stringify(this.genDelta(this.modelDocumentation));
+
+    this.service.updateDocumentation(this.model.name, this.model.version, delta, 'JSON').subscribe(
       result => {
-        this.modelDocumentation = result;
+        this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
+          timeOut: 5000, positionClass: 'toast-top-right'
+        });
       },
       error => {
-        this.modelDocumentation = undefined;
+        alert('Error updating documentation');
       }
     );
-    this.documentationVisible = true;
   }
 
-  //calls exportToFile from model-documentation-service to trigger file download (file format modelName.yaml)
-  downloadFile(){
-      this.service.exportToFile(this.modelName, this.modelVersion, 'YAML');
-  }
-
-  //loads a yaml file to be read and used to update the documentation from ManageDocumentation post method params(modelName, modelVersion, 'YAML')
+  // updates the documentation in the backend from a yaml file 
   uploadFile(event) {
     if (event.target.files.length !== 1) {
       console.error('No file selected');
@@ -163,9 +178,7 @@ export class ModelDocumentationComponent implements OnChanges {
       const reader = new FileReader();
       reader.onloadend = (e) => {
 
-        this.modelDocumentation = reader.result.toString();
-
-        this.service.updateDocumentation(this.model.name, this.model.version, this.modelDocumentation, 'YAML').subscribe(
+        this.service.updateDocumentation(this.model.name, this.model.version, reader.result.toString(), 'YAML').subscribe(
           result => {
             this.getDocumentation();
             this.toastr.success('Model ' + this.model.name + '.v' + this.model.version, 'DOCUMENTATION UPDATED', {
@@ -181,10 +194,6 @@ export class ModelDocumentationComponent implements OnChanges {
       }
     
   }
-
-  
-
-  
 
 
 }

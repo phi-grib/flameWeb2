@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Subject, Observable } from 'rxjs';
-import * as FileSaver from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -14,35 +13,19 @@ export class ModelDocumentationService {
 
   constructor(private http: HttpClient) { }
 
-  //updates documentation from yaml file (throught ManageDocumentation post method)
-  updateDocumentation(model: string, version: number, doc: string, format: string ) {
+  //updates documentation from YAML or JSON file (throught ManageDocumentation post method)
+  updateDocumentation(model: string, version: number, doc: string, modelFormat: string ) {
     const formData = new FormData();
     formData.append('documentation', doc);
-    const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/oformat/' + format + '/documentation';
+    const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/oformat/' + modelFormat + '/documentation';
     return this.http.post(url, formData);
   }
 
-  //downloads and parses a documentation yaml file to be human readable (modelName.yaml)
-  async exportToFile(modelName: string, modelVersion: string, modelFormat: string) {
+  //obtains a copy of the model documentation formated to export (usualy YAML)
+  exportToFile(modelName: string, modelVersion: string, modelFormat: string) {
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/oformat/' + modelFormat + '/documentation';
-    let blob = new Blob()
-    blob = await fetch(url).then(r => r.blob());
-    let reader = new FileReader();
-    reader.onloadend = (e) => {
-      let text = reader.result.toString();//to be human readable this 4 string modifications handle the spacing and line breaks
-      text = text.split("[").join("");
-      text = text.split("]").join("");
-      text = text.split('","').join("\n");
-      text = text.split('"').join("");
-      let parsedBlob = new Blob([text]);
-      FileSaver.saveAs(parsedBlob, modelName + '.yaml');
-    }
-    reader.readAsText(blob);
+    return this.http.get(url)
   }
-
-  
-
-
 
 }
 
