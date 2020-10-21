@@ -25,14 +25,31 @@ export class BuilderComponent implements OnInit {
     public activeModal: NgbActiveModal,
     public func: CommonFunctions ) { }
 
+    order = ['input_type', 'quantitative', 'SDFile_activity', 'SDFile_name', 'SDFile_id',
+     'SDFile_experimental', 'SDFile_complementary', 'normalize_method', 'ionize_method', 'convert3D_method', 
+     'computeMD_method', 'model', 'modelAutoscaling', 'tune', 'conformal', 
+     'conformalConfidence', 'ModelValidationCV', 'ModelValidationLC', 
+     'ModelValidationN', 'ModelValidationP', 'output_format', 'output_md', 'output_similar',
+     'TSV_activity', 'TSV_objnames', 'TSV_varnames', 'imbalance', 
+     'feature_selection', 'feature_number', 'mol_batch',  
+     'ensemble_names','ensemble_versions', 
+     'similarity_metric', 'similarity_cutoff_num', 'similarity_cutoff_distance',
+     'numCPUs', 'verbose_error', 'modelingToolkit', 
+     'endpoint', 'model_path', 
+     'md5', 
+     'version']
+
+  //code to execute when the page is loaded
   ngOnInit() {
     this.getParameters();
   }
 
+  //extrats the parameters from the model
   getParameters(): void {
     this.commonService.getParameters(this.model.name, this.model.version).subscribe(
       result => {
         this.model.parameters = result;
+        console.log(result);
       },
       error => {
         alert(error.status + ' : ' + error.statusText);
@@ -44,10 +61,13 @@ export class BuilderComponent implements OnInit {
     );
   }
 
+  //returns ture if v is a dictionary
   private isDict(v) {
     return typeof v === 'object' && v !== null && !(v instanceof Array) && !(v instanceof Date);
   }
 
+
+  //reads all the targeted fields in dictionary at all levels, returns a new dictionary with those values
   private recursiveDelta(dict_in: {}) {
     let dict_aux = {};
     const dict_out = {};
@@ -69,6 +89,7 @@ export class BuilderComponent implements OnInit {
     return dict_out;
   }
 
+  //builds a model using the parameters in this.model.parameters
   buildModel(name, version): void {
     this.model.delta = {};
     this.model.delta = this.recursiveDelta(this.model.parameters);
@@ -184,5 +205,50 @@ export class BuilderComponent implements OnInit {
        }
       }
     );
+  }
+
+  updateFromFile(event){
+    if (event.target.files.length !== 1) {
+      console.error('No file selected');
+    } else {
+      const reader = new FileReader();
+      reader.onloadend = (e) => {
+
+        this.model.parameters = reader.result.toString();
+
+
+        this.service.buildModel().subscribe(
+          result => {
+            this.getParameters();
+            this.toastr.success('Model ' + this.model.name + '.v' + this.model.version + ' created', 'PARAMETERS UPDATED', {
+              timeOut: 5000, positionClass: 'toast-top-right'
+            });
+          },
+          error => {
+            alert('Error updating parameters');
+          }
+        );
+      };
+      reader.readAsText(event.target.files[0]);        
+      }
+    this.toastr.success()
+  
+  }
+
+
+  downloadParams(){
+    this.service.downloadParams(this.model.name, this.model.version).subscribe (
+      result => {
+        let text : string = '';
+        for (const x in result){
+          text = text + result[x] + '\n';
+        }
+        let blob = new Blob ([text],  {type: "text/plain;charset=utf-8"})
+        saveAs(blob, this.model.name + '.yaml');
+      },
+      error => {
+        alert('Error downloading parameters');
+      }
+  );
   }
 }

@@ -86,9 +86,14 @@
             </div>
             <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#buildingAccordion">
                 <div class="card-body p-2 pl-5 pr-5">
-                    <div class="buttons">
-                        <button>Import</button>
-                        <button>Export</button>
+                    <div class="btn-group ml-2" role="group" aria-label="group1">
+                        <button class="btn btn-ets-down ml-2" (click)="downloadParams()" [ngClass]="{'disabled': model.name === undefined}">Download</button>
+                    </div>
+
+                    <div class="btn-group ml-2" role="group" aria-label="group2">
+                        <label class="btn btn-ets-up mb-0" for="uploadButton">
+                               <input id="uploadButton" type="file" style="display:none;" (change)="updateFromFile($event)">Upload
+                        </label>
                     </div>
                 </div>
             </div>
