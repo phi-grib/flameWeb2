@@ -22,7 +22,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   @Input() predictionName;
   @ViewChildren('cmp') components: QueryList<ElementRef>;
-  
+
   objectKeys = Object.keys;
   predictionVisible = false;
   modelMatch = true;
@@ -47,7 +47,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   isQuantitative = false;
 
   predictData = [{
-    offset: 45, 
+    offset: 45,
     r: [],
     theta: ["TP", "FN", "TN", "FP"],
     meta: ["TP", "FN", "TN", "FP"],
@@ -60,7 +60,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   }]
 
   plotCommon = {
-    layout :{
+    layout: {
       width: 350,
       height: 350,
       // margin: {r: 10, t: 30, b:0, pad: 0 },
@@ -70,70 +70,72 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         gridwidth: 1,
         radialaxis: {
           angle: 90,
-          ticks: '', 
+          ticks: '',
           tickfont: { size: 12, fontStyle: 'Barlow Semi Condensed, sans-serif' },
         },
         angularaxis: {
-          showticklabels: false, 
-          ticks:'',
+          showticklabels: false,
+          ticks: '',
         }
       }
     },
     config: {
       // responsive: true,
-        displayModeBar: false
-      }
-    };  
-    
-    bwcolorscale = [
-      [0.0, 'rgb(160, 160, 160)'],
-      [0.5, 'rgb(160, 160, 160)'],
-      [1.0, 'rgb(160, 160, 160)'],
-    ];
-  
-    greencolorscale = [
-      [0.0, 'rgb(107, 232, 49)'],
-      [0.5, 'rgb(107, 232, 49)'],
-      [1.0, 'rgb(107, 232, 49)'],
-    ];
+      displayModeBar: false
+    }
+  };
 
-    redcolorscale = [
-      [0.0, 'rgb(255, 0, 0)'],
-      [0.5, 'rgb(255, 0, 0)'],
-      [1.0, 'rgb(255, 0, 0)'],
-    ];
+  bwcolorscale = [
+    [0.0, 'rgb(160, 160, 160)'],
+    [0.5, 'rgb(160, 160, 160)'],
+    [1.0, 'rgb(160, 160, 160)'],
+  ];
 
-    // [0.1, '#6be831'],
+  greencolorscale = [
+    [0.0, 'rgb(107, 232, 49)'],
+    [0.5, 'rgb(107, 232, 49)'],
+    [1.0, 'rgb(107, 232, 49)'],
+  ];
+
+  redcolorscale = [
+    [0.0, 'rgb(255, 0, 0)'],
+    [0.5, 'rgb(255, 0, 0)'],
+    [1.0, 'rgb(255, 0, 0)'],
+  ];
+
+  // [0.1, '#6be831'],
 
 
   plotScores = {
     data: [
-      { x: [], 
-        y: [], 
+      {
+        x: [],
+        y: [],
         text: [],
         meta: [],
-        type: 'scatter', 
-        mode: 'markers', 
+        type: 'scatter',
+        mode: 'markers',
         marker: {
           color: [],
           opacity: 0.6,
           size: 10,
-          colorscale: 'RdBu', 
-          showscale: true, 
+          colorscale: 'RdBu',
+          showscale: true,
           cauto: true,
           colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+            tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 }
           }
         },
-        hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
+        hovertemplate: '<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
       },
-      { x: [], 
-        y: [], 
+      {
+        x: [],
+        y: [],
         text: [],
         meta: [],
-        type: 'scatter', 
-        mode: 'markers+text', 
-        textfont : {
+        type: 'scatter',
+        mode: 'markers+text',
+        textfont: {
           fontStyle: 'Barlow Semi Condensed, sans-serif',
           color: '#59c427',
           size: 16
@@ -142,8 +144,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         marker: {
           color: [],
           symbol: 'circle-open',
-          colorscale: this.greencolorscale, 
-          showscale: true, 
+          colorscale: this.greencolorscale,
+          showscale: true,
           opacity: 1,
           size: 14,
           line: {
@@ -151,14 +153,14 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             width: 3
           }
         },
-        hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
+        hovertemplate: '<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
       },
     ],
-    layout: { 
+    layout: {
       width: 800,
       height: 600,
       hovermode: 'closest',
-      margin: {r: 10, t: 30, pad: 0 },
+      margin: { r: 10, t: 30, pad: 0 },
       showlegend: false,
       showtitle: false,
       xaxis: {
@@ -170,7 +172,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         linewidth: 2,
         title: 'PCA PC1',
         titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 },
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18},
+        tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
       },
       yaxis: {
         zeroline: true,
@@ -181,7 +183,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         linewidth: 2,
         title: 'PCA PC2',
         titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 },
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18},
+        tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
       },
     },
     config: {
@@ -194,17 +196,17 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         height: 600,
         scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
       },
-      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']
+      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']
     }
   };
 
   plotComboQ = {
-    data : [{
+    data: [{
       x: [],
       y: [],
       text: [],
       type: 'scatter',
-      mode: 'markers', 
+      mode: 'markers',
       marker: {
         symbol: 'diamond',
         color: 'rgba(0,0,0,0.6)',
@@ -213,8 +215,10 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           color: 'black',
           width: 2
         },
-        textfont: {family: 'Barlow Semi Condensed, sans-serif', 
-                  size: 20 },
+        textfont: {
+          family: 'Barlow Semi Condensed, sans-serif',
+          size: 20
+        },
         texttemplate: '{x:.2f}'
       },
       error_x: {
@@ -224,38 +228,40 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         array: [],
         arrayminus: []
       },
-      hovertemplate:'<b>%{y}</b>: %{x:.2f}<extra></extra>'
+      hovertemplate: '<b>%{y}</b>: %{x:.2f}<extra></extra>'
     },
-      {x: [],
-       y: [],
-       type: 'scatter',
-       mode: 'lines',
-       line: {
+    {
+      x: [],
+      y: [],
+      type: 'scatter',
+      mode: 'lines',
+      line: {
         color: 'red',
         width: 3
-       },
-       hovertemplate:'<b>ensemble</b>: %{x:.2f}<extra></extra>'
       },
-      {x: [],
-       y: [],
-       type: "scatter",
-       fill: "tozeroy", 
-       fillcolor: "rgba(255,0,0,0.2)", 
-       line: {color: "transparent"}, 
-       hovertemplate:'<b>ensemble CI</b>: %{x:.2f}<extra></extra>'
-      },
+      hovertemplate: '<b>ensemble</b>: %{x:.2f}<extra></extra>'
+    },
+    {
+      x: [],
+      y: [],
+      type: "scatter",
+      fill: "tozeroy",
+      fillcolor: "rgba(255,0,0,0.2)",
+      line: { color: "transparent" },
+      hovertemplate: '<b>ensemble CI</b>: %{x:.2f}<extra></extra>'
+    },
     ],
-    layout : {
+    layout: {
       width: 800,
       // height: 600,
       hovermode: 'x',
-      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 20 } },
+      hoverlabel: { font: { family: 'Barlow Semi Condensed, sans-serif', size: 20 } },
       xaxis: {
         zeroline: false,
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 },
       },
       yaxis: {
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 },
         automargin: true
       },
       showlegend: false
@@ -268,12 +274,12 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         width: 800,
         // height: 600,
       },
-      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']
     }
   }
 
   plotComboC = {
-    data : [{
+    data: [{
       x: [],
       y: [],
       type: 'bar',
@@ -281,9 +287,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       marker: {
         color: "rgba(0,0,255,0.6)",
       },
-      hovertemplate:'<b>%{y}</b>: %{x:.2f}<extra></extra>'
-      },
-      {
+      hovertemplate: '<b>%{y}</b>: %{x:.2f}<extra></extra>'
+    },
+    {
       x: [],
       y: [],
       type: 'bar',
@@ -291,27 +297,27 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       marker: {
         color: 'rgba(255,0,0,0.6)',
       },
-      hovertemplate:'<b>%{y}</b>: %{x:.2f}<extra></extra>'
-      },
+      hovertemplate: '<b>%{y}</b>: %{x:.2f}<extra></extra>'
+    },
     ],
-    layout : {
+    layout: {
       width: 800,
       // height: 600,
       // margin: {r: 10, t: 30, b:0, pad: 0 },
       barmode: 'relative',
       hovermode: 'closest',
-      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 20 } },
+      hoverlabel: { font: { family: 'Barlow Semi Condensed, sans-serif', size: 20 } },
       xaxis: {
         range: [-1.1, 1.1],
         zeroline: true,
         zerolinewidth: 4,
         zerolinecolor: 'black',
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 },
         tickvals: [-1.1, 0, 1.1],
         ticktext: ['negative', 'undefined', 'positive']
       },
       yaxis: {
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 },
         automargin: true
       },
       showlegend: false
@@ -324,7 +330,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         width: 800,
         // height: 600,
       },
-      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']
     }
   }
 
@@ -340,38 +346,38 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     public service: PredictionService,
     private commonService: CommonService,
     public globals: Globals) { }
-  
-  message = '';
-  
 
-  public changeProjectStyle (value:string) {
+  message = '';
+
+
+  public changeProjectStyle(value: string) {
     var update0 = {};
     var update1 = {};
-    
+
     const backup_colors0 = this.plotScores.data[0].marker.color;
     const backup_colors1 = this.plotScores.data[1].marker.color;
 
-    if (value=='points' || value=='dmodx') {
-      
+    if (value == 'points' || value == 'dmodx') {
+
       // grey background
       update0 = {
         marker: {
           color: backup_colors0,
           opacity: 0.6,
           size: 10,
-          colorscale: this.bwcolorscale, 
-          showscale: false, 
+          colorscale: this.bwcolorscale,
+          showscale: false,
           cauto: true,
           colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+            tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 }
           }
         }
       };
 
       // red points if not DModX or colored points otherwyse
-      if (this.dmodx && value=='dmodx') {
-        update1 =  {
-          mode: 'markers', 
+      if (this.dmodx && value == 'dmodx') {
+        update1 = {
+          mode: 'markers',
           marker: {
             color: backup_colors1,
             symbol: 'circle',
@@ -381,14 +387,14 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             showscale: true,
             cauto: true,
             colorbar: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+              tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 }
             }
           }
         };
       }
       else {
-        update1 =  {
-          mode: 'markers', 
+        update1 = {
+          mode: 'markers',
           marker: {
             color: backup_colors1,
             symbol: 'circle',
@@ -417,16 +423,16 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           opacity: 0.6,
           size: 10,
           colorscale: newcolorscale,
-          showscale: this.isQuantitative, 
+          showscale: this.isQuantitative,
           cauto: true,
           colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+            tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 }
           }
         }
       }
 
       update1 = {
-        mode: 'markers+text', 
+        mode: 'markers+text',
         marker: {
           symbol: 'circle-open',
           color: backup_colors1,
@@ -445,36 +451,36 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     PlotlyJS.restyle('scoresPreDIV', update1, [1])
   }
 
-  drawReportHeader () {
-    const options = {'width': 600, 'height': 300};
+  drawReportHeader() {
+    const options = { 'width': 600, 'height': 300 };
     const smilesDrawer = new SmilesDrawer.Drawer(options);
-    SmilesDrawer.parse(this.predictionResult.SMILES[this.molIndex], function(tree) {
+    SmilesDrawer.parse(this.predictionResult.SMILES[this.molIndex], function (tree) {
       // Draw to the canvas
       smilesDrawer.draw(tree, 'one_canvas', 'light', false);
-      }, function (err) {
-        console.log(err);
+    }, function (err) {
+      console.log(err);
     });
   }
 
-  drawSimilars () {
+  drawSimilars() {
     setTimeout(() => {
       // draw similar compounds (if applicable)
       if (this.predictionResult.hasOwnProperty('search_results')) {
-        const optionsA = {'width': 400, 'height': 150};
+        const optionsA = { 'width': 400, 'height': 150 };
         const smiles = this.predictionResult.search_results[this.molIndex].SMILES;
         let iteratorCount = 0;
         for (var value of smiles) {
           const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
-          SmilesDrawer.parse(value, function(tree) {
+          SmilesDrawer.parse(value, function (tree) {
             let canvasName = 'one_canvas';
-            smilesDrawer.draw(tree,  canvasName.concat(iteratorCount.toString()), 'light', false);
+            smilesDrawer.draw(tree, canvasName.concat(iteratorCount.toString()), 'light', false);
           }, function (err) {
             console.log(err);
           });
           iteratorCount++;
-        };  
+        };
       };
-    },0);
+    }, 0);
   }
 
   NextMol() {
@@ -531,16 +537,16 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.plotScores.data[0].text = [];
     this.plotScores.data[0].meta = [];
     this.plotScores.data[0].marker = {
-            color: [],
-            opacity: 0.6,
-            size: 10,
-            colorscale: 'RdBu', 
-            showscale: true, 
-            cauto: true,
-            colorbar: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
-            }
-          };
+      color: [],
+      opacity: 0.6,
+      size: 10,
+      colorscale: 'RdBu',
+      showscale: true,
+      cauto: true,
+      colorbar: {
+        tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+      }
+    };
 
     this.plotScores.data[1].x = [];
     this.plotScores.data[1].y = [];
@@ -548,26 +554,26 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.plotScores.data[1].meta = [];
     this.plotScores.data[1].mode = 'markers+text';
     this.plotScores.data[1].marker = {
-            color: [],
-            colorscale: this.greencolorscale, 
-            showscale: false, 
-            symbol: 'circle-open',
-            opacity: 1,
-            size: 14,
-            line: {color: '#6be831', width: 3 }
-          };
+      color: [],
+      colorscale: this.greencolorscale,
+      showscale: false,
+      symbol: 'circle-open',
+      opacity: 1,
+      size: 14,
+      line: { color: '#6be831', width: 3 }
+    };
 
     this.getInfo();
-    // this.getDocumentation();  
+    this.getDocumentation();
     this.getPrediction();
     this.getValidation();
 
- 
+
   }
 
   tabClickHandler(info: any): void {
-    
-    this.molIndex=parseInt(info[0])-1;
+
+    this.molIndex = parseInt(info[0]) - 1;
 
     this.noPreviousMol = false;
     this.noNextMol = false;
@@ -577,23 +583,23 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     if (this.molIndex == (this.predictionResult.SMILES.length - 1)) {
       this.noNextMol = true;
     }
-    
+
     // var b = document.querySelector("#pills-all"); 
     // b.setAttribute('aria-selected', 'false');
     // b.setAttribute('tabindex', "-1");
-    
+
     $('a[aria-controls="pills-home"]').removeClass('active');
     $('#pills-all').removeClass('active');
     $('#pills-all').removeClass('show');
-    
+
     // var tab = document.querySelector("#pills-one"); 
     // tab.setAttribute('aria-selected', 'true');
     // tab.removeAttribute('tabindex');
-    
+
     $('a[aria-controls="pills-one"]').addClass('active');
-    $('#pills-one').addClass('active'); 
-    $('#pills-one').addClass('show'); 
-    
+    $('#pills-one').addClass('active');
+    $('#pills-one').addClass('show');
+
     this.drawReportHeader();
     this.drawSimilars();
 
@@ -612,23 +618,23 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             this.plotScores.data[0].marker.color = info['ymatrix'];
             this.plotScores.data[0].marker.showscale = this.isQuantitative;
             if (this.isQuantitative) {
-              this.plotScores.data[0].marker.colorscale= 'RdBu';
+              this.plotScores.data[0].marker.colorscale = 'RdBu';
             }
             else {
-              this.plotScores.data[0].marker.colorscale= 'Bluered';
-            }; 
+              this.plotScores.data[0].marker.colorscale = 'Bluered';
+            };
             if ('SSX' in info) {
-              this.plotScores.layout.xaxis.title = 'PCA PC1 ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
-              this.plotScores.layout.yaxis.title = 'PCA PC2 ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
-              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
-              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+              this.plotScores.layout.xaxis.title = 'PCA PC1 (' + (100.0 * (info['SSX'][0])).toFixed(1) + '% SSX)';
+              this.plotScores.layout.yaxis.title = 'PCA PC2 (' + (100.0 * (info['SSX'][1])).toFixed(1) + '% SSX)';
+              this.plotScores.layout.xaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+              this.plotScores.layout.yaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 }
             } else {
               this.plotScores.layout.xaxis.title = 'PCA PC1'
               this.plotScores.layout.yaxis.title = 'PCA PC2'
-              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
-              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+              this.plotScores.layout.xaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+              this.plotScores.layout.yaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 }
             }
-            
+
           }, 100);
         }
       }
@@ -644,7 +650,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         }
 
         //support for legacy models using significance instead of confidence
-        if (this.modelBuildInfo['conformal_significance']!=undefined){
+        if (this.modelBuildInfo['conformal_significance'] != undefined) {
           this.modelBuildInfo['conformal_confidence'] = 1.0 - this.modelBuildInfo["conformal_significance"];
         }
 
@@ -687,18 +693,18 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     );
   }
 
-  // getDocumentation() {
+  getDocumentation() {
 
-  //   this.commonService.getDocumentation(this.prediction.modelName, this.prediction.modelVersion).subscribe(
-  //     result => {
-  //       this.modelDocumentation = result;
-  //     },
-  //     error => {
-  //       this.modelDocumentation = undefined;
-  //     }
-  //   );
+    this.commonService.getDocumentation(this.prediction.modelName, this.prediction.modelVersion, 'JSON').subscribe(
+      result => {
+        this.modelDocumentation = result;
+      },
+      error => {
+        this.modelDocumentation = undefined;
+      }
+    );
 
-  // }
+  }
 
   castValue(value: any) {
 
@@ -728,38 +734,38 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
       const xi = this.predictionResult.xmatrix[this.molIndex];
       this.plotComboQ.data[0].x = xi;
-      for (let i=0; i<this.predictionResult.var_nam.length; i++) {
-        const varlist=String(this.predictionResult.var_nam[i]).split(':');
-        this.plotComboQ.data[0].y[i] = varlist[1]+'.v'+varlist[2];
-        this.plotComboQ.data[1].y[i] = varlist[1]+'.v'+varlist[2];
+      for (let i = 0; i < this.predictionResult.var_nam.length; i++) {
+        const varlist = String(this.predictionResult.var_nam[i]).split(':');
+        this.plotComboQ.data[0].y[i] = varlist[1] + '.v' + varlist[2];
+        this.plotComboQ.data[1].y[i] = varlist[1] + '.v' + varlist[2];
         this.plotComboQ.data[1].x[i] = this.predictionResult.values[this.molIndex];
       }
       var drawCI = false;
-      if (this.predictionResult['ensemble_ci']){
+      if (this.predictionResult['ensemble_ci']) {
         drawCI = true
         var cilist = this.predictionResult.ensemble_ci[this.molIndex];
       }
       else {  // support for legacy models where we used ensemble_confidence
-         if (this.predictionResult['ensemble_confidence']){
+        if (this.predictionResult['ensemble_confidence']) {
           drawCI = true
           var cilist = this.predictionResult.ensemble_confidence[this.molIndex];
-         }
-      }
-      if (drawCI){
-        for (let i=0; i<this.predictionResult.var_nam.length; i++) {
-          this.plotComboQ.data[0].error_x.array[i] = cilist[1+(i*2)] - xi[i];
-          this.plotComboQ.data[0].error_x.arrayminus[i] = xi[i] - cilist[i*2];
         }
-        if (this.predictionResult['upper_limit']){
-          for (let i=0; i<this.predictionResult.var_nam.length; i++) {
-            const varlist=String(this.predictionResult.var_nam[i]).split(':');
-            this.plotComboQ.data[2].y[i] = varlist[1]+'.v'+varlist[2];
+      }
+      if (drawCI) {
+        for (let i = 0; i < this.predictionResult.var_nam.length; i++) {
+          this.plotComboQ.data[0].error_x.array[i] = cilist[1 + (i * 2)] - xi[i];
+          this.plotComboQ.data[0].error_x.arrayminus[i] = xi[i] - cilist[i * 2];
+        }
+        if (this.predictionResult['upper_limit']) {
+          for (let i = 0; i < this.predictionResult.var_nam.length; i++) {
+            const varlist = String(this.predictionResult.var_nam[i]).split(':');
+            this.plotComboQ.data[2].y[i] = varlist[1] + '.v' + varlist[2];
             this.plotComboQ.data[2].x[i] = this.predictionResult.upper_limit[this.molIndex];
           }
           let j = this.predictionResult.var_nam.length;
-          for (let i=this.predictionResult.var_nam.length-1; i>-1; i--) {
-            const varlist=String(this.predictionResult.var_nam[i]).split(':');
-            this.plotComboQ.data[2].y[j] = varlist[1]+'.v'+varlist[2];
+          for (let i = this.predictionResult.var_nam.length - 1; i > -1; i--) {
+            const varlist = String(this.predictionResult.var_nam[i]).split(':');
+            this.plotComboQ.data[2].y[j] = varlist[1] + '.v' + varlist[2];
             this.plotComboQ.data[2].x[j] = this.predictionResult.lower_limit[this.molIndex];
             j++;
           }
@@ -777,31 +783,31 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
       // Conformal, add classes
       var drawCI = false;
-      if (this.predictionResult['ensemble_ci']){
+      if (this.predictionResult['ensemble_ci']) {
         drawCI = true
         var class_list = this.predictionResult.ensemble_ci[this.molIndex];
       }
       else {  // support for legacy models where we used ensemble_confidence
-         if (this.predictionResult['ensemble_confidence']){
+        if (this.predictionResult['ensemble_confidence']) {
           drawCI = true
           var class_list = this.predictionResult.ensemble_confidence[this.molIndex];
-         }
+        }
       }
 
       if (drawCI) {
-        for (let i=0; i<this.predictionResult.var_nam.length; i++) {
-          const varlist=String(this.predictionResult.var_nam[i]).split(':');
-          this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
-          this.plotComboC.data[1].y[i] = varlist[1]+'.v'+varlist[2];
-          
+        for (let i = 0; i < this.predictionResult.var_nam.length; i++) {
+          const varlist = String(this.predictionResult.var_nam[i]).split(':');
+          this.plotComboC.data[0].y[i] = varlist[1] + '.v' + varlist[2];
+          this.plotComboC.data[1].y[i] = varlist[1] + '.v' + varlist[2];
+
           this.plotComboC.data[0].x[i] = 0;
           this.plotComboC.data[1].x[i] = 0;
         }
-        for (let i=0; i<this.predictionResult.var_nam.length; i++) {
-          if (class_list[i*2]===1) {
+        for (let i = 0; i < this.predictionResult.var_nam.length; i++) {
+          if (class_list[i * 2] === 1) {
             this.plotComboC.data[0].x[i] += -1;
           }
-          if (class_list[1+(i*2)]===1) {
+          if (class_list[1 + (i * 2)] === 1) {
             this.plotComboC.data[1].x[i] += 1;
           }
         }
@@ -809,15 +815,15 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       }
       // non-conformal, just show final result (including uncertain)
       else {
-        for (let i=0; i<this.predictionResult.var_nam.length; i++) {
-          const varlist=String(this.predictionResult.var_nam[i]).split(':');
-          this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
-          this.plotComboC.data[1].y[i] = varlist[1]+'.v'+varlist[2];
-  
-          if (xi[i]===0) {
+        for (let i = 0; i < this.predictionResult.var_nam.length; i++) {
+          const varlist = String(this.predictionResult.var_nam[i]).split(':');
+          this.plotComboC.data[0].y[i] = varlist[1] + '.v' + varlist[2];
+          this.plotComboC.data[1].y[i] = varlist[1] + '.v' + varlist[2];
+
+          if (xi[i] === 0) {
             this.plotComboC.data[0].x[i] = 0;
             this.plotComboC.data[1].x[i] = 0;
-          } else if (xi[i]===1) {
+          } else if (xi[i] === 1) {
             this.plotComboC.data[0].x[i] = 0;
             this.plotComboC.data[1].x[i] = 1;
           } else {
@@ -840,7 +846,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.commonService.getPrediction(this.predictionName).subscribe(
       result => {
         if (result['error']) {
-          this.predictionError = result['error']; 
+          this.predictionError = result['error'];
         }
 
         setTimeout(() => {
@@ -854,14 +860,14 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               this.dmodx = true;
             }
             else {
-              for (var i=0; i<result['obj_nam'].length; i++) {
+              for (var i = 0; i < result['obj_nam'].length; i++) {
                 this.plotScores.data[1].marker.color[i] = 0.0;
               }
               this.dmodx = false;
             }
 
           };
-          
+
         }, 100);
 
         this.predictionResult = result;
@@ -874,40 +880,40 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
             }
             if (typeof modelInfo[2] !== 'object') {
-              this.modelValidationInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
+              this.modelValidationInfo[modelInfo[0]] = [modelInfo[1], modelInfo[2]];
             }
           }
         }
         if ('TP' in this.modelValidationInfo) {
-          this.predictData[0].r = [this.modelValidationInfo['TP'][1], 
+          this.predictData[0].r = [this.modelValidationInfo['TP'][1],
           this.modelValidationInfo['FN'][1],
-          this.modelValidationInfo['TN'][1], 
+          this.modelValidationInfo['TN'][1],
           this.modelValidationInfo['FP'][1]];
         }
-        
-        
-        const options_list = {'width': 300, 'height': 150};
+
+
+        const options_list = { 'width': 300, 'height': 150 };
         const smilesDrawer = new SmilesDrawer.Drawer(options_list);
-        
+
         // use a long timeout because this can take a lot of time
         setTimeout(() => {
           this.components.forEach((child) => {
             SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
               smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-              }, function (err) {
-                console.log(err);
-              });
+            }, function (err) {
+              console.log(err);
+            });
           });
-          
+
           const settingsObj: any = {
             dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
-            '<"row"<"col-sm-12"tr>>' +
-            '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+              '<"row"<"col-sm-12"tr>>' +
+              '<"row"<"col-sm-5"i><"col-sm-7"p>>',
             buttons: [
-              { 'extend': 'copy', 'text': 'Copy', 'className': 'btn-primary' , title: ''},
-              { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary' , title: ''},
-              { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' , title: ''},
-              { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
+              { 'extend': 'copy', 'text': 'Copy', 'className': 'btn-primary', title: '' },
+              { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary', title: '' },
+              { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary', title: '' },
+              { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary', title: '' }
             ],
             rowCallback: (row: Node, data: any[] | Object, index: number) => {
               const self = this;
@@ -932,58 +938,58 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             }
           });
 
-          if (this.modelMatch){
+          if (this.modelMatch) {
 
-            const options = {'width': 300, 'height': 300};
-            const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
-    
+            const options = { 'width': 300, 'height': 300 };
+            const smilesDrawerScores = new SmilesDrawer.Drawer(options);
+
             const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
             const context_ref = canvas_ref.getContext('2d');
-    
+
             const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
             const context = canvas.getContext('2d');
-            
+
             PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
-            
+
             let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
-            
+
             // on hover, draw the molecule
-            myPlot.on('plotly_hover', function(eventdata){ 
+            myPlot.on('plotly_hover', function (eventdata) {
               var points = eventdata.points[0];
               // console.log (points)
               if (points.curveNumber === 1) {
-                SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
+                SmilesDrawer.parse(result['SMILES'][points.pointNumber], function (tree) {
                   smilesDrawerScores.draw(tree, 'scores_canvas_ref', 'light', false);
-                });   
+                });
                 context_ref.font = "30px Barlow Semi Condensed";
-                context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
+                context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50);
               }
               else {
-                SmilesDrawer.parse(points.meta, function(tree) {
+                SmilesDrawer.parse(points.meta, function (tree) {
                   smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
                 });
               }
             });
             // on onhover, clear the canvas
-            myPlot.on('plotly_unhover', function(eventdata){
+            myPlot.on('plotly_unhover', function (eventdata) {
               var points = eventdata.points[0];
               if (points.curveNumber === 0) {
                 context.clearRect(0, 0, canvas.width, canvas.height);
               }
             });
-            myPlot.on('plotly_click', function(eventdata){
+            myPlot.on('plotly_click', function (eventdata) {
               var points = eventdata.points[0];
               if (points.curveNumber === 1) {
                 context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
               }
             });
           }
-            
-            
+
+
           this.predictionVisible = true;
-            
-          }, 500);
-        }
+
+        }, 500);
+      }
     );
   }
 
@@ -996,7 +1002,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   }
 
   saveEXCEL() {
-    const xls  = Object.assign([], this.info);
+    const xls = Object.assign([], this.info);
     xls.splice(0, 0, this.head);
     /* generate worksheet */
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(xls);
@@ -1005,7 +1011,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
     /* save to file */
-    XLSX.writeFile(wb, this.prediction.name  + '.xlsx');
+    XLSX.writeFile(wb, this.prediction.name + '.xlsx');
   }
 
   savePDF() {
@@ -1015,14 +1021,14 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       head: [this.head],
       body: this.info,
       headStyles: {
-        2: { halign: 'center'},
-        3: { halign: 'center'},
+        2: { halign: 'center' },
+        3: { halign: 'center' },
       },
       columnStyles: {
-        0: {columnWidth: 40},
-        1: {columnWidth: 40},
-        2: {columnWidth: 10, halign: 'center'},
-        3: {columnWidth: 10, halign: 'center'},
+        0: { columnWidth: 40 },
+        1: { columnWidth: 40 },
+        2: { columnWidth: 10, halign: 'center' },
+        3: { columnWidth: 10, halign: 'center' },
       }
     });
     pdf.save(this.prediction.name + '.pdf');
@@ -1037,25 +1043,25 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       if (this.predictionResult.ymatrix) {
         this.head.push('Value');
       }
-      if ( this.predictionResult.values) {
+      if (this.predictionResult.values) {
         this.head.push('Prediction');
       }
-      if ( this.predictionResult.upper_limit) {
+      if (this.predictionResult.upper_limit) {
         this.head.push('Upper limit');
       }
-      if ( this.predictionResult.lower_limit) {
+      if (this.predictionResult.lower_limit) {
         this.head.push('Lower limit');
       }
-      if ( this.predictionResult.c0) {
+      if (this.predictionResult.c0) {
         this.head.push('Inactive');
       }
-      if ( this.predictionResult.c1) {
+      if (this.predictionResult.c1) {
         this.head.push('Active');
       }
-      if ( this.predictionResult.ensemble_c0) {
+      if (this.predictionResult.ensemble_c0) {
         this.head.push('Ensemble Class 0');
       }
-      if ( this.predictionResult.ensemble_c1) {
+      if (this.predictionResult.ensemble_c1) {
         this.head.push('Ensemble Class 1');
       }
 
@@ -1082,10 +1088,10 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         if (this.predictionResult.c1) {
           prediction.push(this.predictionResult.c1[i]);
         }
-        if ( this.predictionResult.ensemble_c0) {
+        if (this.predictionResult.ensemble_c0) {
           this.head.push(this.predictionResult.ensemble_c0[i].toFixed(3));
         }
-        if ( this.predictionResult.ensemble_c1) {
+        if (this.predictionResult.ensemble_c1) {
           this.head.push(this.predictionResult.ensemble_c1[i].toFixed(3));
         }
         this.info.push(prediction);
