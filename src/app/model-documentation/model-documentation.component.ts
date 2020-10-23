@@ -3,7 +3,7 @@ import { Model } from '../Globals';
 import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModelDocumentationService } from './model-documentation.service';
-import { MatIconModule } from '@angular/material/icon';
+// import { MatIconModule } from '@angular/material/icon';
 // import * as FileSaver from 'file-saver';
 import {saveAs} from 'file-saver';
 
@@ -28,7 +28,7 @@ export class ModelDocumentationComponent implements OnChanges {
   @Input() modelID;
 
 
-  materialModules = [MatIconModule];
+  // materialModules = [MatIconModule];
   modelDocumentation = undefined;
   downloadLink = undefined;
   fileToUpload: File = null;

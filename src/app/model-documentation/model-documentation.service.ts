@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Subject, Observable } from 'rxjs';
+// import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModelDocumentationService {
 
-  private fileList: string[] = new Array<string>();
-  private fileList$: Subject<string[]> = new Subject<string[]>();
+  // private fileList: string[] = new Array<string>();
+  // private fileList$: Subject<string[]> = new Subject<string[]>();
 
   constructor(private http: HttpClient) { }
 
