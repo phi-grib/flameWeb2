@@ -6,78 +6,89 @@
 </div>
 
 <div class="modal-body">
-  <div class="accordion mt-3" id="buildingAccordion" *ngIf="this.model.parameters!==undefined">
-    <!--START CARD CONFIG TRAIN-->
-    <div class="card">
-      <div class="card-header" id="headingZero" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
-        <h5 class="mb-0">
-          1 - Training Series
-          <button class="btn btn-link pt-0 pb-0 float-right"  type="button" >
+    <div class="accordion mt-3" id="buildingAccordion" *ngIf="this.model.parameters!==undefined">
+        <!--START CARD CONFIG TRAIN-->
+        <div class="card">
+            <div class="card-header" id="headingZero" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+                <h5 class="mb-0">
+                    1 - Training Series
+                    <button class="btn btn-link pt-0 pb-0 float-right" type="button">
           </button>
-        </h5>
-      </div>
-      <div #trainigseries id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#buildingAccordion">
-        <div class="card-body p-2 pl-5 pr-5">
-          <app-training-series></app-training-series>
+                </h5>
+            </div>
+            <div #trainigseries id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#buildingAccordion">
+                <div class="card-body p-2 pl-5 pr-5">
+                    <app-training-series></app-training-series>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <!-- END CONFIG TRAIN-->
-    
-    <!--START CARD INPUT-->
-    <div class="card">
-      <div class="card-header collapsed" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-        <h5 class="mb-0">
-            2 - Input
-          <button class="btn btn-link pt-0 pb-0 float-right"  type="button" >
-          </button>
-        </h5>
-      </div>
-      <div #trainigseries id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#buildingAccordion" >
-        <div class="card-body p-2 pl-5 pr-5">
-            <app-config-training></app-config-training>
-        </div>
-      </div>
-    </div>
-    <!-- END CONFIG INPUT -->
+        <!-- END CONFIG TRAIN-->
 
-    <!--START CARD CONFIG MODEL-->
-    <div class="card">
-      <div class="card-header collapsed" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-        <h5 class="mb-0">
-            3 - Learner
-          <button class="btn btn-link pt-0 pb-0 float-right"  type="button">
+        <!--START CARD INPUT-->
+        <div class="card">
+            <div class="card-header collapsed" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <h5 class="mb-0">
+                    2 - Input
+                    <button class="btn btn-link pt-0 pb-0 float-right" type="button">
           </button>
-        </h5>
-      </div>
-      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#buildingAccordion">
-        <div class="card-body p-2 pl-5 pr-5">
-          <app-config-model></app-config-model>
+                </h5>
+            </div>
+            <div #trainigseries id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#buildingAccordion">
+                <div class="card-body p-2 pl-5 pr-5">
+                    <app-config-training></app-config-training>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <!-- END CONFIG MODEL-->
+        <!-- END CONFIG INPUT -->
 
-    <!--START CARD CONFIG PREFERENCES-->
-    <div class="card">
-      <div class="card-header collapsed" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-        <h5 class="mb-0">
-            4 - Preferences
-          <button class="btn btn-link pt-0 pb-0 float-right" type="button">
+        <!--START CARD CONFIG MODEL-->
+        <div class="card">
+            <div class="card-header collapsed" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <h5 class="mb-0">
+                    3 - Learner
+                    <button class="btn btn-link pt-0 pb-0 float-right" type="button">
           </button>
-        </h5>
-      </div>
-      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#buildingAccordion" >
-        <div class="card-body p-2 pl-5 pr-5">
-          <app-config-preferences></app-config-preferences>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#buildingAccordion">
+                <div class="card-body p-2 pl-5 pr-5">
+                    <app-config-model></app-config-model>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <!-- END CONFIG PREFERENCES-->
+        <!-- END CONFIG MODEL-->
 
-  </div>
+        <!--START CARD CONFIG PREFERENCES-->
+        <div class="card">
+            <div class="card-header collapsed" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <h5 class="mb-0">
+                    4 - Preferences
+                    <button class="btn btn-link pt-0 pb-0 float-right" type="button">
+          </button>
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#buildingAccordion">
+                <div class="card-body p-2 pl-5 pr-5">
+                    <app-config-preferences></app-config-preferences>
+                </div>
+            </div>
+        </div>
+        <!-- END CONFIG PREFERENCES-->
+    </div>
+</div>
+<!-- IMPORT/EXPORT BUTTONS-->
+<div class="buttons">
+    <div class="btn-group ml-2" role="group" aria-label="group1">
+        <button class="btn btn-ets-down ml-2" (click)="downloadParams()">Download</button>
+    </div>
+
+    <div class="btn-group ml-2" role="group" aria-label="group2">
+        <label class="btn btn-ets-up mb-0" for="uploadButton">
+               <input id="uploadButton" type="file" style="display:none;" (change)="updateFromFile($event)">Upload
+        </label>
+    </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cancel</button>
-  <button type="button" class="btn btn-primary"  (click)="buildModel(this.model.name, this.model.version)">Build</button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="buildModel(this.model.name, this.model.version)">Build</button>
 </div>

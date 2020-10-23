@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Model} from '../Globals';
+import { Model } from '../Globals';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +19,13 @@ export class BuilderService {
     formData.append('parameters', JSON.stringify(this.model.delta));
     formData.append('incremental', JSON.stringify(this.model.incremental));
     const url: string = environment.baseUrl_build + 'model/' + this.model.name;
-    
+
     return this.http.post(url, formData);
 
+  }
+
+  downloadParams(modelName: string, modelVersion: string) {
+    const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/parameters';
+    return this.http.get(url)
   }
 }
