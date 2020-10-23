@@ -43,8 +43,8 @@ export class CommonService {
     return this.http.get(url);
   }
 
-  getDocumentation(modelName: string, modelVersion: string): Observable<any> {
-    const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/documentation';
+  getDocumentation(modelName: string, modelVersion: string, oformat: string): Observable<any> {
+    const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/oformat/' + oformat + '/documentation';
     return this.http.get(url);
   }
 
@@ -52,5 +52,12 @@ export class CommonService {
     const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/validation';
     return this.http.get(url);
   }
+
+  getProperty(obj, prop){
+    if(obj[prop] !== undefined) return obj[prop];
+    else return 
+  }
+
+
 
 }
