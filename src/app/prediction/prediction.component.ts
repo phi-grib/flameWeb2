@@ -689,7 +689,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   getDocumentation() {
 
-    this.commonService.getDocumentation(this.prediction.modelName, this.prediction.modelVersion).subscribe(
+    this.commonService.getDocumentation(this.prediction.modelName, this.prediction.modelVersion, 'JSON').subscribe(
       result => {
         this.modelDocumentation = result;
       },
