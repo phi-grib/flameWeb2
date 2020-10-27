@@ -85,10 +85,27 @@ a {
     color: #ffffff;
 }
 
-.buttons {
-    border-width: 0;
-}
+.buttons {}
 
 .headingThree {
     border-bottom: 0;
+}
+
+.filler {
+    width: 200px;
+    height: auto;
+}
+
+.right-buttons {
+    width: 200px;
+    margin: 1px;
+    padding: 0.25rem;
+}
+
+#btn-btn-primary {
+    margin-left: 9px;
+}
+
+.modal-footer {
+    justify-content: space-between;
 }

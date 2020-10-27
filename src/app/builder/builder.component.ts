@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { Model } from '../Globals';
 import { BuilderService } from './builder.service';
 import { CommonService } from '../common.service';
@@ -205,6 +205,7 @@ export class BuilderComponent implements OnInit {
   }
 
   updateFromFile(event) {
+    console.log('entra updateFromFile');
     if (event.target.files.length !== 1) {
       console.error('No file selected');
     } else {
@@ -213,22 +214,11 @@ export class BuilderComponent implements OnInit {
 
         this.model.parameters = reader.result.toString();
 
+        reader.readAsText(event.target.files[0]);
+      }
 
-        this.service.buildModel().subscribe(
-          result => {
-            this.getParameters();
-          },
-          error => {
-            alert('Error updating parameters');
-          }
-        );
-      };
-      reader.readAsText(event.target.files[0]);
     }
-
-
   }
-
 
   downloadParams() {
     this.service.downloadParams(this.model.name, this.model.version).subscribe(
