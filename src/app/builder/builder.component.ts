@@ -214,9 +214,9 @@ export class BuilderComponent implements OnInit {
       reader.onloadend = (e) => {
 
         this.model.parameters = reader.result.toString();
-        reader.readAsText(event.target.files[0]);
+      console.log(this.model.parameters);  
       }
-
+      reader.readAsText(event.target.files[0]);
     }
   }
 
