@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { Model } from '../Globals';
 import { BuilderService } from './builder.service';
 import { CommonService } from '../common.service';
@@ -32,12 +32,13 @@ export class BuilderComponent implements OnInit {
     this.getParameters();
   }
 
+  
+
   //extrats the parameters from the model
   getParameters(): void {
     this.commonService.getParameters(this.model.name, this.model.version).subscribe(
       result => {
         this.model.parameters = result;
-        console.log(result);
       },
       error => {
         alert(error.status + ' : ' + error.statusText);
@@ -205,7 +206,6 @@ export class BuilderComponent implements OnInit {
   }
 
   updateFromFile(event) {
-    console.log('entra updateFromFile');
     if (event.target.files.length !== 1) {
       console.error('No file selected');
     } else {
@@ -213,7 +213,6 @@ export class BuilderComponent implements OnInit {
       reader.onloadend = (e) => {
 
         this.model.parameters = reader.result.toString();
-
         reader.readAsText(event.target.files[0]);
       }
 

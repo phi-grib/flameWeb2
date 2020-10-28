@@ -172,7 +172,6 @@ export class ModelDocumentationComponent implements OnChanges {
 
   // updates the documentation in the backend from a yaml file 
   uploadFile(event) {
-    console.log('estoy en modeldocumentation');
     if (event.target.files.length !== 1) {
       console.error('No file selected');
     } else {
