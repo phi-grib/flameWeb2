@@ -205,6 +205,7 @@ export class BuilderComponent implements OnInit {
     );
   }
 
+  //uploads and reads a file(yaml extension) to update this.model.parameters in the GUI
   updateFromFile(event) {
     if (event.target.files.length !== 1) {
       console.error('No file selected');
@@ -219,6 +220,7 @@ export class BuilderComponent implements OnInit {
     }
   }
 
+  //downloads a yaml file with the model parameters human readable (backend pending)
   downloadParams() {
     this.service.downloadParams(this.model.name, this.model.version).subscribe(
       result => {

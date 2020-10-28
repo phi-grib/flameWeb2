@@ -76,9 +76,10 @@
         <!-- END CONFIG PREFERENCES-->
     </div>
 </div>
-<!-- IMPORT/EXPORT BUTTONS-->
+
 
 <div class="modal-footer">
+    <!-- IMPORT/EXPORT BUTTONS-->
     <div class="left-buttons">
         <div class="btn-group ml-2" role="group" aria-label="group1">
             <button class="btn btn-ets-down ml-2" (click)="downloadParams()">Download</button>
@@ -90,6 +91,7 @@
         </div>
     </div>
     <div class="filler"></div>
+    <!-- BUILD MODEL BUTTONS-->
     <div class="right-buttons">
         <button type="button" class="btn btn-secondary" id="btn-btn-secondary" (click)="activeModal.close('Close click')">Cancel</button>
         <button type="button" class="btn btn-primary" id="btn-btn-primary" (click)="buildModel(this.model.name, this.model.version)">Build</button>
