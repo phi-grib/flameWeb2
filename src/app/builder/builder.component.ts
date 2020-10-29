@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Model } from '../Globals';
 import { BuilderService } from './builder.service';
 import { CommonService } from '../common.service';
@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonFunctions } from '../common.functions';
+import {saveAs} from 'file-saver';
 import 'datatables.net-bs4';
 import 'datatables.net-select-bs4';
 declare var $: any;
@@ -31,8 +32,6 @@ export class BuilderComponent implements OnInit {
   ngOnInit() {
     this.getParameters();
   }
-
-  
 
   //extrats the parameters from the model
   getParameters(): void {
@@ -205,7 +204,6 @@ export class BuilderComponent implements OnInit {
     );
   }
 
-  //uploads and reads a file(yaml extension) to update this.model.parameters in the GUI
   updateFromFile(event) {
     if (event.target.files.length !== 1) {
       console.error('No file selected');
@@ -213,22 +211,40 @@ export class BuilderComponent implements OnInit {
       const reader = new FileReader();
       reader.onloadend = (e) => {
 
-        this.model.parameters = reader.result.toString();
-      console.log(this.model.parameters);  
-      }
+        // *** no, you cannot generate a complex object like this.model.parameter from text
+        // this.model.parameters = reader.result.toString();
+
+        this.model.delta = reader.result.toString(); // *** make sure that the delta is well formed and equivalent to the model.delta generated in build
+        // *** define getParametersFromYAML in builder services. Should look as build but call to a new endpoint of manage, not build
+        console.log(this.model.delta);
+        this.service.getParametersFromYAML(this.model.name, this.model.version).subscribe(
+          result => {
+            this.model.parameters = result;
+          },
+          error => {
+            alert('Error updating parameters');
+          }
+        );
+      };
       reader.readAsText(event.target.files[0]);
     }
+
+
   }
 
-  //downloads a yaml file with the model parameters human readable (backend pending)
+
   downloadParams() {
-    this.service.downloadParams(this.model.name, this.model.version).subscribe(
+
+    this.model.delta = this.recursiveDelta(this.model.parameters);
+    // *** define getYAMLFromParameters in builder services. Should look as build but call to a new endpoint of manage, not build
+    this.service.getYAMLfromParameters(this.model.name, this.model.version).subscribe(
       result => {
         let text: string = '';
         for (const x in result) {
           text = text + result[x] + '\n';
         }
         let blob = new Blob([text], { type: "text/plain;charset=utf-8" })
+        // *** include saveAS
         saveAs(blob, this.model.name + '.yaml');
       },
       error => {
