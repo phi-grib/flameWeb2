@@ -81,6 +81,7 @@ export class BuilderComponent implements OnInit {
   buildModel(name, version): void {
     this.model.delta = {};
     this.model.delta = this.recursiveDelta(this.model.parameters);
+    console.log(this.model.delta);
 
     this.model.listModels[name + '-' + version] = {
       name: name, version: version, trained: false, numMols: '-',
@@ -236,6 +237,7 @@ export class BuilderComponent implements OnInit {
   downloadParams() {
 
     this.model.delta = this.recursiveDelta(this.model.parameters);
+    console.log(this.model.delta);
     // *** define getYAMLFromParameters in builder services. Should look as build but call to a new endpoint of manage, not build
     this.service.getYAMLfromParameters(this.model.name, this.model.version).subscribe(
       result => {
@@ -244,7 +246,6 @@ export class BuilderComponent implements OnInit {
           text = text + result[x] + '\n';
         }
         let blob = new Blob([text], { type: "text/plain;charset=utf-8" })
-        // *** include saveAS
         saveAs(blob, this.model.name + '.yaml');
       },
       error => {
