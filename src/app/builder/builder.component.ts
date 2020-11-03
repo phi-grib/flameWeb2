@@ -174,7 +174,6 @@ export class BuilderComponent implements OnInit {
         });
 
         // use the following code to make sure the new model list will show the model
-
         // const a = Object.keys(this.model.listModels).sort();
         // var modelIndex = a.indexOf(name+'-'+version);
         // this.model.page = Math.floor(modelIndex/this.model.pagelen);
@@ -211,13 +210,7 @@ export class BuilderComponent implements OnInit {
     } else {
       const reader = new FileReader();
       reader.onloadend = (e) => {
-
-        // *** no, you cannot generate a complex object like this.model.parameter from text
-        // this.model.parameters = reader.result.toString();
-
-        this.model.delta = reader.result.toString(); // *** make sure that the delta is well formed and equivalent to the model.delta generated in build
-        // *** define getParametersFromYAML in builder services. Should look as build but call to a new endpoint of manage, not build
-        console.log(this.model.delta);
+        this.model.delta = reader.result.toString(); // copy the YAML to this.model.delta
         this.service.getParametersFromYAML(this.model.name, this.model.version).subscribe(
           result => {
             this.model.parameters = result;
@@ -229,16 +222,11 @@ export class BuilderComponent implements OnInit {
       };
       reader.readAsText(event.target.files[0]);
     }
-
-
   }
 
-
   downloadParams() {
-
+    // generate a delta with current settings in the dialogue
     this.model.delta = this.recursiveDelta(this.model.parameters);
-    console.log(this.model.delta);
-    // *** define getYAMLFromParameters in builder services. Should look as build but call to a new endpoint of manage, not build
     this.service.getYAMLfromParameters(this.model.name, this.model.version).subscribe(
       result => {
         let text: string = '';

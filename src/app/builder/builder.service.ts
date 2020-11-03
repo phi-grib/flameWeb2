@@ -24,13 +24,11 @@ export class BuilderService {
 
   }
 
-  // downloadParams(modelName: string, modelVersion: string) {
-  //   const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/parameters';
-  //   return this.http.get(url)
-  // }
 
   getParametersFromYAML(modelName: string, modelVersion: string){
     const formdata = new FormData();
+
+    // delta is a YAML file, no need to encode
     formdata.append('parameters', this.model.delta)
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/yaml2parameters';
     return this.http.post(url, formdata);
@@ -38,6 +36,8 @@ export class BuilderService {
 
   getYAMLfromParameters(modelName: string, modelVersion: string){
     const formdata = new FormData();
+
+    // delta is a TS object and must be passed as JSON, so it can be interpreted by the Python backend 
     formdata.append('parameters', JSON.stringify(this.model.delta))
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/parameters2yaml';
     return this.http.post(url, formdata);
