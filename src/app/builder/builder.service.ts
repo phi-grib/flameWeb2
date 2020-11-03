@@ -24,8 +24,23 @@ export class BuilderService {
 
   }
 
-  downloadParams(modelName: string, modelVersion: string) {
-    const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/parameters';
-    return this.http.get(url)
+  // downloadParams(modelName: string, modelVersion: string) {
+  //   const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/parameters';
+  //   return this.http.get(url)
+  // }
+
+  getParametersFromYAML(modelName: string, modelVersion: string){
+    const formdata = new FormData();
+    formdata.append('parameters', this.model.delta)
+    const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/yaml2parameters';
+    return this.http.post(url, formdata);
   }
+
+  getYAMLfromParameters(modelName: string, modelVersion: string){
+    const formdata = new FormData();
+    formdata.append('parameters', this.model.delta)
+    const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/parameters2yaml';
+    return this.http.get(url);
+  }
+
 }
