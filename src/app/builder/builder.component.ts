@@ -10,7 +10,6 @@ import {saveAs} from 'file-saver';
 import 'datatables.net-bs4';
 import 'datatables.net-select-bs4';
 declare var $: any;
-import {saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-builder',

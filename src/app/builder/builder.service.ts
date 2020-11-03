@@ -38,9 +38,9 @@ export class BuilderService {
 
   getYAMLfromParameters(modelName: string, modelVersion: string){
     const formdata = new FormData();
-    formdata.append('parameters', this.model.delta)
+    formdata.append('parameters', JSON.stringify(this.model.delta))
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/parameters2yaml';
-    return this.http.get(url);
+    return this.http.post(url, formdata);
   }
 
 }
