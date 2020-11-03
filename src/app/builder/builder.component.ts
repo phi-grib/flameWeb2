@@ -9,6 +9,7 @@ import { CommonFunctions } from '../common.functions';
 import 'datatables.net-bs4';
 import 'datatables.net-select-bs4';
 declare var $: any;
+import {saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-builder',
