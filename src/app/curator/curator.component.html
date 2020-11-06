@@ -1,12 +1,15 @@
 <div class="row align-items-centermt-4">
     <div class="col-6" id="inputSmilesContainer">
-        <label for="inputSmiles">
-            Valid file formats: excel, csv.
+        <p> Upload a file containing the SMILES. Valid file formats: ***********.</p>
+        <label for="inputSmiles" class="btn btn-ets-up mb-0"> Upload
         <input type="file" name="inputSmiles" id="inputSmiles">
-        <button type="submit" id="inputSmilesButton" class="btn-ets-up"> Send </button>
         </label>
-        <input type="text" name="column" id="smilesColumn"> Please enter the column name (please double check the spelling) where the SMILES are listed.
-
+        <br>
+        <br>
+        <input type="text" name="column" id="smilesColumn"> Enter the column name where the SMILES are listed. (Please double check the spelling)
+        <br>
+        <br>
+        <button type="submit" id="inputSmilesButton" class="btn-ets-down"> Send </button>
 
     </div>
     <div class="col-6" id="smilesCurated">

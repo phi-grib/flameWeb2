@@ -8,7 +8,9 @@ import { CuratorService } from './curator.service';
 })
 export class CuratorComponent implements OnInit {
 
-  constructor( service: CuratorService) { }
+  constructor(private service: CuratorService) { }
+
+  formdata = new FormData();
 
   ngOnInit(): void {
   }
@@ -19,7 +21,8 @@ export class CuratorComponent implements OnInit {
       console.error('No file selected');
     }else{
     reader.onloadend = (e) =>{
-      result = reader.result.toString;
+      this.formdata.append = reader.result.toString;
+      this.service.SmilesCurator(this.formdata).subscribe()
     }
     reader.readAsText(event.target.files[0]);  
   }
