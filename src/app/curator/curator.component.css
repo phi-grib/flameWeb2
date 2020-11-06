@@ -1,0 +1,24 @@
+#inputSmilesContainer {
+    background-color: aquamarine;
+    width: 48%;
+    height: 700px;
+    top: 30px;
+    justify-content: center;
+}
+
+#inputSmiles {
+    margin: 40px;
+}
+
+#inputSmiles {
+    display: none;
+}
+
+.btn-ets-up {
+    background: #0076a3;
+    color: #ffffff;
+    border-width: 0;
+    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+    letter-spacing: 0.05em;
+    border-radius: 0;
+}

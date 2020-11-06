@@ -35,6 +35,7 @@ import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
 import { initializer } from './utils/app-init';
 import { LabelerComponent } from './labeler/labeler.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
+import { CuratorComponent } from './curator/curator.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -68,7 +69,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ConfusionMatrixComponent,
     ModelDocumentationComponent,
     LabelerComponent,
-    ConfigurationComponent
+    ConfigurationComponent,
+    CuratorComponent
   ],
   imports: [
     BrowserModule,
