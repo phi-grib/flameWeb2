@@ -42,10 +42,6 @@ export class BuilderComponent implements OnInit {
       error => {
         alert(error.status + ' : ' + error.statusText);
       }
-      // ,
-      // () => { // when subscribe finishes
-      //   // console.log('actual parameters.yaml \n', parameters);
-      // }
     );
   }
 
@@ -81,7 +77,7 @@ export class BuilderComponent implements OnInit {
   buildModel(name, version): void {
     this.model.delta = {};
     this.model.delta = this.recursiveDelta(this.model.parameters);
-    console.log(this.model.delta);
+    // console.log(this.model.delta);
 
     this.model.listModels[name + '-' + version] = {
       name: name, version: version, trained: false, numMols: '-',
