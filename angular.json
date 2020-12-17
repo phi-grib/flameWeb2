@@ -68,25 +68,7 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
-            },
-            "aws": {
-              "fileReplacements": [
-                {
-                  "replace": "src/app/utils/app-init.ts",
-                  "with": "src/app/utils/app-init.kh.ts"
-                },
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
+              "buildOptimizer": true
             },
             "rel": {
               "budgets": [
