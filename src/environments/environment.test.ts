@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  read_only: false,
   baseUrl: '/flame.kh.svc/api/v1',
   baseUrl_manage: '/flame.kh.svc/api/v1/manage/',
   baseUrl_build: '/flame.kh.svc/api/v1/build/',

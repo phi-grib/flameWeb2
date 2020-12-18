@@ -1,6 +1,7 @@
 
 export const environment = {
   production: false,
+  read_only: true,
   baseUrl: 'http://localhost:8000/api/v1',
   baseUrl_manage: 'http://localhost:8000/api/v1/manage/',
   baseUrl_build: 'http://localhost:8000/api/v1/build/',
