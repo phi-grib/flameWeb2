@@ -5,6 +5,7 @@ import { PredictorService } from './predictor.service';
 import { CommonFunctions } from '../common.functions';
 import { ToastrService } from 'ngx-toastr';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Renderer2 } from '@angular/core';
 // import 'jquery';
 declare var $: any;
 
@@ -26,6 +27,7 @@ export class PredictorComponent implements OnInit {
   constructor(public service: PredictorService,
               private commonService: CommonService,
               private func: CommonFunctions,
+              private renderer2: Renderer2,
               public activeModal: NgbActiveModal,
               public prediction: Prediction,
               public model: Model,
@@ -35,6 +37,19 @@ export class PredictorComponent implements OnInit {
   ngOnInit() {
     // this.models = {};
     // this.getModelListPredict();
+
+    const s = this.renderer2.createElement('script');
+    s.type = 'text/javascript';
+    s.src = 'assets/jsme/jsme.nocache.js';
+    s.text = ``;
+    this.renderer2.appendChild(document.body, s);
+
+    const s2 = this.renderer2.createElement('script');
+    s2.type = 'text/javascript';
+    s2.src = 'assets/jsme/init.js';
+    s2.text = ``;
+    this.renderer2.appendChild(document.body, s2);
+
     for (const name of this.prediction.predictions) {
       this.predictionsNames[name[0]] = true;
     }
@@ -100,6 +115,8 @@ export class PredictorComponent implements OnInit {
   // }
 
   predict() {
+    console.log($('#jsme_container').smiles());
+
     this.activeModal.close('Close click');
     if (this.modelName != '') {
       const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictName , {
