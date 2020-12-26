@@ -7,9 +7,43 @@
   </button>
 </div>
 <div class="modal-body">
+
   <div class="container mt-1">
+    
+    
     <div class="row">
-      <div class="col-8">
+      <div class="col-10">
+        <label for="inputGroupFile01">Input file</label>
+        <div class="form-group">
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputGroupFile01"
+            aria-describedby="inputGroupFileAddon01" onchange="this.nextElementSibling.innerText = this.files[0].name" 
+            (change)="change($event.target.files)">
+            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            <small class="text-muted">Enter a SDFile format input file.</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <button type="button" class="btn btn-primary" (click)="predict()" [disabled]="(this.modelName==''|| this.file==undefined )">Predict</button>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-10">
+        <label for="inputGroupFile01">Draw input structure</label>
+        <div class="form-group">
+           <div id="jsme_container"></div>
+           <small class="text-muted">Enter a molecular structure (one molecule max.).</small>
+        </div>
+      </div>
+      <div class="col-2">
+        <button type="button" class="btn btn-primary" onclick="alert(jsmeApplet.molFile())" >Predict</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-10">
         <label for="predictionName">Prediction name</label>
         <input type="text" class="form-control is-invalid" [class.is-valid]="isvalid"  [class.is-invalid]="!isvalid"
          id="predictionName" [(ngModel)]="predictName"  (ngModelChange)="predictNameChange()" required>
@@ -22,63 +56,11 @@
       </div>
     </div>
     
-    <div class="row mt-2">
-      <div class="col">
-        <label for="inputGroupFile01">Input file</label>
-        <script>
-          function jsmeOnLoad() {
-            jsmeApplet = new JSApplet.JSME("jsme_container", "380px", "340px");
-          }
-        </script>
-        <div id="jsme_container"></div>
-
-        <div class="form-group">
-          <div class="custom-file">
-            <input type="file" class="custom-file-input" id="inputGroupFile01"
-              aria-describedby="inputGroupFileAddon01" onchange="this.nextElementSibling.innerText = this.files[0].name" 
-              (change)="change($event.target.files)">
-              <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-              <small class="text-muted">Enter a SDFile format input file.</small>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- <div class="row">
-      <div class="col -8">
-        <div class="form-group">
-          <label for="model">Model (with published versions)</label>
-            <select id="model" class="form-control" [(ngModel)]="this.modelName" name=""> 
-              <option *ngFor="let value of objectKeys(this.models).sort()" [value]='value'>
-              {{value}}
-              </option>
-          </select>
-            <small id="model" class="text-muted">
-            Select model.
-          </small>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="form-group">
-          <label for="version">Version</label>
-            <select class="form-control" [(ngModel)]="this.version" name="version"> 
-                <option *ngFor="let value of this.models[this.modelName]" [value]='value'>
-                {{value}}
-                </option>
-            </select>
-              <small id="version" class="text-muted">
-            Select version.
-          </small>
-        </div>
-      </div>
-    </div> -->
   </div>
 </div>
 <div class="modal-footer">
 <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cancel</button>
 <!-- <button type="button" class="btn btn-primary" (click)="predict()" [disabled]="(this.modelName==''|| this.file==undefined )">Predict</button> -->
-<button type="button" class="btn btn-primary" onclick="alert(jsmeApplet.molFile())" >Predict</button>
 </div>
 
 
