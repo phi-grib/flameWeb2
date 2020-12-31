@@ -20,4 +20,12 @@ export class PredictorService {
     return this.http.put(url, formData);
 
   }
+
+  predict_string(modelName: string, version: string, molStructure: string, predictionName: string): Observable<any> {
+    const jsonMol = JSON.stringify (molStructure);
+    const url: string = environment.baseUrl_predict + 'model/' + modelName + '/version/' + version + '/predictionName/' + predictionName + '/molStructure/' + jsonMol;
+    return this.http.post(url, null);
+
+  }
+
 }

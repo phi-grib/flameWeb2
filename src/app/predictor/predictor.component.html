@@ -37,8 +37,10 @@
            <small class="text-muted">Enter a molecular structure (one molecule max.).</small>
         </div>
       </div>
+
       <div class="col-2">
-        <button type="button" class="btn btn-primary" onclick="alert(jsmeApplet.molFile())" >Predict</button>
+        <!-- <button type="button" class="btn btn-primary" onclick="alert(jsmeApplet.molFile())" >Predict</button> -->
+        <button type="button" class="btn btn-primary" onclick="clipmol(jsmeApplet.molFile())" (click)="predict_structure()" >Predict</button>
       </div>
     </div>
 
@@ -55,6 +57,7 @@
         </div>
       </div>
     </div>
+    <span [hidden]=true id="molclipboard"></span>
     
   </div>
 </div>
