@@ -81,17 +81,17 @@ export class PredictorComponent implements OnInit {
 
   predict_structure () {
     var span = document.getElementById("molclipboard");
-    var molString = span.innerText;
+    var smiles = span.innerText;
 
     this.activeModal.close('Close click');
-    console.log(molString);
+    // console.log(smiles);
 
     if (this.modelName != '') {
       const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictName , {
         disableTimeOut: true, positionClass: 'toast-top-right'});
       this.prediction.predicting[this.predictName] = [this.modelName, this.version, 'edited mol'];
 
-      this.service.predict_string(this.modelName, this.version, molString, this.predictName).subscribe(
+      this.service.predict_smiles(this.modelName, this.version, smiles, this.predictName).subscribe(
         result => {
           let iter = 0;
           const intervalId = setInterval(() => {

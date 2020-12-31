@@ -4,6 +4,7 @@ function jsmeOnLoad() {
 
 function clipmol(moltext) {
         span = document.getElementById("molclipboard");
-        txt = document.createTextNode(moltext);
-        span.appendChild(txt);
+        // txt = document.createTextNode(moltext);
+        // span.appendChild(txt);
+        span.innerText=moltext
 }

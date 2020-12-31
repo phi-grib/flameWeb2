@@ -21,9 +21,9 @@ export class PredictorService {
 
   }
 
-  predict_string(modelName: string, version: string, molStructure: string, predictionName: string): Observable<any> {
-    const jsonMol = JSON.stringify (molStructure);
-    const url: string = environment.baseUrl_predict + 'model/' + modelName + '/version/' + version + '/predictionName/' + predictionName + '/molStructure/' + jsonMol;
+  predict_smiles(modelName: string, version: string, smiles: string, predictionName: string): Observable<any> {
+    smiles = encodeURIComponent(smiles); // this is needed because some smiles contain chars that cannot be sent directly, like # or @
+    const url: string = environment.baseUrl_predict + 'model/' + modelName + '/version/' + version + '/predictionName/' + predictionName + '/smiles/' + smiles;
     return this.http.post(url, null);
 
   }
