@@ -119,16 +119,15 @@
                     <th class="align-middle text-center" data-toggle="tooltip" data-placement="top" data-html="true" title="Structure of the molecule in SMILES format">Mol</th>
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ymatrix">Value</th>-->
                     <th class="align-middle text-center" *ngIf="this.predictionResult.values" data-toggle="tooltip" data-placement="top" data-html="true" title="Results of the prediction">
-                      Prediction 
+                      Predict. 
                       <span *ngIf ="this.modelDocumentation?.Endpoint_units.value != null">({{this.modelDocumentation?.Endpoint_units.value}})</span>
                     </th>
-
-                    <th class="align-middle text-center" *ngIf="this.predictionResult.values && this.showConc(this.modelDocumentation?.Endpoint_units.value)" data-toggle="tooltip" 
-                        data-placement="top" data-html="true" title="Concentration">
-                      Conc.(uM) 
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">CI</th>
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.values && this.showConcentration" 
+                      data-toggle="tooltip" data-placement="top" data-html="true" title="Concentration">
+                      Predict.(uM) 
                     </th>
 
-                    <th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">CI</th>
                     <!-- <th class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">Lower limit</th> -->
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.c0">Inactive</th>-->
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.c1">Active</th>-->
@@ -145,12 +144,14 @@
                       <canvas #cmp id="{{i}}">{{this.predictionResult.SMILES[i]}}</canvas>
                     </td>
                    <!--<td class="align-middle text-center" *ngIf="this.predictionResult.ymatrix" >{{this.predictionResult.ymatrix[i].toFixed(3)}}</td>-->
-                    <td class="align-middle text-center" *ngIf="this.predictionResult.values"><span class="prediction_text">{{castValue(this.predictionResult.values[i])}}</span></td>
-                    <td class="align-middle text-center" *ngIf="this.predictionResult.values && this.showConc(this.modelDocumentation?.Endpoint_units.value)">
-                      {{backConc(this.predictionResult.values[i])}}
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.values">
+                      <span class="prediction_text">{{castValue(this.predictionResult.values[i])}}</span>
                     </td>
                     <td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">
                       {{this.predictionResult.lower_limit[i].toFixed(3)}} to {{this.predictionResult.upper_limit[i].toFixed(3)}}
+                    </td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.values && this.showConcentration">
+                      <span class="concentration_text">{{backConc(this.predictionResult.values[i])}}</span>
                     </td>
                     <!-- <td class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">{{this.predictionResult.lower_limit[i].toFixed(3)}}</td> -->
                     <!--<td class="align-middle text-center" *ngIf="this.predictionResult.c0">{{this.predictionResult.c0[i]}}</td>-->
@@ -238,6 +239,7 @@
                   <span *ngIf="this.modelDocumentation != undefined && this.modelDocumentation['Endpoint_units']"> {{this.modelDocumentation['Endpoint_units'].value}}</span>
                 </div>
               </div>
+
               <div class="row" *ngIf="this.predictionResult.ymatrix">
                 <div class="col-3 border">
                   <strong>Experimental activity</strong>
@@ -262,6 +264,16 @@
                   <!--90%CI: 8.3 - 10.6-->
                 </div>
               </div>
+
+              <div class="row">
+                <div class="col-3 border">
+                  <strong>Prediction (as conc.)</strong>
+                </div>
+                <div class="col-9 border">
+                  <span *ngIf="this.predictionResult.values && this.showConcentration" class="concentration_text"> {{backConc(this.predictionResult.values[molIndex])}} uM</span>
+                </div>
+              </div>
+
               
               <div class="row " *ngIf="this.modelBuildInfo['ensemble']">
                 <div class="col-3 border">

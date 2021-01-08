@@ -99,6 +99,12 @@ ul li.nav-item a.active{
   color: #e59300;
 }
 
+.concentration_text {
+  font-size: 18px;
+  font-weight: bold;
+  color:#22577A;
+}
+
 .TP {
   background-color: rgba(0,255,0,0.3);
 }

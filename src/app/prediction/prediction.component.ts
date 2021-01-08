@@ -45,6 +45,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   submodelsIndex = 0;
   predictionError = '';
   isQuantitative = false;
+  showConcentration = false;
 
   predictData = [{
     offset: 45, 
@@ -686,16 +687,28 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   }
 
   getDocumentation() {
-
+    this.showConcentration = false;
     this.commonService.getDocumentation(this.prediction.modelName, this.prediction.modelVersion, 'JSON').subscribe(
       result => {
         this.modelDocumentation = result;
+
+        let unit = this.modelDocumentation['Endpoint_units'].value;
+        if (unit != null) {
+          if (unit.slice(-3)=='(M)') {
+            if (unit.slice(0,1)=='p') {
+              this.showConcentration = true;
+            }
+            if (unit.slice(0,4)=='-log') {
+              this.showConcentration = true;
+            }
+          }
+        }
+        
       },
       error => {
         this.modelDocumentation = undefined;
       }
     );
-
   }
 
   castValue(value: any) {
@@ -711,21 +724,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         return 'Uncertain';
       }
     }
-  }
-
-  showConc(unit: any) {
-    if (unit == undefined) {
-      return false;
-    }
-    if (unit.slice(-3)=='(M)') {
-      if (unit.slice(0,1)=='p') {
-        return true;
-      }
-      if (unit.slice(0,4)=='-log') {
-        return true;
-      }
-    }
-    return false;
   }
 
   backConc(value: any) {
