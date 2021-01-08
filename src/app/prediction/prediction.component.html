@@ -119,9 +119,15 @@
                     <th class="align-middle text-center" data-toggle="tooltip" data-placement="top" data-html="true" title="Structure of the molecule in SMILES format">Mol</th>
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ymatrix">Value</th>-->
                     <th class="align-middle text-center" *ngIf="this.predictionResult.values" data-toggle="tooltip" data-placement="top" data-html="true" title="Results of the prediction">
-                    Prediction 
+                      Prediction 
                       <span *ngIf ="this.modelDocumentation?.Endpoint_units.value != null">({{this.modelDocumentation?.Endpoint_units.value}})</span>
                     </th>
+
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.values && this.showConc(this.modelDocumentation?.Endpoint_units.value)" data-toggle="tooltip" 
+                        data-placement="top" data-html="true" title="Concentration">
+                      Conc.(uM) 
+                    </th>
+
                     <th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">CI</th>
                     <!-- <th class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">Lower limit</th> -->
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.c0">Inactive</th>-->
@@ -140,6 +146,9 @@
                     </td>
                    <!--<td class="align-middle text-center" *ngIf="this.predictionResult.ymatrix" >{{this.predictionResult.ymatrix[i].toFixed(3)}}</td>-->
                     <td class="align-middle text-center" *ngIf="this.predictionResult.values"><span class="prediction_text">{{castValue(this.predictionResult.values[i])}}</span></td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.values && this.showConc(this.modelDocumentation?.Endpoint_units.value)">
+                      {{backConc(this.predictionResult.values[i])}}
+                    </td>
                     <td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">
                       {{this.predictionResult.lower_limit[i].toFixed(3)}} to {{this.predictionResult.upper_limit[i].toFixed(3)}}
                     </td>

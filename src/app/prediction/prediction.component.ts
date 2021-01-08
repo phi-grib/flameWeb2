@@ -561,8 +561,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     this.getDocumentation();  
     this.getPrediction();
     this.getValidation();
-
- 
   }
 
   tabClickHandler(info: any): void {
@@ -713,6 +711,25 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         return 'Uncertain';
       }
     }
+  }
+
+  showConc(unit: any) {
+    if (unit == undefined) {
+      return false;
+    }
+    if (unit.slice(-3)=='(M)') {
+      if (unit.slice(0,1)=='p') {
+        return true;
+      }
+      if (unit.slice(0,4)=='-log') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  backConc(value: any) {
+    return (Math.pow(10,6-value).toFixed(4))
   }
 
   updatePlotCombo() {
