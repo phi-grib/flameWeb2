@@ -10,6 +10,15 @@ import {filter} from "rxjs/operators";
 //     clientId: "knowledge-hub"
 // };
 
+// const keycloakConfig: KeycloakConfig = {
+//     url: 'https://fc3ab282-kh-keycloak-d80a-832678220.eu-west-1.elb.amazonaws.com/auth/',
+//     realm: "KH",
+//     credentials: {
+//         secret: "*****************************,
+//     },
+//     clientId: "knowledge-hub"
+// };
+
 export function initializer(keycloak: KeycloakService): () => Promise<any> {
     return (): Promise<any> => {
 
@@ -28,16 +37,17 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
             try {
                 await keycloak.init({
                     // config: keycloakConfig,
-                    config: "/assets/keycloak.json",
+
+                    config: "secrets/keycloak.json",
                     enableBearerInterceptor: true,
                     bearerPrefix: 'Bearer', // Tima thinks capital might be important here
 
                     // I'm not sure if the lines below are really needed
                     initOptions: {
                         onLoad: 'login-required',
-                        //checkLoginIframe: false
-                    },/*
-                    bearerExcludedUrls: []*/
+                        // checkLoginIframe: false
+                    }
+                    /*bearerExcludedUrls: []*/
                 });
                 resolve();
             } catch (error) {
