@@ -125,7 +125,7 @@
                     <th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">CI</th>
                     <th class="align-middle text-center" *ngIf="this.predictionResult.values && this.showConcentration" 
                       data-toggle="tooltip" data-placement="top" data-html="true" title="Concentration">
-                      Predict.(uM) 
+                      Predict.(&mu;M) 
                     </th>
 
                     <!-- <th class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">Lower limit</th> -->
@@ -270,7 +270,7 @@
                   <strong>Prediction (as conc.)</strong>
                 </div>
                 <div class="col-9 border">
-                  <span *ngIf="this.predictionResult.values && this.showConcentration" class="concentration_text"> {{backConc(this.predictionResult.values[molIndex])}} uM</span>
+                  <span *ngIf="this.predictionResult.values && this.showConcentration" class="concentration_text"> {{backConc(this.predictionResult.values[molIndex])}} &mu;M</span>
                 </div>
               </div>
 
