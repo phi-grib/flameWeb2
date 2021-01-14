@@ -143,33 +143,6 @@
                 }
               ]
             },
-            "exp-key": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.exp.ts"
-                },
-                {
-                  "replace": "src/app/utils/app-init.ts",
-                  "with": "src/app/utils/app-init.kh.ts"
-                }
-              ]
-            },
             "rel-key-local": {
               "budgets": [
                 {

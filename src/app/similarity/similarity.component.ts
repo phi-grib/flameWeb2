@@ -45,25 +45,29 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
     this.spaces = {};
     this.service.getSpaces().subscribe(
       result => {
-        for (const space of result) {
-          for (const version of space.versions) {
-            this.service.getInfo(space.spacename, version).subscribe(
-              result2 => {
-                if (!(space.spacename in  this.spaces)) {
-                  this.spaces[space.spacename] = [];
-                }
-                this.spaces[space.spacename].push(version);
-                this.molsXspace[space.spacename] = result2[0][2];
-              },
-              error => {
-                this.molsXspace[space.spacename] = 0;
-              });
+        if (result[0]) {
+          for (const space of result[1]) {
+            for (const version of space.versions) {
+              this.service.getInfo(space.spacename, version).subscribe(
+                result2 => {
+                  if (!(space.spacename in  this.spaces)) {
+                    this.spaces[space.spacename] = [];
+                  }
+                  this.spaces[space.spacename].push(version);
+                  this.molsXspace[space.spacename] = result2[0][2];
+                },
+                error => {
+                  this.molsXspace[space.spacename] = 0;
+                });
+            }
           }
+        }
+        else {
+          alert(result[1])
         }
       },
       error => {
-        console.log(error.message);
-        alert(error.message);
+        alert('Unable to retrieve spaces list');
       }
     );
   }
