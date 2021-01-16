@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges } from '@angular/core';
-// import { QuantitConformalService } from './quantit-conformal.service';
 import { CommonService } from '../common.service';
 import * as SmilesDrawer from 'smiles-drawer';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
@@ -13,7 +12,6 @@ import { Model, CustomHTMLElement } from '../Globals';
 export class QuantitConformalComponent implements OnChanges {
 
   constructor(
-    // private service: QuantitConformalService,
     private commonService: CommonService,
     public model: Model) { }
 
@@ -117,8 +115,8 @@ export class QuantitConformalComponent implements OnChanges {
           gridwidth: 1,
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
-          title: 'Experimental',
-          titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+          // title: 'Experimental',
+          // titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
           tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
         },
         yaxis: {
@@ -130,8 +128,8 @@ export class QuantitConformalComponent implements OnChanges {
           gridwidth: 1,
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
-          title: 'Model',
-          titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+          // title: 'Model',
+          // titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
           tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
         },
       },

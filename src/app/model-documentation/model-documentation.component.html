@@ -28,49 +28,40 @@
                                 <tr style="vertical-align: middle;">
                                     <th style="width: 25%"><button type="button" class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" (click)=editSection(0) data-target="#docSection">Edit</button></th>
 
-
                                     <th style="width: 60%">Value</th>
                                     <th style="width: 15%" class="text-right">Description</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let key of this.docLevel[0]" >
-                                    <!-- <td *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">{{this.cleanStr(key)}}</td> -->
-                                    
                                     <td>{{this.cleanStr(key)}}</td>
-                                    <ng-container *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">
-                                        <td class="doc-value" *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
-                                            {{this.modelDocumentation[key].value}}</td>
-                                        <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
 
-                                            <table *ngIf="this.objectKeys(this.modelDocumentation).includes(key)" class="table" id="documentationTable">
-                                                <tbody>
-                                                    <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
-                                                        <td style="width: 25%">{{this.cleanStr(key2)}}</td>
+                                    <td class="doc-value" *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
+                                        {{this.modelDocumentation[key].value}}</td>
+                                    <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
 
-                                                        <td style="width: 50%" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
-                                                            {{this.modelDocumentation[key].value[key2].value}}</td>
-                                                        <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
-                                                            {{this.modelDocumentation[key].value[key2]}}</td>
+                                    <table class="table" id="documentationTable">
+                                        <tbody>
+                                            <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
+                                                <td style="width: 25%">{{this.cleanStr(key2)}}</td>
 
-                                                        <td style="width: 25%" class="text-right comment" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
-                                                            {{this.modelDocumentation[key].value[key2].description}}
-                                                        </td>
-                                                        <td style="width: 25%" class="text-right comment" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
-                                                            na</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                                <td style="width: 50%" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                    {{this.modelDocumentation[key].value[key2].value}}</td>
+                                                <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                    {{this.modelDocumentation[key].value[key2]}}</td>
 
-                                        </td>
-                                        <td *ngIf="!this.modelDocumentation[key].value"></td>
-                                        <td class="text-right comment">{{this.modelDocumentation[key].description}}</td>
-                                    </ng-container>
+                                                <td style="width: 25%" class="text-right comment" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                    {{this.modelDocumentation[key].value[key2].description}}
+                                                </td>
+                                                <td style="width: 25%" class="text-right comment" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                    na</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
 
-                                    <ng-container *ngIf="!this.objectKeys(this.modelDocumentation).includes(key)">
-                                        <td></td>
-                                        <td class="text-right comment"></td>
-                                    </ng-container>
+                                    </td>
+                                    <td *ngIf="!this.modelDocumentation[key].value"></td>
+                                    <td class="text-right comment">{{this.modelDocumentation[key].description}}</td>
 
                                 </tr>
                             </tbody>
@@ -107,39 +98,32 @@
                                 <tr *ngFor="let key of this.docLevel[1]">
                                     <td>{{this.cleanStr(key)}}</td>
 
-                                    <ng-container *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">
-                                        <td class="doc-value" *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
-                                            {{this.modelDocumentation[key].value}}</td>
-                                        <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
+                                    <td class="doc-value" *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
+                                        {{this.modelDocumentation[key].value}}</td>
+                                    <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
 
-                                            <table class="table" id="documentationTable">
-                                                <tbody>
-                                                    <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
-                                                        <td style="width: 25%">{{this.cleanStr(key2)}}</td>
+                                    <table class="table" id="documentationTable">
+                                        <tbody>
+                                            <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
+                                                <td style="width: 25%">{{this.cleanStr(key2)}}</td>
 
-                                                        <td style="width: 50%" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
-                                                            {{this.modelDocumentation[key].value[key2].value}}</td>
-                                                        <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
-                                                            {{this.modelDocumentation[key].value[key2]}}</td>
+                                                <td style="width: 50%" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                    {{this.modelDocumentation[key].value[key2].value}}</td>
+                                                <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                    {{this.modelDocumentation[key].value[key2]}}</td>
 
-                                                        <td style="width: 25%" class="text-right comment" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
-                                                            {{this.modelDocumentation[key].value[key2].description}}
-                                                        </td>
-                                                        <td style="width: 25%" class="text-right comment" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
-                                                            na</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                                <td style="width: 25%" class="text-right comment" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                    {{this.modelDocumentation[key].value[key2].description}}
+                                                </td>
+                                                <td style="width: 25%" class="text-right comment" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                    na</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
 
-                                        </td>
-                                        <td *ngIf="!this.modelDocumentation[key].value"></td>
-                                        <td class="text-right comment">{{this.modelDocumentation[key].description}}</td>
-                                    </ng-container>
-
-                                    <ng-container *ngIf="!this.objectKeys(this.modelDocumentation).includes(key)">
-                                        <td></td>
-                                        <td class="text-right comment"></td>
-                                    </ng-container>
+                                    </td>
+                                    <td *ngIf="!this.modelDocumentation[key].value"></td>
+                                    <td class="text-right comment">{{this.modelDocumentation[key].description}}</td>
 
                                 </tr>
                             </tbody>
@@ -175,43 +159,35 @@
                                 <tr *ngFor="let key of this.docLevel[2]">
                                     <td>{{this.cleanStr(key)}}</td>
 
-                                    <ng-container *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">
+                                    <!-- non-objects -->
+                                    <td class="doc-value" *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
+                                        {{this.modelDocumentation[key].value}}</td>
 
-                                        <!-- non-objects -->
-                                        <td class="doc-value" *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
-                                            {{this.modelDocumentation[key].value}}</td>
+                                    <!-- objects -->
+                                    <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
 
-                                        <!-- objects -->
-                                        <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
+                                    <table class="table" id="documentationTable">
+                                        <tbody>
+                                            <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
+                                                <td style="width: 25%">{{this.cleanStr(key2)}}</td>
 
-                                            <table class="table" id="documentationTable">
-                                                <tbody>
-                                                    <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
-                                                        <td style="width: 25%">{{this.cleanStr(key2)}}</td>
+                                                <td style="width: 50%" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                    {{this.modelDocumentation[key].value[key2].value}}</td>
+                                                <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                    {{this.modelDocumentation[key].value[key2]}}</td>
 
-                                                        <td style="width: 50%" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
-                                                            {{this.modelDocumentation[key].value[key2].value}}</td>
-                                                        <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
-                                                            {{this.modelDocumentation[key].value[key2]}}</td>
+                                                <td style="width: 25%" class="text-right comment" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                    {{this.modelDocumentation[key].value[key2].description}}
+                                                </td>
+                                                <td style="width: 25%" class="text-right comment" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                    na</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
 
-                                                        <td style="width: 25%" class="text-right comment" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
-                                                            {{this.modelDocumentation[key].value[key2].description}}
-                                                        </td>
-                                                        <td style="width: 25%" class="text-right comment" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
-                                                            na</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-
-                                        </td>
-                                        <td *ngIf="!this.modelDocumentation[key].value"></td>
-                                        <td class="text-right comment">{{this.modelDocumentation[key].description}}</td>
-                                    </ng-container>
-
-                                    <ng-container *ngIf="!this.objectKeys(this.modelDocumentation).includes(key)">
-                                        <td></td>
-                                        <td class="text-right comment"></td>
-                                    </ng-container>
+                                    </td>
+                                    <td *ngIf="!this.modelDocumentation[key].value"></td>
+                                    <td class="text-right comment">{{this.modelDocumentation[key].description}}</td>
 
                                 </tr>
                             </tbody>
