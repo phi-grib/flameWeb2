@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { Model } from '../Globals';
 import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
@@ -35,31 +35,8 @@ export class ModelDocumentationComponent implements OnChanges {
   public documentationVisible = false;
 
   levelLabels = ['General model information', 'Algorithms and software', 'Other information'];
-
-  docLevel = [['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
-    'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
-    'Limits_applicability', 'Experimental_protocol', 'Model_availability',
-    'Data_info'],
-  ['Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
-    'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics',
-    'Internal_validation_1', 'Internal_validation_2', 'External_validation',
-    'Comments'],
-  ['Other_related_models', 'Date_of_QMRF', 'Date_of_QMRF_updates',
-    'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
-    'Endpoint_data_quality_and_variability', 'Descriptor_selection']
-  ];
-
-  editLevel = [['ID', 'Version', 'Contact', 'Institution', 'Date', 'Endpoint',
-    'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
-    'Limits_applicability', 'Experimental_protocol', 'Model_availability',
-    'Data_info'],
-  ['Algorithm', 'Software', 'Descriptors', 'AD_method', 'AD_parameters',
-    'Internal_validation_2', 'External_validation',
-    'Comments'],
-  ['Other_related_models', 'Date_of_QMRF', 'Date_of_QMRF_updates',
-    'QMRF_updates', 'References', 'QMRF_same_models', 'Comment_on_the_endpoint',
-    'Endpoint_data_quality_and_variability', 'Descriptor_selection']
-  ];
+  docLevel  = [[],[],[]];
+  editLevel = [[],[],[]];
 
   sectionActive: number;
   modelDocumentationBackup: any;
@@ -102,6 +79,56 @@ export class ModelDocumentationComponent implements OnChanges {
     this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
       result => {
         this.modelDocumentation = result;
+
+        // once Documentation fields are loaded, update the template to load ONLY these fields present in the loaded
+        // documentation. 
+        // this is very important to guarantee back-compatibility (models with less fields in the documentation)
+        const dBlocks = [
+          ['ID', 'Version', 'Model_title', 'Model_description', 'Keywords', 'Contact', 'Institution', 'Date', 'Endpoint',
+            'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
+            'Limits_applicability', 'Experimental_protocol', 'Model_availability',
+            'Data_info'],
+          ['Algorithm', 'Software', 'Descriptors', 'Algorithm_settings',
+            'AD_method', 'AD_parameters', 'Goodness_of_fit_statistics',
+            'Internal_validation_1', 'Internal_validation_2', 'External_validation',
+            'Comments'],
+          ['Other_related_models', 'Date_of_QMRF', 'Date_of_QMRF_updates',
+            'QMRF_updates', 'References', 'QMRF_same_models', 'Mechanistic_basis', 
+            'Mechanistic_references', 'Supporting_information', 'Comment_on_the_endpoint',
+            'Endpoint_data_quality_and_variability', 'Descriptor_selection']
+          ];
+
+        const eBlocks = [
+          ['ID', 'Version', 'Model_title', 'Model_description', 'Keywords', 'Contact', 'Institution', 'Date', 'Endpoint',
+            'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
+            'Limits_applicability', 'Experimental_protocol', 'Model_availability',
+            'Data_info'],
+          ['Algorithm', 'Software', 'Descriptors', 'AD_method', 'AD_parameters',
+            'Internal_validation_2', 'External_validation',
+            'Comments'],
+          ['Other_related_models', 'Date_of_QMRF', 'Date_of_QMRF_updates',
+            'QMRF_updates', 'References', 'QMRF_same_models', 'Mechanistic_basis', 
+            'Mechanistic_references', 'Supporting_information', 'Comment_on_the_endpoint',
+            'Endpoint_data_quality_and_variability', 'Descriptor_selection']
+          ];
+
+        for (let i = 0; i < 3; i++) { 
+          this.docLevel[i]  = []; // clean previous versions of docLevel
+          this.editLevel[i] = []; // clean previous versions of editLevel
+          for (let label in dBlocks[i]) {
+            // push only field existing in modelDocumentation
+            if (dBlocks[i][label] in this.modelDocumentation) {
+              this.docLevel[i].push(dBlocks[i][label]);
+            }
+          }
+          for (let label in eBlocks[i]) {
+            // push only field existing in modelDocumentation
+            if (eBlocks[i][label] in this.modelDocumentation) {
+              this.editLevel[i].push(eBlocks[i][label]);
+            }
+          }
+        }
+
       },
       error => {
         this.modelDocumentation = undefined;

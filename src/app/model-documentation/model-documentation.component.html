@@ -34,15 +34,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let key of this.docLevel[0]">
+                                <tr *ngFor="let key of this.docLevel[0]" >
+                                    <!-- <td *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">{{this.cleanStr(key)}}</td> -->
+                                    
                                     <td>{{this.cleanStr(key)}}</td>
-
                                     <ng-container *ngIf="this.objectKeys(this.modelDocumentation).includes(key)">
                                         <td class="doc-value" *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
                                             {{this.modelDocumentation[key].value}}</td>
                                         <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
 
-                                            <table class="table" id="documentationTable">
+                                            <table *ngIf="this.objectKeys(this.modelDocumentation).includes(key)" class="table" id="documentationTable">
                                                 <tbody>
                                                     <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
                                                         <td style="width: 25%">{{this.cleanStr(key2)}}</td>
