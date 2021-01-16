@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges} from '@angular/core';
-import { QualitConformalService } from './qualit-conformal.service';
+// import { QualitConformalService } from './qualit-conformal.service';
+import { CommonService } from '../common.service';
 import * as SmilesDrawer from 'smiles-drawer';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { Model, CustomHTMLElement } from '../Globals';
@@ -12,7 +13,8 @@ import { Model, CustomHTMLElement } from '../Globals';
 export class QualitConformalComponent implements OnChanges {
   
   constructor(
-    private service: QualitConformalService,
+    // private service: QualitConformalService,
+    private commonService: CommonService,
     public model: Model) { }
     
     @Input() modelName;
@@ -238,7 +240,7 @@ export class QualitConformalComponent implements OnChanges {
     }
       
     getValidation() {
-      this.service.getValidation(this.modelName, this.modelVersion).subscribe(
+      this.commonService.getValidation(this.modelName, this.modelVersion).subscribe(
         result => {
           const info = result;
           

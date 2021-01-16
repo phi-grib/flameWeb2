@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { QuantitConformalService } from './quantit-conformal.service';
+// import { QuantitConformalService } from './quantit-conformal.service';
+import { CommonService } from '../common.service';
 import * as SmilesDrawer from 'smiles-drawer';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { Model, CustomHTMLElement } from '../Globals';
@@ -12,7 +13,8 @@ import { Model, CustomHTMLElement } from '../Globals';
 export class QuantitConformalComponent implements OnChanges {
 
   constructor(
-    private service: QuantitConformalService,
+    // private service: QuantitConformalService,
+    private commonService: CommonService,
     public model: Model) { }
 
     @Input() modelName;
@@ -323,6 +325,7 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotSummary.data[1].y = [];
       
       this.getValidation();
+      this.getDocumentation();
       // this.modelVisible = true;
     }
 
@@ -333,8 +336,23 @@ export class QuantitConformalComponent implements OnChanges {
       return typeof val === 'object';
     }
 
+    getDocumentation() {
+      this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
+        result => {
+          let label_units = '';
+          if (result['Endpoint_units'].value != undefined) {
+            label_units = ': '+ result['Endpoint_units'].value;
+          }
+          this.plotScatter.layout.xaxis.title= 'Experimental'+label_units;
+          this.plotScatter.layout.xaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 };
+          this.plotScatter.layout.yaxis.title= 'Model'+label_units;
+          this.plotScatter.layout.yaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 };
+        }
+      );
+    }
+
     getValidation() {
-      this.service.getValidation(this.modelName, this.modelVersion).subscribe(
+      this.commonService.getValidation(this.modelName, this.modelVersion).subscribe(
         result => {
           const info = result;
           // console.log(this.modelID);
