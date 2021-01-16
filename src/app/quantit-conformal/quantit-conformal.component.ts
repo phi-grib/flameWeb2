@@ -106,6 +106,7 @@ export class QuantitConformalComponent implements OnChanges {
         margin: { r: 10, t: 30, pad: 10 },
         showlegend: false,
         showtitle: false,
+        
 
         xaxis: {
           range: [],
@@ -162,7 +163,9 @@ export class QuantitConformalComponent implements OnChanges {
             cauto: true,
             size: 14,
             colorbar: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 }
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+              title: 'Activity'
             }
           },
           hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
@@ -174,7 +177,9 @@ export class QuantitConformalComponent implements OnChanges {
         hovermode: 'closest',
         margin: { r: 10, t: 30, pad: 0  },
         showlegend: false,
-        showtitle: false,
+        showtitle: true,
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+        title: 'Training series. PCA built using model mol.descriptors', 
         xaxis: {
           zeroline: true,
           showgrid: true,

@@ -106,6 +106,9 @@ export class QualitConformalComponent implements OnChanges {
       layout: { 
         width: 700,
         height: 500,
+        showtitle: true,
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+        title: 'Training series. PCA built using model mol.descriptors', 
         hovermode: 'closest',
             margin: {r: 10, t: 30, pad: 0 },
             showlegend: false,

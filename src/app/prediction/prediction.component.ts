@@ -123,7 +123,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           showscale: true, 
           cauto: true,
           colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+            title: 'Activity',
+            titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
           }
         },
         hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
@@ -161,7 +163,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       hovermode: 'closest',
       margin: {r: 10, t: 30, pad: 0 },
       showlegend: false,
-      showtitle: false,
+      showtitle: true,
+      titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+      title: 'Predicted compounds projected on the training series. PCA built using model mol.descriptors',
       xaxis: {
         zeroline: true,
         showgrid: true,
@@ -363,9 +367,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           colorscale: this.bwcolorscale, 
           showscale: false, 
           cauto: true,
-          colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
-          }
+          // colorbar: {
+          //   title: 'Activity',
+          //   titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+          //   tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+          // }
         }
       };
 
@@ -382,7 +388,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             showscale: true,
             cauto: true,
             colorbar: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+              title: 'DModX',
+              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
             }
           }
         };
@@ -403,8 +411,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             // }
           }
         };
-
-
       }
 
     }
@@ -421,7 +427,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           showscale: this.isQuantitative, 
           cauto: true,
           colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+            title: 'Activity',
+            titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
           }
         }
       }
@@ -438,7 +446,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           line: {
             color: '#6be831',
             width: 3
-          }
+          },
         },
       };
     }
@@ -539,7 +547,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             showscale: true, 
             cauto: true,
             colorbar: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
+              title: 'Activity',
+              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
             }
           };
 
