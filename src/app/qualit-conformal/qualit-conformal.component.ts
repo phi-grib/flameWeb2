@@ -112,7 +112,6 @@ export class QualitConformalComponent implements OnChanges {
         hovermode: 'closest',
             margin: {r: 10, t: 30, pad: 0 },
             showlegend: false,
-            showtitle: false,
             xaxis: {
               hoverformat: '.2f',
               zeroline: true,
