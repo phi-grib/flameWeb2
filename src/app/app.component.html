@@ -19,11 +19,12 @@
           </ul>
         </div>
         <div class="col-7">
-            <div class="logo-right" >
-              <a href="http://etransafe.eu" target="_Blank"><img class="logo" src="assets/img/etransafe_logo.svg"></a>
+            <div class="logo-container" >
+              <a *ngIf="this.toxhub==''" href="http://etransafe.eu"  target="_Blank"><img class="logo" src="assets/img/etransafe_logo.svg"></a>
+              <a *ngIf="this.toxhub!=''" href="{{this.toxhub}}" ><img class="logo" src="assets/img/toxhub_logo.svg"></a>
               <img class="logo" src="assets/img/efpia_logo.svg">
               <img class="logo" src="assets/img/imi_logo.svg">
-              <img class="logo" src="assets/img/eu_logo.svg">
+              <img class="logo-right" src="assets/img/eu_logo.svg">
             </div>
         </div>
     </div>

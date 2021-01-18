@@ -16,6 +16,8 @@ export class AppComponent implements OnInit {
     public model: Model,
     public globals: Globals
     ) {}
+
+    toxhub: any;
     
     ngOnInit() {
       const me = this;
@@ -23,6 +25,16 @@ export class AppComponent implements OnInit {
         var target = $(e.target).attr("href") // activated tab
         me.globals.mainTabActive = target;
       });
+
+      this.toxhub = 'https://google.com'; // replace with ''
+      var http_page = location.href;
+      const n = http_page.lastIndexOf("flame.kh.svc");
+
+      // if the page contains "flame.kh.svc"
+      if  (n != -1){
+        this.toxhub = (http_page.slice(0,n));        
+      }
+      // console.log(this.toxhub);
     }
 
 }
