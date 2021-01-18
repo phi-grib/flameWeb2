@@ -37,14 +37,11 @@ ul li a.active{
 }
 
 .logo-right {
-    vertical-align: middle;
-    position: absolute;
-    right: 0px;
-    /* width: 300px; */
-    /* border: 3px solid #73AD21; */
-    padding: 5px; 
+    float: right;
 }
 
 .logo {
+    max-height: 40px;
     padding-right: 20px;
+    padding-top: 5px;
 }
