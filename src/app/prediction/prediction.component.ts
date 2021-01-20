@@ -123,8 +123,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           showscale: true, 
           cauto: true,
           colorbar: {
-            title: 'Activity',
-            titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
             tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
           }
         },
@@ -146,7 +144,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           color: [],
           symbol: 'circle-open',
           colorscale: this.greencolorscale, 
-          showscale: true, 
+          showscale: false, 
           opacity: 1,
           size: 14,
           line: {
@@ -366,14 +364,16 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           size: 10,
           colorscale: this.bwcolorscale, 
           showscale: false, 
-          cauto: true,
-          // colorbar: {
-          //   title: 'Activity',
-          //   titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-          //   tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
-          // }
+          cauto: true
         }
-      };
+
+        // "marker.color": backup_colors0,
+        // "marker.opacity": 0.6,
+        // "marker.size": 10,
+        // "marker.colorscale": this.bwcolorscale, 
+        // "marker.showscale": false, 
+        // "marker.cauto": true
+      }
 
       // red points if not DModX or colored points otherwyse
       if (this.dmodx && value=='dmodx') {
@@ -427,8 +427,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           showscale: this.isQuantitative, 
           cauto: true,
           colorbar: {
-            title: 'Activity',
-            titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
             tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
           }
         }
@@ -450,8 +448,9 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         },
       };
     }
-    PlotlyJS.restyle('scoresPreDIV', update0, [0])
-    PlotlyJS.restyle('scoresPreDIV', update1, [1])
+    PlotlyJS.restyle('scoresPreDIV', update0, 0);
+    PlotlyJS.restyle('scoresPreDIV', update1, 1);
+    console.log(update0);
   }
 
   drawReportHeader () {
@@ -547,8 +546,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             showscale: true, 
             cauto: true,
             colorbar: {
-              title: 'Activity',
-              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
               tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
             }
           };
@@ -712,6 +709,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               this.showConcentration = true;
             }
           }
+
+          //update plots with "Activity" and replace with units
         }
         
       },

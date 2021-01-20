@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Model, Prediction, Globals } from './Globals';
+import { environment } from '../environments/environment';
 declare var $: any;
 
 @Component({
@@ -26,14 +27,18 @@ export class AppComponent implements OnInit {
         me.globals.mainTabActive = target;
       });
 
-      this.toxhub = 'https://google.com'; // replace with ''
-      var http_page = location.href;
-      const n = http_page.lastIndexOf("flame.kh.svc");
-
-      // if the page contains "flame.kh.svc"
-      if  (n != -1){
-        this.toxhub = (http_page.slice(0,n));        
+      this.toxhub = ''; // replace with ''
+      if (environment.baseUrl.includes('flame.kh.svc')) {
+        this.toxhub = '/';
       }
+      // var http_page = location.href;
+      // console.log (http_page)
+      // const n = http_page.lastIndexOf("flame.kh.svc");
+
+      // // if the page contains "flame.kh.svc"
+      // if  (n != -1){
+      //   this.toxhub = (http_page.slice(0,n));        
+      // }
       // console.log(this.toxhub);
     }
 
