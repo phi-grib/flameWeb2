@@ -265,12 +265,12 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div *ngIf="this.predictionResult.values && this.showConcentration" class="row">
                 <div class="col-3 border">
                   <strong>Prediction (as conc.)</strong>
                 </div>
                 <div class="col-9 border">
-                  <span *ngIf="this.predictionResult.values && this.showConcentration" class="concentration_text"> {{backConc(this.predictionResult.values[molIndex])}} &mu;M</span>
+                  <span class="concentration_text"> {{backConc(this.predictionResult.values[molIndex])}} &mu;M</span>
                 </div>
               </div>
 

@@ -113,44 +113,44 @@ export class CommonFunctions {
                 // (b) healthy 
                 else {
                   
-                  if (!(environment.read_only==true && (dict_label['maturity']=='dev' || version==0))) {
-                  // info
-                  const dict_info = {};
-                  for (const aux of model.info) {
-                    dict_info[aux[0]] = aux[2];
-                  }
-
-                  // quality
-                  const quality = {};
-                  for (const info of (Object.keys(dict_info))) {
-                    if (typeof(dict_info[info]) === 'number') {
-                      quality[info] =  parseFloat(dict_info[info].toFixed(3));
+                  if (!(this.globals.read_only==true && (dict_label['maturity']=='dev' || version==0))) {
+                    // info
+                    const dict_info = {};
+                    for (const aux of model.info) {
+                      dict_info[aux[0]] = aux[2];
                     }
-                  }
 
-                  this.model.listModels[modelName + '-' + version] = {
-                    name: modelName, 
-                    version: version, 
-                    modelID: dict_info['modelID'],
-                    trained: true,
-                    numMols: dict_info['nobj'], 
-                    variables: dict_info['nvarx'], 
-                    type: dict_info['model'], 
-                    quality: quality,
-                    quantitative: dict_info['quantitative'], 
-                    conformal: dict_info['conformal'], 
-                    ensemble: dict_info['ensemble'], 
-                    maturity : dict_label['maturity'],
-                    bio_type : dict_label['type'],
-                    bio_subtype : dict_label['subtype'],
-                    bio_endpoint : dict_label['endpoint'],
-                    bio_species : dict_label['species'],
-                    error: undefined
-                  };
-                  this.model.trained_models.push(modelName + ' .v' + version);
+                    // quality
+                    const quality = {};
+                    for (const info of (Object.keys(dict_info))) {
+                      if (typeof(dict_info[info]) === 'number') {
+                        quality[info] =  parseFloat(dict_info[info].toFixed(3));
+                      }
+                    }
+
+                    this.model.listModels[modelName + '-' + version] = {
+                      name: modelName, 
+                      version: version, 
+                      modelID: dict_info['modelID'],
+                      trained: true,
+                      numMols: dict_info['nobj'], 
+                      variables: dict_info['nvarx'], 
+                      type: dict_info['model'], 
+                      quality: quality,
+                      quantitative: dict_info['quantitative'], 
+                      conformal: dict_info['conformal'], 
+                      ensemble: dict_info['ensemble'], 
+                      maturity : dict_label['maturity'],
+                      bio_type : dict_label['type'],
+                      bio_subtype : dict_label['subtype'],
+                      bio_endpoint : dict_label['endpoint'],
+                      bio_species : dict_label['species'],
+                      error: undefined
+                    };
+                    this.model.trained_models.push(modelName + ' .v' + version);
                   }
                   else {
-                    console.log ('rejected!');
+                    console.log ('model not shown');
                   }
                 }
               }
@@ -214,6 +214,7 @@ export class CommonFunctions {
                   }
                 }
 
+                console.log('refresh')
                 let me = this;
                 const table = $('#dataTableModels').DataTable({
                   autoWidth: false,

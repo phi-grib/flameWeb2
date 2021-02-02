@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigurationService } from './configuration.service';
-import { Model } from '../Globals';
+import { Globals, Model } from '../Globals';
 import { ToastrService } from 'ngx-toastr';
 import { CommonFunctions } from '../common.functions';
 declare var $: any;
@@ -16,6 +16,7 @@ export class ConfigurationComponent implements OnInit {
     private confservice: ConfigurationService,
     private func: CommonFunctions,
     private model: Model,
+    private globals: Globals,
     private toaster: ToastrService  ) {
   }
 
@@ -23,10 +24,24 @@ export class ConfigurationComponent implements OnInit {
   flameConf: any;
 
   ngOnInit(): void {
-    
     this.modelRoot = 'enter a path';
     this.getConfiguration();
-    
+  }
+
+  changeReadOnly () {
+    const status = this.globals.read_only;
+    if (status == false){
+      this.globals.read_only = true;
+    }
+    else {
+      this.globals.read_only = false;
+    }
+
+    this.model.listModels = {};
+    $('#dataTableModels').DataTable().destroy();
+    this.model.name = undefined;
+    this.func.getModelList();
+
   }
 
   getConfiguration (){
@@ -34,7 +49,6 @@ export class ConfigurationComponent implements OnInit {
       result => {
           this.modelRoot = result[0];
           this.flameConf = result[1];
-          // console.log(result);
       },
       error => {
           alert('Error obtaining Flame configuration');
@@ -61,9 +75,6 @@ export class ConfigurationComponent implements OnInit {
           location.assign(http_page.slice(0,n));
         }
 
-        // this.model.listModels = {};
-        // $('#dataTableModels').DataTable().destroy();
-        // this.func.getModelList();
         this.toaster.success('Configuration','UPDATED', {
               timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
         });

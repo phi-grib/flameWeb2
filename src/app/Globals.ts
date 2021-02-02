@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class Model {
@@ -58,6 +59,7 @@ export class Globals {
     tableModelVisible = false;
     tablePredictionVisible = false;
     mainTabActive: string = undefined;
+    read_only = environment.read_only;
 }
 
 @Injectable()

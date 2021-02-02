@@ -20,8 +20,6 @@ export class ManageModelsComponent {
 
   modelName: string;
   
-  predict_mode = environment.read_only;
-
   objectKeys = Object.keys;
 
   constructor(public manage: Manager,
