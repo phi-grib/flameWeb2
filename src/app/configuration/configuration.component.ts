@@ -16,8 +16,8 @@ export class ConfigurationComponent implements OnInit {
     private confservice: ConfigurationService,
     private func: CommonFunctions,
     private model: Model,
-    private globals: Globals,
-    private toaster: ToastrService  ) {
+    private toaster: ToastrService,
+    public globals: Globals) {
   }
 
   modelRoot: string;
@@ -28,20 +28,17 @@ export class ConfigurationComponent implements OnInit {
     this.getConfiguration();
   }
 
-  changeReadOnly () {
-    const status = this.globals.read_only;
-    if (status == false){
-      this.globals.read_only = true;
-    }
-    else {
-      this.globals.read_only = false;
-    }
+  changeUserProfile (profile) {
+    this.globals.read_only = (profile=='basic');
 
     this.model.listModels = {};
     $('#dataTableModels').DataTable().destroy();
     this.model.name = undefined;
     this.func.getModelList();
 
+    this.toaster.success('User profile','UPDATED', {
+      timeOut: 2000, positionClass: 'toast-top-right', progressBar: true  
+    });
   }
 
   getConfiguration (){

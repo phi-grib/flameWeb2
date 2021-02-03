@@ -469,12 +469,13 @@
                 </div>
                 <div class="col">
                   <div>
-                    <label for="projectStyle">Style</label>
+                    <label>Predicted compounds shown as: 
                     <select id="projectStyle" (change)="changeProjectStyle($event.target.value)">
-                      <option value='names'>circles + names (colored by Activity)</option>
+                      <option value='names'>circles & names (colored by Activity)</option>
                       <option value='points'>dots (red)</option>
                       <option *ngIf="this.dmodx==true" value='dmodx'>dots (colored by DModX)</option>
                     </select>
+                  </label>
                   </div>
                   <div id="scoresPreDIV"></div>
                 </div>

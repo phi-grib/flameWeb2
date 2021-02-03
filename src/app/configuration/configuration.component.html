@@ -11,12 +11,16 @@
         </div>
     </div>
     <br>
-    <div class="checkbox">
-        <label> 
-            <input type="checkbox" value="this.globals.read_only" id="checkReadOnly" (click) = "changeReadOnly()">
-            Prediction-only mode
+
+    <div>
+        <label >User profile
+            <select id="changeMode" (change)="changeUserProfile($event.target.value)">
+                <option value='basic' [selected]="this.globals.read_only==true">end user</option>
+                <option value='expert' [selected]="this.globals.read_only==false">model builder</option>
+            </select>
         </label>
-    </div>  
+    </div>
+
     <br>
     <br>
     <div class="row align-items-centermt-4">
