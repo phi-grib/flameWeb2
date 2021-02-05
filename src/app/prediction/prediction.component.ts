@@ -45,6 +45,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   submodelsIndex = 0;
   predictionError = '';
   isQuantitative = false;
+  isMajority = false;
   showConcentration = false;
 
   predictData = [{
@@ -450,7 +451,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     }
     PlotlyJS.restyle('scoresPreDIV', update0, 0);
     PlotlyJS.restyle('scoresPreDIV', update1, 1);
-    console.log(update0);
+    // console.log(update0);
   }
 
   drawReportHeader () {
@@ -659,6 +660,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         this.modelMatch = (this.modelBuildInfo['modelID'] === this.prediction.modelID);
 
         this.isQuantitative = this.modelBuildInfo['quantitative'];
+        this.isMajority = this.modelBuildInfo['model'] == 'combination:majority voting';
 
         if (this.modelBuildInfo['ensemble']) {
 
@@ -739,24 +741,38 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     return (Math.pow(10,6-value).toFixed(4))
   }
 
+  isInteger(value) {
+    return value % 1 == 0;
+  }
+
   updatePlotCombo() {
 
-    //Quantitative
-    if (this.isQuantitative) {
+    const xi = this.predictionResult.xmatrix[this.molIndex];
+    // console.log (xi);
+     
+    // the results are shown using plotComboQ but in the case
+    // of majority. only in this case we are using qualitative low level models
+    // as qualitative variables
+    if (!this.isMajority) {
       this.plotComboQ.data[0].x = [];
       this.plotComboQ.data[1].x = [];
       this.plotComboQ.data[2].x = [];
       this.plotComboQ.data[0].y = [];
       this.plotComboQ.data[1].y = [];
       this.plotComboQ.data[2].y = [];
+      this.plotComboQ.data[0].error_x.array = [];
+      this.plotComboQ.data[0].error_x.arrayminus = [];
 
-      const xi = this.predictionResult.xmatrix[this.molIndex];
       this.plotComboQ.data[0].x = xi;
       for (let i=0; i<this.predictionResult.var_nam.length; i++) {
         const varlist=String(this.predictionResult.var_nam[i]).split(':');
         this.plotComboQ.data[0].y[i] = varlist[1]+'.v'+varlist[2];
-        this.plotComboQ.data[1].y[i] = varlist[1]+'.v'+varlist[2];
-        this.plotComboQ.data[1].x[i] = this.predictionResult.values[this.molIndex];
+
+        if (this.isQuantitative){
+          this.plotComboQ.data[1].y[i] = varlist[1]+'.v'+varlist[2];
+          this.plotComboQ.data[1].x[i] = this.predictionResult.values[this.molIndex];
+        }
+
       }
       var drawCI = false;
       if (this.predictionResult['ensemble_ci']){
@@ -771,10 +787,17 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       }
       if (drawCI){
         for (let i=0; i<this.predictionResult.var_nam.length; i++) {
-          this.plotComboQ.data[0].error_x.array[i] = cilist[1+(i*2)] - xi[i];
-          this.plotComboQ.data[0].error_x.arrayminus[i] = xi[i] - cilist[i*2];
+          var cia = cilist[1+(i*2)] - xi[i];
+          var cib = xi[i] - cilist[i*2];
+
+          // avoid using c0 and c1 as CI ranges. c0/c1 are integers -1, 0 or 1
+          if (!this.isInteger(cia) && !this.isInteger(cib) ) {
+            this.plotComboQ.data[0].error_x.array[i] = cia;
+            this.plotComboQ.data[0].error_x.arrayminus[i] = cib;
+          }
         }
-        if (this.predictionResult['upper_limit']){
+
+        if (this.isQuantitative && this.predictionResult['upper_limit']){
           for (let i=0; i<this.predictionResult.var_nam.length; i++) {
             const varlist=String(this.predictionResult.var_nam[i]).split(':');
             this.plotComboQ.data[2].y[i] = varlist[1]+'.v'+varlist[2];
@@ -793,7 +816,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     // Qualitative
     // TODO: show ensemble prediction
     else {
-      const xi = this.predictionResult.xmatrix[this.molIndex];
       this.plotComboC.data[0].x = [];
       this.plotComboC.data[1].x = [];
       this.plotComboC.data[0].y = [];

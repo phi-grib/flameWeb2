@@ -149,9 +149,9 @@ export class CommonFunctions {
                     };
                     this.model.trained_models.push(modelName + ' .v' + version);
                   }
-                  else {
-                    console.log ('model not shown');
-                  }
+                  // else {
+                  //   console.log ('model not shown');
+                  // }
                 }
               }
               else {
@@ -214,7 +214,7 @@ export class CommonFunctions {
                   }
                 }
 
-                console.log('refresh')
+                // console.log('refresh')
                 let me = this;
                 const table = $('#dataTableModels').DataTable({
                   autoWidth: false,

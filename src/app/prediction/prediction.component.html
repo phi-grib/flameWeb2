@@ -284,7 +284,7 @@
                   <br><br>
                   <!--SUBMODEL RESULTS-->
 
-                    <div class="row" *ngIf="this.modelBuildInfo['quantitative']">
+                    <div class="row" *ngIf="this.isMajority == false">
                       <plotly-plot 
                       [data]="this.plotComboQ.data" 
                       [layout]="this.plotComboQ.layout" 
@@ -292,7 +292,7 @@
                       </plotly-plot>
                     </div>      
                     
-                    <div class="row" *ngIf="this.modelBuildInfo['quantitative'] == false">
+                    <div class="row" *ngIf="this.isMajority">
                       <plotly-plot 
                       [data]="this.plotComboC.data" 
                       [layout]="this.plotComboC.layout" 
