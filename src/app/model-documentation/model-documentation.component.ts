@@ -192,7 +192,7 @@ export class ModelDocumentationComponent implements OnChanges {
         });
       },
       error => {
-        alert('Error updating documentation');
+        alert('Error updating documentation:' + error.error.error);
       }
     );
   }
@@ -213,7 +213,7 @@ export class ModelDocumentationComponent implements OnChanges {
             });
           },
           error => {
-            alert('Error updating documentation');
+            alert('Unable to parse documentation file:' + error.error.error);
           }
         );
       };
