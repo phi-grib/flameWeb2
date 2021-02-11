@@ -11,7 +11,8 @@ export class CuratorComponent implements OnInit {
   constructor(private service: CuratorService) { }
 
   formdata = new FormData();
-
+  colName : string = '';
+  
   ngOnInit(): void {
   }
 
