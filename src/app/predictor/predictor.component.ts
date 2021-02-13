@@ -83,12 +83,18 @@ export class PredictorComponent implements OnInit {
     var span = document.getElementById("molclipboard");
     var smiles = span.innerText;
 
+    if (smiles===''){
+      alert('no molecule entered!')
+      return;
+    }
+
     this.activeModal.close('Close click');
     // console.log(smiles);
 
     if (this.modelName != '') {
       const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictName , {
         disableTimeOut: true, positionClass: 'toast-top-right'});
+      
       this.prediction.predicting[this.predictName] = [this.modelName, this.version, 'edited mol'];
 
       this.service.predict_smiles(this.modelName, this.version, smiles, this.predictName).subscribe(
@@ -100,7 +106,7 @@ export class PredictorComponent implements OnInit {
             } else {
               clearInterval(intervalId);
               this.toastr.clear(inserted.toastId);
-              this.toastr.warning( 'Prediction ' + name + ' \n Time Out' , 'Warning', {
+              this.toastr.warning( 'Prediction ' + this.predictName + ' \n Time Out' , 'Warning', {
                                     timeOut: 10000, positionClass: 'toast-top-right'});
               delete this.prediction.predicting[this.predictName];
               $('#dataTablePredictions').DataTable().destroy();
@@ -110,7 +116,11 @@ export class PredictorComponent implements OnInit {
           }, 2500);
         },
         error => {
-          alert('Error prediction');
+          this.toastr.clear(inserted.toastId);
+          delete this.prediction.predicting[this.predictName];
+          $('#dataTablePredictions').DataTable().destroy();
+          this.func.getPredictionList();
+          alert('Error processing input molecule: '+error.error.error);
         }
       );
     }
@@ -136,7 +146,7 @@ export class PredictorComponent implements OnInit {
             } else {
               clearInterval(intervalId);
               this.toastr.clear(inserted.toastId);
-              this.toastr.warning( 'Prediction ' + name + ' \n Time Out' , 'Warning', {
+              this.toastr.warning( 'Prediction ' + this.predictName + ' \n Time Out' , 'Warning', {
                                     timeOut: 10000, positionClass: 'toast-top-right'});
               delete this.prediction.predicting[this.predictName];
               $('#dataTablePredictions').DataTable().destroy();
@@ -146,7 +156,11 @@ export class PredictorComponent implements OnInit {
           }, 2500);
         },
         error => {
-          alert('Error prediction');
+          this.toastr.clear(inserted.toastId);
+          delete this.prediction.predicting[this.predictName];
+          $('#dataTablePredictions').DataTable().destroy();
+          this.func.getPredictionList();
+          alert('Error prediction: '+error.error.error);
         }
       );
     }
@@ -156,7 +170,7 @@ export class PredictorComponent implements OnInit {
   }
 
    // Periodic function to check model
-   checkPrediction(name, inserted, intervalId) {
+  checkPrediction(name, inserted, intervalId) {
     this.commonService.getPrediction(name).subscribe(
       result => {
         // console.log(result);
@@ -178,7 +192,7 @@ export class PredictorComponent implements OnInit {
       error => { // CHECK MAX iterations
         if (error.error.code !== 0) {
           this.toastr.clear(inserted.toastId);
-          this.toastr.error(  'Prediction ' + name + ' \n '  + error.error.message , 'ERROR!', {
+          this.toastr.error('Prediction ' + name + ' \n '  + error.error.message , 'ERROR!', {
             timeOut: 10000, positionClass: 'toast-top-right'});
           clearInterval(intervalId);
           delete this.prediction.predicting[this.predictName];
