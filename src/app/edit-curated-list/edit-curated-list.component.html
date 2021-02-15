@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h5 class="modal-title">Create list <span class="model_name"></span></h5>
+    <!-- <button type="button" class="close" aria-label="Cancel" (click)="activeModal.dismiss('Cross click')"> -->
+    <span aria-hidden="true">&times;</span>
+
+</div>
+<div class="modal-body">
+    <div class="card">
+        <label for="listName">Name: </label>
+        <input type="text" name="listName" id="listNameInput">
+        <label for="listName">SMILES column name: </label>
+        <input type="text" name="smilesCol" id="smilesColInput">
+        <label for="listName">Separator: </label>
+        <input type="text" name="separator" id="separatorInput">
+        <label for="listName">CAS columns name: </label>
+        <input type="text" name="casCol" id="casColInput">
+        <label for="listName">Substance column name: </label>
+        <input type="text" name="substanceName" id="substanceNameInput">
+        <input type="file" name="fileList" id="fileList">
+        <button class="btn btn-link pt-0 pb-0 float-right" type="button">Submit</button>
+    </div>
+</div>

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CuratorService } from './curator.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EditCuratedListComponent } from '../edit-curated-list/edit-curated-list.component';
+
 
 @Component({
   selector: 'app-curator',
@@ -8,7 +11,8 @@ import { CuratorService } from './curator.service';
 })
 export class CuratorComponent implements OnInit {
 
-  constructor(private service: CuratorService) { }
+  constructor(private service: CuratorService,
+              private modalCuratorService: NgbModal) { }
 
   formdata = new FormData();
   colName : string = '';
@@ -27,6 +31,10 @@ export class CuratorComponent implements OnInit {
     }
     reader.readAsText(event.target.files[0]);  
   }
+  }
+
+  curationSettings() {
+    const modalRef = this.modalCuratorService.open(EditCuratedListComponent, { windowClass : 'modalClass'});
   }
 
 }
