@@ -83,7 +83,6 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
   }
 
   search() {
-     // CAST VERSION
     this.result = [];
     this.nameSrc = [];
     this.smileSrc = [];
@@ -93,7 +92,7 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
       result => { let iter = 0;
         console.log(result);
         const intervalId = setInterval(() => {
-          if (iter < 15) {
+          if (iter < 100) {  // long timeout to support queries in long databases
             this.checkSearch(result, intervalId);
           } else {
             this.predicting = false;

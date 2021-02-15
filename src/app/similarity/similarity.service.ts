@@ -21,6 +21,7 @@ export class SimilarityService {
     const url: string = environment.baseUrl_smanage + 'search/' + label;
     return this.http.get(url);
   }
+  
   getInfo(label: string, version: number): Observable<any> {
     const url: string = environment.baseUrl_smanage + 'space/' + label + '/version/' + version;
     return this.http.get(url);
