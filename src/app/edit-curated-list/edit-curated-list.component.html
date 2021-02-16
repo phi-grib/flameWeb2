@@ -1,7 +1,7 @@
 <div class="modal-header">
     <h5 class="modal-title">Create list <span class="model_name"></span></h5>
-    <!-- <button type="button" class="close" aria-label="Cancel" (click)="activeModal.dismiss('Cross click')"> -->
-    <span aria-hidden="true">&times;</span>
+    <button type="button" class="close" aria-label="Cancel" (click)="activeModal.dismiss('Cross click')"><span aria-hidden="false">&times;</span></button>
+
 
 </div>
 <div class="modal-body">
@@ -18,7 +18,7 @@
         <br>
         <div class="row">
             <div class="col-sm">
-                <label for="listName">SMILES column name: </label>
+                <label for="smilesCol">SMILES column name: </label>
             </div>
             <div class="col-4">
                 <input type="text" name="smilesCol" id="smilesColInput">
@@ -28,7 +28,7 @@
         <br>
         <div class="row">
             <div class="col-sm">
-                <label for="listName">Separator: </label>
+                <label for="separator">Separator: </label>
             </div>
             <div class="col-4">
                 <input type="text" name="separator" id="separatorInput">
@@ -38,7 +38,7 @@
         <br>
         <div class="row">
             <div class="col-sm">
-                <label for="listName">CAS columns name: </label>
+                <label for="casCol">CAS columns name: </label>
             </div>
             <div class="col-4">
                 <input type="text" name="casCol" id="casColInput">
@@ -48,7 +48,7 @@
         <br>
         <div class="row">
             <div class="col-sm">
-                <label for="listName">Substance column name: </label>
+                <label for="substanceName">Substance column name: </label>
             </div>
             <div class="col-4">
                 <input type="text" name="substanceName" id="substanceNameInput">
@@ -58,7 +58,7 @@
         <br>
         <div class="row">
             <div class="col-sm">
-                <label for="listName">Input file: </label>
+                <label for="fileList">Input file: </label>
             </div>
             <div class="col-4">
                 <input type="file" name="fileList" id="fileList">
@@ -71,13 +71,5 @@
                 <button class="btn btn-link pt-0 pb-0 float-right" type="button">Submit</button>
             </div>
         </div>
-
-
-
-
-
-
-
-
     </div>
 </div>

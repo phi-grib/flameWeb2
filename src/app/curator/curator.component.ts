@@ -11,6 +11,8 @@ import { EditCuratedListComponent } from '../edit-curated-list/edit-curated-list
 })
 export class CuratorComponent implements OnInit {
 
+  //attributes: 
+
   constructor(private service: CuratorService,
               private modalCuratorService: NgbModal) { }
 
