@@ -11,18 +11,37 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class EditCuratedListComponent implements OnInit {
 
-  //attributes: 
-  private listName: string;
-  private smilesCol: string;
-  private separator: string;
-  private casCol: string;
-  private substanceName: string;
-  private fileList: File;
+  ObjCuratedList: EditCuratedListComponent;
+  ObjActiveModal: NgbActiveModal;
+  SeparatorChoices=[",", " ", ";", "  ", "/", "."];
 
-  constructor(public activeModal: NgbActiveModal,
+  //attributes: 
+  public listName: string;
+  public smilesCol: string;
+  public separator: string;
+  public casCol: string;
+  public substanceName: string;
+  public fileList: File;
+
+  constructor(public activeModal: NgbActiveModal
     ) { }
 
   ngOnInit(): void {
+    this.ObjCuratedList = new EditCuratedListComponent(this.ObjActiveModal)
+  }
+
+  createObjCuratedList(){
+    console.log(this.ObjCuratedList);
+  }
+
+  onChangeSeparator(selectValue: any){
+    let separatorValue = "";
+    for(let item in this.SeparatorChoices){
+      if(item = selectValue){
+        separatorValue = item;
+      }
+    }
+    this.ObjCuratedList.separator = separatorValue;
   }
 
 }
