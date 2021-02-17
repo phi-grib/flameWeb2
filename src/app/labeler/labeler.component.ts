@@ -30,7 +30,7 @@ export class LabelerComponent implements OnInit {
     const clabels = ['bio_type', 'bio_subtype', 'bio_endpoint', 'bio_species'];
     this.isvalid = true;
     for (let i=0; i<clabels.length; i++) {
-      if ((imodel[clabels[i]].length > 15) || (imodel[clabels[i]].length <3)) {
+      if ((imodel[clabels[i]].length > 15) || (imodel[clabels[i]].length <2)) {
         this.isvalid = false;
         break;
       }
@@ -79,7 +79,7 @@ export class LabelerComponent implements OnInit {
           timeOut: 5000, positionClass: 'toast-top-right'});
       },
       error => {
-          alert('Error updating labels');
+          alert('Error updating labels: '+error.error.error);
       }
     );
         

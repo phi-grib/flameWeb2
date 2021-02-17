@@ -41,7 +41,7 @@
         
         <div class="form-group col-md-4">
         <label for="bio_type_inp">new type</label>
-        <input type="text" pattern=".{3,15}" required title="3 to 15 chars" class="form-control" id="bio_type_inp" 
+        <input type="text" pattern=".{2,15}" required title="2 to 15 chars" class="form-control" id="bio_type_inp" 
             [(ngModel)]="this.model.listModels[model.name+'-'+model.version].bio_type"
             (ngModelChange)="labelChange()"> 
         </div>
@@ -66,7 +66,7 @@
         
         <div class="form-group col-md-4">
         <label for="bio_subtype_inp">new subtype</label>
-        <input type="text" pattern=".{3,15}" required title="3 to 15 chars" class="form-control" id="bio_subtype_inp" 
+        <input type="text" pattern=".{2,15}" required title="2 to 15 chars" class="form-control" id="bio_subtype_inp" 
             [(ngModel)]="this.model.listModels[model.name+'-'+model.version].bio_subtype"
             (ngModelChange)="labelChange()">
         </div>
@@ -91,7 +91,7 @@
         
         <div class="form-group col-md-4">
         <label for="bio_endpoint_inp">new endpoint</label>
-        <input type="text" pattern=".{3,15}" required title="3 to 15 chars" class="form-control" id="bio_endpoint" 
+        <input type="text" pattern=".{2,15}" required title="2 to 15 chars" class="form-control" id="bio_endpoint" 
             [(ngModel)]="this.model.listModels[model.name+'-'+model.version].bio_endpoint"
             (ngModelChange)="labelChange()">
         </div>
@@ -116,7 +116,7 @@
         
         <div class="form-group col-md-4">
         <label for="bio_species_inp">new species</label>
-        <input type="text" pattern=".{3,15}" required title="3 to 15 chars" class="form-control" id="bio_species" 
+        <input type="text" pattern=".{2,15}" required title="2 to 15 chars" class="form-control" id="bio_species" 
             [(ngModel)]="this.model.listModels[model.name+'-'+model.version].bio_species"
             (ngModelChange)="labelChange()">
         </div>
