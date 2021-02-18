@@ -146,4 +146,10 @@ ul li.nav-item a.active{
   cursor: pointer;
 }
 
+.page-link:focus {
+  box-shadow: none !important;
+}
+
+
+
 /*END LOADING*/

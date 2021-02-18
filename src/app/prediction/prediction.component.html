@@ -177,14 +177,16 @@
                   <nav aria-label="Page navigation example">
                     <ul class="pagination">
                       <li class="page-item" [ngClass]="{'disabled': this.noPreviousMol}">
-                        <a class="page-link" href="javascript:void(0)" aria-label="Previous" (click) = "PreviousMol()">
-                          <span aria-hidden="true">&laquo;</span>
+                        <a class="page-link" title="Previous molecule" href="javascript:void(0)" aria-label="Previous" (click) = "PreviousMol()">
+                          <!-- <span aria-hidden="true">&laquo;</span> -->
+                          <span aria-hidden="true" >&#5130;</span>
                           <span class="sr-only">Previous</span>
                         </a>
                       </li>
                       <li class="page-item" [ngClass]="{'disabled': this.noNextMol}">
-                        <a class="page-link" href="javascript:void(0)" aria-label="Next" (click) = "NextMol()">
-                          <span aria-hidden="true">&raquo;</span>
+                        <a class="page-link" title="Next molecule" href="javascript:void(0)" aria-label="Next" (click) = "NextMol()">
+                          <!-- <span aria-hidden="true">&raquo;</span> -->
+                          <span aria-hidden="true" >&#5125;</span>
                           <span class="sr-only">Next</span>
                         </a>
                       </li>
