@@ -249,5 +249,8 @@
       }
     }
   },
-  "defaultProject": "flameweb"
+  "defaultProject": "flameweb",
+  "cli": {
+    "analytics": false
+  }
 }

@@ -8,7 +8,44 @@
     <div class="modal-body">
         <div class="card">
             <div class="row">
-
+                <div class="col-4">
+                    <label for="separatorInput">Separator:  </label>
+                    <select name="separator" [(ngModel)]="ObjCuratedList.separator" id="separatorInput" (ngModelChange)="onChangeSeparator($event)">
+                        <option [value]="item.value" *ngFor="let item of SeparatorChoices| keyvalue"> {{item.key}} </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4" role="group" aria-label="group2">
+                    <label class="btn btn-ets-up mb-0" for="preloadFile">
+                           <input id="preloadFile" type="file" style="display:none;" (change)="preloadFileFunction($event)" >Upload
+                    </label>
+                </div>
+                <div *ngIf="this.model.file_info!==undefined" class="col-4 card p-0 mb-0 mr-4">
+                    <div class="card-header p-2">
+                      <h5>Input file info</h5>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
+                            <strong>File name </strong> 
+                            {{this.model.file_info['name']}}
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
+                            <strong>Type file </strong> 
+                            {{this.model.file_info['type_file']}}
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
+                            <strong>Size </strong> 
+                            {{this.model.file_info['size_M']}} MB
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
+                            <strong>Number of molecules </strong> 
+                            <span class="badge badge-primary badge-pill">{{this.model.file_info['num_mols']}}</span>
+                        </li>
+                    </ul>
+                  </div>
+            </div>
+            <div class="row">
                 <div class="col-sm">
                     <label for="listName">Name: </label>
                 </div>
@@ -19,69 +56,9 @@
             </div>
             <br>
             <div class="row">
-                <div class="col-sm">
-                    <label for="smilesCol">SMILES column name: </label>
-                </div>
-                <div class="col-4">
-                    <input type="text" name="smilesCol" [(ngModel)]="ObjCuratedList.smilesCol" id="smilesColInput" #smilesCol="ngModel">
-                </div>
                 <div class="voidDiv"></div>
             </div>
             <br>
-            <div class="row">
-                <div class="col-sm">
-                    <label for="separator">Separator: </label>
-                </div>
-                <div class="col-4">
-                    <select name="separator" [(ngModel)]="ObjCuratedList.separator" id="separatorInput" (ngModelChange)="onChangeSeparator($event)">
-                        <option value="SeparatorChoices[0]"> , </option>
-                        <option value="SeparatorChoices[1]"> Space bar</option>
-                        <option value="SeparatorChoices[2]"> ; </option>
-                        <option value="SeparatorChoices[3]"> Tab </option>
-                        <option value="SeparatorChoices[4]"> / </option>
-                        <option value="SeparatorChoices[5]"> . </option>
-                        <option value="SeparatorChoices[6]"> : </option>
-                    </select>
-                </div>
-                <div class="voidDiv"></div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-sm">
-                    <label for="casCol">CAS columns name: </label>
-                </div>
-                <div class="col-4">
-                    <input type="text" name="casCol" [(ngModel)]="ObjCuratedList.casCol" id="casColInput" #casCol="ngModel">
-                </div>
-                <div class="voidDiv"></div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-sm">
-                    <label for="substanceName">Substance column name: </label>
-                </div>
-                <div class="col-4">
-                    <input type="text" name="substanceName" [(ngModel)]="ObjCuratedList.substanceName" id="substanceNameInput" #substanceName="ngModel">
-                </div>
-                <div class="voidDiv"></div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-sm">
-                    <label for="fileList">Input file: </label>
-                </div>
-                <div class="col-4">
-                    <input type="file" name="fileList" [(ngModel)]="ObjCuratedList.fileList" id="fileListInput" #fileList="ngModel">
-                </div>
-                <div class="voidDiv"></div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-sm">
-                    <button class="btn btn-link pt-0 pb-0 float-right" type="button" (click)="createObjCuratedList()">Submit</button>
-                </div>
-            </div>
-
         </div>
     </div>
 </form>
