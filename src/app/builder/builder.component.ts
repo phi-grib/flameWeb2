@@ -99,7 +99,7 @@ export class BuilderComponent implements OnInit {
       result => {
         let iter = 0;
         const intervalId = setInterval(() => {
-          if (iter < 50) {
+          if (iter < 500) {
             this.checkModel(name, version, inserted, intervalId);
           } else {
             clearInterval(intervalId);
@@ -114,7 +114,7 @@ export class BuilderComponent implements OnInit {
             });
           }
           iter += 1;
-        }, 10000);
+        }, 1000);
       },
       error => {
         $('#dataTableModels').DataTable().destroy();

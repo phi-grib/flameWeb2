@@ -105,6 +105,10 @@ ul li.nav-item a.active{
   color:#22577A;
 }
 
+.arrow_disabled {
+  color: lightgrey;
+}
+
 .TP {
   background-color: rgba(0,255,0,0.3);
 }

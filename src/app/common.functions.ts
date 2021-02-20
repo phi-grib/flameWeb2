@@ -194,7 +194,6 @@ export class CommonFunctions {
 
                 this.model.listLabels = labelCollection;
 
-
                 let currentPage = 0;
                 // console.log ('rendering: ', this.model.name, this.model.version);
                 

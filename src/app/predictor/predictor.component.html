@@ -8,62 +8,111 @@
 </div>
 <div class="modal-body">
 
-  <div class="container mt-1">
-    
-    
-    <div class="row">
-      <div class="col-10">
-        <label for="inputGroupFile01">Input file</label>
-        <div class="form-group">
-          <div class="custom-file">
-            <input type="file" class="custom-file-input" id="inputGroupFile01"
-            aria-describedby="inputGroupFileAddon01" onchange="this.nextElementSibling.innerText = this.files[0].name" 
-            (change)="change($event.target.files)">
-            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-            <small class="text-muted">Enter a SDFile format input file.</small>
+  <div class="accordion mt-3" id="buildingAccordion">
+        <!--START INPUT FILE-->
+        <div class="card">
+          <div class="card-header" id="headingZero" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+              <h5 class="mb-0">
+                  Input file
+                  <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+              </h5>
+          </div>
+          <div #trainigseries id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#buildingAccordion">
+              <div class="card-body p-2 pl-5 pr-5">
+
+                <div class="row">
+                  <div class="col-10">
+                    <!-- <label for="inputGroupFile01">Input file</label> -->
+                    <div class="form-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01"
+                        aria-describedby="inputGroupFileAddon01" onchange="this.nextElementSibling.innerText = this.files[0].name" 
+                        (change)="change($event.target.files)">
+                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                        <small class="text-muted">Enter a SDFile format input file.</small>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-2 align-self-end">
+                    <button type="button" class="btn btn-primary float-right" (click)="predict()" [disabled]="(this.modelName==''|| this.file==undefined )">Predict</button>
+                  </div>
+
+                </div>
+              </div>
+
           </div>
         </div>
-      </div>
-      <div class="col-2">
-        <button type="button" class="btn btn-primary" (click)="predict()" [disabled]="(this.modelName==''|| this.file==undefined )">Predict</button>
-      </div>
-    </div>
-    
-    <div class="row">
-      <div class="col-10">
-        <label for="inputGroupFile01">Draw input structure</label>
-        <div class="form-group">
-           <div id="jsme_container"></div>
-           <small class="text-muted">Enter a molecular structure (one molecule max.).</small>
-        </div>
-      </div>
+        <!-- END INPUT FILE-->
 
-      <div class="col-2">
-        <!-- <button type="button" class="btn btn-primary" onclick="alert(jsmeApplet.molFile())" >Predict</button> -->
-        <button type="button" class="btn btn-primary" onclick="clipmol(jsmeApplet.smiles())" (click)="predict_structure()" >Predict</button>
-      </div>
-    </div>
+        <!--START CARD SKETCH-->
+        <div class="card">
+            <div class="card-header collapsed" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <h5 class="mb-0">
+                    Sketch structure
+                    <button class="btn btn-link pt-0 pb-0 float-right" type="button"> </button>
+                </h5>
+            </div>
+            <div #trainigseries id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#buildingAccordion">
+                <div class="card-body p-2 pl-5 pr-5">
 
-    <div class="row">
-      <div class="col-10">
-        <label for="predictionName">Prediction name</label>
-        <input type="text" class="form-control is-invalid" [class.is-valid]="isvalid"  [class.is-invalid]="!isvalid"
-         id="predictionName" [(ngModel)]="predictName"  (ngModelChange)="predictNameChange()" required>
-        <div class="valid-feedback">
-          Valid Name!
+                  <div class="row">
+                    <div class="col-10">
+                      <!-- <label for="inputGroupFile01">Sketch structure</label> -->
+                      <div class="form-group">
+                         <div id="jsme_container"></div>
+                         <small class="text-muted">Sketch a molecular structure (one molecule max.).</small>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-10">
+                      <label for="sketchName">Structure name</label>
+                      <input type="text" class="form-control is-valid" [class.is-valid]="isvalidSketch" [class.is-invalid]="!isvalidSketch" 
+                       id="sketchName" [(ngModel)]="sketchName" (ngModelChange)="sketchNameChange()"  required>
+                      <div class="valid-feedback">
+                        Valid Name!
+                      </div>
+                      <div class="invalid-feedback">
+                        The structure name entered is not valid
+                      </div>
+                    </div>
+
+                    <div class="col-2 align-self-end">
+                      <button type="button" class="btn btn-primary float-right" onclick="clipmol(jsmeApplet.smiles())" (click)="predict_structure()" >Predict</button>
+                    </div>
+
+                  </div>
+
+                </div>
+            </div>
         </div>
-        <div class="invalid-feedback">
-          The name of the prediction is invalid or already exist!
-        </div>
-      </div>
-    </div>
-    <span [hidden]=true id="molclipboard">XXX</span>
-    
+        <!-- END CARD SKETCH-->
+
   </div>
+
+
+  <div class="row">
+    <div class="col-10">
+      <label for="predictionName">Prediction name</label>
+      <input type="text" class="form-control is-invalid" [class.is-valid]="isvalid"  [class.is-invalid]="!isvalid"
+       id="predictionName" [(ngModel)]="predictName"  (ngModelChange)="predictNameChange()" required>
+      <div class="valid-feedback">
+        Valid Name!
+      </div>
+      <div class="invalid-feedback">
+        The name of the prediction is invalid or already exist!
+      </div>
+    </div>
+  </div>
+
+  <span [hidden]=true id="molclipboard">XXX</span>
+    
 </div>
+
 <div class="modal-footer">
 <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Cancel</button>
-<!-- <button type="button" class="btn btn-primary" (click)="predict()" [disabled]="(this.modelName==''|| this.file==undefined )">Predict</button> -->
 </div>
 
 

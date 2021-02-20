@@ -92,7 +92,7 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
       result => { let iter = 0;
         console.log(result);
         const intervalId = setInterval(() => {
-          if (iter < 100) {  // long timeout to support queries in long databases
+          if (iter < 500) {  // long timeout to support queries in long databases
             this.checkSearch(result, intervalId);
           } else {
             this.predicting = false;
@@ -101,7 +101,7 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
             clearInterval(intervalId);
           }
           iter += 1;
-        }, 4000);
+        }, 500);
         // this.result = result.search_results;
         // this.nameSrc = result.obj_nam;
         // this.smileSrc = result.SMILES;

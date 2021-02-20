@@ -19,10 +19,11 @@ export class PredictorService {
 
   }
 
-  predict_smiles(modelName: string, version: string, smiles: string, predictionName: string): Observable<any> {
+  predict_smiles(modelName: string, version: string, smiles: string, predictionName: string, sketchName: string): Observable<any> {
     
     const formData = new FormData();
     formData.append('SMILES', smiles);
+    formData.append('name', sketchName);
     const url: string = environment.baseUrl_predict + 'model/' + modelName + '/version/' + version + '/predictionName/' + predictionName + '/smiles';
     return this.http.put(url, formData);
 

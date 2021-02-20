@@ -22,8 +22,10 @@ export class PredictorComponent implements OnInit {
   modelName = '';
   version = '0';
   predictName = '';
+  sketchName = 'sketched_mol';
   file = undefined;
   isvalid = false;
+  isvalidSketch = true;
   predictionsNames = {};
   constructor(public service: PredictorService,
               private commonService: CommonService,
@@ -79,6 +81,15 @@ export class PredictorComponent implements OnInit {
     }
   }
 
+  sketchNameChange() {
+    this.isvalidSketch = true;
+    const letters = /^[A-Za-z0-9_]+$/;
+    if (!(this.predictName.match(letters)) || this.sketchName=='') {
+      this.isvalidSketch = false;
+    }
+  }
+
+
   predict_structure () {
     var span = document.getElementById("molclipboard");
     var smiles = span.innerText;
@@ -95,13 +106,13 @@ export class PredictorComponent implements OnInit {
       const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictName , {
         disableTimeOut: true, positionClass: 'toast-top-right'});
       
-      this.prediction.predicting[this.predictName] = [this.modelName, this.version, 'edited mol'];
+      this.prediction.predicting[this.predictName] = [this.modelName, this.version, this.sketchName];
 
-      this.service.predict_smiles(this.modelName, this.version, smiles, this.predictName).subscribe(
+      this.service.predict_smiles(this.modelName, this.version, smiles, this.predictName, this.sketchName).subscribe(
         result => {
           let iter = 0;
           const intervalId = setInterval(() => {
-            if (iter < 30) {
+            if (iter < 500) {
               this.checkPrediction(this.predictName, inserted, intervalId);
             } else {
               clearInterval(intervalId);
@@ -113,7 +124,7 @@ export class PredictorComponent implements OnInit {
               this.func.getPredictionList();
             }
             iter += 1;
-          }, 2500);
+          }, 500);
         },
         error => {
           this.toastr.clear(inserted.toastId);
@@ -141,7 +152,7 @@ export class PredictorComponent implements OnInit {
         result => {
           let iter = 0;
           const intervalId = setInterval(() => {
-            if (iter < 30) {
+            if (iter < 500) {
               this.checkPrediction(this.predictName, inserted, intervalId);
             } else {
               clearInterval(intervalId);
@@ -153,7 +164,7 @@ export class PredictorComponent implements OnInit {
               this.func.getPredictionList();
             }
             iter += 1;
-          }, 2500);
+          }, 500);
         },
         error => {
           this.toastr.clear(inserted.toastId);
