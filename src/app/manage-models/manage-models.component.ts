@@ -111,7 +111,7 @@ export class ManageModelsComponent {
         this.func.getModelList();
       },
       error => {
-        console.log(error);
+        // console.log(error);
         this.toastr.error( 'Model ' + this.model.name + '.v' + this.model.version + ' NOT deleted', 'ERROR', {
           timeOut: 4000, positionClass: 'toast-top-right'
         });
@@ -148,7 +148,7 @@ export class ManageModelsComponent {
     this.manage.file = file;
     this.service.importModel().subscribe(
       result => {
-        console.log(result);
+        // console.log(result);
         if (result.error) {
           this.toastr.warning(result.error + '\' ' , 'IMPORT ERRORS', {
             timeOut: 15000, positionClass: 'toast-top-right'});
