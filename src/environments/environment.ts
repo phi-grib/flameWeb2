@@ -11,3 +11,4 @@ export const environment = {
   baseUrl_search: 'http://localhost:8000/api/v1/search/'
 
 };
+
