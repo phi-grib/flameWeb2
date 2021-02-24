@@ -15,10 +15,10 @@ export class EditCuratedListComponent implements OnInit {
   ObjCuratedList: EditCuratedListComponent;
   ObjActiveModal: NgbActiveModal;
   fileContent: any;
-  spaceBar = "\t";
+  spaceBar = " ";
   tab = "\t";
   SeparatorChoices = { ",": ",", "Espace bar": this.spaceBar , "Tab": this.tab, "/": "/", ".": ".", ":": ":", ";": ";" };
-
+  file: File;
 
   //attributes: 
   public listName: string;
@@ -84,6 +84,8 @@ export class EditCuratedListComponent implements OnInit {
 
   csvJSON(event) {
     const file = event.target.files[0];
+    this.eventFile = file;
+    this.file = file;
     this.model.file = file;
     this.model.file_info = {};
     this.model.file_info['name'] = file.name;
@@ -96,30 +98,41 @@ export class EditCuratedListComponent implements OnInit {
            self.fileContent = fileReader.result;
            self.model.file_info['num_mols'] =self.fileContent.split('\n').length;
            self.model.file_info['rows'] = self.fileContent.split('\n');
-           self.model.file_info['columns'] = self.model.file_info['rows'][0].split(self.ObjCuratedList.separator);
-           console.log(self.model.file_info['columns']);
-
+           var reCol = new RegExp('.*$', 'm');
+           self.model.file_info['columns'] = self.fileContent.match(reCol);
+           self.model.file_info['columns'] = self.model.file_info['columns'][0].split(self.ObjCuratedList.separator);
+           var colNames = self.model.file_info['columns'].filter(item => item);
+           self.ObjCuratedList.columns = colNames;
     };
            fileReader.readAsText(file);
-
-    // var result = [];
-   
-    // for (var i = 1; i < this.model.file_info['num_mols'].length; i++) {
-
-    //   var obj = {};
-    //   var currentline = lines[i].split(this.ObjCuratedList.separator);
-
-    //   for (var j = 0; j < this.ObjCuratedList.selectedColumns.length; j++) {
-    //     obj[this.ObjCuratedList.selectedColumns[j]] = currentline[j];
-    //   }
-
-    //   result.push(obj);
-
-    // }
-    // console.log(this.ObjCuratedList.selectedColumns);
-    // console.log(JSON.stringify(result));
-    // return result;
   }
+
+  createJSONstring(){
+    var lines = this.fileContent.split('\n');
+
+    var result = [];
+
+  // NOTE: If your columns contain commas in their values, you'll need
+  // to deal with those before doing the next step 
+  // (you might convert them to &&& or something, then covert them back later)
+  // jsfiddle showing the issue https://jsfiddle.net/
+    var headers=lines[0].split(",");
+
+    for(var i=1;i<lines.length;i++){
+
+        var obj = {};
+        var currentline=lines[i].split(",");
+
+        for(var j=0;j<headers.length;j++){
+            obj[headers[j]] = currentline[j];
+        }
+        console.log(obj);
+        result.push(obj);
+
+  }
+  console.log(JSON.stringify(result));
+  return JSON.stringify(result); //JSON
+}
 
 
 }

@@ -46,12 +46,12 @@
                 <br>
                 <div id="multicolumns" class="col-4 card p-0 mb-0 mr4" *ngIf="this.ObjCuratedList.columns">
                     <label id="multimodels" class="bmd-label-static mb-1 p-0">Select the columns to proceed</label>
-                    <ng-multiselect-dropdown [placeholder]="'select models'" [data]="this.model.file_content['columns']" [(ngModel)]="this.ObjCuratedList.selectedColumns" [settings]="dropdownSettings" (onSelect)="onchangeSelected($event)" (onSelectAll)="onchangeSelectedAll($event)"
+                    <ng-multiselect-dropdown [placeholder]="'select models'" [data]="this.ObjCuratedList.columns" [(ngModel)]="this.ObjCuratedList.selectedColumns" [settings]="dropdownSettings" (onSelect)="onchangeSelected($event)" (onSelectAll)="onchangeSelectedAll($event)"
                         name="selectedColumns">
                     </ng-multiselect-dropdown>
                 </div>
                 <div class="col-sm">
-                    <button type="submit" (click)="csvJSON()" class="btn btn-ets-down mb-0">Process file</button>
+                    <button type="submit" (click)="createJSONstring()" class="btn btn-ets-down mb-0">Process file</button>
                 </div>
                 <div class="row"></div>
             </div>
