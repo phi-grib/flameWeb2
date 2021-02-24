@@ -1,0 +1,17 @@
+.voidDiv {
+    width: 55%;
+}
+
+.btn-ets-up {
+    background: #0076a3;
+    color: #ffffff;
+}
+
+.btn-ets-down {
+    background: #e9a933;
+    color: #ffffff;
+    border-width: 0;
+    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+    letter-spacing: 0.05em;
+    border-radius: 0;
+}

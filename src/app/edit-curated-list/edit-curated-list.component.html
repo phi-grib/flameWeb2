@@ -1,0 +1,73 @@
+<div class="modal-header">
+    <h5 class="modal-title">Create list <span class="model_name"></span></h5>
+    <button type="button" class="close" aria-label="Cancel" (click)="activeModal.dismiss('Cross click')"><span aria-hidden="false">&times;</span></button>
+
+
+</div>
+<form #curatedListFrom="ngForm">
+    <div class="modal-body">
+        <div class="card">
+            <div class="row">
+                <div class="col-4">
+                    <label for="separatorInput">Separator:  </label>
+                    <select name="separator" [(ngModel)]="ObjCuratedList.separator" id="separatorInput" (ngModelChange)="onChangeSeparator($event)">
+                        <option [value]="item.value" *ngFor="let item of SeparatorChoices| keyvalue"> {{item.key}} </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4" role="group" aria-label="group2">
+                    <label class="btn btn-ets-up mb-0" for="preloadFile">
+                           <input id="preloadFile" type="file" style="display:none;" (change)=" csvJSON($event)" >Upload
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div *ngIf="this.model.file_info!==undefined" class="col-4 card p-0 mb-0 ml-3">
+                    <div class="card-header p-2">
+                        <h5>Input file info</h5>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-left p-1">
+                            <strong>File name </strong> {{this.model.file_info['name']}}
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-left p-1">
+                            <strong>Type file </strong> {{this.model.file_info['type_file']}}
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-left p-1">
+                            <strong>Size </strong> {{this.model.file_info['size_M']}} MB
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-left p-1">
+                            <strong>Number of molecules </strong>
+                            <span class="badge badge-primary badge-pill">{{this.model.file_info['num_mols']}}</span>
+                        </li>
+                    </ul>
+                </div>
+                <br>
+                <div id="multicolumns" class="col-4 card p-0 mb-0 mr4" *ngIf="this.ObjCuratedList.columns">
+                    <label id="multimodels" class="bmd-label-static mb-1 p-0">Select the columns to proceed</label>
+                    <ng-multiselect-dropdown [placeholder]="'select models'" [data]="this.model.file_content['columns']" [(ngModel)]="this.ObjCuratedList.selectedColumns" [settings]="dropdownSettings" (onSelect)="onchangeSelected($event)" (onSelectAll)="onchangeSelectedAll($event)"
+                        name="selectedColumns">
+                    </ng-multiselect-dropdown>
+                </div>
+                <div class="col-sm">
+                    <button type="submit" (click)="csvJSON()" class="btn btn-ets-down mb-0">Process file</button>
+                </div>
+                <div class="row"></div>
+            </div>
+            <div class="form-row">
+                <div class="col-sm">
+                    <label for="listName">List name: </label>
+                </div>
+                <div class="col-4">
+                    <input type="text" name="listName" [(ngModel)]="ObjCuratedList.listName" id="listNameInput" #listName="ngModel">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-sm">
+                    <button type="submit" (click)="seeObj()" class="btn btn-ets-down mb-0">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
