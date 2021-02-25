@@ -46,8 +46,7 @@
                 <br>
                 <div id="multicolumns" class="col-4 card p-0 mb-0 mr4" *ngIf="this.ObjCuratedList.columns">
                     <label id="multimodels" class="bmd-label-static mb-1 p-0">Select the columns to proceed</label>
-                    <ng-multiselect-dropdown [placeholder]="'select models'" [data]="this.ObjCuratedList.columns" [(ngModel)]="this.ObjCuratedList.selectedColumns" [settings]="dropdownSettings" (onSelect)="onchangeSelected($event)" (onSelectAll)="onchangeSelectedAll($event)"
-                        name="selectedColumns">
+                    <ng-multiselect-dropdown [placeholder]="'select models'" [data]="this.ObjCuratedList.columns" [(ngModel)]="this.ObjCuratedList.selectedColumns" [settings]="dropdownSettings" name="selectedColumns">
                     </ng-multiselect-dropdown>
                 </div>
                 <div class="col-sm">
@@ -56,12 +55,21 @@
                 <div class="row"></div>
             </div>
             <div class="form-row">
-                <div class="col-sm">
-                    <label for="listName">List name: </label>
+                <div class="table">
+                    <table class="table compact dataTable">
+                        <thead>
+                            <tr>
+                                <td *ngFor="let head of this.ObjCuratedList.selectedColumns">{{head}}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of this.objJSON">
+                                <td *ngFor="let list of item | keys">{{list.value}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-4">
-                    <input type="text" name="listName" [(ngModel)]="ObjCuratedList.listName" id="listNameInput" #listName="ngModel">
-                </div>
+
             </div>
             <div class="form-row">
                 <div class="col-sm">

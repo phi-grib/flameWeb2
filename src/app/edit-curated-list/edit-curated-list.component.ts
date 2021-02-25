@@ -19,6 +19,7 @@ export class EditCuratedListComponent implements OnInit {
   tab = "\t";
   SeparatorChoices = { ",": ",", "Espace bar": this.spaceBar , "Tab": this.tab, "/": "/", ".": ".", ":": ":", ";": ";" };
   file: File;
+  objJSON: any;
 
   //attributes: 
   public listName: string;
@@ -105,33 +106,44 @@ export class EditCuratedListComponent implements OnInit {
            self.ObjCuratedList.columns = colNames;
     };
            fileReader.readAsText(file);
+
   }
 
   createJSONstring(){
     var lines = this.fileContent.split('\n');
-
+    let sortedLines=[];
+    let filtered= [];
+    let temp=[];
+    for(let k=1; k<=lines.length-1;k++){
+      temp = lines[k].split(this.ObjCuratedList.separator);
+      filtered = temp.filter(item=>item);
+      console.log(filtered);
+      sortedLines.push(filtered);
+    }
+    console.log(sortedLines);
     var result = [];
 
-  // NOTE: If your columns contain commas in their values, you'll need
-  // to deal with those before doing the next step 
-  // (you might convert them to &&& or something, then covert them back later)
-  // jsfiddle showing the issue https://jsfiddle.net/
-    var headers=lines[0].split(",");
 
-    for(var i=1;i<lines.length;i++){
+    for(var i=1;i<5;i++){
 
         var obj = {};
-        var currentline=lines[i].split(",");
+        var currentline=sortedLines[i];
 
-        for(var j=0;j<headers.length;j++){
-            obj[headers[j]] = currentline[j];
+        console.log(currentline);
+
+        for(var j=0;j<this.ObjCuratedList.selectedColumns.length;j++){
+
+           
+           obj[this.ObjCuratedList.selectedColumns[j]] = currentline[j];
+           console.log(obj[this.ObjCuratedList.selectedColumns[j]]);
         }
-        console.log(obj);
         result.push(obj);
-
+        console.log(obj);
   }
-  console.log(JSON.stringify(result));
-  return JSON.stringify(result); //JSON
+  console.log(typeof(obj));
+  this.objJSON = new Map(Object.entries({obj}));
+  console.log(this.objJSON);
+  return obj; //JSON
 }
 
 
