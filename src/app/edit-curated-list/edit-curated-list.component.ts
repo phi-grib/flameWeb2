@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Model } from '../Globals';
 
@@ -10,6 +9,7 @@ import { Model } from '../Globals';
   templateUrl: './edit-curated-list.component.html',
   styleUrls: ['./edit-curated-list.component.css']
 })
+
 export class EditCuratedListComponent implements OnInit {
 
   ObjCuratedList: EditCuratedListComponent;
@@ -17,9 +17,11 @@ export class EditCuratedListComponent implements OnInit {
   fileContent: any;
   spaceBar = " ";
   tab = "\t";
-  SeparatorChoices = { ",": ",", "Espace bar": this.spaceBar , "Tab": this.tab, "/": "/", ".": ".", ":": ":", ";": ";" };
+  SeparatorChoices = { ",": ",", "Space bar": this.spaceBar , "Tab": this.tab, "/": "/", ".": ".", ":": ":", ";": ";" };
   file: File;
   objJSON: any;
+  item: string[]=[];
+
 
   //attributes: 
   public listName: string;
@@ -138,12 +140,14 @@ export class EditCuratedListComponent implements OnInit {
            console.log(obj[this.ObjCuratedList.selectedColumns[j]]);
         }
         result.push(obj);
-        console.log(obj);
+        console.log(result);
   }
-  console.log(typeof(obj));
-  this.objJSON = new Map(Object.entries({obj}));
-  console.log(this.objJSON);
-  return obj; //JSON
+  this.objJSON = result;
+  for(let cosa of this.objJSON){
+    console.log(cosa);
+  }
+  JSON.stringify(this.item);
+  return result; 
 }
 
 
