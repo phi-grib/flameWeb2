@@ -28,6 +28,7 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
   spaces: {};
   space: string = undefined;
   molsXspace = {};
+  descriptors = {};
   version: string = undefined;
   predicting = false;
   result = [];
@@ -46,21 +47,47 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
     this.service.getSpaces().subscribe(
       result => {
         if (result[0]) {
+
+          // TODO: this assumes that all spaces have the same descriptors and number of mols
+          // this is wrong. Replace with a list with an item for space/version
           for (const space of result[1]) {
-            for (const version of space.versions) {
-              this.service.getInfo(space.spacename, version).subscribe(
-                result2 => {
-                  if (!(space.spacename in  this.spaces)) {
-                    this.spaces[space.spacename] = [];
-                  }
-                  this.spaces[space.spacename].push(version);
-                  this.molsXspace[space.spacename] = result2[0][2];
-                },
-                error => {
-                  this.molsXspace[space.spacename] = 0;
-                });
-            }
+
+             // create a list with the versions for this space
+             if (!(space.spacename in this.spaces) ) {
+               this.spaces[space.spacename] = [];
+             }
+             this.spaces[space.spacename].push(space.version);
+
+             // we asume that all versions have the same number of compounds
+             this.molsXspace[space.spacename] = space.info[0][2]; 
+
+             // old versions have only 3 items in space.info
+             if (space.info[3] == undefined){
+                this.descriptors[space.spacename] = 'unk';
+             }
+             else {
+                this.descriptors[space.spacename] = space.info[2][2];
+             }
           }
+
+          // this version sends separate requests for every model and version!
+
+          // for (const space of result[1]) {
+          //   for (const version of space.versions) {
+          //     this.service.getInfo(space.spacename, version).subscribe(
+          //       result2 => {
+          //         if (!(space.spacename in  this.spaces)) {
+          //           this.spaces[space.spacename] = [];
+          //         }
+          //         this.spaces[space.spacename].push(version);
+          //         this.molsXspace[space.spacename] = result2[0][2];
+          //       },
+          //       error => {
+          //         this.molsXspace[space.spacename] = 0;
+          //       });
+          //   }
+          // }
+
         }
         else {
           alert(result[1])

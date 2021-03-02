@@ -23,7 +23,7 @@
         <label for="space">Space</label>
           <select id="space" class="form-control" [(ngModel)]="this.space" name="space"> 
             <option *ngFor="let value of objectKeys(this.spaces)" [value]='value'>
-            {{value}} ({{this.molsXspace[value]}})
+            {{value}} ({{this.molsXspace[value]}}, {{this.descriptors[value]}})
             </option>
         </select>
          <small id="space" class="text-muted">
