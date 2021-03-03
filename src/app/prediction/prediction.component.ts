@@ -660,7 +660,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         this.modelMatch = (this.modelBuildInfo['modelID'] === this.prediction.modelID);
 
         this.isQuantitative = this.modelBuildInfo['quantitative'];
-        this.isMajority = this.modelBuildInfo['model'] == 'combination:majority voting';
+        this.isMajority = this.modelBuildInfo['model'] == 'combination:majority voting' || 
+                          this.modelBuildInfo['model'] == 'combination:logical OR' ;
 
         if (this.modelBuildInfo['ensemble']) {
 

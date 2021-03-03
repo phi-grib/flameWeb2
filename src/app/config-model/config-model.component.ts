@@ -34,9 +34,9 @@ export class ConfigModelComponent implements OnInit, AfterContentChecked {
   type_models = {
     data: ['RF',  'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
     molecule: ['RF',  'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
-    model_ensemble: ['RF', 'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM', 'mean', 'median', 'majority', 'matrix'],
-    combo_models: ['mean', 'median', 'majority', 'matrix'],
-    no_conformal: ['PLSDA', 'majority']
+    model_ensemble: ['RF', 'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM', 'mean', 'median', 'majority', 'logicalOR', 'matrix'],
+    combo_models: ['mean', 'median', 'majority', 'logicalOR', 'matrix'],
+    no_conformal: ['PLSDA', 'majority', 'logicalOR']
   };
 
   ngOnInit() {
@@ -67,6 +67,10 @@ export class ConfigModelComponent implements OnInit, AfterContentChecked {
       // this.model.parameters['conformal'].value = false;
     }
     if (this.model.parameters['model'].value === 'majority') {
+      this.model.parameters['quantitative'].value = false;
+      // this.model.parameters['conformal'].value = false;
+    }
+    if (this.model.parameters['model'].value === 'logicalOR') {
       this.model.parameters['quantitative'].value = false;
       // this.model.parameters['conformal'].value = false;
     }
