@@ -17,9 +17,7 @@
             </div>
             <div class="row">
                 <div class="col-4" role="group" aria-label="group2">
-                    <label class="btn btn-ets-up mb-0" for="preloadFile">
-                           <input id="preloadFile" type="file" style="display:none;" (change)=" csvJSON($event)" >Upload
-                    </label>
+                    <input id="preloadFile" type="file" (change)=" csvJSON($event)">
                 </div>
             </div>
             <div class="row">
@@ -55,21 +53,17 @@
                 <div class="row"></div>
             </div>
             <div class="form-row">
-                <div class="table">
-                    <table class="table compact dataTable">
-                        <thead>
-                            <tr>
-                                <th *ngFor="let head of this.ObjCuratedList.selectedColumns">{{head}}</th>
+                <table class="table dataTable">
+                    <div class="row">
+                        <div *ngFor="let column of this.ObjCuratedList.selectedColumns" class="col-mb-5">
+                            <th> {{column}} </th>
+                            <tr *ngFor="let element of this.finalDict">
+                                <td>{{element[column]}} </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let list of this.objJSON">
-                                <td *ngFor="let piece of list | keyvalue">{{piece.value}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                        </div>
+                    </div>
 
+                </table>
             </div>
             <div class="form-row">
                 <div class="col-sm">

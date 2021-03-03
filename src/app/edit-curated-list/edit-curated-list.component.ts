@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Model } from '../Globals';
-
+import { MatTableModule } from '@angular/material/table';
 
 
 @Component({
@@ -17,18 +17,17 @@ export class EditCuratedListComponent implements OnInit {
   fileContent: any;
   spaceBar = " ";
   tab = "\t";
-  SeparatorChoices = { ",": ",", "Space bar": this.spaceBar , "Tab": this.tab, "/": "/", ".": ".", ":": ":", ";": ";" };
+  SeparatorChoices = { ",": ",", "Space bar": this.spaceBar, "Tab": this.tab, "/": "/", ".": ".", ":": ":", ";": ";" };
   file: File;
-  objJSON: any;
-  item: string[]=[];
-
-
+  finalDict: any;
+  finalArray: string[] = [];
+  style: string = "mat-column-col";
   //attributes: 
   public listName: string;
   public separator: string;
   public columns: [];
-  public selectedColumns: string[]=[];
-  public eventFile:  { target: { files: any[]; }; };
+  public selectedColumns: string[] = [];
+  public eventFile: { target: { files: any[]; }; };
 
   constructor(public activeModal: NgbActiveModal, public model: Model) { }
 
@@ -98,60 +97,66 @@ export class EditCuratedListComponent implements OnInit {
     const fileReader: FileReader = new FileReader();
     const self = this;
     fileReader.onloadend = function (x) {
-           self.fileContent = fileReader.result;
-           self.model.file_info['num_mols'] =self.fileContent.split('\n').length;
-           self.model.file_info['rows'] = self.fileContent.split('\n');
-           var reCol = new RegExp('.*$', 'm');
-           self.model.file_info['columns'] = self.fileContent.match(reCol);
-           self.model.file_info['columns'] = self.model.file_info['columns'][0].split(self.ObjCuratedList.separator);
-           var colNames = self.model.file_info['columns'].filter(item => item);
-           self.ObjCuratedList.columns = colNames;
+      self.fileContent = fileReader.result;
+      self.model.file_info['num_mols'] = self.fileContent.split('\n').length;
+      self.model.file_info['rows'] = self.fileContent.split('\n');
+      var reCol = new RegExp('.*$', 'm');
+      self.model.file_info['columns'] = self.fileContent.match(reCol);
+      self.model.file_info['columns'] = self.model.file_info['columns'][0].split(self.ObjCuratedList.separator);
+      var colNames = self.model.file_info['columns'].filter(item => item);
+      self.ObjCuratedList.columns = colNames;
     };
-           fileReader.readAsText(file);
+    fileReader.readAsText(file);
 
   }
 
-  createJSONstring(){
+  createJSONstring() {
     var lines = this.fileContent.split('\n');
-    let sortedLines=[];
-    let filtered= [];
-    let temp=[];
-    for(let k=1; k<=lines.length-1;k++){
+    let sortedLines = [];
+    let filtered = [];
+    let temp = [];
+    for (let k = 1; k <= lines.length - 1; k++) {
       temp = lines[k].split(this.ObjCuratedList.separator);
-      filtered = temp.filter(item=>item);
-      console.log(filtered);
+      filtered = temp.filter(item => item);
       sortedLines.push(filtered);
     }
     console.log(sortedLines);
     var result = [];
 
 
-    for(var i=1;i<5;i++){
+    for (var i = 1; i < 5; i++) {
 
-        var obj = {};
-        var currentline=sortedLines[i];
+      var obj = {};
+      var currentline = sortedLines[i];
 
-        console.log(currentline);
+      for (var j = 0; j < this.ObjCuratedList.selectedColumns.length; j++) {
 
-        for(var j=0;j<this.ObjCuratedList.selectedColumns.length;j++){
 
-           
-           obj[this.ObjCuratedList.selectedColumns[j]] = currentline[j];
-           console.log(obj[this.ObjCuratedList.selectedColumns[j]]);
-        }
-        result.push(obj);
-        console.log(result);
+        obj[this.ObjCuratedList.selectedColumns[j]] = currentline[j];
+        console.log(obj[this.ObjCuratedList.selectedColumns[j]]);
+      }
+      result.push(obj);
+
+    }
+    this.finalDict = result;
+    console.log(this.finalDict);
+
+    console.log(this.finalArray);
+    return result;
   }
-  this.objJSON = result;
-  for(let cosa of this.objJSON){
-    console.log(cosa);
-  }
-  JSON.stringify(this.item);
-  return result; 
 }
 
 
-}
+
+
+
+
+
+
+
+
+
+
 
 
 
