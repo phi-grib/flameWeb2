@@ -154,6 +154,50 @@
   </div>
 </div>
 
+<!--CONFORMAL SETTINGS-->
+
+
+<fieldset class="border" *ngIf="this.isConformalPossible() && this.model.parameters['conformal'].value && this.model.parameters['conformal_settings'] is not null">  
+  <legend>Conformal settings</legend>
+    <div class="m-2 w-50" *ngFor="let key of objectKeys(this.model.parameters['conformal_settings'].value)" >
+      <div class="form-group" *ngIf="this.model.parameters['conformal_settings'].value[key].writable">
+        <label class="bmd-label-static">{{key}}</label>
+          <input class="form-control" [(ngModel)]="this.model.parameters['conformal_settings'].value[key].value" *ngIf="this.model.parameters['conformal_settings'].value[key].object_type==='string'" id="key" type='text' placeholder="{{key}}" >
+          <input class="form-control" [(ngModel)]="this.model.parameters['conformal_settings'].value[key].value" *ngIf="this.model.parameters['conformal_settings'].value[key].object_type==='int'" id="key" type='number'>
+          <input class="form-control" [(ngModel)]="this.model.parameters['conformal_settings'].value[key].value" *ngIf="this.model.parameters['conformal_settings'].value[key].object_type==='float'" id="key" type='number' step=0.01>
+          <small id="key" class="text-muted">
+            {{this.model.parameters['conformal_settings'].value[key].description}}
+          </small>
+      </div>
+      <div class="checkbox" *ngIf="!this.model.parameters['conformal_settings'].value[key].writable && this.model.parameters['conformal_settings'].value[key].object_type==='boolean'">
+        <label>
+          <input type="checkbox"  [(ngModel)]="this.model.parameters['conformal_settings'].value[key].value">
+          {{key}}
+        </label>
+        <small id="key" class="text-muted">
+        {{this.model.parameters['conformal_settings'].value[key].description}}
+        </small>
+      </div>
+      <div class="form-group" *ngIf="!this.model.parameters['conformal_settings'].value[key].writable && this.model.parameters['conformal_settings'].value[key].object_type!='list' && this.model.parameters['conformal_settings'].value[key].object_type!='boolean'">
+        <label for="key" class="bmd-label-static">{{key}}</label>
+        <select id="key" class="form-control" [(ngModel)]="this.model.parameters['conformal_settings'].value[key].value">
+          <option *ngFor="let value of this.model.parameters['conformal_settings'].value[key].options" [value]='value'>
+            <div *ngIf="value==null">
+              --none--
+            </div>
+            <div *ngIf="value!=null">
+              {{value}}
+            </div>
+          </option>
+        </select>
+        <small id="key" class="text-muted">
+        {{this.model.parameters['conformal_settings'].value[key].description}}
+        </small>
+      </div>
+    
+    </div>
+</fieldset>
+
 
 <!--MODEL PARAMETERS-->
 
@@ -194,6 +238,7 @@
           {{this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].description}}
           </small>
         </div>
+
         <!--CASE NO XGBOOST-->
         <div class="checkbox" *ngIf="!this.model.parameters['model'].value=='XGBOOST' && !this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='list' ">
           <label id="key" class="bmd-label-static mb-2 p-0">{{key}}</label>
@@ -225,6 +270,22 @@
           </div>
       </div>
 </fieldset>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- TUNE HARDCODED-->
 <br>
 <!-- <div class="checkbox" *ngIf="this.model.parameters['model'].value != 'mean' && this.model.parameters['model'].value != 'majority' 

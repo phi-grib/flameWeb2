@@ -18,6 +18,7 @@ declare var $: any;
   styleUrls: ['./prediction.component.css']/*,
   encapsulation: ViewEncapsulation.ShadowDom*/
 })
+
 export class PredictionComponent implements AfterViewInit, OnChanges {
 
   @Input() predictionName;
@@ -603,6 +604,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     
     this.drawReportHeader();
     this.drawSimilars();
+    this.updatePlotCombo();
 
   }
 
@@ -836,6 +838,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       }
 
       if (drawCI) {
+
         for (let i=0; i<this.predictionResult.var_nam.length; i++) {
           const varlist=String(this.predictionResult.var_nam[i]).split(':');
           this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
@@ -856,6 +859,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       }
       // non-conformal, just show final result (including uncertain)
       else {
+
         for (let i=0; i<this.predictionResult.var_nam.length; i++) {
           const varlist=String(this.predictionResult.var_nam[i]).split(':');
           this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
