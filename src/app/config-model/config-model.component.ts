@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, AfterContentChecked } from '@angular/core';
+import { Component, AfterContentChecked } from '@angular/core';
 import { Model} from '../Globals';
 
 @Component({
@@ -6,7 +6,7 @@ import { Model} from '../Globals';
   templateUrl: './config-model.component.html',
   styleUrls: ['./config-model.component.css']
 })
-export class ConfigModelComponent implements OnInit, AfterContentChecked {
+export class ConfigModelComponent implements AfterContentChecked {
 
   constructor(public model: Model) { }
 
@@ -22,6 +22,7 @@ export class ConfigModelComponent implements OnInit, AfterContentChecked {
     GNB: 'GNB_parameters',
     SVM: 'SVM_parameters'
   };
+
   optimizeModel = {
     RF: 'RF_optimize',
     XGBOOST: 'XGBOOST_optimize',
@@ -39,26 +40,39 @@ export class ConfigModelComponent implements OnInit, AfterContentChecked {
     no_conformal: ['PLSDA', 'majority', 'logicalOR']
   };
 
-  ngOnInit() {
-  }
-
+  conformal_settings = ['aggregated', 'normalizing_model', 'KNN_NN', 'conformal_predictors', 'ACP_sampler', 'aggregation_function'];
+  
   isComboModel () {
     if (this.type_models.combo_models.includes(this.model.parameters['model'].value)){
       return true;
     } 
     return false;
   }
-
+  
   isConformalPossible() {
     if (this.type_models.no_conformal.includes(this.model.parameters['model'].value)){
       return false;
     } 
     return true;
   }
+  
+  validConformalKey (key) {
+    // if (key=='aggregated') {
+    //   return true;
+    // }
+    if (!this.model.parameters['conformal_settings'].value['aggregated'].value && 
+         (key == 'conformal_predictors' || key == 'ACP_sampler' || key == 'aggregation_function')){
+      return false;
+    }
+    if (!this.model.parameters['quantitative'].value && (key=='normalizing_model' || key =='KNN_NN')){
+      return false
+    }
+    return true;
+  }
 
   ngAfterContentChecked() {
     // CHECK DELTA DEPENDENCIES
-    // NOWIS HARDCODED, BUT IT WILL BE AUTOMATED
+    // NOW IS HARDCODED, BUT IT WILL BE AUTOMATED
     if (this.model.parameters['model'].value === 'PLSDA') {
       this.model.parameters['conformal'].value = false;
     }
@@ -74,6 +88,7 @@ export class ConfigModelComponent implements OnInit, AfterContentChecked {
       this.model.parameters['quantitative'].value = false;
       // this.model.parameters['conformal'].value = false;
     }
+    console.log(this.model.parameters['conformal_settings'].value)
   }
 
 }
