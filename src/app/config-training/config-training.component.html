@@ -43,7 +43,7 @@
           <div *ngIf="value==null">
             --none--
           </div>
-          <div *ngIf="value!=null">
+          <div *ngIf="value!=null" >
             {{value}}
           </div>   
         </option>
@@ -51,7 +51,7 @@
     </div>
     <div class="checkbox mt-3" *ngIf="!this.model.parameters[key].writable && this.model.parameters[key].object_type==='list'">
       <label id="key" class="bmd-label-static mb-2 p-0">{{key.replace('_',' ')}}</label>
-      <label id="key" class="mr-2 mb-2 w-100" *ngFor="let value of this.model.parameters[key].options">
+      <label id="key" class="mr-2 mb-2 w-100" *ngFor="let value of this.filterSpaceFingerprints(this.model.parameters[key].options)">
         <input id="key" type="checkbox"
               [(checklist)]="this.model.parameters[key].value"
               [checklistValue]="value" />

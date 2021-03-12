@@ -49,6 +49,11 @@ export class ConfigTrainingComponent implements OnInit {
     }
   }
 
+  // in this dialogue we must avoid selecting substructureFP, which are used only for space building
+  filterSpaceFingerprints (list:Array<string>){
+     return list.filter(x => x != 'substructureFP');
+  }
+
   saveModelsSelected () {
 
     let info: Array<string>;
