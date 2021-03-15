@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CuratorService } from './curator.service';
+import { CommonService } from '../common.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditCuratedListComponent } from '../edit-curated-list/edit-curated-list.component';
+import { Curation, Globals } from '../Globals';
 
 @Component({
   selector: 'app-curator',
@@ -10,14 +11,21 @@ import { EditCuratedListComponent } from '../edit-curated-list/edit-curated-list
 })
 export class CuratorComponent implements OnInit {
 
-  constructor(private service: CuratorService,
+curations: any;
+  constructor(private commonService: CommonService,
     private modalCuratorService: NgbModal) { }
 
   ngOnInit(): void {
+    this.commonService.getCurations().subscribe(
+      result => {
+        this.curations = result;
+        console.log(this.curations);
+      });
+    
   }
 
   curationSettings() {
-    const modalRef = this.modalCuratorService.open(EditCuratedListComponent, { windowClass : 'modalClass'});
+    const modalRef = this.modalCuratorService.open(EditCuratedListComponent, { windowClass: 'modalClass' });
 
   }
 }

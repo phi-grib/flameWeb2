@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
-import { Model, Prediction, Globals } from './Globals';
+import { Model, Prediction, Globals, Curation } from './Globals';
 import { environment } from '../environments/environment';
+import { ConfigurationComponent } from './configuration/configuration.component';
+
 declare var $: any;
 
 @Injectable({
@@ -14,7 +16,9 @@ export class CommonFunctions {
     private commonService: CommonService,
     public model: Model,
     public globals: Globals,
-    public prediction: Prediction) { }
+    public prediction: Prediction,
+    public curation: Curation) { }
+
 
   objectKeys = Object.keys;
 
@@ -330,5 +334,57 @@ export class CommonFunctions {
     );
   }
 
+  getCurationsList(){
+    this.commonService.getCurations().subscribe(
+      result => {
+        if (result[0]) {
+          this.curation.curations = result[1];
+          this.globals.tableCurationVisible = false;
+          
+            setTimeout(() => {
+              const table = $('#dataTableCurations').DataTable({
+                /*Ordering by date */
+                // autoWidth: false,
+                deferRender: true,
+                ordering: true,
+                pageLength: 10,
+                columnDefs: [{ 'type': 'date-euro', 'targets': 4 }],
+                order: [[4, 'desc']],
+                destroy: true
+              });
+
+              if (this.curation.curations.length > 0) {
+                this.curation.name = $('#dataTablePredictions tbody tr:first td:first').text();
+                for (var i=0; i < this.curation.curations.length; i++ ) {
+                    const ipred = this.curation.curations[i];
+                    if (ipred[0] === this.prediction.name) {
+                      this.curation.modelName = ipred[1];
+                      this.curation.modelVersion = ipred[2];
+                      this.curation.date = ipred[3];
+                      this.curation.modelID = ipred[5];
+                      // console.log ('found: ', this.prediction)
+                    }
+                }
+                // this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
+                // this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
+                // this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
+              }
+              // $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
+              //   $('tr').removeClass('selected'); // removes all highlights from tr's
+              //   $(this).addClass('selected'); // adds the highlight to this row
+              // });
+
+              this.globals.tableCurationVisible = true;
+            }, 10);
+          } 
+          else {
+            alert(result[1]);
+          }
+        },
+        error => {
+          alert(error.message);
+        }
+    )
+  }
 
 }

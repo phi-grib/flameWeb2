@@ -60,6 +60,7 @@ export class Globals {
     tablePredictionVisible = false;
     mainTabActive: string = undefined;
     read_only = environment.read_only;
+    tableCurationVisible = false;
 }
 
 @Injectable()
@@ -83,4 +84,20 @@ export class CustomHTMLElement extends HTMLElement {
     }
     on(event_type, cb) {
     }
+}
+
+@Injectable()
+export class Curation {
+    name: string = undefined;   // Name of the model selected in the first step
+    modelName: string = undefined;
+    modelVersion: string = undefined;
+    modelParameters: any;
+    modelDocumentation: any = undefined;
+    curations = [];
+    curating = {};
+    conformal = false;
+    file: any = undefined;  // Name of file uploaded in the second step
+    result = undefined;
+    date = undefined;
+    modelID = undefined;
 }

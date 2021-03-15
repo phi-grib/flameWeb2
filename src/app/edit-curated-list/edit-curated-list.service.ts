@@ -8,12 +8,14 @@ import { environment } from '../../environments/environment';
 })
 export class EditCuratedListService {
 
+
   constructor(private http: HttpClient) { }
 
-  // sendFileToBeRead(FormData: string, , modelFormat: string) {
-  //   const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/oformat/' + modelFormat + '/documentation';
-  //   return this.http.get(url)
-  // }
+  postCurateList(listName: string){
+    const url: string= environment.baseUrl_curate+'curate/'+ listName;
 
+    console.log(listName);
+    return this.http.post(url, listName);
+  }
 
 }

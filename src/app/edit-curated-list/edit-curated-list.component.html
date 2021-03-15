@@ -9,15 +9,19 @@
         <div class="card">
             <div class="row">
                 <div class="col-4">
-                    <label for="separatorInput">Separator:  </label>
+                    <label for="listName">List name</label>
+                    <input type="text" name="listName" id="listName" [(ngModel)]="ObjCuratedList.listName">
+
+                    <label for="separatorInput">Delimiter:  </label>
                     <select name="separator" [(ngModel)]="ObjCuratedList.separator" id="separatorInput" (ngModelChange)="onChangeSeparator($event)">
                         <option [value]="item.value" *ngFor="let item of SeparatorChoices| keyvalue"> {{item.key}} </option>
                     </select>
                 </div>
             </div>
             <div class="row">
-                <div class="col-4" role="group" aria-label="group2">
-                    <input id="preloadFile" type="file" (change)=" csvJSON($event)">
+                <div class="col-4 ml-0">
+                    <input id="preloadFile" type="file" (change)=" csvJSON($event)" style="display: none;">
+                    <label class="custom-file-label" for="preloadFile" id="preloadFile-label">Choose file</label>
                 </div>
             </div>
             <div class="row">
@@ -47,10 +51,12 @@
                     <ng-multiselect-dropdown [placeholder]="'select metadata'" [data]="this.ObjCuratedList.columns" [(ngModel)]="this.ObjCuratedList.selectedColumns" [settings]="dropdownSettings" name="selectedColumns">
                     </ng-multiselect-dropdown>
                 </div>
-                <div class="col-sm">
-                    <button type="submit" (click)="createJSONstring()" class="btn btn-ets-down mb-0">Process file</button>
+
+                <div class="row">
+                    <div class="col-4">
+                        <button *ngIf="this.ObjCuratedList.columns" type="submit" (click)="createJSONstring()" class="btn btn-ets-down mb-0">Preview</button>
+                    </div>
                 </div>
-                <div class="row"></div>
             </div>
             <div class="form-row">
                 <table class="table dataTable">
@@ -67,7 +73,7 @@
             </div>
             <div class="form-row">
                 <div class="col-sm">
-                    <button type="submit" (click)="seeObj()" class="btn btn-ets-down mb-0">Submit</button>
+                    <button type="submit" (click)="submitList()" class="btn btn-ets-up mb">Submit</button>
                 </div>
             </div>
         </div>

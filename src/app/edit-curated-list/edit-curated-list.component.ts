@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Model } from '../Globals';
 import { MatTableModule } from '@angular/material/table';
+import { EditCuratedListService } from '../edit-curated-list/edit-curated-list.service';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class EditCuratedListComponent implements OnInit {
   finalDict: any;
   finalArray: string[] = [];
   style: string = "mat-column-col";
+  
   //attributes: 
   public listName: string;
   public separator: string;
@@ -29,10 +31,10 @@ export class EditCuratedListComponent implements OnInit {
   public selectedColumns: string[] = [];
   public eventFile: { target: { files: any[]; }; };
 
-  constructor(public activeModal: NgbActiveModal, public model: Model) { }
+  constructor(public editCuratedListService: EditCuratedListService, public activeModal: NgbActiveModal, public model: Model) { }
 
   ngOnInit(): void {
-    this.ObjCuratedList = new EditCuratedListComponent(this.ObjActiveModal, this.model);
+    this.ObjCuratedList = new EditCuratedListComponent(this.editCuratedListService,this.ObjActiveModal, this.model);
     console.log(this.spaceBar);
     console.log(this.tab);
   }
@@ -143,6 +145,12 @@ export class EditCuratedListComponent implements OnInit {
 
     console.log(this.finalArray);
     return result;
+  }
+
+  submitList(){
+    let curateListName = this.ObjCuratedList.listName;
+
+    this.editCuratedListService.postCurateList(curateListName)
   }
 }
 

@@ -5,6 +5,10 @@
 .btn-ets-up {
     background: #0076a3;
     color: #ffffff;
+    border-width: 0;
+    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+    letter-spacing: 0.05em;
+    border-radius: 0;
 }
 
 .btn-ets-down {
@@ -19,4 +23,9 @@
 .container {
     float: right;
     justify-content: space-between;
+}
+
+.custom-file-label {
+    box-sizing: border-box;
+    margin-left: 14px;
 }

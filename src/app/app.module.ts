@@ -10,7 +10,7 @@ import { TrainingSeriesComponent } from './training-series/training-series.compo
 // import { SidebarComponent } from './sidebar/sidebar.component';
 import { ValidationsComponent } from './validations/validations.component';
 import { ToastrModule } from 'ngx-toastr';
-import { Model, Prediction, Globals, Manager, Similarity } from './Globals';
+import { Model, Prediction, Globals, Manager, Similarity, Curation } from './Globals';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfigTrainingComponent } from './config-training/config-training.component';
 import { ConfigModelComponent } from './config-model/config-model.component';
@@ -88,7 +88,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     // PlotlyViaCDNModule,
     PlotlyModule
   ],
-  providers: [Model, Prediction, Globals, Manager, Similarity, 
+  providers: [Model, Prediction, Globals, Manager, Similarity, Curation, 
   {
     provide: APP_INITIALIZER,
     useFactory: initializer,

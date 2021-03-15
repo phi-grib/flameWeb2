@@ -8,6 +8,7 @@ export const environment = {
   baseUrl_predict: 'http://localhost:8000/api/v1/predict/',
   baseUrl_smanage: 'http://localhost:8000/api/v1/smanage/',
   baseUrl_sbuild: 'http://localhost:8000/api/v1/sbuild/',
-  baseUrl_search: 'http://localhost:8000/api/v1/search/'
+  baseUrl_search: 'http://localhost:8000/api/v1/search/', 
+  baseUrl_curate: 'http://localhost:8000/api/v1/curate/'
 
 };
