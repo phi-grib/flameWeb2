@@ -3,6 +3,8 @@ import { Model } from '../Globals';
 import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModelDocumentationService } from './model-documentation.service';
+import { environment } from '../../environments/environment';
+
 // import { MatIconModule } from '@angular/material/icon';
 // import * as FileSaver from 'file-saver';
 import {saveAs} from 'file-saver';
@@ -138,7 +140,7 @@ export class ModelDocumentationComponent implements OnChanges {
   }
 
   //calls exportToFile from model-documentation-service to trigger file download (file format modelName.yaml)
-  downloadFile(): void {
+  downloadFile() {
       this.service.exportToFile(this.modelName, this.modelVersion, 'YAML').subscribe (
           result => {
             let text : string = '';

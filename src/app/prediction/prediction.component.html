@@ -371,10 +371,25 @@
                 </div>
                 <div class="col-9 border" *ngIf="this.modelDocumentation != undefined">
                   <p *ngIf="this.modelDocumentation['Endpoint'].value != undefined">{{this.modelDocumentation['Endpoint'].value}}</p>
-                  <p *ngIf="this.objectKeys(this.modelDocumentation).includes('Interpretation') && this.modelDocumentation['Interpretation'].value != undefined"> <br>{{this.modelDocumentation?.Interpretation.value}}</p>
+                  <p *ngIf="this.objectKeys(this.modelDocumentation).includes('Interpretation') && this.modelDocumentation['Interpretation'].value != undefined">
+                     <br>{{this.modelDocumentation?.Interpretation.value}}</p>
                   <p *ngIf="this.modelDocumentation['Species'].value != undefined"> <br>{{this.modelDocumentation['Species'].value}}</p>
                 </div>
               </div>
+
+              <div class="row " *ngIf="this.modelMatch && this.modelPresent">
+                <div class="col-3 border">
+                  <strong>Model description</strong>
+                </div>
+                <div class="col-9 border" *ngIf="this.modelDocumentation === undefined">
+                  <span>No documentation</span>
+                </div>
+                <div class="col-9 border" *ngIf="this.modelDocumentation != undefined">
+                  <p *ngIf="this.objectKeys(this.modelDocumentation).includes('Model_description') && this.modelDocumentation['Model_description'].value != undefined">
+                     {{this.modelDocumentation?.Model_description.value}}</p>
+                </div>
+              </div>
+
               <div class="row " *ngIf="!this.modelBuildInfo['ensemble'] && this.modelMatch && this.modelPresent" >
                 <div class="col-3 border">
                   <strong >Model</strong>

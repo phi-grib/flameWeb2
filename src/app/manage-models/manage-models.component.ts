@@ -140,7 +140,12 @@ export class ManageModelsComponent {
 
   exportModel() {
     const url: string = environment.baseUrl_manage + 'model/' + this.model.name + '/export';
-    window.open(url);
+
+    var a = document.createElement("a");
+    a.href = url;
+    a.click();
+
+    // window.open(url);
   }
 
   importModel(fileList: FileList) {

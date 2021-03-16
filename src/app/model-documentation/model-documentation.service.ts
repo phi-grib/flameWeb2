@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-// import { Subject, Observable } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class ModelDocumentationService {
   constructor(private http: HttpClient) { }
 
   //updates documentation from YAML or JSON file (throught ManageDocumentation post method)
-  updateDocumentation(model: string, version: number, doc: string, modelFormat: string ) {
+  updateDocumentation(model: string, version: number, doc: string, modelFormat: string ): Observable<any> {
     const formData = new FormData();
     formData.append('documentation', doc);
     const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/oformat/' + modelFormat + '/documentation';
@@ -22,9 +22,10 @@ export class ModelDocumentationService {
   }
 
   //obtains a copy of the model documentation formated to export (usualy YAML)
-  exportToFile(modelName: string, modelVersion: string, modelFormat: string) {
+  exportToFile(modelName: string, modelVersion: string, modelFormat: string): Observable<any> {
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/oformat/' + modelFormat + '/documentation';
     return this.http.get(url)
   }
+
 
 }
