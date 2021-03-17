@@ -212,17 +212,24 @@
                 <div class="card-body pt-0 pb-0 pl-0 pr-0">
                     <div class="btn-toolbar mt-3 mb-3 ml-4" role="toolbar" aria-label="Toolbar import/export">
 
-                        Documentation actions:
+                        Documentation:
 
                         <div class="btn-group ml-2" role="group" aria-label="group1">
                             <button class="btn btn-ets-down ml-2" (click)="downloadFile()" [ngClass]="{'disabled': model.name === undefined}">Download</button>
                         </div>
 
-                        <div class="btn-group ml-2" role="group" aria-label="group2">
+                        <div class="btn-group ml-2 pr-5" role="group" aria-label="group2">
                             <label class="btn btn-ets-up mb-0" for="uploadButton">
                                    <input id="uploadButton" type="file" style="display:none;" (change)="uploadFile($event)" accept="text/yml, text/yaml">Upload
                             </label>
                         </div>
+
+                        Series:
+
+                        <div class="btn-group ml-2" role="group" aria-label="group3">
+                            <button class="btn btn-ets-down ml-2" (click)="downloadSeries()" [ngClass]="{'disabled': model.name === undefined}">Download</button>
+                        </div>
+
                     </div>
                 </div>
             </div>

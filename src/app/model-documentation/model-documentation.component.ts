@@ -183,6 +183,15 @@ export class ModelDocumentationComponent implements OnChanges {
     return dict_out;
   }
 
+  // download the training series of the currently selected model/version
+  downloadSeries () {
+    const url: string = environment.baseUrl_manage + 'model/' + this.model.name + '/version/' + this.modelVersion + '/series';
+
+    var a = document.createElement("a");
+    a.href = url;
+    a.click();
+  }
+
   // updates the documentation in the backend using the changes introduced in the GUI
   applyInput() {
     let delta = JSON.stringify(this.genDelta(this.modelDocumentation));
