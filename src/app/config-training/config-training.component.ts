@@ -29,7 +29,7 @@ export class ConfigTrainingComponent implements OnInit {
                        'convert3D_method', 'ionize_method', 'modelAutoscaling', 'computeMD_method'],
     'model_ensemble': ['SDFile_name', 'SDFile_activity', 'SDFile_experimental', 'SDFile_complementary', 'quantitative', 'normalize_method',
                        'modelAutoscaling'],
-    'data':           ['TSV_objnames', 'TSV_activity', 'TSV_varnames'],
+    'data':           ['TSV_objnames', 'TSV_activity', 'TSV_varnames', 'quantitative','modelAutoscaling'],
     'ext_data':       ['model_set']
   };
 
