@@ -24,6 +24,10 @@ export class TrainingSeriesComponent implements OnInit {
   }
 
   public onChange(fileList: FileList): void {
+    // clean previous settings
+    this.model.file_info = undefined;
+    this.model.file_fields = undefined;
+
     const file = fileList[0];
     this.model.file = file;
     this.model.file_info = {};
@@ -33,22 +37,27 @@ export class TrainingSeriesComponent implements OnInit {
     this.model.file_info['type_file'] = extension[1];
     const fileReader: FileReader = new FileReader();
     const self = this;
-    fileReader.onloadend = function(x) {
-      self.fileContent = fileReader.result;
-      self.model.file_info['num_mols'] = (self.fileContent.match(/(\$\$\$\$)/g) || []).length;
-      const res_array = self.fileContent.match(/>( )*<(.*)>/g);
-      const res_dict = {};
-      for (const variable of res_array) {
-        const value = variable.replace(/[<> ]*/g, '');
-        if (value in res_dict) {
-          res_dict[value] = res_dict[value] + 1;
+
+    // for SDFiles only, read the fields
+    if (this.model.file_info['type_file'] == 'sdf') {
+      fileReader.onloadend = function(x) {
+        self.fileContent = fileReader.result;
+        self.model.file_info['num_mols'] = (self.fileContent.match(/(\$\$\$\$)/g) || []).length;
+        const res_array = self.fileContent.match(/>( )*<(.*)>/g);
+        const res_dict = {};
+        for (const variable of res_array) {
+          const value = variable.replace(/[<> ]*/g, '');
+          if (value in res_dict) {
+            res_dict[value] = res_dict[value] + 1;
+          }
+          else {
+            res_dict[value] = 1;
+          }
         }
-        else {
-          res_dict[value] = 1;
-        }
-      }
-      self.model.file_fields = res_dict;
-    };
-    fileReader.readAsText(file);
+        self.model.file_fields = res_dict;
+      };
+      fileReader.readAsText(file);
+    }
+    // TODO: present # lines
   }
 }

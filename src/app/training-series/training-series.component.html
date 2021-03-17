@@ -18,7 +18,7 @@
               <strong>Size </strong> 
               {{this.model.file_info['size_M']}} MB
           </li>
-          <li class="list-group-item d-flex justify-content-between align-items-left p-1" >
+          <li *ngIf="this.model.file_info.num_mols != Undefined" class="list-group-item d-flex justify-content-between align-items-left p-1" >
               <strong>Number of molecules </strong> 
               <span class="badge badge-primary badge-pill">{{this.model.file_info['num_mols']}}</span>
           </li>
