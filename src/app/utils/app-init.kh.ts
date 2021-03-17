@@ -33,7 +33,7 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
             keycloak.updateToken(200);
         });
 
-        return new Promise(async (resolve, reject) => {
+        return new Promise (async (resolve, reject) => {
             try {
                 await keycloak.init({
                     // config: keycloakConfig,
@@ -49,7 +49,7 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
                     }
                     /*bearerExcludedUrls: []*/
                 });
-                resolve();
+                resolve('done');
             } catch (error) {
                 reject(error);
             }

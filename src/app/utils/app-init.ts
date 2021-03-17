@@ -29,7 +29,18 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
                     enableBearerInterceptor: true,
                     bearerPrefix: 'Bearer', 
                 });
-                resolve();
+
+                // this.isLoggedIn = await keycloak.isLoggedIn();
+
+                // if (this.isLoggedIn) {
+                //   this.userProfile = await keycloak.loadUserProfile();
+                //   console.log('initialized ', this.userProfile);
+                // }
+                // else {
+                //   console.log('initialized without login');
+                // }
+
+                resolve('done');
             } catch (error) {
                 reject(error);
             }
