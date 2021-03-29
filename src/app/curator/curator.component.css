@@ -32,3 +32,33 @@
     letter-spacing: 0.05em;
     border-radius: 0;
 }
+
+.table {
+    background-color: white;
+    background: white;
+    color: #22577A; 
+    /* table-layout: fixed; */
+    width: 100%;
+}
+.table th{
+    padding-left: 1px;
+    padding-right: 1px;
+    color:#0076a3;
+}
+.table td {
+    padding: 5px;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    border-bottom: 1px solid #B8DCED;
+    vertical-align: middle;
+}
+tr {
+    cursor: pointer;
+}
+tr.selected {
+    background: #f7f9ea;
+}
+
+#divTableCurations{
+    width: 40%;
+    height: auto;
+}

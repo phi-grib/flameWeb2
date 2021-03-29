@@ -89,15 +89,10 @@ export class CustomHTMLElement extends HTMLElement {
 @Injectable()
 export class Curation {
     name: string = undefined;   // Name of the model selected in the first step
-    modelName: string = undefined;
-    modelVersion: string = undefined;
-    modelParameters: any;
-    modelDocumentation: any = undefined;
+    fileName: string = undefined;
     curations = [];
     curating = {};
     conformal = false;
-    file: any = undefined;  // Name of file uploaded in the second step
     result = undefined;
     date = undefined;
-    modelID = undefined;
 }

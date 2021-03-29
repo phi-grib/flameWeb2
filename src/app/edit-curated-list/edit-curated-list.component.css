@@ -29,3 +29,27 @@
     box-sizing: border-box;
     margin-left: 14px;
 }
+
+.form-row{
+    align-items: center;
+}
+
+.table {
+    margin-left: 15%;
+    background-color: white;
+    background: white;
+    color: #22577A;
+    /* table-layout: fixed; */
+    width: 100%;
+}
+.table th{
+    padding-left: 1px;
+    padding-right: 1px;
+    color:#0076a3;
+}
+.table td {
+    padding: 5px;
+    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+    border-bottom: 1px solid #B8DCED;
+    vertical-align: middle;
+}

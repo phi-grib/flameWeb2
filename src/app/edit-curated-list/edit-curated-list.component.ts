@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Model } from '../Globals';
+import { Model, Curation } from '../Globals';
 import { MatTableModule } from '@angular/material/table';
 import { EditCuratedListService } from '../edit-curated-list/edit-curated-list.service';
+import { CommonService } from '../common.service';
+import { CuratorService } from '../curator/curator.service';
+import { CommonFunctions } from '../common.functions';
 
 
 @Component({
@@ -23,6 +26,8 @@ export class EditCuratedListComponent implements OnInit {
   finalDict: any;
   finalArray: string[] = [];
   style: string = "mat-column-col";
+  curation: Curation;
+
   
   //attributes: 
   public listName: string;
@@ -31,10 +36,21 @@ export class EditCuratedListComponent implements OnInit {
   public selectedColumns: string[] = [];
   public eventFile: { target: { files: any[]; }; };
 
-  constructor(public editCuratedListService: EditCuratedListService, public activeModal: NgbActiveModal, public model: Model) { }
+  constructor(public editCuratedListService: EditCuratedListService, 
+    public activeModal: NgbActiveModal, 
+    public model: Model,
+    public commonService: CommonService,
+    public curatorservice: CuratorService,
+    public func: CommonFunctions
+) { }
+
+    
 
   ngOnInit(): void {
-    this.ObjCuratedList = new EditCuratedListComponent(this.editCuratedListService,this.ObjActiveModal, this.model);
+    this.curation = new Curation ();
+    this.ObjCuratedList = new EditCuratedListComponent(this.editCuratedListService,
+        this.ObjActiveModal, this.model, this.commonService,
+         this.curatorservice, this.func);
     console.log(this.spaceBar);
     console.log(this.tab);
   }
@@ -148,10 +164,27 @@ export class EditCuratedListComponent implements OnInit {
   }
 
   submitList(){
-    let curateListName = this.ObjCuratedList.listName;
-
-    this.editCuratedListService.postCurateList(curateListName)
+    let date = new Date();
+    let dd = date.getDate();
+    let mm = date.getMonth();
+    let yyyy = date.getFullYear();
+    this.curation.date = dd + '-' + mm +'-' + yyyy;
+    this.editCuratedListService.CurateList(this.curation.name, this.curation.date, this.finalDict).subscribe(
+        result=>{
+            this.commonService.getCurations();
+        }
+    )
   }
+
+  createCuration(){
+
+    console.log(this.curation.date);
+    this.curatorservice.UpdateCuration(this.curation.name, this.curation.date, this.finalDict).subscribe(
+      result=>{
+          this.commonService.getCurations();
+      }
+    )
+}
 }
 
 

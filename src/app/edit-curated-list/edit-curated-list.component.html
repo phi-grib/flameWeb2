@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title">Create list <span class="model_name"></span></h5>
+    <h5 class="modal-title">Curate file <span class="model_name"></span></h5>
     <button type="button" class="close" aria-label="Cancel" (click)="activeModal.dismiss('Cross click')"><span aria-hidden="false">&times;</span></button>
 
 
@@ -9,9 +9,6 @@
         <div class="card">
             <div class="row">
                 <div class="col-4">
-                    <label for="listName">List name</label>
-                    <input type="text" name="listName" id="listName" [(ngModel)]="ObjCuratedList.listName">
-
                     <label for="separatorInput">Delimiter:  </label>
                     <select name="separator" [(ngModel)]="ObjCuratedList.separator" id="separatorInput" (ngModelChange)="onChangeSeparator($event)">
                         <option [value]="item.value" *ngFor="let item of SeparatorChoices| keyvalue"> {{item.key}} </option>
@@ -59,7 +56,7 @@
                 </div>
             </div>
             <div class="form-row">
-                <table class="table dataTable">
+                <table class="table display compact">
                     <div class="row">
                         <div *ngFor="let column of this.ObjCuratedList.selectedColumns" class="col-mb-5">
                             <th> {{column}} </th>
@@ -71,9 +68,10 @@
 
                 </table>
             </div>
-            <div class="form-row">
+            <div class="form-row" >
                 <div class="col-sm">
-                    <button type="submit" (click)="submitList()" class="btn btn-ets-up mb">Submit</button>
+                    <button type="submit" (click)="submitList()" class="btn btn-ets-up mb" 
+                    *ngIf="!this.ObjCuratedList.selectedColumns">Submit</button>
                 </div>
             </div>
         </div>

@@ -348,27 +348,28 @@ export class CommonFunctions {
                 deferRender: true,
                 ordering: true,
                 pageLength: 10,
-                columnDefs: [{ 'type': 'date-euro', 'targets': 4 }],
-                order: [[4, 'desc']],
+                columnDefs: [{ type: 'date-euro', targets: 1 }],
+                order: [[1, 'desc']],
                 destroy: true
               });
 
               if (this.curation.curations.length > 0) {
-                this.curation.name = $('#dataTablePredictions tbody tr:first td:first').text();
-                for (var i=0; i < this.curation.curations.length; i++ ) {
-                    const ipred = this.curation.curations[i];
-                    if (ipred[0] === this.prediction.name) {
-                      this.curation.modelName = ipred[1];
-                      this.curation.modelVersion = ipred[2];
-                      this.curation.date = ipred[3];
-                      this.curation.modelID = ipred[5];
+                this.curation.name = $('#dataTableCurations tbody tr:first td:first').text();
+              for(let i=0; i<this.curation.curations.length;i++){
+                  console.log(this.curation.curations[i]);
+                  let icur = this.curation.curations[i];
+                  this.curation.name = icur['curation_endpoint'];
+                  this.curation.date = icur['creation_date'];
+              }
+
+
                       // console.log ('found: ', this.prediction)
                     }
-                }
+                
                 // this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
                 // this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
                 // this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
-              }
+              
               // $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
               //   $('tr').removeClass('selected'); // removes all highlights from tr's
               //   $(this).addClass('selected'); // adds the highlight to this row
@@ -385,6 +386,10 @@ export class CommonFunctions {
           alert(error.message);
         }
     )
+  }
+
+  selectCuration(){
+      
   }
 
 }

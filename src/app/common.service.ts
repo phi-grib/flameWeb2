@@ -59,9 +59,8 @@ export class CommonService {
   }
 
   getCurations(): Observable<any> {
-    const url: string = environment.baseUrl_curate + 'curations' ;
+    const url: string = environment.baseUrl_cmanage+ 'list';
     return this.http.get(url);
   }
-
   
 }
