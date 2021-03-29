@@ -27,16 +27,26 @@ export class SimilarityService {
     return this.http.get(url);
   }
 
-  search(space_name: string, version: string, num_cutoff: string, dist_cutoff: string): Observable<any> {
+  search(space_name: string, version: string, num_cutoff: string, dist_cutoff: string, smarts: string, input_type: string): Observable<any> {
     const formData = new FormData();
-    formData.append('SDF', this.similarity.file);
-    // formData.append('SMILES', 'O=C(O)C[C@H](O)C[C@H](O)CCn2c(c(c(c2c1ccc(F)cc1)c3ccccc3)C(=O)Nc4ccccc4)C(C)C');  // check API
-
     const params = new HttpParams()
     .set('numsel', num_cutoff)
     .set('cutoff', dist_cutoff);
-    const url: string = environment.baseUrl_search + 'space/' + space_name + '/version/' + version;
-    // const url: string = environment.baseUrl_search + 'space/' + space_name + '/version/' + version+'/searchName/ASCCAa'+'/smiles';  // check API
-    return this.http.put(url, formData, {params : params} );
+    
+    if (input_type == 'file') {
+      formData.append('SDF', this.similarity.file);
+      const url: string = environment.baseUrl_search + 'space/' + space_name + '/version/' + version;
+      // formData.append('SMILES', 'O=C(O)C[C@H](O)C[C@H](O)CCn2c(c(c(c2c1ccc(F)cc1)c3ccccc3)C(=O)Nc4ccccc4)C(C)C');  // check API
+      // const url: string = environment.baseUrl_search + 'space/' + space_name + '/version/' + version+'/searchName/ASCCAa'+'/smiles';  // check API
+      return this.http.put(url, formData, {params : params} );
+
+    }
+    if (input_type == 'smarts') {
+      formData.append('SMARTS', smarts);
+      const url: string = environment.baseUrl_search + 'space/' + space_name + '/version/' + version + '/smarts';
+      return this.http.put(url, formData, {params : params} );
+    }
+
   }
+
 }

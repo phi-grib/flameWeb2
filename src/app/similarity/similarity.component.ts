@@ -30,6 +30,7 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
   molsXspace = {};
   descriptors = {};
   version: string = undefined;
+  SMARTS: string = undefined;
   predicting = false;
   result = [];
   smileSrc = [];
@@ -109,13 +110,13 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
     }
   }
 
-  search() {
+  search(input_type) {
     this.result = [];
     this.nameSrc = [];
     this.smileSrc = [];
     this.predicting = true;
     this.error = false;
-    this.service.search(this.space, this.version, this.num_cutoff, this.dist_cutoff).subscribe(
+    this.service.search(this.space, this.version, this.num_cutoff, this.dist_cutoff, this.SMARTS, input_type).subscribe(
       result => { let iter = 0;
         console.log(result);
         const intervalId = setInterval(() => {
@@ -138,8 +139,6 @@ export class SimilarityComponent implements OnInit, AfterViewInit {
       }
     );
   }
-
-
 
   checkSearch(searchName, intervalId) {
     this.service.getSearch(searchName).subscribe(

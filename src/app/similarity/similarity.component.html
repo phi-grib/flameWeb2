@@ -1,23 +1,13 @@
 <div class="container mt-5">
   <div class="row align-items-centermt-4">
 
-    <div class="col-6">
-      <label for="inputGroupFileSimilarity">Input file</label>
-      <div class="form-group">
-        <div class="custom-file">
-          <input type="file" class="custom-file-input" id="inputGroupFileSimilarity"
-            aria-describedby="inputGroupFileAddonSimilarity" onchange="this.nextElementSibling.innerText = this.files[0].name" 
-            (change)="change($event.target.files)">
-            <label class="custom-file-label" for="inputGroupFileSimilarity">Choose file</label>
-            <small class="text-muted">
-              Enter a SDFile format input file.
-            </small>
-        </div>
-      </div>
-    </div>
 
-    <div class="col-6 align-self-center">
-    </div>
+
+
+
+    <!-- <div class="col-6 align-self-center">
+    </div> -->
+
     <div class="col-6">
       <div class="form-group">
         <label for="space">Space</label>
@@ -62,14 +52,58 @@
         </small>
       </div>
     </div>
+
+
+    <div class="col-6">
+      <label for="inputGroupFileSimilarity">Input file</label>
+      <div class="form-group">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="inputGroupFileSimilarity"
+            aria-describedby="inputGroupFileAddonSimilarity" onchange="this.nextElementSibling.innerText = this.files[0].name" 
+            (change)="change($event.target.files)">
+            <label class="custom-file-label" for="inputGroupFileSimilarity">Choose file</label>
+            <small class="text-muted">
+              Enter a SDFile format input file.
+            </small>
+        </div>
+      </div>
+  
+    </div>
+    <div class="col-6 align-self-end">
+      <button type="button" class="btn btn-primary" 
+      [ngClass]="{'disabled': this.similarity.file === undefined || this.space === undefined || this.version === undefined }"
+     (click) = "search('file')" >Search File</button>
+    </div>
+
+
+
+    <div class="col-6">
+      <label for="inputGroupSMARTS">SMARTS</label>
+      <div class="form-group">
+        <div class="custom">
+            <input type="text" id="inputSMARTS" [(ngModel)]="this.SMARTS">
+            <small class="text-muted">
+              Enter a SMARTS string
+            </small>
+        </div>
+      </div>
+  
+    </div>
+    <div class="col-6 align-self-end">
+      <button type="button" class="btn btn-primary" 
+      [ngClass]="{'disabled': this.SMARTS === undefined || this.space === undefined || this.version === undefined }"
+     (click) = "search('smarts')" >Search SMARTS</button>
+    </div>
+
   </div>
-  <div class="row justify-content-end">
+
+  <!-- <div class="row justify-content-end">
     <div class="col">
       <button type="button" class="btn btn-primary" 
       [ngClass]="{'disabled': this.similarity.file === undefined || this.space === undefined || this.version === undefined }"
      (click) = "search()" >Search</button>
     </div>
-  </div>
+  </div> -->
 
   <div class="text-center mt-5" *ngIf= "this.result.length == 0 && predicting">
     <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
