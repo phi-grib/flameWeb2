@@ -33,6 +33,11 @@ export class CommonService {
     return this.http.get(url);
   }
 
+  getSearch(searchName: string): Observable<any> {
+    const url: string = environment.baseUrl_smanage + 'search/' + searchName;
+    return this.http.get(url);
+  }
+
    /**
    * @param modelname The model name to receive parameters
    * Version will be automatically set to 'dev'

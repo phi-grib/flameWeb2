@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Model, Prediction, Globals } from './Globals';
+import { Model, Prediction, Search, Globals } from './Globals';
 import { environment } from '../environments/environment';
 declare var $: any;
 
@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   
   constructor(
     public prediction: Prediction,
+    public search: Search,
     public model: Model,
     public globals: Globals
     ) {}

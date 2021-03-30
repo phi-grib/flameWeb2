@@ -48,6 +48,21 @@ export class Prediction {
 }
 
 @Injectable()
+export class Search {
+    name: string = undefined;   // Name of the space selected in the first step
+    spaceName: string = undefined;
+    spaceVersion: string = undefined;
+    spaceParameters: any;
+    spaceDocumentation: any = undefined;
+    searches = [];
+    searching = {};
+    file: any = undefined;  // Name of file uploaded in the second step
+    result = undefined;
+    date = undefined;
+    spaceID = undefined;
+}
+
+@Injectable()
 export class Manager {
     name: string = undefined;   // Name of the model selected in the first step
     version: string = undefined; // Version of the model selected in the first step

@@ -10,7 +10,7 @@ import { TrainingSeriesComponent } from './training-series/training-series.compo
 // import { SidebarComponent } from './sidebar/sidebar.component';
 import { ValidationsComponent } from './validations/validations.component';
 import { ToastrModule } from 'ngx-toastr';
-import { Model, Prediction, Globals, Manager, Similarity } from './Globals';
+import { Model, Prediction, Globals, Manager, Similarity, Search } from './Globals';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfigTrainingComponent } from './config-training/config-training.component';
 import { ConfigModelComponent } from './config-model/config-model.component';
@@ -35,6 +35,9 @@ import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
 import { initializer } from './utils/app-init';
 import { LabelerComponent } from './labeler/labeler.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
+import { SearcherComponent } from './searcher/searcher.component';
+import { SearchListComponent } from './search-list/search-list.component';
+import { SearchComponent } from './search/search.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -68,7 +71,10 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ConfusionMatrixComponent,
     ModelDocumentationComponent,
     LabelerComponent,
-    ConfigurationComponent
+    ConfigurationComponent,
+    SearcherComponent,
+    SearchListComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +90,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     // PlotlyViaCDNModule,
     PlotlyModule
   ],
-  providers: [Model, Prediction, Globals, Manager, Similarity, 
+  providers: [Model, Prediction, Globals, Manager, Similarity, Search,
   {
     provide: APP_INITIALIZER,
     useFactory: initializer,
