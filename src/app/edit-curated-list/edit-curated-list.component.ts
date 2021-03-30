@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Model, Curation } from '../Globals';
-import { MatTableModule } from '@angular/material/table';
 import { EditCuratedListService } from '../edit-curated-list/edit-curated-list.service';
 import { CommonService } from '../common.service';
 import { CuratorService } from '../curator/curator.service';
@@ -36,7 +35,7 @@ export class EditCuratedListComponent implements OnInit {
   public selectedColumns: string[] = [];
   public eventFile: { target: { files: any[]; }; };
 
-  constructor(public editCuratedListService: EditCuratedListService, 
+  constructor(public editService: EditCuratedListService, 
     public activeModal: NgbActiveModal, 
     public model: Model,
     public commonService: CommonService,
@@ -47,8 +46,7 @@ export class EditCuratedListComponent implements OnInit {
     
 
   ngOnInit(): void {
-    this.curation = new Curation ();
-    this.ObjCuratedList = new EditCuratedListComponent(this.editCuratedListService,
+    this.ObjCuratedList = new EditCuratedListComponent(this.editService,
         this.ObjActiveModal, this.model, this.commonService,
          this.curatorservice, this.func);
     console.log(this.spaceBar);
@@ -163,28 +161,15 @@ export class EditCuratedListComponent implements OnInit {
     return result;
   }
 
-  submitList(){
-    let date = new Date();
-    let dd = date.getDate();
-    let mm = date.getMonth();
-    let yyyy = date.getFullYear();
-    this.curation.date = dd + '-' + mm +'-' + yyyy;
-    this.editCuratedListService.CurateList(this.curation.name, this.curation.date, this.finalDict).subscribe(
+  submitCuration(name: string, date: string){
+    this.editService.createCuratedList(name, date).subscribe(
         result=>{
-            this.commonService.getCurations();
+            this.func.getCurationsList();
         }
-    )
+    );
   }
 
-  createCuration(){
-
-    console.log(this.curation.date);
-    this.curatorservice.UpdateCuration(this.curation.name, this.curation.date, this.finalDict).subscribe(
-      result=>{
-          this.commonService.getCurations();
-      }
-    )
-}
+  
 }
 
 

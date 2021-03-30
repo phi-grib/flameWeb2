@@ -45,7 +45,7 @@ export class BuilderComponent implements OnInit {
     );
   }
 
-  //returns ture if v is a dictionary
+  //returns true if v is a dictionary
   private isDict(v) {
     return typeof v === 'object' && v !== null && !(v instanceof Array) && !(v instanceof Date);
   }

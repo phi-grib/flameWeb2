@@ -42,7 +42,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of this.curation.curations" (click)= "selectCuration(item['curation_endpoint'], item['creation_date'])" [ngClass]="{'selected': this.curation.name===item['curation_endpoint']}">
+          <tr *ngFor="let item of this.curation.curations" (click)= "this.func.selectCuration(item['curation_endpoint'], item['creation_date'])" [ngClass]="{'selected': this.curation.name===item['curation_endpoint'] && this.curation.date===item['creation_date']}">
               <td>{{item['curation_endpoint']}}</td>
               <td>{{item['creation_date']}}</td>
           </tr>

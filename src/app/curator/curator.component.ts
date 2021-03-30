@@ -19,14 +19,14 @@ export class CuratorComponent implements OnInit {
   constructor(
     private commonService: CommonService,
     private modalCuratorService: NgbModal,
-    private curatorservice: CuratorService,
+    public curatorService: CuratorService,
     public globals: Globals,
     public curation: Curation,
-    public commonFunctions:CommonFunctions
+    public func:CommonFunctions
   ) {}
 
   ngOnInit(): void {
-    this.commonFunctions.getCurationsList();
+    this.func.getCurationsList();
   }
 
   curationSettings() {
@@ -35,11 +35,16 @@ export class CuratorComponent implements OnInit {
     });
   }
 
-  selectCuration(name: string, date: string): Curation{
-      this.curation.name = name;
-      this.curation.date = date;
-      console.log(this.curation);
-
-      return this.curation;
+  createCuration(){
+    let date = new Date();
+    let dd = date.getDate();
+    let mm = date.getMonth();
+    let yyyy = date.getFullYear();
+    this.curation.date = dd + '-' + mm +'-' + yyyy;
+    this.curatorService.createEndpoint(this.curation.name, this.curation.date).subscribe(
+        result=>{
+            this.commonService.getCurations();
+        }
+    )
   }
 }

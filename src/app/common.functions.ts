@@ -356,24 +356,11 @@ export class CommonFunctions {
               if (this.curation.curations.length > 0) {
                 this.curation.name = $('#dataTableCurations tbody tr:first td:first').text();
               for(let i=0; i<this.curation.curations.length;i++){
-                  console.log(this.curation.curations[i]);
                   let icur = this.curation.curations[i];
                   this.curation.name = icur['curation_endpoint'];
                   this.curation.date = icur['creation_date'];
               }
-
-
-                      // console.log ('found: ', this.prediction)
                     }
-                
-                // this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
-                // this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
-                // this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
-              
-              // $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
-              //   $('tr').removeClass('selected'); // removes all highlights from tr's
-              //   $(this).addClass('selected'); // adds the highlight to this row
-              // });
 
               this.globals.tableCurationVisible = true;
             }, 10);
@@ -388,8 +375,11 @@ export class CommonFunctions {
     )
   }
 
-  selectCuration(){
-      
+  selectCuration(name: string, date: string) {
+      this.curation.name = name; 
+      this.curation.date = date;
+      console.log(this.curation);
+      //this.getCurationDocumentation().subscribe()...
   }
 
 }
