@@ -1,1 +1,33 @@
-<p>search-list works!</p>
+<hr class="my-0">
+
+<app-manage-spaces></app-manage-spaces>
+
+<div id="overlay" *ngIf="!this.globals.tableSpaceVisible">
+  <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+
+<div class="ml-3 mr-3" [hidden] = "!this.globals.tableSpaceVisible">
+  <div class="col-12 scrolltable" >
+    <table class="table" id="dataTableSpaces">
+      <thead>
+        <tr>
+          <th style="width: 40%">Space</th>
+          <th style="width: 20%">Version</th>
+          <th style="width: 20%">Compounds</th>
+          <th style="width: 20%">Descriptors</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let info of this.space.spaces" (click)= "selectSearch(info[0], info[1])" [ngClass]="{'selected': this.space.spaceName===info[0] && this.space.spaceVersion===info[1]}">
+          <td>{{info[0]}}</td>
+          <td>{{info[1]}}</td>
+          <td>{{info[2]}}</td>
+          <td>{{info[3]}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

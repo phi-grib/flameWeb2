@@ -48,18 +48,22 @@ export class Prediction {
 }
 
 @Injectable()
-export class Search {
-    name: string = undefined;   // Name of the space selected in the first step
+export class Space {
     spaceName: string = undefined;
     spaceVersion: string = undefined;
     spaceParameters: any;
     spaceDocumentation: any = undefined;
-    searches = [];
-    searching = {};
+    spaceID: string = undefined;
+    spaces = [];
+}
+
+@Injectable()
+export class Search {
+    searchName: string = undefined;
     file: any = undefined;  // Name of file uploaded in the second step
     result = undefined;
-    date = undefined;
-    spaceID = undefined;
+    nameSrc = undefined;
+    smileSrc = undefined;
 }
 
 @Injectable()
@@ -73,6 +77,7 @@ export class Manager {
 export class Globals {
     tableModelVisible = false;
     tablePredictionVisible = false;
+    tableSpaceVisible = false;
     mainTabActive: string = undefined;
     read_only = environment.read_only;
 }

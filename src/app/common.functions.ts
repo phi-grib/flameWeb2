@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
-import { Model, Prediction, Globals } from './Globals';
-import { environment } from '../environments/environment';
+import { Model, Prediction, Space, Globals } from './Globals';
 declare var $: any;
 
 @Injectable({
@@ -14,7 +13,8 @@ export class CommonFunctions {
     private commonService: CommonService,
     public model: Model,
     public globals: Globals,
-    public prediction: Prediction) { }
+    public prediction: Prediction,
+    public space: Space) { }
 
   objectKeys = Object.keys;
 
@@ -256,7 +256,6 @@ export class CommonFunctions {
                 //   "fade": 100
                 // } );
                 
-
                 if (currentPage != 0) {
                   table.page(currentPage).draw('page');
                 }
@@ -330,5 +329,57 @@ export class CommonFunctions {
     );
   }
 
+  getSpaceList() {
+    this.commonService.getSpaceList().subscribe(
+      result => {
+        if (result[0]) {
 
+          for (const i in result[1]) {
+            const iresult = result[1][i];
+            const iname = iresult['spacename'];
+            const ivers = iresult['version'];
+            const iinfo = iresult['info'];
+            const inobj = iinfo[0][2];
+            var idesc = 'unk';
+            if (iinfo[3] != undefined){
+              idesc = iinfo[2][2];
+            }
+            this.space.spaces.push ([iname, ivers, inobj, idesc]);
+          }
+          this.globals.tableSpaceVisible = false;
+          
+          setTimeout(() => {
+            const table = $('#dataTableSpaces').DataTable({
+              /*Ordering by date */
+              // autoWidth: false,
+              deferRender: true,
+              ordering: true,
+              pageLength: 10,
+              // columnDefs: [{ 'type': 'date-euro', 'targets': 4 }],
+              // order: [[4, 'desc']],
+              destroy: true
+            });
+
+            if (this.space.spaces.length > 0) {
+              this.space.spaceName = $('#dataTableSpaces tbody tr:first td:first').text();
+              for (var i=0; i < this.space.spaces.length; i++ ) {
+                  const isearch = this.space.spaces[i];
+                  if (isearch[0] === this.space.spaceName) {
+                    this.space.spaceVersion = isearch[1];
+                    // console.log ('found: ', this.prediction)
+                  }
+              }
+            }
+            this.globals.tableSpaceVisible = true;
+          }, 10);
+        } 
+        else {
+          alert(result[1]);
+        }
+      },
+      error => {
+        alert(error.message);
+      }
+    );
+  }
 }

@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title">Search using space <span class="model_name">{{this.spaceName}} ver.{{this.version}}</span></h5>
+    <h5 class="modal-title">Search using space <span class="model_name">{{this.spaceName}} ver.{{this.spaceVersion}}</span></h5>
     <button type="button" class="close" aria-label="Cancel" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
     </button>
@@ -33,7 +33,7 @@
                     </div>
   
                     <div class="col-2 align-self-end">
-                      <button type="button" class="btn btn-primary float-right" (click)="search_file()" [disabled]="(this.spaceName==''|| this.file==undefined )">Search</button>
+                      <button type="button" class="btn btn-primary float-right" (click)="search_file()" [disabled]="(this.spaceName==''|| this.search.file==undefined )">Search</button>
                     </div>
   
                   </div>
@@ -68,7 +68,7 @@
                       <div class="col-10">
                         <label for="sketchName">Structure name</label>
                         <input type="text" class="form-control is-valid" [class.is-valid]="isvalidSketch" [class.is-invalid]="!isvalidSketch" 
-                         id="sketchName" [(ngModel)]="sketchName" (ngModelChange)="sketchNameChange()"  required>
+                         id="sketchName" [(ngModel)]="this.sketchName" (ngModelChange)="sketchNameChange()"  required>
                         <div class="valid-feedback">
                           Valid Name!
                         </div>
@@ -95,7 +95,7 @@
       <div class="col-10">
         <label for="searchName">Search name</label>
         <input type="text" class="form-control is-invalid" [class.is-valid]="isvalid"  [class.is-invalid]="!isvalid"
-         id="searchame" [(ngModel)]="searchName"  (ngModelChange)="searchNameChange()" required>
+         id="searchame" [(ngModel)]="this.searchName"  (ngModelChange)="searchNameChange()" required>
         <div class="valid-feedback">
           Valid Name!
         </div>

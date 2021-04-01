@@ -23,6 +23,11 @@ export class CommonService {
     return this.http.get(url);
   }
 
+  getSpaceList(): Observable<any> {
+    const url: string = environment.baseUrl_smanage + 'spaces';
+    return this.http.get(url);
+  }
+
   getModel(model: string, version: string): Observable<any> {
     const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version;
     return this.http.get(url);
