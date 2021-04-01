@@ -80,7 +80,7 @@ export class SearcherComponent implements OnInit {
 
     this.activeModal.close('Close click');
     if (this.spaceName != '') {
-      const inserted = this.toastr.info('Running!', 'Search ' + this.searchName , {
+      const inserted = this.toastr.info('Running!', 'Search' , {
         disableTimeOut: true, positionClass: 'toast-top-right'});
 
       this.service.runsearch(this.spaceName, this.spaceVersion, this.num_cutoff.toString(), this.dist_cutoff.toString(), smiles, 'smarts').subscribe(
@@ -93,7 +93,7 @@ export class SearcherComponent implements OnInit {
             } else {
               clearInterval(intervalId);
               this.toastr.clear(inserted.toastId);
-              this.toastr.warning( 'Search ' + this.searchName + ' \n Time Out' , 'Warning', {
+              this.toastr.warning( 'Search Time Out' , 'Warning', {
                                     timeOut: 10000, positionClass: 'toast-top-right'});
             }
             iter += 1;
@@ -113,7 +113,7 @@ export class SearcherComponent implements OnInit {
   search_file() {
     this.activeModal.close('Close click');
     if (this.spaceName != '') {
-      const inserted = this.toastr.info('Running!', 'Search ' + this.searchName , {
+      const inserted = this.toastr.info('Running!', 'Search', {
         disableTimeOut: true, positionClass: 'toast-top-right'});
 
       this.service.runsearch(this.spaceName, this.spaceVersion, this.num_cutoff.toString(), this.dist_cutoff.toString(), '', 'file').subscribe(
@@ -126,7 +126,7 @@ export class SearcherComponent implements OnInit {
             } else {
               clearInterval(intervalId);
               this.toastr.clear(inserted.toastId);
-              this.toastr.warning( 'Search ' + this.searchName + ' \n Time Out' , 'Warning', {
+              this.toastr.warning( 'Search Time Out' , 'Warning', {
                                     timeOut: 10000, positionClass: 'toast-top-right'});
             }
             iter += 1;
@@ -152,7 +152,7 @@ export class SearcherComponent implements OnInit {
         this.search.smileSrc = result.SMILES;
         clearInterval(intervalId);
         this.toastr.clear(inserted.toastId);
-        this.toastr.success('Search ' + this.searchName + ' finished' , 'SEARCH COMPLETED', {
+        this.toastr.success('Search finished' , 'SEARCH COMPLETED', {
           timeOut: 2000, positionClass: 'toast-top-right'});
         
       },
