@@ -1,4 +1,4 @@
-import { Component, OnInit,  ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnChanges,  ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
 import * as SmilesDrawer from 'smiles-drawer';
 import { Search, Globals } from '../Globals';
 import 'datatables.net-bs4';
@@ -9,10 +9,11 @@ declare var $: any;
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit, AfterViewInit {
+export class SearchComponent implements OnChanges, AfterViewInit {
 
   constructor(
-    public search: Search
+    public search: Search,
+    private globals: Globals
   ) { }
 
   @ViewChildren('cmp') components: QueryList<ElementRef>;
@@ -27,7 +28,8 @@ export class SearchComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
+    $('#similarityTable').DataTable().destroy();
   }
 
   ngAfterViewInit() {
@@ -46,21 +48,24 @@ export class SearchComponent implements OnInit, AfterViewInit {
                 console.log(err);
               });
           });
-
-          const settingsObj: any = {
-            dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
-            '<"row"<"col-sm-12"tr>>' +
-            '<"row"<"col-sm-5"i><"col-sm-7"p>>',
-            buttons: [
-              { 'extend': 'copy', 'text': 'Copy', 'className': 'btn-primary' , title: ''},
-              { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary' , title: ''},
-              { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' , title: ''},
-              { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
-            ]
-          };
-          $('#similarityTable').DataTable(settingsObj);
         }
+
+        const settingsObj: any = {
+          dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
+          '<"row"<"col-sm-12"tr>>' +
+          '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+          buttons: [
+            { 'extend': 'copy', 'text': 'Copy', 'className': 'btn-primary' , title: ''},
+            { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary' , title: ''},
+            { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' , title: ''},
+            { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
+          ]
+        };
+        
+        $('#similarityTable').DataTable(settingsObj);
+
     });
+
   }
 
 }

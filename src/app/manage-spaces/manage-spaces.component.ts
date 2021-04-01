@@ -20,7 +20,7 @@ export class ManageSpacesComponent implements OnInit {
   }
 
   search (spaceName:string, spaceVersion:string) {
-    const modalRef = this.modalService.open(SearcherComponent, { windowClass : 'modalClass'});
+    const modalRef = this.modalService.open(SearcherComponent, { size: 'lg'});
     modalRef.componentInstance.spaceName = spaceName;
     modalRef.componentInstance.spaceVersion = spaceVersion;
   }

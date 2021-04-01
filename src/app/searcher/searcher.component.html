@@ -47,7 +47,7 @@
           <div class="card">
               <div class="card-header collapsed" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                   <h5 class="mb-0">
-                      Sketch structure
+                      Sketch SMARTS
                       <button class="btn btn-link pt-0 pb-0 float-right" type="button"> </button>
                   </h5>
               </div>
@@ -59,7 +59,7 @@
                         <!-- <label for="inputGroupFile01">Sketch structure</label> -->
                         <div class="form-group">
                            <div id="jsme_container"></div>
-                           <small class="text-muted">Sketch a molecular structure (one molecule max.).</small>
+                           <small class="text-muted">Sketch a SMARTS (one molecule max.).</small>
                         </div>
                       </div>
                     </div>
@@ -87,22 +87,27 @@
               </div>
           </div>
           <!-- END CARD SKETCH-->
-  
-    </div>
-  
-  
-    <div class="row">
-      <div class="col-10">
-        <label for="searchName">Search name</label>
-        <input type="text" class="form-control is-invalid" [class.is-valid]="isvalid"  [class.is-invalid]="!isvalid"
-         id="searchame" [(ngModel)]="this.searchName"  (ngModelChange)="searchNameChange()" required>
-        <div class="valid-feedback">
-          Valid Name!
-        </div>
-        <div class="invalid-feedback">
-          The name of the search is invalid or already exist!
-        </div>
-      </div>
+
+
+          <div class="card p-2 pl-5 pr-5">
+            <div class="row">
+              <div class="form-group ">
+                <label for="num_cutoff">Number cutoff</label>
+                <input type="number" id="num_cutoff" class="form-control mx-sm-1" [(ngModel)]="this.num_cutoff" aria-describedby="num_cutoff" min="1" step="1">
+                <small id="num_cutoff" class="text-muted">
+                  (min 1)
+                </small>
+              </div>
+              <div class="form-group pl-5">
+                <label for="dist_cutoff">Distance cutoff</label>
+                <input type="number" id="dist_cutoff" class="form-control mx-sm-1" [(ngModel)]="this.dist_cutoff" aria-describedby="dist_cutoff" min="0" max="10" step=".01">
+                <small id="dist_cutoff" class="text-muted">
+                  (0-10)
+                </small>
+              </div>
+            </div>
+          </div>
+
     </div>
   
     <span [hidden]=true id="molclipboard">XXX</span>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Search, Model, Globals } from '../Globals';
+import { Search, Globals } from '../Globals';
 import { CommonService } from '../common.service';
 import { SearcherService } from './searcher.service';
 import { CommonFunctions } from '../common.functions';
@@ -19,10 +19,12 @@ export class SearcherComponent implements OnInit {
   spaces: {};
   spaceName = '';
   spaceVersion = '0';
-  searchName = 'tempsearch';
   sketchName = 'sketched_mol';
+  num_cutoff = 10;
+  dist_cutoff = 0.7;
+  error = false;
+  error_message = undefined;
   file = undefined;
-  isvalid = false;
   isvalidSketch = true;
   constructor(public service: SearcherService,
               private commonService: CommonService,
@@ -30,7 +32,6 @@ export class SearcherComponent implements OnInit {
               private renderer2: Renderer2,
               public activeModal: NgbActiveModal,
               public search: Search,
-              public model: Model,
               public globals: Globals,
               private toastr: ToastrService) { }
 
@@ -50,20 +51,13 @@ export class SearcherComponent implements OnInit {
     this.renderer2.appendChild(document.body, jsme_init);
 
     this.search.searchName = undefined;
-    this.searchNameChange()
+    this.search.result = undefined;
+
   }
 
   public change(fileList: FileList): void {
     const file = fileList[0];
     this.search.file = file;
-  }
-
-  searchNameChange() {
-    this.isvalid = true;
-    // const letters = /^[A-Za-z0-9_]+$/;
-    // if (!(this.searchName.match(letters))) {
-    //   this.isvalid = false;
-    // }
   }
 
   sketchNameChange() {
@@ -76,59 +70,20 @@ export class SearcherComponent implements OnInit {
 
 
   search_structure () {
-    // var span = document.getElementById("molclipboard");
-    // var smiles = span.innerText;
+    var span = document.getElementById("molclipboard");
+    var smiles = span.innerText;
 
-    // if (smiles===''){
-    //   alert('no molecule entered!')
-    //   return;
-    // }
+    if (smiles===''){
+      alert('no molecule entered!')
+      return;
+    }
 
-    // this.activeModal.close('Close click');
-    // // console.log(smiles);
-
-    // if (this.searchName != '') {
-    //   const inserted = this.toastr.info('Running!', 'Search ' + this.searchName , {
-    //     disableTimeOut: true, positionClass: 'toast-top-right'});
-      
-    //   this.service.search(this.spaceName, this.spaceVersion, smiles, this.searchName, this.sketchName, 'smarts').subscribe(
-    //     result => {
-    //       let iter = 0;
-    //       const intervalId = setInterval(() => {
-    //         if (iter < 500) {
-    //           this.checkSearch(this.searchName, inserted, intervalId);
-    //         } else {
-    //           clearInterval(intervalId);
-    //           this.toastr.clear(inserted.toastId);
-    //           this.toastr.warning( 'Search ' + this.searchName + ' \n Time Out' , 'Warning', {
-    //                                 timeOut: 10000, positionClass: 'toast-top-right'});
-    //           $('#dataTableSearches').DataTable().destroy();
-    //           this.func.getSpaceList();
-    //         }
-    //         iter += 1;
-    //       }, 500);
-    //     },
-    //     error => {
-    //       this.toastr.clear(inserted.toastId);
-    //       $('#dataTableSearches').DataTable().destroy();
-    //       this.func.getSpaceList();
-    //       alert('Error processing input molecule: '+error.error.error);
-    //     }
-    //   );
-    // }
-    // else {
-    //   alert('Model name undefined!')
-    // }
-
-  }
-
-  search_file() {
     this.activeModal.close('Close click');
     if (this.spaceName != '') {
       const inserted = this.toastr.info('Running!', 'Search ' + this.searchName , {
         disableTimeOut: true, positionClass: 'toast-top-right'});
 
-      this.service.runsearch(this.spaceName, this.spaceVersion, '5', '0.7', '', 'file').subscribe(
+      this.service.runsearch(this.spaceName, this.spaceVersion, this.num_cutoff.toString(), this.dist_cutoff.toString(), smiles, 'smarts').subscribe(
         result => {
           this.search.searchName = result
           let iter = 0;
@@ -151,66 +106,64 @@ export class SearcherComponent implements OnInit {
       );
     }
     else {
-      alert('Model name undefined!')
+      alert('Space name undefined!')
+    }
+  }
+
+  search_file() {
+    this.activeModal.close('Close click');
+    if (this.spaceName != '') {
+      const inserted = this.toastr.info('Running!', 'Search ' + this.searchName , {
+        disableTimeOut: true, positionClass: 'toast-top-right'});
+
+      this.service.runsearch(this.spaceName, this.spaceVersion, this.num_cutoff.toString(), this.dist_cutoff.toString(), '', 'file').subscribe(
+        result => {
+          this.search.searchName = result
+          let iter = 0;
+          const intervalId = setInterval(() => {
+            if (iter < 500) {
+              this.checkSearch(result, inserted, intervalId);
+            } else {
+              clearInterval(intervalId);
+              this.toastr.clear(inserted.toastId);
+              this.toastr.warning( 'Search ' + this.searchName + ' \n Time Out' , 'Warning', {
+                                    timeOut: 10000, positionClass: 'toast-top-right'});
+            }
+            iter += 1;
+          }, 500);
+        },
+        error => {
+          this.toastr.clear(inserted.toastId);
+          alert('Error prediction: '+error.error.error);
+        }
+      );
+    }
+    else {
+      alert('Space name undefined!')
     }
   }
 
   checkSearch(searchName, inserted, intervalId) {
     this.commonService.getSearch(searchName).subscribe(
       result => {
-        console.log(result)
+        // console.log(result)
         this.search.result = result.search_results;
         this.search.nameSrc = result.obj_nam;
         this.search.smileSrc = result.SMILES;
         clearInterval(intervalId);
         this.toastr.clear(inserted.toastId);
-        this.toastr.success('Search ' + this.searchName + ' created' , 'PREDICTION COMPLETED', {
-          timeOut: 5000, positionClass: 'toast-top-right'});
+        this.toastr.success('Search ' + this.searchName + ' finished' , 'SEARCH COMPLETED', {
+          timeOut: 2000, positionClass: 'toast-top-right'});
+        
       },
       error => {
         if (error.error.code !== 0) {
-          // this.predicting = false;
-          // this.error = true;
-          // this.error_message = error.error.message;
-          // clearInterval(intervalId);
+          this.toastr.clear(inserted.toastId);
+          clearInterval(intervalId);
+          alert('Error search: '+error.error.error);
         }
       }
     );
   }
-
-
-
-  //  // Periodic function to check model
-  // checkSearch(name, inserted, intervalId) {
-  //   this.commonService.getSearch(name).subscribe(
-  //     result => {
-  //       // console.log(result);
-  //       this.toastr.clear(inserted.toastId);
-  //       if (result['error']){
-  //         this.toastr.warning('Search ' + name + ' finished with error ' + result['error'] , 'SEARCHING COMPLETED', {
-  //           timeOut: 5000, positionClass: 'toast-top-right'});
-            
-  //       }
-  //       else {
-  //          this.toastr.success('Search ' + name + ' created' , 'SEARCHING COMPLETED', {
-  //           timeOut: 5000, positionClass: 'toast-top-right'});
-  //       }
-  //       clearInterval(intervalId);
-  //       $('#dataTableSearches').DataTable().destroy();
-  //       this.func.getSpaceList();
-  //     },
-  //     error => { // CHECK MAX iterations
-  //       if (error.error.code !== 0) {
-  //         this.toastr.clear(inserted.toastId);
-  //         this.toastr.error('Prediction ' + name + ' \n '  + error.error.message , 'ERROR!', {
-  //           timeOut: 10000, positionClass: 'toast-top-right'});
-  //         clearInterval(intervalId);
-  //         $('#dataTableSearchess').DataTable().destroy();
-  //         this.func.getSpaceList();
-  //       }
-  //     }
-  //   );
-  // }
-
 
 }

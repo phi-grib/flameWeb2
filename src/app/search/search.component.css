@@ -1,0 +1,105 @@
+.table {
+    background-color: white;
+    background: white;
+    color: #22577A;
+    /* table-layout: fixed; */
+    width: 100%;
+ }
+.table th{
+    padding-left: 1px;
+    padding-right: 1px;
+    border-bottom: 1px solid #B8DCED;
+    color:#0076a3;
+  }
+.table td{
+    padding: 5px;
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    border-bottom: 1px solid #B8DCED;
+    vertical-align: middle;
+}
+tr {
+    cursor: pointer;
+}
+  
+tr.selected {
+    background: #f7f9ea;
+}
+.table tbody tr:hover {
+    background: #f7f9ea;
+}
+  
+.scrollable{
+    /* max-height: 90vh; */
+  overflow: auto;
+  
+    /* padding-left: 0px;
+  padding-right: 10px; */
+}
+  
+.border {
+    border-width: 1px;
+}
+  
+.card-body {
+    overflow: auto;
+    max-width: 60vw;
+    border-width: 0px;
+    padding-top: 0px;
+    padding-bottom: 5px;
+  }
+  
+.card {
+    overflow: auto;
+    max-width: 60vw;
+    border-width: 0px;
+}
+  
+ul li.nav-item a {
+    background:white;
+    color: #0076a3;
+    /* font-size: 1.5rem; */
+    font-size: 1.2rem;
+}
+  
+ul li.nav-item a.active{
+    background:white;
+    color:#22577A;
+    font-weight: bold;
+    /* font-size: 1.5rem; */
+    font-size: 1.2rem;
+    border-bottom: 4px solid #e59300;
+    border-radius: 0;
+}
+  
+.text-etransafe {
+    color:#e59300;
+}
+
+.spinner-border {
+    display: block;
+    position: absolute; 
+    right: 45%; 
+    top: 200%; 
+    z-index: 1031;
+}
+
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #FAFAFA;
+    opacity: 0.7;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+.iffyTip {
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+.hideText{
+max-width:200px;
+}

@@ -1,6 +1,8 @@
 <div class="row mt-5" *ngIf = "this.search.searchName != undefined && this.search.result != undefined">
-    <div class="col-12" *ngIf = "this.search.result.length > 0">
-      <table id="similarityTable" class="table table-fixed table-bordered table-striped">
+  <!-- {{this.search.searchName}} -->
+
+    <div class="col-12" *ngIf = "this.search.result.length > 0 ">
+      <table id="similarityTable" class="table table-fixed table-bordered">
         <thead>
           <tr>
             <th>Index</th>
