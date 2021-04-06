@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Space, Globals } from '../Globals';
 import { ToastrService } from 'ngx-toastr';
 import { SearcherComponent } from '../searcher/searcher.component';
 import { ManageSpacesService } from './manage-spaces.service';
 import { CommonFunctions } from '../common.functions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+// import 'datatables.net-bs4';
+declare var $: any;
 
 @Component({
   selector: 'app-manage-spaces',
   templateUrl: './manage-spaces.component.html',
   styleUrls: ['./manage-spaces.component.css']
 })
-export class ManageSpacesComponent implements OnInit {
+export class ManageSpacesComponent {
 
   constructor(
     public space: Space,
@@ -20,9 +22,6 @@ export class ManageSpacesComponent implements OnInit {
     public func: CommonFunctions, 
     public service: ManageSpacesService,
     public toastr: ToastrService) { 
-  }
-
-  ngOnInit(): void {
   }
 
   search (spaceName:string, spaceVersion:string) {

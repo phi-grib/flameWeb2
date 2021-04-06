@@ -1,6 +1,7 @@
-import { Component, OnChanges,  ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnChanges, ViewChildren, QueryList, ElementRef, AfterViewInit, Input } from '@angular/core';
 import * as SmilesDrawer from 'smiles-drawer';
-import { Search, Globals } from '../Globals';
+import { CommonService } from '../common.service';
+import { Search, Globals, Space } from '../Globals';
 import 'datatables.net-bs4';
 declare var $: any;
 
@@ -11,9 +12,13 @@ declare var $: any;
 })
 export class SearchComponent implements OnChanges, AfterViewInit {
 
+  @Input() spaceName;
+  @Input() spaceVersion;
+
   constructor(
     public search: Search,
-    private globals: Globals
+    public space: Space,
+    public globals: Globals
   ) { }
 
   @ViewChildren('cmp') components: QueryList<ElementRef>;
@@ -29,7 +34,6 @@ export class SearchComponent implements OnChanges, AfterViewInit {
   }
 
   ngOnChanges(): void {
-    $('#similarityTable').DataTable().destroy();
   }
 
   ngAfterViewInit() {

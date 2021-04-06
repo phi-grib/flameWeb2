@@ -35,7 +35,7 @@ export class SearcherService {
     return this.http.get(url);
   }
 
-  runsearch(space_name: string, version: string, num_cutoff: string, dist_cutoff: string, smarts: string, input_type: string): Observable<any> {
+  runsearch(space_name: string, version: string, num_cutoff: string, dist_cutoff: string, smiles: string, input_type: string, sketchName: string): Observable<any> {
     const formData = new FormData();
     const params = new HttpParams()
     .set('numsel', num_cutoff)
@@ -47,9 +47,17 @@ export class SearcherService {
       return this.http.put(url, formData, {params : params} );
 
     }
+
     if (input_type == 'smarts') {
-      formData.append('SMARTS', smarts);
+      formData.append('SMARTS', smiles);
       const url: string = environment.baseUrl_search + 'space/' + space_name + '/version/' + version + '/smarts';
+      return this.http.put(url, formData, {params : params} );
+    }
+
+    if (input_type == 'smiles') {
+      formData.append('SMILES', smiles);
+      formData.append('name', sketchName);
+      const url: string = environment.baseUrl_search + 'space/' + space_name + '/version/' + version + '/smiles';
       return this.http.put(url, formData, {params : params} );
     }
   }

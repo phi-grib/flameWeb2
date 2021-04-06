@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// import { ModelListService } from './model-list.service';
 import { Model, Prediction, Globals } from '../Globals';
 import { CommonFunctions } from '../common.functions';
 import 'datatables.net-bs4';
@@ -13,7 +12,6 @@ declare var $: any;
 export class ModelListComponent implements OnInit {
 
   constructor(
-    // private service: ModelListService,
     public model: Model,
     public globals: Globals,
     public prediction: Prediction,
@@ -28,10 +26,4 @@ export class ModelListComponent implements OnInit {
     this.model.version = undefined;
     this.func.getModelList();
   }
-
-  // selectModel(name: string, version: string, modelID: string, trained: boolean, type: string, quantitative: boolean,
-  //     conformal: boolean, ensemble: boolean, error: any) {
-  //     this.func.selectModel(name, version, modelID, trained, type, quantitative, conformal, ensemble, error );
-  // }
-
 }

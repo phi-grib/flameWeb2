@@ -43,6 +43,11 @@ export class CommonService {
     return this.http.get(url);
   }
 
+  getSpace(space: string, version: string): Observable<any> {
+    const url: string = environment.baseUrl_smanage + 'space/' + space + '/version/' + version;
+    return this.http.get(url);
+  }
+
    /**
    * @param modelname The model name to receive parameters
    * Version will be automatically set to 'dev'
@@ -66,6 +71,11 @@ export class CommonService {
   getProperty(obj, prop){
     if(obj[prop] !== undefined) return obj[prop];
     else return 
+  }
+
+  getSpaceParameters(space: string, version: string): Observable<any> {
+    const url: string = environment.baseUrl_smanage + 'space/' + space + '/version/' + version + '/parameters';
+    return this.http.get(url);
   }
 
 

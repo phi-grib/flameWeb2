@@ -52,7 +52,6 @@
                     </div>
 
                     <div class="col-7 info scrollable v-100" >
-                        <!-- <div *ngIf="(this.prediction.name != undefined) && (this.predictionTabActive)"> -->
                         <div *ngIf="(this.prediction.name != undefined) && (this.globals.mainTabActive=='#predict')">
                             <app-prediction [predictionName]=this.prediction.name></app-prediction>
                         </div>
@@ -70,9 +69,8 @@
                     </div>
 
                     <div class="col-7 info scrollable v-100" >
-                        <div *ngIf="(this.globals.mainTabActive=='#similarity')">
-                            <!-- <app-search [searchName]=this.search.searchName ></app-search> -->
-                            <app-search></app-search>
+                        <div *ngIf="(this.space.spaceName != undefined) && (this.globals.mainTabActive=='#similarity')">
+                            <app-search [spaceName] = this.space.spaceName [spaceVersion] = this.space.spaceVersion ></app-search>
                         </div>
                     </div>
 

@@ -15,6 +15,7 @@ export class ManageSpacesService {
    * Call to the server to create a new model with the given name
    * @param model Name of the model to add
    */
+  
   // createModel(model: string): Observable<any> {
   //   const url: string = environment.baseUrl_manage + 'model/' + model;
   //   return this.http.post(url, null);

@@ -60,6 +60,8 @@ export class Space {
 @Injectable()
 export class Search {
     searchName: string = undefined;
+    spaceName: string = undefined;
+    spaceVersion: string = undefined;
     file: any = undefined;  // Name of file uploaded in the second step
     result = undefined;
     nameSrc = undefined;

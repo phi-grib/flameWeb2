@@ -79,7 +79,7 @@ ul li.nav-item a.active{
     display: block;
     position: absolute; 
     right: 45%; 
-    top: 200%; 
+    top: 30%; 
     z-index: 1031;
 }
 
@@ -94,6 +94,7 @@ ul li.nav-item a.active{
     z-index: 2;
     cursor: pointer;
   }
+
 
 .iffyTip {
   overflow:hidden;

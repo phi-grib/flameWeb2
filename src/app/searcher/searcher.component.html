@@ -47,7 +47,7 @@
           <div class="card">
               <div class="card-header collapsed" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                   <h5 class="mb-0">
-                      Sketch SMARTS
+                      Sketch structure
                       <button class="btn btn-link pt-0 pb-0 float-right" type="button"> </button>
                   </h5>
               </div>
@@ -59,11 +59,18 @@
                         <!-- <label for="inputGroupFile01">Sketch structure</label> -->
                         <div class="form-group">
                            <div id="jsme_container"></div>
-                           <small class="text-muted">Sketch a SMARTS (one molecule max.).</small>
+                           <small class="text-muted">Sketch a molecular structure (one molecule max.).</small>
                         </div>
                       </div>
                     </div>
                     
+                    <div class="checkbox">
+                      <label>
+                        <input  type="checkbox" [(ngModel)]="this.isSMARTS">
+                        SMARTS
+                      </label>
+                    </div>  
+
                     <div class="row">
                       <div class="col-10">
                         <label for="sketchName">Structure name</label>

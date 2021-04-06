@@ -340,11 +340,20 @@ export class CommonFunctions {
             const ivers = iresult['version'];
             const iinfo = iresult['info'];
             const inobj = iinfo[0][2];
-            var idesc = 'unk';
-            if (iinfo[3] != undefined){
-              idesc = iinfo[2][2];
+            var itype = 'unk';
+            if (iinfo[2] != undefined ){
+              if (iinfo[2][0] != 'modelID')
+                itype = iinfo[2][2];
             }
-            this.space.spaces.push ([iname, ivers, inobj, idesc]);
+            var ivars = '';
+            if (iinfo[4] != undefined ){
+              ivars = iinfo[4][2];
+            }
+            var imd = '';
+            if (iinfo[4] != undefined ){
+              imd = iinfo[3][2];
+            }
+            this.space.spaces.push ([iname, ivers, inobj, itype, ivars, imd]);
           }
           this.globals.tableSpaceVisible = false;
           
@@ -352,7 +361,7 @@ export class CommonFunctions {
             const table = $('#dataTableSpaces').DataTable({
               /*Ordering by date */
               // autoWidth: false,
-              deferRender: true,
+              // deferRender: true,
               ordering: true,
               pageLength: 10,
               // columnDefs: [{ 'type': 'date-euro', 'targets': 4 }],
@@ -366,7 +375,6 @@ export class CommonFunctions {
                   const isearch = this.space.spaces[i];
                   if (isearch[0] === this.space.spaceName) {
                     this.space.spaceVersion = isearch[1];
-                    // console.log ('found: ', this.prediction)
                   }
               }
             }

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Search, Globals } from '../Globals';
 import { CommonService } from '../common.service';
 import { SearcherService } from './searcher.service';
-import { CommonFunctions } from '../common.functions';
 import { ToastrService } from 'ngx-toastr';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Renderer2 } from '@angular/core';
@@ -26,9 +25,9 @@ export class SearcherComponent implements OnInit {
   error_message = undefined;
   file = undefined;
   isvalidSketch = true;
+  isSMARTS = false;
   constructor(public service: SearcherService,
               private commonService: CommonService,
-              private func: CommonFunctions,
               private renderer2: Renderer2,
               public activeModal: NgbActiveModal,
               public search: Search,
@@ -50,8 +49,12 @@ export class SearcherComponent implements OnInit {
     jsme_init.text = ``;
     this.renderer2.appendChild(document.body, jsme_init);
 
-    this.search.searchName = undefined;
-    this.search.result = undefined;
+    // enclosed in a Timeout to avoid mistakes in other components while loading
+    setTimeout(()=> {
+      this.search.searchName = undefined;
+      this.search.result = undefined;
+      this.search.file = undefined;
+    }, 0);
 
   }
 
@@ -78,14 +81,20 @@ export class SearcherComponent implements OnInit {
       return;
     }
 
+    var structure_type = 'smiles'
+    if (this.isSMARTS) {
+      structure_type = 'smarts'
+    }
+
     this.activeModal.close('Close click');
     if (this.spaceName != '') {
       const inserted = this.toastr.info('Running!', 'Search' , {
         disableTimeOut: true, positionClass: 'toast-top-right'});
 
-      this.service.runsearch(this.spaceName, this.spaceVersion, this.num_cutoff.toString(), this.dist_cutoff.toString(), smiles, 'smarts').subscribe(
+      this.service.runsearch(this.spaceName, this.spaceVersion, this.num_cutoff.toString(), this.dist_cutoff.toString(), smiles, structure_type, this.sketchName).subscribe(
         result => {
-          this.search.searchName = result
+          this.search.searchName = result;
+
           let iter = 0;
           const intervalId = setInterval(() => {
             if (iter < 500) {
@@ -116,7 +125,7 @@ export class SearcherComponent implements OnInit {
       const inserted = this.toastr.info('Running!', 'Search', {
         disableTimeOut: true, positionClass: 'toast-top-right'});
 
-      this.service.runsearch(this.spaceName, this.spaceVersion, this.num_cutoff.toString(), this.dist_cutoff.toString(), '', 'file').subscribe(
+      this.service.runsearch(this.spaceName, this.spaceVersion, this.num_cutoff.toString(), this.dist_cutoff.toString(), '', 'file', '').subscribe(
         result => {
           this.search.searchName = result
           let iter = 0;
@@ -150,6 +159,8 @@ export class SearcherComponent implements OnInit {
         this.search.result = result.search_results;
         this.search.nameSrc = result.obj_nam;
         this.search.smileSrc = result.SMILES;
+        this.search.spaceName = this.spaceName;
+        this.search.spaceVersion = this.spaceVersion;
         clearInterval(intervalId);
         this.toastr.clear(inserted.toastId);
         this.toastr.success('Search finished' , 'SEARCH COMPLETED', {
