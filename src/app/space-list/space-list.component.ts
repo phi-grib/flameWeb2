@@ -5,12 +5,12 @@ import 'datatables.net-bs4';
 declare var $: any;
 
 @Component({
-  selector: 'app-search-list',
-  templateUrl: './search-list.component.html',
-  styleUrls: ['./search-list.component.css']
+  selector: 'app-space-list',
+  templateUrl: './space-list.component.html',
+  styleUrls: ['./space-list.component.css']
 })
 
-export class SearchListComponent implements OnInit {
+export class SpaceListComponent implements OnInit {
 
   objectKeys = Object.keys;
 

@@ -1,20 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { SearchListComponent } from './search-list.component';
+import { SpaceListComponent } from './space-list.component';
 
 describe('SearchListComponent', () => {
-  let component: SearchListComponent;
-  let fixture: ComponentFixture<SearchListComponent>;
+  let component: SpaceListComponent;
+  let fixture: ComponentFixture<SpaceListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchListComponent ]
+      declarations: [ SpaceListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchListComponent);
+    fixture = TestBed.createComponent(SpaceListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

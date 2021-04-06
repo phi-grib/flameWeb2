@@ -1,9 +1,0 @@
-button.disabled {
-    cursor: not-allowed;
-    pointer-events: none !important;
-}
-
-label.disabled {
-    cursor: not-allowed;
-    pointer-events: none !important;
-}

@@ -22,7 +22,7 @@ import { BuilderComponent } from './builder/builder.component';
 import { PredictorComponent } from './predictor/predictor.component';
 import { PredictionComponent } from './prediction/prediction.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { SimilarityComponent } from './similarity/similarity.component';
+// import { SimilarityComponent } from './similarity/similarity.component';
 import { PredictionListComponent } from './prediction-list/prediction-list.component';
 import { ManageModelsComponent } from './manage-models/manage-models.component';
 import { ManagePredictionsComponent } from './manage-predictions/manage-predictions.component';
@@ -36,7 +36,7 @@ import { initializer } from './utils/app-init';
 import { LabelerComponent } from './labeler/labeler.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
 import { SearcherComponent } from './searcher/searcher.component';
-import { SearchListComponent } from './search-list/search-list.component';
+import { SpaceListComponent } from './space-list/space-list.component';
 import { SearchComponent } from './search/search.component';
 import { ManageSpacesComponent } from './manage-spaces/manage-spaces.component';
 // import * as SmilesDrawer from 'smiles-drawer';
@@ -65,7 +65,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     BuilderComponent,
     PredictorComponent,
     PredictionComponent,
-    SimilarityComponent,
+    // SimilarityComponent,
     PredictionListComponent,
     ManageModelsComponent,
     ManagePredictionsComponent,
@@ -74,7 +74,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     LabelerComponent,
     ConfigurationComponent,
     SearcherComponent,
-    SearchListComponent,
+    SpaceListComponent,
     SearchComponent,
     ManageSpacesComponent
   ],
