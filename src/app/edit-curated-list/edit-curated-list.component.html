@@ -90,14 +90,14 @@
     </div>
 
     <div class="row">
-        <table class="table display compact">
+        <table class="table display compact" *ngIf="this.finalDict">
             <div class="row">
                 <div *ngFor="let column of
                     this.ObjCuratedList.selectedColumns"
                     class="col-mb-5">
                     <th> {{column}} </th>
-                    <tr *ngFor="let element of this.finalDict">
-                        <td>{{element[column]}} </td>
+                    <tr *ngFor="let keys of objectKeys(this.finalDict)">
+                        <td>{{this.finalDict[keys][column]}} </td>
                     </tr>
                 </div>
             </div>

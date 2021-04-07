@@ -5,6 +5,8 @@ import { EditCuratedListComponent } from "../edit-curated-list/edit-curated-list
 import { CuratorService } from './curator.service';
 import { Curation, Globals } from "../Globals";
 import { CommonFunctions } from '../common.functions';
+import { ToastrService } from 'ngx-toastr';
+
 // import { timeStamp } from "console";
 
 @Component({
@@ -20,6 +22,7 @@ export class CuratorComponent implements OnInit {
     private commonService: CommonService,
     private modalCuratorService: NgbModal,
     public curatorService: CuratorService,
+    private toastr: ToastrService,
     public globals: Globals,
     public curation: Curation,
     public func:CommonFunctions
@@ -43,8 +46,14 @@ export class CuratorComponent implements OnInit {
     this.curation.date = dd + '-' + mm +'-' + yyyy;
     this.curatorService.createEndpoint(this.curation.name, this.curation.date).subscribe(
         result=>{
-            this.commonService.getCurations();
-        }
+            this.func.getCurationsList();
+            this.toastr.success('Curation ' + this.curation.name, 'CURATION CREATED', {
+                timeOut: 5000, positionClass: 'toast-top-right'
+              });
+            },
+            error => {
+              alert('Error creating curation:' + error.error.error);
+            }
     )
   }
 }
