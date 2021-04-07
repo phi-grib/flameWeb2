@@ -5,7 +5,6 @@ import { SearcherComponent } from '../searcher/searcher.component';
 import { ManageSpacesService } from './manage-spaces.service';
 import { CommonFunctions } from '../common.functions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-// import 'datatables.net-bs4';
 declare var $: any;
 
 @Component({
@@ -57,7 +56,6 @@ export class ManageSpacesComponent {
         
         this.space.spaces = [];
         $('#dataTableSpaces').DataTable().destroy();
-        // this.space.spaceName = this.space.spaceName;
         this.space.spaceVersion = '0';
         this.func.getSpaceList();
       },

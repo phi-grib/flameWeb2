@@ -12,7 +12,7 @@ declare var $: any;
 
 export class SpaceListComponent implements OnInit {
 
-  objectKeys = Object.keys;
+  // objectKeys = Object.keys;
 
   constructor(private func: CommonFunctions,
               public globals: Globals,

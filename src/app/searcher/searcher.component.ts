@@ -22,6 +22,11 @@ export class SearcherComponent implements OnInit {
   num_cutoff = 10;
   dist_cutoff = 0.7;
   error = false;
+  
+  // set to undefine and create in ngOnInit based on the space selected type
+  metric = 'tanimoto';
+  distanceList = ['tanimoto', 'euclidean'];
+  
   error_message = undefined;
   file = undefined;
   isvalidSketch = true;
@@ -70,7 +75,6 @@ export class SearcherComponent implements OnInit {
       this.isvalidSketch = false;
     }
   }
-
 
   search_structure () {
     var span = document.getElementById("molclipboard");

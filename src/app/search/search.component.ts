@@ -1,6 +1,5 @@
-import { Component, OnChanges, ViewChildren, QueryList, ElementRef, AfterViewInit, Input } from '@angular/core';
+import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, Input } from '@angular/core';
 import * as SmilesDrawer from 'smiles-drawer';
-import { CommonService } from '../common.service';
 import { Search, Globals, Space } from '../Globals';
 import 'datatables.net-bs4';
 declare var $: any;
@@ -10,7 +9,7 @@ declare var $: any;
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnChanges, AfterViewInit {
+export class SearchComponent implements AfterViewInit {
 
   @Input() spaceName;
   @Input() spaceVersion;
@@ -31,9 +30,6 @@ export class SearchComponent implements OnChanges, AfterViewInit {
     else {
       return ('-');
     }
-  }
-
-  ngOnChanges(): void {
   }
 
   ngAfterViewInit() {
