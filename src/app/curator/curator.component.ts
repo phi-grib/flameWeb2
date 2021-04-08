@@ -2,10 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { CommonService } from "../common.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { EditCuratedListComponent } from "../edit-curated-list/edit-curated-list.component";
-import { CuratorService } from './curator.service';
+import { CuratorService } from "./curator.service";
 import { Curation, Globals } from "../Globals";
-import { CommonFunctions } from '../common.functions';
-import { ToastrService } from 'ngx-toastr';
+import { CommonFunctions } from "../common.functions";
+import { ToastrService } from "ngx-toastr";
 
 // import { timeStamp } from "console";
 
@@ -15,8 +15,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ["./curator.component.css"],
 })
 export class CuratorComponent implements OnInit {
-
-    objectKeys = Object.keys;
+  objectKeys = Object.keys;
 
   constructor(
     private commonService: CommonService,
@@ -25,7 +24,7 @@ export class CuratorComponent implements OnInit {
     private toastr: ToastrService,
     public globals: Globals,
     public curation: Curation,
-    public func:CommonFunctions
+    public func: CommonFunctions
   ) {}
 
   ngOnInit(): void {
@@ -38,22 +37,36 @@ export class CuratorComponent implements OnInit {
     });
   }
 
-  createCuration(){
+  createCuration() {
     let date = new Date();
     let dd = date.getDate();
     let mm = date.getMonth();
     let yyyy = date.getFullYear();
-    this.curation.date = dd + '-' + mm +'-' + yyyy;
-    this.curatorService.createEndpoint(this.curation.name, this.curation.date).subscribe(
-        result=>{
-            this.func.getCurationsList();
-            this.toastr.success('Curation ' + this.curation.name, 'CURATION CREATED', {
-                timeOut: 5000, positionClass: 'toast-top-right'
-              });
-            },
-            error => {
-              alert('Error creating curation:' + error.error.error);
+    this.curation.date = dd + "-" + mm + "-" + yyyy;
+    this.curatorService
+      .createEndpoint(this.curation.name, this.curation.date)
+      .subscribe((result) => {
+          console.log(result[0]);
+          if(result[0]){
+        this.func.getCurationsList();
+        this.toastr.success(
+          "Curation " + this.curation.name,
+          "CURATION CREATED",
+          {
+            timeOut: 5000,
+            positionClass: "toast-top-right",
+          }
+        );
+         } else{
+          this.toastr.error(
+            "Curation " + this.curation.name,
+            "ALREADY EXISTS",
+            {
+              timeOut: 5000,
+              positionClass: "toast-top-right",
             }
-    )
+          );
+        };
+      });
   }
 }
