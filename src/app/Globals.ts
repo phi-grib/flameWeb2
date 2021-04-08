@@ -97,6 +97,3 @@ export class Curation {
     date = undefined;
 }
 
-//['organic', 'organic_salt','organometallic',
-//'peptide','inorganic', 'inorganic_metal','inorganic_salt','no_sanitizable',
-//'no_sanitizable_organic','no_sanitizable_inorganic','no_sanitizable_organometallic']
