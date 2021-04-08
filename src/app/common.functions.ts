@@ -348,7 +348,7 @@ export class CommonFunctions {
                 deferRender: true,
                 ordering: true,
                 pageLength: 10,
-                columnDefs: [{ type: 'date-euro', targets: 1 }],
+                columnDefs: [{ type: 'date-euro', targets: 2 }],
                 order: [[1, 'desc']],
                 destroy: true
               });
@@ -378,8 +378,18 @@ export class CommonFunctions {
   selectCuration(name: string, date: string) {
       this.curation.name = name; 
       this.curation.date = date;
+      
+      
       console.log(this.curation);
-      //this.getCurationDocumentation().subscribe()...
+      //now here is where the results from the backend are requested and asigned to every attribute of the model
+      this.commonService.getCurationDocumentation(name).subscribe(
+          result=>{
+              if(result[0]){
+                  this.curation.result = result[1];
+              }
+          }
+      )
   }
+
 
 }
