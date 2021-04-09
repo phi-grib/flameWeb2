@@ -1,20 +1,29 @@
-<div *ngIf="this.curationName!=undefined" class="alert alert-warning
+<div *ngIf="this.curationName==undefined" class="alert alert-warning
     text-center" role="alert">
     <span class="font-weight-bolder">WARNING: </span>Curation created but not
     executed. No information to show.
 </div>
-
-<div class="container">
+<div class="title">
     <h5>{{this.curationName}}</h5>
+</div>
+<div class="container">
 
+<div id="plotpie">
     <plotly-plot
         [data]="plotPie.data"
         [layout]="plotPie.layout"
         [config]="plotPie.config">
     </plotly-plot>
-    <plotly-plot
+</div>
+
+    <div id="plotbar">
+        <plotly-plot
         [data]="plotSummary.data"
         [layout]="plotSummary.layout"
         [config]="plotSummary.config">
     </plotly-plot>
+    </div>
+</div>
+<div class="card">
+    <h5> Documentation tab here</h5>
 </div>

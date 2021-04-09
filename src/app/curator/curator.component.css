@@ -74,4 +74,6 @@ tr.selected {
 .doc-container{
     width: 60%;
     height: auto;
+    padding-left: 5%;
+    margin-left:5%;
 }

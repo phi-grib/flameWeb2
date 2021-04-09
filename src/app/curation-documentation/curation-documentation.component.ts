@@ -77,8 +77,8 @@ export class CurationDocumentationComponent implements OnChanges {
           xaxis: {
             tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
           },
-          width: 400,
-          height: 300,
+          width: 350,
+          height: 250,
           showlegend: true,
           barmode: 'group'
     },
