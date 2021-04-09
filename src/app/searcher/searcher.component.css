@@ -1,0 +1,4 @@
+select option:disabled {
+    color: lightgray;
+    font-style: italic;
+}

@@ -375,6 +375,7 @@ export class CommonFunctions {
                   const isearch = this.space.spaces[i];
                   if (isearch[0] === this.space.spaceName) {
                     this.space.spaceVersion = isearch[1];
+                    this.space.spaceType = isearch[3];
                   }
               }
             }

@@ -24,9 +24,10 @@ export class SpaceListComponent implements OnInit {
     this.func.getSpaceList();
   }
 
-  selectSearch(spaceName: string, spaceVersion: string) {
+  selectSearch(spaceName: string, spaceVersion: string, spaceType: string) {
     this.space.spaceName = spaceName;
     this.space.spaceVersion = spaceVersion;
+    this.space.spaceType = spaceType;
   }
 
 }

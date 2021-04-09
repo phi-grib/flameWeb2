@@ -23,13 +23,13 @@
         </tr>
       </thead>
       <tbody>
-          <tr *ngFor="let info of this.space.spaces" (click)= "selectSearch(info[0], info[1])" [ngClass]="{'selected': this.space.spaceName===info[0] && this.space.spaceVersion===info[1]}">
-          <td>{{info[0]}}</td>
-          <td>{{info[1]}}</td>
-          <td class="text-right">{{info[2]}}</td>
-          <td class="text-right">{{info[3]}}</td>
-          <td class="text-right">{{info[4]}}</td>
-          <td class="text-right">{{info[5]}}</td>
+          <tr *ngFor="let info of this.space.spaces" (click)= "selectSearch(info[0], info[1], info[3])" [ngClass]="{'selected': this.space.spaceName===info[0] && this.space.spaceVersion===info[1]}">
+          <td>{{info[0]}}</td>  <!-- Name -->
+          <td>{{info[1]}}</td>  <!-- Ver -->
+          <td class="text-right">{{info[2]}}</td> <!-- Molecules -->
+          <td class="text-right">{{info[3]}}</td> <!-- Type -->
+          <td class="text-right">{{info[4]}}</td> <!-- Vars -->
+          <td class="text-right">{{info[5]}}</td> <!-- MDs -->
         </tr>
       </tbody>
     </table>

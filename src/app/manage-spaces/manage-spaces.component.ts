@@ -23,10 +23,11 @@ export class ManageSpacesComponent {
     public toastr: ToastrService) { 
   }
 
-  search (spaceName:string, spaceVersion:string) {
+  search (spaceName:string, spaceVersion:string, spaceType: string) {
     const modalRef = this.modalService.open(SearcherComponent, { size: 'lg'});
     modalRef.componentInstance.spaceName = spaceName;
     modalRef.componentInstance.spaceVersion = spaceVersion;
+    modalRef.componentInstance.spaceType = spaceType;
   }
 
   deleteSpace () {

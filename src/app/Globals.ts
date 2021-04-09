@@ -51,9 +51,10 @@ export class Prediction {
 export class Space {
     spaceName: string = undefined;
     spaceVersion: string = undefined;
-    spaceParameters: any;
-    spaceDocumentation: any = undefined;
-    spaceID: string = undefined;
+    spaceType: string = undefined;
+    // spaceParameters: any;
+    // spaceDocumentation: any = undefined;
+    // spaceID: string = undefined;
     spaces = [];
 }
 
@@ -66,6 +67,7 @@ export class Search {
     result = undefined;
     nameSrc = undefined;
     smileSrc = undefined;
+    metric = undefined;
 }
 
 @Injectable()

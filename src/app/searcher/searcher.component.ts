@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Search, Globals } from '../Globals';
+import { Search, Space, Globals } from '../Globals';
 import { CommonService } from '../common.service';
 import { SearcherService } from './searcher.service';
 import { ToastrService } from 'ngx-toastr';
@@ -18,14 +18,18 @@ export class SearcherComponent implements OnInit {
   spaces: {};
   spaceName = '';
   spaceVersion = '0';
+  spaceType = '';
   sketchName = 'sketched_mol';
   num_cutoff = 10;
   dist_cutoff = 0.7;
   error = false;
   
   // set to undefine and create in ngOnInit based on the space selected type
-  metric = 'tanimoto';
-  distanceList = ['tanimoto', 'euclidean'];
+  // metric = 'tanimoto';
+  // distanceList = ['tanimoto', 'euclidean'];
+  metric = undefined;
+  distanceList = ['tanimoto','euclidean','substructure'];
+  validList = { 'tanimoto': false, 'euclidean': false, 'substructure': false}
   
   error_message = undefined;
   file = undefined;
@@ -36,6 +40,7 @@ export class SearcherComponent implements OnInit {
               private renderer2: Renderer2,
               public activeModal: NgbActiveModal,
               public search: Search,
+              public space: Space,
               public globals: Globals,
               private toastr: ToastrService) { }
 
@@ -53,6 +58,21 @@ export class SearcherComponent implements OnInit {
     jsme_init.src = 'assets/jsme/initQuery.js';
     jsme_init.text = ``;
     this.renderer2.appendChild(document.body, jsme_init);
+
+    console.log ('spaceType', this.spaceType)
+
+    if (this.spaceType == 'fingerprints') {
+      this.metric = 'tanimoto' 
+      this.validList ['tanimoto'] = true;
+    }
+    else if (this.spaceType == 'descriptors') {
+      this.metric = 'euclidean';
+      this.validList ['euclidean'] = true;
+    }
+    else if (this.spaceType == 'substructure') {
+      this.metric = 'substructure';
+      this.validList ['substructure'] = true;
+    }
 
     // enclosed in a Timeout to avoid mistakes in other components while loading
     setTimeout(()=> {
@@ -163,6 +183,8 @@ export class SearcherComponent implements OnInit {
         this.search.result = result.search_results;
         this.search.nameSrc = result.obj_nam;
         this.search.smileSrc = result.SMILES;
+        this.search.metric = result.metric;
+        // console.log(result.metric)
         this.search.spaceName = this.spaceName;
         this.search.spaceVersion = this.spaceVersion;
         clearInterval(intervalId);
