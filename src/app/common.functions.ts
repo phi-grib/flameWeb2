@@ -375,10 +375,8 @@ export class CommonFunctions {
     )
   }
 
-  selectCuration(name: string, date: string) {
-      this.curation.name = name; 
-      this.curation.date = date;
-      
+  selectCuration(name: string) {
+      this.curation.name = name;       
       
       console.log(this.curation);
       //now here is where the results from the backend are requested and asigned to every attribute of the model

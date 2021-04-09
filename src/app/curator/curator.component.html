@@ -54,8 +54,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of this.curation.curations"
-                        (click)="this.func.selectCuration(item['curation_endpoint'],
-                        item['creation_date'])" [ngClass]="{'selected':
+                        (click)="this.func.selectCuration(this.curationName=item['curation_endpoint'])" [ngClass]="{'selected':
                         this.curation.name===item['curation_endpoint'] &&
                         this.curation.date===item['creation_date']}">
                         <td class="text-center">
@@ -86,6 +85,6 @@
     </div>
 </div> -->
     <div class="doc-container">
-        <app-curation-documentation></app-curation-documentation>
+        <app-curation-documentation [curationName]="this.curationName"></app-curation-documentation>
     </div>
 </div>
