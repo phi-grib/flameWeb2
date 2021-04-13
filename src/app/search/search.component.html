@@ -18,7 +18,7 @@
           <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column ID from Reference training set">Reference ID</th>
           <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column name from Reference training set">Reference name</th>
           <th data-toggle="tooltip" data-placement="top" data-html="true"  title="Reference molecule column from Reference training set">Reference molecule</th>
-          <th data-toggle="tooltip" data-placement="top" data-html="true"  title="Similarity distance score: Tanimoto for binary descriptors and Euclidean for continues ones">Similarity</th>
+          <th *ngIf="this.search.metric!='substructural' && this.search.metric!='smarts' " data-toggle="tooltip" data-placement="top" data-html="true"  title="Similarity distance score: Tanimoto for binary descriptors and Euclidean for continues ones">Similarity</th>
         </tr>
       </thead>
       <tbody>
@@ -30,7 +30,7 @@
             <td class="align-middle">{{this.objID(i,j)}}</td>
             <td class="align-middle">{{this.search.result[i].obj_nam[j]}}</td>
             <td class="align-middle"><canvas #cmp id="{{'ref_' + i + '_' + j}}" width="300" height="150">{{this.search.result[i].SMILES[j]}}</canvas></td>
-            <td class="align-middle">{{this.search.result[i].distances[j].toFixed(3)}}</td>
+            <td *ngIf="this.search.metric!='substructural' && this.search.metric!='smarts' " class="align-middle">{{this.search.result[i].distances[j].toFixed(3)}}</td>
           </tr>
         </ng-container>
       </tbody>
