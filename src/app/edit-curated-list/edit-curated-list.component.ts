@@ -58,8 +58,6 @@ export class EditCuratedListComponent implements OnInit {
       this.curatorservice,
       this.func
     );
-    console.log(this.spaceBar);
-    console.log(this.tab);
   }
 
   seeObj() {
@@ -70,41 +68,11 @@ export class EditCuratedListComponent implements OnInit {
     this.ObjCuratedList.separator = selectValue;
   }
 
-  // preloadFileFunction(event: { target: { files: any[]; }; }): void {
-
-  //   this.eventFile= event;
-  //   const file = event.target.files[0];
-  //   this.model.file = file;
-  //   this.model.file_info = {};
-  //   this.model.file_info['name'] = file.name;
-  //   this.model.file_info['size_M'] = ((file.size / 1024) / 1024).toFixed(2);
-  //   const extension = file.name.split('.');
-  //   this.model.file_info['type_file'] = extension[1];
-  //   const fileReader: FileReader = new FileReader();
-  //   const self = this;
-  //   fileReader.onloadend = function (x) {
-  //     self.fileContent = fileReader.result;
-  //     self.fileContent.replace("\t", ",");
-  //     var reRow = new RegExp("((.*)" + self.ObjCuratedList.separator + "(.*)*$)", "mg");
-  //     self.model.file_info['num_mols'] = (self.fileContent.match(reRow) || []).length - 1;
-  //     const res_array = self.fileContent.match(/>( )*<(.*)>/g);
-  //     var reCol = new RegExp('((.*)' + self.ObjCuratedList.separator + '|(.*)$)')
-
-  //     var colNamesSearch = self.fileContent.match(reCol);
-  //     var colNames = colNamesSearch[0].split(',');
-  //     colNames = colNames.filter(item => item);
-  //     self.ObjCuratedList.columns = colNames;
-  //   };
-  //   fileReader.readAsText(file);
-  // }
-
   onchangeSelected(selected) {
-    console.log(selected);
     this.ObjCuratedList.selectedColumns.push(selected);
   }
 
   onchangeSelectedAll(selected) {
-    console.log(selected);
     this.ObjCuratedList.selectedColumns = selected;
   }
 
@@ -134,36 +102,13 @@ export class EditCuratedListComponent implements OnInit {
     };
     fileReader.readAsText(file);
   }
-
+  //based on the selectedColumns, no matter the order of selection, returns
   createJSONstring(): any {
-    //     var lines = this.fileContent.split('\n').filter(item=> item);
-    //     var headers = lines[0].split(" ").filter(item=> item);
-    //     let splittedLines = [];
-    //     for (let k = 1; k <= lines.length - 1; k++) {
-    //         splittedLines.push(lines[k].split(this.ObjCuratedList.separator).filter(item=> item));
-    //     }
-    //     this.fileDict ={}
-    //     console.log(splittedLines);
-    //     for(let i=0;i<splittedLines.length;i++){
-    //         for(let j=0;j<headers.length;j++)
-    //         this.fileDict[headers[j]] = splittedLines[i][j];
-    //         console.log(this.fileDict);
-    //     }
-    //     console.log(this.finalArray);
-    //     return this.fileDict;
-    //   }
     var cleaning = this.fileContent.replace("\r", "");
     var lines = cleaning.split("\n").filter((item) => item);
-    console.log(lines);
     var headers = lines[0]
       .split(this.ObjCuratedList.separator)
       .filter((item) => item);
-    lines.forEach(element=> {
-        if(element.includes("\r")){
-            console.log(element.replace("\r", ""));
-        }
-    });
-    console.log(headers);
     let filtered = [];
     let temp = [];
     for (let k = 1; k < lines.length - 1; k++) {
@@ -171,7 +116,6 @@ export class EditCuratedListComponent implements OnInit {
       filtered.push(temp.filter((item) => item));
     }
     let result = [];
-    console.log(filtered);
     var objectArray = [];
 
     filtered.forEach((r) => {
@@ -181,10 +125,7 @@ export class EditCuratedListComponent implements OnInit {
       });
       objectArray.push(obj);
     });
-    this.finalDict = objectArray;
-    console.log(this.finalDict);
-
-    
+    this.finalDict = objectArray;    
   }
 
   submitCuration(name: string, date: string) {
