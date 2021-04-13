@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Model, Prediction, Globals } from './Globals';
+import { Model, Prediction, Globals, Curation } from './Globals';
 import { environment } from '../environments/environment';
 declare var $: any;
 
@@ -15,7 +15,8 @@ export class AppComponent implements OnInit {
   constructor(
     public prediction: Prediction,
     public model: Model,
-    public globals: Globals
+    public globals: Globals,
+    public curation: Curation
     ) {}
 
     toxhub: any;

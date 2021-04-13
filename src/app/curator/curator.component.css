@@ -59,7 +59,7 @@ tr.selected {
 }
 
 #divTableCurations{
-    width: 40%;
+    width: 100%;
     height: auto;
 }
 
@@ -71,9 +71,3 @@ tr.selected {
     margin: 0;
 }
 
-.doc-container{
-    width: 60%;
-    height: auto;
-    padding-left: 5%;
-    margin-left:5%;
-}

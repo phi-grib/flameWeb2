@@ -48,7 +48,6 @@ export class CuratorComponent implements OnInit {
     this.curatorService
       .createEndpoint(this.curation.name, this.curation.date)
       .subscribe((result) => {
-          console.log(result[0]);
           if(result[0]){
         this.func.getCurationsList();
         this.toastr.success(

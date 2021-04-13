@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Model } from '../Globals';
+import { Model, Curation } from '../Globals';
 
 @Component({
   selector: 'app-validations',
@@ -11,7 +11,8 @@ export class ValidationsComponent {
 
   @Input() name;
   @Input() version;
+  @Input() curationName;
 
-  constructor(public model: Model) { }
+  constructor(public model: Model, public curation: Curation) { }
 
 }
