@@ -6,7 +6,7 @@
                             [modelName]="this.model.name" [modelVersion]= "this.model.version" [modelID]="this.model.modelID"></app-quantit-conformal>
 
     <app-model-documentation [modelName]="this.model.name" [modelVersion]="this.model.version" [modelID]="this.model.modelID"></app-model-documentation>
-    <app-curation-documentation [curationName]="this.curationName"></app-curation-documentation>
+
 </div> 
 
 <div class="m-3" *ngIf="this.model.name !=undefined && this.model.error!=undefined  && !this.model.trained">

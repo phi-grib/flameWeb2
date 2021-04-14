@@ -354,16 +354,20 @@ export class CommonFunctions {
               });
 
               if (this.curation.curations.length > 0) {
+                  
                 this.curation.name = $('#dataTableCurations tbody tr:first td:first').text();
               for(let i=0; i<this.curation.curations.length;i++){
                   let icur = this.curation.curations[i];
-                  this.curation.name = icur['curation_endpoint'];
+                  console.log(icur);
+                  this.curation.name = icur['endpoint'];
                   this.curation.date = icur['creation_date'];
+                  this.curation.fileName = icur['input_file'];
+                  console.log(this.curation.fileName);
               }
                     }
 
               this.globals.tableCurationVisible = true;
-            }, 10);
+            }, 50);
           } 
           else {
             alert(result[1]);

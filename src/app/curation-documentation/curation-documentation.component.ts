@@ -15,7 +15,8 @@ export class CurationDocumentationComponent implements OnChanges {
   constructor(
     public curationService: CurationDocumentationService,
     public func: CommonFunctions,
-    public curation: Curation
+    public curation: Curation,
+    public commonService: CommonService
   ) {}
 
   @Input() curationName;
@@ -108,29 +109,19 @@ export class CurationDocumentationComponent implements OnChanges {
   };
 
   ngOnChanges(): void {
-    this.fakeDataGenerator();
-    this.plotPie.data[0].values = [
-      this.fakefoundSubstances["organic"],
-      this.fakefoundSubstances["organometallic"],
-      this.fakefoundSubstances["no_sanitizable"],
-    ];
-    this.plotSummary.data[0].y = [
-      this.fakeStats["total_curated"],
-      this.fakeStats["non_curated"],
-    ];
-    this.curation.date = "13-04-2021";
-    this.curation.fileName = "inputFile";
+  this.getDocumentation();
   }
 
   getDocumentation() {
-    // this.documentationVisible = false;
-    // this.curationService.getDocumentation(this.curationName).subscribe(
-    //     result=>{
-    //         if(result[0]){
-    //             this.curationDocumentation = result[1];
-    //         }
-    //     }
-    // )
+    this.documentationVisible = false;
+    this.commonService.getCurationDocumentation(this.curation.fileName, this.curationName).subscribe(
+        result=>{
+            if(result[0]){
+                this.curationDocumentation = result[1];
+                console.log(this.curationDocumentation);
+            }
+        }
+    )
   }
   //fake data in order to work while the backend is not ready yet: two functions below
   fakeDataGenerator() {

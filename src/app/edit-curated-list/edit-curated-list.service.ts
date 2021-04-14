@@ -13,13 +13,14 @@ export class EditCuratedListService {
 ) { }
 
     //updates an endpoint based on its name and sends the file to be curated in a string json formated
-  createCuratedList(name: string, finalDict: string){
+    curateList(name: string){
     const url: string= environment.baseUrl_curate+'curate/'+ name;
     let formData = new FormData();
-    formData.append('finalDict', finalDict)
+    formData.append('name', name)
     console.log(name);
     return this.http.put(url, name);
   }
 
+  
   
 }

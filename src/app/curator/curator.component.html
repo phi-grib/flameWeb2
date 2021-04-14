@@ -5,7 +5,7 @@
             data-target="#newModalCuration">New</button>
         <button type="button" class="btn btn-ets-up"
             (click)="curationSettings()">Curate</button>
-        <button type="button" class="btn btn-ets-do">Delete</button>
+        <button type="button" class="btn btn-ets-do" (click)="deleteEndpoint(this.curationName)">Delete</button>
     </div>
 </div>
 <div class="container">
@@ -54,24 +54,24 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of this.curation.curations"
-                        (click)="this.func.selectCuration(this.curationName=item['curation_endpoint'])" [ngClass]="{'selected':
-                        this.curation.name===item['curation_endpoint'] &&
+                        (click)="this.func.selectCuration(this.curationName=item['endpoint'])" [ngClass]="{'selected':
+                        this.curation.name===item['endpoint'] &&
                         this.curation.date===item['creation_date']}">
                         <td class="text-center">
                             <i class="fas"
                                 [ngClass]="{
                                 'fa-grip-lines':
-                                this.curation.fileName==undefined,
-                                'fa-circle': this.curation.date!=undefined,
+                               this.curation.result,
+                                'fa-circle': this.curation.fileName=='unk' || this.curation.fileName==undefined,
                                 'fa-times': this.curation.result==undefined,
-                                'faa-flash animated': this.curation.result}"
+                                'faa-flash animated': this.curation.fileName =='unk' || this.curation.fileName==undefined}"
                                 [ngStyle]="{'color': this.curation.fileName ?
                                 '#E69400' : (this.curation.stats ? '#51cf66' :
                                 'red'
                                 ) }"
                                 aria-hidden="true"></i>
                         </td>
-                        <td>{{item['curation_endpoint']}}</td>
+                        <td>{{item['endpoint']}}</td>
                         <td>{{item['creation_date']}}</td>
                     </tr>
                 </tbody>

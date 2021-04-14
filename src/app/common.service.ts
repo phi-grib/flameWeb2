@@ -64,7 +64,7 @@ export class CommonService {
   }
 
   getCurationDocumentation(name: string){
-    const url: string = environment.baseUrl_curate + 'curate/' + name;
+    const url: string = environment.baseUrl_curate + 'curate/'+ name;
     return this.http.get(url);
   }     
 }

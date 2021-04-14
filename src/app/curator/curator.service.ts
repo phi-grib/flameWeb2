@@ -15,6 +15,11 @@ export class CuratorService {
     formData.append('date', date);
     return this.http.post(url, name);
   }
+
+  deleteEndpoint(name: string){
+    const url: string = environment.baseUrl_cmanage + 'delete/' + name;
+    return this.http.delete(url);  
+  }
 }
 
 

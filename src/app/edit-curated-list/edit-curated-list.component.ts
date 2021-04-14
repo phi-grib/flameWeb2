@@ -128,9 +128,14 @@ export class EditCuratedListComponent implements OnInit {
     this.finalDict = objectArray;    
   }
 
-  submitCuration(name: string, date: string) {
-    this.editService.createCuratedList(name, date).subscribe((result) => {
-      this.func.getCurationsList();
-    });
+  submitList(name: string){
+    this.editService.curateList(name).subscribe(
+        result=>{
+            if(result[0]){
+                this.func.getCurationsList();
+
+            }
+        }
+    )  
   }
 }

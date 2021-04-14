@@ -18,7 +18,6 @@ export class CuratorComponent implements OnInit {
   objectKeys = Object.keys;
   curationName: string;
 
-
   constructor(
     private commonService: CommonService,
     private modalCuratorService: NgbModal,
@@ -48,17 +47,18 @@ export class CuratorComponent implements OnInit {
     this.curatorService
       .createEndpoint(this.curation.name, this.curation.date)
       .subscribe((result) => {
-          if(result[0]){
-        this.func.getCurationsList();
-        this.toastr.success(
-          "Curation " + this.curation.name,
-          "CURATION CREATED",
-          {
-            timeOut: 5000,
-            positionClass: "toast-top-right",
-          }
-        );
-         } else{
+        if (result[0]) {
+          $("#dataTableCurations").DataTable().destroy();
+          this.func.getCurationsList();
+          this.toastr.success(
+            "Curation " + this.curation.name,
+            "CURATION CREATED",
+            {
+              timeOut: 5000,
+              positionClass: "toast-top-right",
+            }
+          );
+        } else {
           this.toastr.error(
             "Curation " + this.curation.name,
             "ALREADY EXISTS",
@@ -67,7 +67,32 @@ export class CuratorComponent implements OnInit {
               positionClass: "toast-top-right",
             }
           );
-        };
+        }
       });
+  }
+
+  deleteEndpoint(name: string) {
+    this.curatorService.deleteEndpoint(name).subscribe((result) => {
+      if (result[0]) {
+        this.func.getCurationsList();
+        this.toastr.success(
+          "Curation " + this.curation.name,
+          "CURATION DELETED",
+          {
+            timeOut: 5000,
+            positionClass: "toast-top-right",
+          }
+        );
+      } else {
+        this.toastr.error(
+          "Curation " + this.curation.name,
+          "ERROR: COULD'T DELETE",
+          {
+            timeOut: 5000,
+            positionClass: "toast-top-right",
+          }
+        );
+      }
+    });
   }
 }

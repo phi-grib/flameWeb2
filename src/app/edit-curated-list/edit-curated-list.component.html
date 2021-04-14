@@ -106,7 +106,7 @@
     </div>
     <div class="row">
         <div class="col-sm">
-            <button type="submit" (click)="submitList()" class="btn
+            <button type="submit" (click)="submitList(this.func.curation.name)" class="btn
                 btn-ets-up mb"
                 *ngIf="!this.ObjCuratedList.selectedColumns">Submit</button>
         </div>
