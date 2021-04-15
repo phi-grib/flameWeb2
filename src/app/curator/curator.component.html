@@ -63,9 +63,9 @@
                                 'fa-grip-lines':
                                this.curation.result,
                                 'fa-circle': this.curation.fileName=='unk' || this.curation.fileName==undefined,
-                                'fa-times': this.curation.result==undefined,
-                                'faa-flash animated': this.curation.fileName =='unk' || this.curation.fileName==undefined}"
-                                [ngStyle]="{'color': this.curation.fileName ?
+                                'fa-times': this.curation.fileName!='unk' || this.curation.fileName!=undefined,
+                                'faa-flash animated': !this.curation.result}"
+                                [ngStyle]="{'color': this.curation.result ?
                                 '#E69400' : (this.curation.stats ? '#51cf66' :
                                 'red'
                                 ) }"

@@ -114,7 +114,7 @@ export class CurationDocumentationComponent implements OnChanges {
 
   getDocumentation() {
     this.documentationVisible = false;
-    this.commonService.getCurationDocumentation(this.curation.fileName, this.curationName).subscribe(
+    this.commonService.getCurationDocumentation(this.curationName).subscribe(
         result=>{
             if(result[0]){
                 this.curationDocumentation = result[1];

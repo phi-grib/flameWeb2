@@ -8,6 +8,7 @@ import { CommonFunctions } from "../common.functions";
 import { ToastrService } from "ngx-toastr";
 
 // import { timeStamp } from "console";
+declare var $: any;
 
 @Component({
   selector: "app-curator",
@@ -17,6 +18,8 @@ import { ToastrService } from "ngx-toastr";
 export class CuratorComponent implements OnInit {
   objectKeys = Object.keys;
   curationName: string;
+
+
 
   constructor(
     private commonService: CommonService,
