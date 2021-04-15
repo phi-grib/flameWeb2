@@ -113,6 +113,7 @@ export class CurationDocumentationComponent implements OnChanges {
       this.curation.stats = undefined;
       this.curation.substance = undefined;
       this.curation.error = undefined;
+      this.curation.date = undefined;
       this.plotPie.data[0].labels = [];
       this.plotPie.data[0].values =[];
       this.plotSummary.data[0].y = [];
