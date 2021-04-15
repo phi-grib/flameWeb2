@@ -95,7 +95,7 @@
                 </div>
                 <div class="col-7 info scrollable v-100">
                     <!-- <div *ngIf="(this.prediction.name != undefined) && (this.predictionTabActive)"> -->
-                    <div *ngIf="(this.curation.name != undefined) &&
+                    <div *ngIf="(this.curation.fileName) &&
                         (this.globals.mainTabActive=='#curator')">
                         <app-curation-documentation [curationName]=this.curation.name></app-curation-documentation>
                     </div>

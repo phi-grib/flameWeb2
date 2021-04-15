@@ -1,4 +1,4 @@
-<div *ngIf="this.curationName==undefined" class="alert alert-warning
+<div *ngIf="this.curation.error=='No file sent'" class="alert alert-warning
     text-center" role="alert">
     <span class="font-weight-bolder">WARNING: </span>Curation created but not
     executed. No information to show.
@@ -6,7 +6,7 @@
 <div class="title">
     <h5>{{this.curationName}}</h5>
 </div>
-<div class="container">
+<div class="container" *ngIf="this.curation.error!='No file sent'">
 
 <div id="plotpie">
     <plotly-plot
@@ -23,7 +23,8 @@
         [config]="plotSummary.config">
     </plotly-plot>
     </div>
-</div>
-<div class="card">
-    <h5> Documentation tab here</h5>
+    <div class="card">
+        <h5> Documentation tab here</h5>
+    </div>
+    
 </div>

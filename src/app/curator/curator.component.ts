@@ -18,6 +18,7 @@ declare var $: any;
 export class CuratorComponent implements OnInit {
   objectKeys = Object.keys;
   curationName: string;
+  fileRegex = new RegExp('.*\..*');
 
 
 
@@ -48,7 +49,7 @@ export class CuratorComponent implements OnInit {
     let yyyy = date.getFullYear();
     this.curation.date = dd + "-" + mm + "-" + yyyy;
     this.curatorService
-      .createEndpoint(this.curation.name, this.curation.date)
+      .createEndpoint(this.curation.name)
       .subscribe((result) => {
         if (result[0]) {
           $("#dataTableCurations").DataTable().destroy();
@@ -77,6 +78,7 @@ export class CuratorComponent implements OnInit {
   deleteEndpoint(name: string) {
     this.curatorService.deleteEndpoint(name).subscribe((result) => {
       if (result[0]) {
+        $("#dataTableCurations").DataTable().destroy();
         this.func.getCurationsList();
         this.toastr.success(
           "Curation " + this.curation.name,

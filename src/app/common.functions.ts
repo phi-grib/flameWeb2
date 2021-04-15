@@ -359,9 +359,9 @@ export class CommonFunctions {
               for(let i=0; i<this.curation.curations.length;i++){
                   let icur = this.curation.curations[i];
                   console.log(icur);
-                  this.curation.name = icur['endpoint'];
+                  this.curation.name = icur['curation_endpoint'];
                   this.curation.date = icur['creation_date'];
-                  this.curation.fileName = icur['input_file'];
+                  this.curation.fileName = icur['curation_output'];
                   console.log(this.curation.fileName);
               }
                     }
@@ -381,12 +381,13 @@ export class CommonFunctions {
 
   selectCuration(name: string) {
       this.curation.name = name;       
-      
+      console.log(name);
       //now here is where the results from the backend are requested and asigned to every attribute of the model
       this.commonService.getCurationDocumentation(name).subscribe(
           result=>{
               if(result[0]){
                   this.curation.result = result[1];
+                  console.log(this.curation.result);
               }
           }
       )

@@ -9,10 +9,8 @@ export class CuratorService {
 
   constructor(private http: HttpClient) { }
 
-  createEndpoint(name: string, date: string){
+  createEndpoint(name: string){
     const url: string = environment.baseUrl_curate + 'curate/' + name;
-    let formData = new FormData();
-    formData.append('date', date);
     return this.http.post(url, name);
   }
 

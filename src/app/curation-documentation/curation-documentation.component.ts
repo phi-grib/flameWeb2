@@ -27,6 +27,7 @@ export class CurationDocumentationComponent implements OnChanges {
   fileToUpload: File = null;
   public documentationVisible = false;
   objectKeys = Object.keys;
+  substances =[];
 
   //fake data for testing purposes
   fakesubsArray = [
@@ -75,7 +76,7 @@ export class CurationDocumentationComponent implements OnChanges {
   plotSummary = {
     data: [
       {
-        x: ["Curated", "Not curated"],
+        x: ["Processed SMILES", "Unable to process"],
         y: [],
         name: "Curation results",
         type: "bar",
@@ -109,6 +110,12 @@ export class CurationDocumentationComponent implements OnChanges {
   };
 
   ngOnChanges(): void {
+      this.curation.stats = undefined;
+      this.curation.substance = undefined;
+      this.curation.error = undefined;
+      this.plotPie.data[0].labels = [];
+      this.plotPie.data[0].values =[];
+      this.plotSummary.data[0].y = [];
   this.getDocumentation();
   }
 
@@ -118,24 +125,36 @@ export class CurationDocumentationComponent implements OnChanges {
         result=>{
             if(result[0]){
                 this.curationDocumentation = result[1];
-                console.log(this.curationDocumentation);
+                this.curation.stats = this.curationDocumentation['curation_stats'];
+                this.curation.substance = this.curationDocumentation['substance_types'];
+                this.plotSummary.data[0].y =[this.curation.stats['Processed SMILES'], 
+                this.curation.stats['Unable to process']];
+                this.plotPie.data[0].labels = this.getPresentKeys();
+                this.plotPie.data[0].values = this.getPresentValues();
+                console.log(this.plotPie.data[0].labels);
+            }else{
+                this.curation.error = 'No file sent';
+                console.log(this.curation.error);
             }
         }
     )
   }
-  //fake data in order to work while the backend is not ready yet: two functions below
-  fakeDataGenerator() {
-    this.fakeStats["total_curated"] = this.getRandomInt().toString();
-    this.fakeStats["total_input"] = this.getRandomInt().toString();
-    this.fakeStats["non_curated"] = this.getRandomInt().toString();
-    this.fakefoundSubstances["organic"] = this.getRandomInt().toString();
-    this.fakefoundSubstances["organometallic"] = this.getRandomInt().toString();
-    this.fakefoundSubstances["no_sanitizable"] = this.getRandomInt().toString();
+
+  getPresentKeys():string[]{
+    for(let i=0; i<this.objectKeys(this.curation.substance).length;i++){
+        let item = this.objectKeys(this.curation.substance)[i];
+        this.substances.push(item);
+    }
+    return this.substances;
   }
 
-  getRandomInt() {
-    let num: number;
-    num = Math.floor(Math.random() * 100);
-    return num;
+  getPresentValues(){
+    let values = [];
+    for(let i=0;i<this.substances.length;i++){
+        let item = this.curation.substance[this.substances[i]];
+        values.push(item);
+    }  
+    return values;
   }
+  
 }
