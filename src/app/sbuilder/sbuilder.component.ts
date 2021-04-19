@@ -5,6 +5,7 @@ import { SbuilderService } from './sbuilder.service';
 import { CommonService } from '../common.service';
 import { CommonFunctions } from '../common.functions';
 import { ToastrService } from 'ngx-toastr';
+declare var $: any;
 
 @Component({
   selector: 'app-sbuilder',
