@@ -16,10 +16,10 @@ export class ManageSpacesService {
    * @param model Name of the model to add
    */
   
-  // createModel(model: string): Observable<any> {
-  //   const url: string = environment.baseUrl_manage + 'model/' + model;
-  //   return this.http.post(url, null);
-  // }
+  createSpace(space: string): Observable<any> {
+    const url: string = environment.baseUrl_smanage + 'space/' + space;
+    return this.http.post(url, null);
+  }
 
   deleteSpace(space: string): Observable<any>  {
     const url: string = environment.baseUrl_smanage + 'space/' + space;
@@ -29,6 +29,11 @@ export class ManageSpacesService {
   deleteVersion(space: string, version: string) {
     const url: string = environment.baseUrl_smanage + 'space/' + space + '/version/' + version;
     return this.http.delete(url);
+  }
+
+  cloneSpace(space: string) {
+    const url: string = environment.baseUrl_smanage + 'space/' + space;
+    return this.http.put(url,null);
   }
 
 }

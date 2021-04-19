@@ -48,7 +48,8 @@ export class PredictorComponent implements OnInit {
 
     const jsme_init = this.renderer2.createElement('script');
     jsme_init.type = 'text/javascript';
-    jsme_init.src = 'assets/jsme/init.js';
+    // jsme_init.src = 'assets/jsme/init.js';
+    jsme_init.src = 'assets/jsme/initQuery.js';
     jsme_init.text = ``;
     this.renderer2.appendChild(document.body, jsme_init);
 

@@ -14,7 +14,8 @@
     <table class="table" id="dataTableSpaces">
       <thead>
         <tr>
-          <th style="width: 40%">Name</th>
+          <th style="width: 5%"></th>
+          <th style="width: 35%">Name</th>
           <th style="width: 5%">Ver</th>
           <th class="text-right" style="width: 10%">Molecules</th>
           <th class="text-right" style="width: 15%">Type</th>
@@ -24,6 +25,16 @@
       </thead>
       <tbody>
           <tr *ngFor="let info of this.space.spaces" (click)= "selectSearch(info[0], info[1], info[3])" [ngClass]="{'selected': this.space.spaceName===info[0] && this.space.spaceVersion===info[1]}">
+          <td class="text-center">
+            <i class = "fas" 
+              [ngClass]="{
+              'fa-grip-lines': info[3] != 'descriptors',
+              'fa-circle':     info[3] == 'descriptors',
+              'fa-times':      info[3] == 'unk'}"
+              [ngStyle]="{'color': info[3] != 'unk' ? '#51cf66' : 'red'}" 
+            aria-hidden="true"></i> 
+          </td>
+          
           <td>{{info[0]}}</td>  <!-- Name -->
           <td>{{info[1]}}</td>  <!-- Ver -->
           <td class="text-right">{{info[2]}}</td> <!-- Molecules -->

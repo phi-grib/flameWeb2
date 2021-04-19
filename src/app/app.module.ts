@@ -39,6 +39,8 @@ import { SearcherComponent } from './searcher/searcher.component';
 import { SpaceListComponent } from './space-list/space-list.component';
 import { SearchComponent } from './search/search.component';
 import { ManageSpacesComponent } from './manage-spaces/manage-spaces.component';
+import { SbuilderComponent } from './sbuilder/sbuilder.component';
+import { ConfigStrainingComponent } from './config-straining/config-straining.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -76,7 +78,9 @@ PlotlyModule.plotlyjs = PlotlyJS;
     SearcherComponent,
     SpaceListComponent,
     SearchComponent,
-    ManageSpacesComponent
+    ManageSpacesComponent,
+    SbuilderComponent,
+    ConfigStrainingComponent
   ],
   imports: [
     BrowserModule,

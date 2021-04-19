@@ -49,10 +49,14 @@ export class Prediction {
 
 @Injectable()
 export class Space {
+    file: any = undefined;  // Name of file uploaded in the second step
     spaceName: string = undefined;
     spaceVersion: string = undefined;
     spaceType: string = undefined;
-    // spaceParameters: any;
+    trained: boolean = false;
+    incremental = false;
+    parameters: any;
+    delta: any = {};
     // spaceDocumentation: any = undefined;
     // spaceID: string = undefined;
     spaces = [];

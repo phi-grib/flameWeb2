@@ -1,0 +1,46 @@
+<!--Input type-->
+<div class="form-row">
+    <div *ngFor="let key of infoSeries" class="form-group col-md-4 mb-4 is-filled">
+        <div *ngIf="this.space.parameters[key].writable">
+        <label class="bmd-label-static" for="key">{{key.replace('_',' ')}}</label>
+            <input class="form-control" [(ngspace)]="this.space.parameters[key].value" *ngIf="this.space.parameters[key].object_type==='int'" id="key" type='number'  >
+            <input class="form-control" [(ngspace)]="this.space.parameters[key].value" *ngIf="this.space.parameters[key].object_type==='float'" id="key" type='number' step=0.01 >
+            <input class="form-control" [(ngspace)]="this.space.parameters[key].value" *ngIf="this.space.parameters[key].object_type==='string'" id="key" type='text'>
+            <input class="form-control" [(ngspace)]="this.space.parameters[key].value" *ngIf="this.space.parameters[key].object_type==='list'" id="key" type='text'>
+        </div>
+        <div class="checkbox" *ngIf="!this.space.parameters[key].writable && this.space.parameters[key].object_type==='boolean'">
+        <label>
+            <input  type="checkbox" [(ngspace)]="this.space.parameters[key].value">
+            {{key.replace('_',' ')}}
+        </label>
+    </div>  
+
+    <div *ngIf="!this.space.parameters[key].writable && this.space.parameters[key].object_type!='list' && this.space.parameters[key].object_type!='boolean'">
+        <label class="bmd-label-static" for="key">{{key.replace('_',' ')}}</label>
+        <select id="key" class="form-control" [(ngspace)]="this.space.parameters[key].value"> 
+            <option *ngFor="let value of this.space.parameters[key].options" [value]='value'>
+            <div *ngIf="value==null">
+                --none--
+            </div>
+            <div *ngIf="value!=null" >
+                {{value}}
+            </div>   
+            </option>
+        </select>
+    </div>
+
+    <div class="checkbox mt-3" *ngIf="!this.space.parameters[key].writable && this.space.parameters[key].object_type==='list'">
+        <label id="key" class="bmd-label-static mb-2 p-0">{{key.replace('_',' ')}}</label>
+        <label id="key" class="mr-2 mb-2 w-100" *ngFor="let value of this.space.parameters[key].options">
+            <input id="key" type="checkbox"
+                [(checklist)]="this.space.parameters[key].value"
+                [checklistValue]="value" />
+                {{value}}
+        </label>
+        </div>
+        <small id="key" class="text-muted">
+        {{this.space.parameters[key].description}}
+        </small>
+    </div>
+
+</div>

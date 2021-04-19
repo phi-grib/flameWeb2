@@ -59,7 +59,7 @@ export class SearcherComponent implements OnInit {
     jsme_init.text = ``;
     this.renderer2.appendChild(document.body, jsme_init);
 
-    console.log ('spaceType', this.spaceType)
+    // console.log ('spaceType', this.spaceType)
 
     if (this.spaceType == 'fingerprints') {
       this.metric = 'tanimoto' 

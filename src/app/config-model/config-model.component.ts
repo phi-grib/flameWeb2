@@ -88,7 +88,7 @@ export class ConfigModelComponent implements AfterContentChecked {
       this.model.parameters['quantitative'].value = false;
       // this.model.parameters['conformal'].value = false;
     }
-    console.log(this.model.parameters['conformal_settings'].value)
+    // console.log(this.model.parameters['conformal_settings'].value)
   }
 
 }

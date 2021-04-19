@@ -333,6 +333,7 @@ export class CommonFunctions {
     this.commonService.getSpaceList().subscribe(
       result => {
         if (result[0]) {
+          this.globals.tableSpaceVisible = false;
 
           for (const i in result[1]) {
             const iresult = result[1][i];
@@ -340,45 +341,62 @@ export class CommonFunctions {
             const ivers = iresult['version'];
             const iinfo = iresult['info'];
             const inobj = iinfo[0][2];
+
             var itype = 'unk';
             if (iinfo[2] != undefined ){
-              if (iinfo[2][0] != 'modelID')
+              if (iinfo[2][0] == 'type')
                 itype = iinfo[2][2];
             }
+          
             var ivars = '';
             if (iinfo[4] != undefined ){
-              ivars = iinfo[4][2];
+              if (iinfo[4][0] == 'nvar')
+                ivars = iinfo[4][2];
             }
+            
             var imd = '';
-            if (iinfo[4] != undefined ){
-              imd = iinfo[3][2];
+            if (iinfo[3] != undefined ){
+              if (iinfo[3][0] == 'descriptors')
+                imd = iinfo[3][2];
             }
             this.space.spaces.push ([iname, ivers, inobj, itype, ivars, imd]);
           }
-          this.globals.tableSpaceVisible = false;
           
           setTimeout(() => {
             const table = $('#dataTableSpaces').DataTable({
-              /*Ordering by date */
-              // autoWidth: false,
-              // deferRender: true,
               ordering: true,
               pageLength: 10,
-              // columnDefs: [{ 'type': 'date-euro', 'targets': 4 }],
-              // order: [[4, 'desc']],
-              destroy: true
             });
 
+            // by default selects the first space and the last version of the space
             if (this.space.spaces.length > 0) {
-              this.space.spaceName = $('#dataTableSpaces tbody tr:first td:first').text();
-              for (var i=0; i < this.space.spaces.length; i++ ) {
-                  const isearch = this.space.spaces[i];
-                  if (isearch[0] === this.space.spaceName) {
-                    this.space.spaceVersion = isearch[1];
-                    this.space.spaceType = isearch[3];
-                  }
+              if (this.space.spaceName == undefined) {
+                this.space.spaceName = $('#dataTableSpaces tbody tr:first td:eq(1)').text();
               }
+
+              // if version is undefined, select the first version for this space
+              if (this.space.spaceVersion == undefined) {
+                for (var i=0; i < this.space.spaces.length; i++ ) {
+                    const isearch = this.space.spaces[i];
+                    if (isearch[0] === this.space.spaceName) {
+                      this.space.spaceVersion = isearch[1];
+                      this.space.spaceType = isearch[3];
+                      break;
+                    }
+                }
+              }
+              // else, select the spaceType for the corresponding name and version 
+              else {
+                for (var i=0; i < this.space.spaces.length; i++ ) {
+                  const isearch = this.space.spaces[i];
+                  if (isearch[0] === this.space.spaceName && isearch[1] === this.space.spaceVersion) {
+                    this.space.spaceType = isearch[3];
+                    break;
+                  }
+                }
+              } 
             }
+            // console.log (this.space.spaceName, this.space.spaceVersion, this.space.spaceType)
             this.globals.tableSpaceVisible = true;
           }, 10);
         } 
