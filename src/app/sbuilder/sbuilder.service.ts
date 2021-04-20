@@ -17,11 +17,14 @@ export class SbuilderService {
   buildSpace(): Observable<any> {
 
     const formData = new FormData();
-    formData.append('SDF', this.space.file);
+    if (this.space.file != undefined) {
+      formData.append('SDF', this.space.file);
+    }
     formData.append('parameters', JSON.stringify(this.space.delta));
     formData.append('incremental', JSON.stringify(this.space.incremental));
     const url: string = environment.baseUrl_sbuild + 'space/' + this.space.spaceName;
 
+    // console.log(this.space.file,  JSON.stringify(this.space.delta),  JSON.stringify(this.space.incremental))  ;
     return this.http.post(url, formData);
 
   }

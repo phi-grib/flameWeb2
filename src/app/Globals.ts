@@ -32,6 +32,23 @@ export class Model {
 }
 
 @Injectable()
+export class Space {
+    file: any = undefined;  // Name of file uploaded in the second step
+    spaceName: string = undefined;
+    spaceVersion: string = undefined;
+    spaceType: string = undefined;
+    building = ['',0];
+    file_info = undefined; // Info file ej. num mols, variables
+    file_fields = undefined;
+    incremental = false;
+    parameters: any;
+    delta: any = {};
+    // spaceDocumentation: any = undefined;
+    // spaceID: string = undefined;
+    spaces = [];
+}
+
+@Injectable()
 export class Prediction {
     name: string = undefined;   // Name of the model selected in the first step
     modelName: string = undefined;
@@ -47,20 +64,7 @@ export class Prediction {
     modelID = undefined;
 }
 
-@Injectable()
-export class Space {
-    file: any = undefined;  // Name of file uploaded in the second step
-    spaceName: string = undefined;
-    spaceVersion: string = undefined;
-    spaceType: string = undefined;
-    trained: boolean = false;
-    incremental = false;
-    parameters: any;
-    delta: any = {};
-    // spaceDocumentation: any = undefined;
-    // spaceID: string = undefined;
-    spaces = [];
-}
+
 
 @Injectable()
 export class Search {

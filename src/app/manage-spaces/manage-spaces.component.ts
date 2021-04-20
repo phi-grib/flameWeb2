@@ -34,7 +34,7 @@ export class ManageSpacesComponent {
   }
 
   buildSpace(spaceName:string, spaceVersion:string,) {
-    console.log('build space:', spaceName, spaceVersion)
+    // console.log('build space:', spaceName, spaceVersion)
     const modalRef = this.modalService.open(SbuilderComponent, { windowClass : 'modalClass'});
     modalRef.componentInstance.name = spaceName;
     modalRef.componentInstance.version = spaceVersion;

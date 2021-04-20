@@ -339,26 +339,32 @@ export class CommonFunctions {
             const iresult = result[1][i];
             const iname = iresult['spacename'];
             const ivers = iresult['version'];
-            const iinfo = iresult['info'];
-            const inobj = iinfo[0][2];
-
+            var inobj = 0;
             var itype = 'unk';
-            if (iinfo[2] != undefined ){
-              if (iinfo[2][0] == 'type')
-                itype = iinfo[2][2];
-            }
-          
             var ivars = '';
-            if (iinfo[4] != undefined ){
-              if (iinfo[4][0] == 'nvar')
-                ivars = iinfo[4][2];
-            }
-            
             var imd = '';
-            if (iinfo[3] != undefined ){
-              if (iinfo[3][0] == 'descriptors')
-                imd = iinfo[3][2];
-            }
+            
+            if (iresult['info'] != undefined) {
+              const iinfo = iresult['info'];
+              if (iinfo[0] != undefined ){
+                inobj = iinfo[0][2];
+              }
+  
+              if (iinfo[2] != undefined ){
+                if (iinfo[2][0] == 'type')
+                  itype = iinfo[2][2];
+              }
+            
+              if (iinfo[4] != undefined ){
+                if (iinfo[4][0] == 'nvar')
+                  ivars = iinfo[4][2];
+              }
+              
+              if (iinfo[3] != undefined ){
+                if (iinfo[3][0] == 'descriptors')
+                  imd = iinfo[3][2];
+              }
+            } 
             this.space.spaces.push ([iname, ivers, inobj, itype, ivars, imd]);
           }
           
