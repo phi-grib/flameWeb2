@@ -151,6 +151,9 @@ export class SbuilderComponent implements OnInit {
         // var spaceIndex = a.indexOf(name+'-'+version);
         // this.space.page = Math.floor(spaceIndex/this.space.pagelen);
 
+        this.space.spaces = [];
+        $('#dataTableSpaces').DataTable().destroy();
+
         this.space.spaceName = name;
         this.space.spaceVersion = version;
         this.func.getSpaceList();
