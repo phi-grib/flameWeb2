@@ -1,32 +1,28 @@
-<div class="container mt-5">
-    <div class="row align-items-centermt-4">
-        <div class="col-6">   
-            <div class="form-row">
-                <label class="bmd-label-floating" >Model root directory</label>
-                <input class="form-control" [(ngModel)]="this.modelRoot" id="modroot" type='text' placeholder="this.modelRoot">
-                <br>
-                <br>
-                <button type="button" class="btn btn-primary"  [ngClass]="{'disabled': this.modelRoot === undefined }" (click) = "applyChanges()" >Apply changes</button>
+
+<div class="row">
+    <div class="col ml-3">
+        <div class="row align-items-center mt-3">
+            <div class="col">   
+                <label class="bmd-label-floating" >Model root directory
+                    <input class="form-control" [(ngModel)]="this.modelRoot" id="modroot" type='text' placeholder="this.modelRoot">
+                </label>
+                <button type="button" class="btn btn-primary ml-3"  [ngClass]="{'disabled': this.modelRoot === undefined }" (click) = "applyChanges()" >Apply changes</button>
+            </div>
+        </div>
+        <div class="row align-items-center mt-3">
+            <div class="form-group pl-3">
+                <label >User profile
+                    <select id="changeMode" (change)="changeUserProfile($event.target.value)">
+                        <option value='basic' [selected]="this.globals.read_only==true">end user</option>
+                        <option value='expert' [selected]="this.globals.read_only==false">model builder</option>
+                    </select>
+                </label>
             </div>
         </div>
     </div>
-    <br>
 
-    <div>
-        <label >User profile
-            <select id="changeMode" (change)="changeUserProfile($event.target.value)">
-                <option value='basic' [selected]="this.globals.read_only==true">end user</option>
-                <option value='expert' [selected]="this.globals.read_only==false">model builder</option>
-            </select>
-        </label>
-    </div>
-
-    <br>
-    <br>
-    <div class="row align-items-centermt-4">
-        <div class="col-6">   
-            <br>
-            <br>
+    <div class="col-7" >
+        <div class="col mt-3">   
             <h3>Flame version 1.0.0-rc2</h3>
             <br>
             <p>Manuel Pastor, José Carlos Gómez Tamayo, Ignacio Pasamontes</p>
@@ -37,6 +33,4 @@
             <p>Flame is Open Source, distributed under <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_Blank">license GPL v3</a></p>
         </div>
     </div>
-
-
 </div>

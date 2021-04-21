@@ -60,11 +60,18 @@ btn.bmd-btn-fab.btn-etransafe,
     font-weight:bold;
 }
 
-.modalClass .modal-dialog {
+/* .modalClass .modal-dialog {
     min-width: 90vw;
     max-width: 90vw;
     min-height: 90vh;
     max-height: 90vh;
+} */
+
+.modalClass .modal-dialog {
+    min-width: 60vw;
+    max-width: 60vw;
+    min-height: 60vh;
+    max-height: 60vh;
 }
 
 .page-link {

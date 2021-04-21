@@ -29,66 +29,66 @@
         </div>
     </div>
       
-        <div class="tab-content">
+    <div class="tab-content">
 
-            <div class="tab-pane fade show active" id="build" role="tabpanel" aria-labelledby="build-tab">
-                <div class="row">
-                    <div class="col p-0">
-                        <app-model-list></app-model-list>
-                    </div>
-                    
-                    <div class="col-7 info scrollable v-100">
-                        <div *ngIf="(this.model.name != undefined)">
-                            <app-validations [name] = this.model.name [version] = this.model.version></app-validations>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-pane fade" id="predict" role="tabpanel" aria-labelledby="predict-tab" >
-                <div class="row">
-                    <div class="col p-0">
-                        <app-prediction-list></app-prediction-list>
-                    </div>
-
-                    <div class="col-7 info scrollable v-100" >
-                        <div *ngIf="(this.prediction.name != undefined) && (this.globals.mainTabActive=='#predict')">
-                            <app-prediction [predictionName]=this.prediction.name></app-prediction>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            
-            
-            <div class="tab-pane fade" id="similarity" role="tabpanel" aria-labelledby="similarity-tab" >
-                <div class="row">
-
-                    <div class="col p-0">
-                        <app-space-list></app-space-list>
-                    </div>
-
-                    <div class="col-7 info scrollable v-100" >
-                        <div *ngIf="(this.space.spaceName != undefined) && (this.globals.mainTabActive=='#similarity')">
-                            <app-search [spaceName] = this.space.spaceName [spaceVersion] = this.space.spaceVersion ></app-search>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- <div class="tab-pane fade " id="similarity" role="tabpanel" aria-labelledby="similarity-tab" >
+        <div class="tab-pane fade show active" id="build" role="tabpanel" aria-labelledby="build-tab">
+            <div class="row">
                 <div class="col p-0">
-                    <app-similarity></app-similarity>
+                    <app-model-list></app-model-list>
                 </div>
-            </div> -->
-
-            <div class="tab-pane fade " id="configuration" role="tabpanel" aria-labelledby="configuration-tab" >
-                <div class="col p-0">
-                    <app-configuration></app-configuration>
+                
+                <div class="col-7 info scrollable v-100">
+                    <div *ngIf="(this.model.name != undefined)">
+                        <app-validations [name] = this.model.name [version] = this.model.version></app-validations>
+                    </div>
                 </div>
             </div>
-
         </div>
+
+        <div class="tab-pane fade" id="predict" role="tabpanel" aria-labelledby="predict-tab" >
+            <div class="row">
+                <div class="col p-0">
+                    <app-prediction-list></app-prediction-list>
+                </div>
+
+                <div class="col-7 info scrollable v-100" >
+                    <div *ngIf="(this.prediction.name != undefined) && (this.globals.mainTabActive=='#predict')">
+                        <app-prediction [predictionName]=this.prediction.name></app-prediction>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        
+        <div class="tab-pane fade" id="similarity" role="tabpanel" aria-labelledby="similarity-tab" >
+            <div class="row">
+
+                <div class="col p-0">
+                    <app-space-list></app-space-list>
+                </div>
+
+                <div class="col-7 info scrollable v-100" >
+                    <div *ngIf="(this.space.spaceName != undefined) && (this.globals.mainTabActive=='#similarity')">
+                        <app-search [spaceName] = this.space.spaceName [spaceVersion] = this.space.spaceVersion ></app-search>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- <div class="tab-pane fade " id="similarity" role="tabpanel" aria-labelledby="similarity-tab" >
+            <div class="col p-0">
+                <app-similarity></app-similarity>
+            </div>
+        </div> -->
+
+        <div class="tab-pane fade " id="configuration" role="tabpanel" aria-labelledby="configuration-tab" >
+            <!-- <div class="col p-0"> -->
+                <app-configuration></app-configuration>
+            <!-- </div> -->
+        </div>
+
+    </div>
 
 </div>

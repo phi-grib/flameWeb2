@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigurationService } from './configuration.service';
-import { Globals, Model } from '../Globals';
+import { Globals, Model, Space } from '../Globals';
 import { ToastrService } from 'ngx-toastr';
 import { CommonFunctions } from '../common.functions';
 declare var $: any;
@@ -16,6 +16,7 @@ export class ConfigurationComponent implements OnInit {
     private confservice: ConfigurationService,
     private func: CommonFunctions,
     private model: Model,
+    private space: Space,
     private toaster: ToastrService,
     public globals: Globals) {
   }
@@ -35,6 +36,11 @@ export class ConfigurationComponent implements OnInit {
     $('#dataTableModels').DataTable().destroy();
     this.model.name = undefined;
     this.func.getModelList();
+
+    this.space.spaceName = undefined;
+    this.space.spaceVersion = undefined;
+    $('#dataTableSpaces').DataTable().destroy();
+    this.func.getSpaceList();
 
     this.toaster.success('User profile','UPDATED', {
       timeOut: 2000, positionClass: 'toast-top-right', progressBar: true  
