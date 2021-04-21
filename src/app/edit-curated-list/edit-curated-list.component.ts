@@ -5,8 +5,7 @@ import { EditCuratedListService } from "../edit-curated-list/edit-curated-list.s
 import { CommonService } from "../common.service";
 import { CuratorService } from "../curator/curator.service";
 import { CommonFunctions } from "../common.functions";
-import { CurationDocumentationComponent } from "../curation-documentation/curation-documentation.component";
-import { IDropdownSettings } from "ng-multiselect-dropdown";
+import { ToastrService } from "ngx-toastr";
 
 declare var $: any;
 
@@ -56,6 +55,7 @@ export class EditCuratedListComponent implements OnInit {
     public editService: EditCuratedListService,
     public activeModal: NgbActiveModal,
     public model: Model,
+    private toastr: ToastrService,
     public commonService: CommonService,
     public curatorservice: CuratorService,
     public func: CommonFunctions,
@@ -67,6 +67,7 @@ export class EditCuratedListComponent implements OnInit {
       this.editService,
       this.ObjActiveModal,
       this.model,
+      this.toastr,
       this.commonService,
       this.curatorservice,
       this.func,
@@ -165,9 +166,27 @@ export class EditCuratedListComponent implements OnInit {
             if(result[0]){
                 $("#dataTableCurations").DataTable().destroy();
                 this.func.getCurationsList();
+                this.toastr.success(
+                    "Curation " + name,
+                    "CURATION ACCEPTED",
+                    {
+                      timeOut: 5000,
+                      positionClass: "toast-top-right",
+                    }
+                  );
+                } else {
+                  this.toastr.error(
+                    "Curation " + name,
+                    "ERROR: CURATION NOT POSSIBLE",
+                    {
+                      timeOut: 5000,
+                      positionClass: "toast-top-right",
+                    }
+                  );
 
             }
         }
     )  
+    this.activeModal.close('Close click');
   }
 }
