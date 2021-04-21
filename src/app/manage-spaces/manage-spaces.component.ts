@@ -60,7 +60,7 @@ export class ManageSpacesComponent {
 
   createSpace(): void {
     const letters = /^[A-Za-z0-9_]+$/;
-    if (this.newSpaceName.match(letters)) {
+    if (this.newSpaceName.match(letters) && this.newSpaceName != 'test' ) {
         this.service.createSpace(this.newSpaceName).subscribe(
           result => {
             this.toastr.success('Space ' + this.newSpaceName, 'CREATED', {
@@ -80,7 +80,7 @@ export class ManageSpacesComponent {
           }
         );
     } else {
-        alert('Invalid name');
+        alert('Invalid name! Valid names must contain only letters, numbers and underlines. The special name "test" is not allowed');
     }
   }
 

@@ -3,7 +3,7 @@
     <div class="col ml-3">
         <div class="row align-items-center mt-3">
             <div class="col">   
-                <label class="bmd-label-floating" >Model root directory
+                <label class="bmd-label-floating" style="min-width: 20vw;"  >Model root directory
                     <input class="form-control" [(ngModel)]="this.modelRoot" id="modroot" type='text' placeholder="this.modelRoot">
                 </label>
                 <button type="button" class="btn btn-primary ml-3"  [ngClass]="{'disabled': this.modelRoot === undefined }" (click) = "applyChanges()" >Apply changes</button>

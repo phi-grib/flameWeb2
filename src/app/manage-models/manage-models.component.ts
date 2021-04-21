@@ -50,7 +50,7 @@ export class ManageModelsComponent {
 
   createModel(): void {
     const letters = /^[A-Za-z0-9_]+$/;
-    if (this.modelName.match(letters)) {
+    if (this.modelName.match(letters) && this.modelName != 'test') {
         this.service.createModel(this.modelName).subscribe(
           result => {
             // this.modelName = '';
@@ -71,7 +71,7 @@ export class ManageModelsComponent {
           }
         );
     } else {
-        alert('Invalid name');
+      alert('Invalid name! Valid names must contain only letters, numbers and underlines. The special name "test" is not allowed');
     }
   }
 

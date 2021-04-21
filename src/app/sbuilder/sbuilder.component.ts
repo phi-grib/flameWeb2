@@ -105,6 +105,7 @@ export class SbuilderComponent implements OnInit {
       },
       error => {
         this.space.building = ['',0];
+        this.space.spaces = [];
         $('#dataTableSpaces').DataTable().destroy();
 
         this.toastr.clear(inserted.toastId);
@@ -121,6 +122,7 @@ export class SbuilderComponent implements OnInit {
     this.commonService.getSpace(name, version).subscribe(
       result => {
         this.space.building = ['',0];
+        this.space.spaces = [];
         $('#dataTableSpaces').DataTable().destroy();
 
         const dict_info = {};
@@ -163,8 +165,8 @@ export class SbuilderComponent implements OnInit {
       error => { // CHECK what type of error
         if (error.error.code !== 0) {
           this.space.building = ['',0];
+          this.space.spaces = [];
           $('#dataTableSpaces').DataTable().destroy();
-
           // this.space.listspaces[name + '-' + version].trained = false;
           this.toastr.clear(inserted.toastId);
           this.toastr.error('space ' + name + '.v' + version + ' \n ' + error.error.message, 'ERROR!', {
