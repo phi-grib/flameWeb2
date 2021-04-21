@@ -1,67 +1,86 @@
 .voidDiv {
-    width: 55%;
+  width: 55%;
 }
 
 .btn-ets-up {
-    background: #0076a3;
-    color: #ffffff;
-    border-width: 0;
-    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
-    letter-spacing: 0.05em;
-    border-radius: 0;
+  background: #0076a3;
+  color: #ffffff;
+  border-width: 0;
+  font-family: "Barlow Semi Condensed", "Arial", "Helvetica";
+  letter-spacing: 0.05em;
+  border-radius: 0;
 }
 
 .btn-ets-down {
-    background: #e9a933;
-    color: #ffffff;
-    border-width: 0;
-    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
-    letter-spacing: 0.05em;
-    border-radius: 0;
+  background: #e9a933;
+  color: #ffffff;
+  border-width: 0;
+  font-family: "Barlow Semi Condensed", "Arial", "Helvetica";
+  letter-spacing: 0.05em;
+  border-radius: 0;
 }
 
 .container {
-    float: right;
-    justify-content: space-between;
+  float: right;
+  justify-content: space-between;
 }
 
-.form-row{
-    align-items: center;
+.form-row {
+  align-items: center;
 }
 
 .table {
-    margin-left: 15%;
-    background-color: white;
-    background: white;
-    color: #22577A;
-    /* table-layout: fixed; */
-    width: 100%;
+  margin-left: 15%;
+  background-color: white;
+  background: white;
+  color: #22577a;
+  /* table-layout: fixed; */
+  width: 100%;
 }
-.table th{
-    padding-left: 1px;
-    padding-right: 1px;
-    color:#0076a3;
+.table th {
+  padding-left: 1px;
+  padding-right: 1px;
+  color: #0076a3;
 }
 .table td {
-    padding: 5px;
-    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
-    border-bottom: 1px solid #B8DCED;
-    vertical-align: middle;
+  padding: 5px;
+  font-family: "Barlow Semi Condensed", "Arial", "Helvetica";
+  border-bottom: 1px solid #b8dced;
+  vertical-align: middle;
 }
-.modal-body{
-    height: auto;
-}
-
-#preloadFile-label{
-    width: 300px;
-    margin-left: 55%;
-    margin-top: 0em;
-}
-.card{
-    display: flex;
-    flex-direction: row;
-}
-.card-body{
-
+.modal-body {
+  height: auto;
 }
 
+#preloadFile-label {
+  width: 300px;
+  margin-left: 5%;
+  margin-top: 0em;
+}
+
+.col-4-mr-0 {
+  padding: 4px;
+}
+
+#separatorInput {
+  margin-left: 5%;
+}
+
+.cardTable {
+  display: inline-flex;
+}
+
+#tablePreview {
+  display: flex;
+  flex-direction: row;
+}
+
+::ng-deep .dropdown-list {
+    position: relative !important;
+}
+
+#remove{
+    position: relative;
+    margin-bottom: 30px;
+    margin-left: .5em;
+}

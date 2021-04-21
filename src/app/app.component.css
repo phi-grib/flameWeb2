@@ -1,52 +1,52 @@
 .info {
-    /* background-color: #FAFAFA; */
-    background-color: white;
-    /* min-height: 100vh;    */
+  /* background-color: #FAFAFA; */
+  background-color: white;
+  /* min-height: 100vh;    */
 }
-.scrollable{
-    /* right column will have a max of 95%
+.scrollable {
+  /* right column will have a max of 95%
        and a scroll bar will appear only when it is bigger */
-    max-height: 95vh; 
-    overflow: auto;
+  max-height: 95vh;
+  overflow: auto;
 }
 .app-base {
-    padding-left: 0px;
-    padding-right: 30px; /* prevents horizontal scrollbar*/
+  padding-left: 0px;
+  padding-right: 30px; /* prevents horizontal scrollbar*/
 }
 
-.top-bar{
-    /* top bar is max 5% of GUI */
-    max-height: 5vh; 
+.top-bar {
+  /* top bar is max 5% of GUI */
+  max-height: 5vh;
 }
 
 ul {
-    background: #0076a3;
+  background: #0076a3;
 }
 
 ul li a {
-    background: #0076a3;
-    color: #B8DCED;
-   
+  background: #0076a3;
+  color: #b8dced;
 }
 
-ul li a.active{
-    background: #22577a;
-    color: white;
-    border-bottom: 3px solid #e59300;
-    border-radius: 0;
+ul li a.active {
+  background: #22577a;
+  color: white;
+  border-bottom: 3px solid #e59300;
+  border-radius: 0;
 }
 
 .logo-container {
-    float: right;
+  float: right;
 }
 
 .logo {
-    max-height: 40px;
-    padding-top: 5px;
-    padding-right: 20px;
+  max-height: 40px;
+  padding-top: 5px;
+  padding-right: 20px;
 }
 
 .logo-right {
-    max-height: 40px;
-    padding-top: 5px;
+  max-height: 40px;
+  padding-top: 5px;
 }
+

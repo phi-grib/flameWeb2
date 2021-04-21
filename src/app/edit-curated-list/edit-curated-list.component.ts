@@ -5,6 +5,11 @@ import { EditCuratedListService } from "../edit-curated-list/edit-curated-list.s
 import { CommonService } from "../common.service";
 import { CuratorService } from "../curator/curator.service";
 import { CommonFunctions } from "../common.functions";
+import { CurationDocumentationComponent } from "../curation-documentation/curation-documentation.component";
+import { IDropdownSettings } from "ng-multiselect-dropdown";
+
+declare var $: any;
+
 
 @Component({
   selector: "app-edit-curated-list",
@@ -26,19 +31,26 @@ export class EditCuratedListComponent implements OnInit {
     ":": ":",
     ";": ";",
   };
-  file: File;
+  file= undefined;
   finalDict: {};
   objectArray: [];
   style: string = "mat-column-col";
   curation: Curation;
+  cas: string;
+  smiles:string;
   objectKeys = Object.keys;
-
+  dropDownSettings: {
+      openclass: "multiselect";
+  }
+  
   //attributes:
   public listName: string;
   public separator: string;
   public columns: [];
   public selectedColumns: string[] = [];
-  public eventFile: { target: { files: any[] } };
+  public remove_problem: boolean= false;
+  public output_format: string;
+
 
   constructor(
     public editService: EditCuratedListService,
@@ -46,17 +58,18 @@ export class EditCuratedListComponent implements OnInit {
     public model: Model,
     public commonService: CommonService,
     public curatorservice: CuratorService,
-    public func: CommonFunctions
+    public func: CommonFunctions,
   ) {}
 
   ngOnInit(): void {
+
     this.ObjCuratedList = new EditCuratedListComponent(
       this.editService,
       this.ObjActiveModal,
       this.model,
       this.commonService,
       this.curatorservice,
-      this.func
+      this.func,
     );
   }
 
@@ -76,9 +89,8 @@ export class EditCuratedListComponent implements OnInit {
     this.ObjCuratedList.selectedColumns = selected;
   }
 
-  csvJSON(event) {
-    const file = event.target.files[0];
-    this.eventFile = file;
+  public csvJSON(fileList: FileList) {
+    const file = fileList[0];
     this.file = file;
     this.model.file = file;
     this.model.file_info = {};
@@ -128,10 +140,30 @@ export class EditCuratedListComponent implements OnInit {
     this.finalDict = objectArray;    
   }
 
-  submitList(name: string){
-    this.editService.curateList(name).subscribe(
+  curate(name: string){
+      console.log(this.ObjCuratedList.selectedColumns);
+      let regExp = new RegExp('cas', 'i');
+      for(let i=0;i<this.ObjCuratedList.selectedColumns.length;i++){
+          if(this.ObjCuratedList.selectedColumns[i].match(regExp) || 
+          this.ObjCuratedList.selectedColumns[i].includes('molecule') || 
+          this.ObjCuratedList.selectedColumns[i].includes('identifier')){
+              this.cas = this.ObjCuratedList.selectedColumns[i];
+          } 
+      }
+
+      for(let i=0;i<this.ObjCuratedList.selectedColumns.length;i++){
+        if(this.ObjCuratedList.selectedColumns[i].includes('struct') || 
+        this.ObjCuratedList.selectedColumns[i].includes('smile')){
+            this.smiles = this.ObjCuratedList.selectedColumns[i];
+        }  
+    }
+
+    this.editService.curateList(name, this.file, 
+    this.cas, this.smiles, this.ObjCuratedList.separator, this.ObjCuratedList.remove_problem.toString(),
+    this.ObjCuratedList.output_format).subscribe(
         result=>{
             if(result[0]){
+                $("#dataTableCurations").DataTable().destroy();
                 this.func.getCurationsList();
 
             }

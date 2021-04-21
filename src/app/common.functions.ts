@@ -338,6 +338,7 @@ export class CommonFunctions {
     this.commonService.getCurations().subscribe(
       result => {
         if (result[0]) {
+            $("#dataTableCurations").DataTable().destroy();
           this.curation.curations = result[1];
           this.globals.tableCurationVisible = false;
           

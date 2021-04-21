@@ -24,7 +24,22 @@
     </plotly-plot>
     </div>
     <div class="card">
-        <h5> Documentation tab here</h5>
+        <div class="card-header collapsed" id="headingOneDoc" data-toggle="collapse" data-target="#collapseOneDoc" aria-expanded="false" aria-controls="collapseOneDoc">
+            <h5 class="mb-0">
+                Curation documentation <span class=comment>({{this.curationName}})</span>
+                <button class="btn btn-link pt-0 pb-0 float-right" type="button">
+                </button>
+            </h5>
+        </div>
+        <div id="collapseOneDoc" class="collapse" aria-labelledby="headingOneDoc" data-parent="#docAccordion">
+            <div class="card-body pt-0 pb-0 pl-0 pr-0">
+                <div class="table-curation-documentation">
+                    <table>
+                        <thead></thead>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
     
 </div>

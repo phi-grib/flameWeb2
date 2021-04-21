@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵCodegenComponentFactoryResolver } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -19,7 +19,6 @@ export class BuilderService {
     formData.append('parameters', JSON.stringify(this.model.delta));
     formData.append('incremental', JSON.stringify(this.model.incremental));
     const url: string = environment.baseUrl_build + 'model/' + this.model.name;
-
     return this.http.post(url, formData);
 
   }
