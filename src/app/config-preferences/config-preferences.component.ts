@@ -12,9 +12,7 @@ export class ConfigPreferencesComponent implements OnInit {
 
   objectKeys = Object.keys;
 
-
-  infoPreferences = ['mol_batch', 'numCPUs', 'modelingToolkit',
-                    'output_similar','output_format', 'output_md'];
+  infoPreferences = ['mol_batch', 'numCPUs', 'dimensionality_reduction','output_similar','output_format', 'output_md' ];
 
   ngOnInit() {
   }

@@ -566,8 +566,6 @@ export class QuantitConformalComponent implements OnChanges {
               context_pred.clearRect(0, 0, canvas_pred.width, canvas_pred.height);
             });
 
-
-
             // fitted plott
             const canvas_fit = <HTMLCanvasElement>document.getElementById('scatter_fit_canvas');
             const context_fit = canvas_fit.getContext('2d');
@@ -596,7 +594,7 @@ export class QuantitConformalComponent implements OnChanges {
           }, 100);
         },
         error => {
-          alert('Error getting model');
+          alert('Error getting model 234');
         }
         );
             

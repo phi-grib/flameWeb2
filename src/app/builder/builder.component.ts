@@ -114,7 +114,7 @@ export class BuilderComponent implements OnInit {
             });
           }
           iter += 1;
-        }, 1000);
+        }, 2000);
       },
       error => {
         $('#dataTableModels').DataTable().destroy();

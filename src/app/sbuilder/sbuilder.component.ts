@@ -114,7 +114,7 @@ export class SbuilderComponent implements OnInit {
             });
           }
           iter += 1;
-        }, 1000);
+        }, 2000);
       },
       error => {
         this.remove_space(name, version);
