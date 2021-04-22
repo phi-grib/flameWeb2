@@ -62,7 +62,7 @@ export class EditCuratedListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
+    this.curation = new Curation();
     this.ObjCuratedList = new EditCuratedListComponent(
       this.editService,
       this.ObjActiveModal,
@@ -142,6 +142,7 @@ export class EditCuratedListComponent implements OnInit {
   }
 
   curate(name: string){
+      this.curation.name = this.func.curation.name;
       console.log(this.ObjCuratedList.selectedColumns);
       let regExp = new RegExp('cas', 'i');
       for(let i=0;i<this.ObjCuratedList.selectedColumns.length;i++){
@@ -158,35 +159,69 @@ export class EditCuratedListComponent implements OnInit {
             this.smiles = this.ObjCuratedList.selectedColumns[i];
         }  
     }
-
+    const inserted = this.toastr.info('Running!', 'Curation ' + this.curation.name , {
+        disableTimeOut: true, positionClass: 'toast-top-right'});
     this.editService.curateList(name, this.file, 
     this.cas, this.smiles, this.ObjCuratedList.separator, this.ObjCuratedList.remove_problem.toString(),
     this.ObjCuratedList.output_format).subscribe(
         result=>{
-            if(result[0]){
-                $("#dataTableCurations").DataTable().destroy();
-                this.func.getCurationsList();
-                this.toastr.success(
-                    "Curation " + name,
-                    "CURATION ACCEPTED",
-                    {
-                      timeOut: 5000,
-                      positionClass: "toast-top-right",
-                    }
-                  );
-                } else {
-                  this.toastr.error(
-                    "Curation " + name,
-                    "ERROR: CURATION NOT POSSIBLE",
-                    {
-                      timeOut: 5000,
-                      positionClass: "toast-top-right",
-                    }
-                  );
-
+            let iter = 0;
+          const intervalId = setInterval(() => {
+            if (iter < 100) {
+              this.checkCuration(this.curation.name, inserted, intervalId);
+            } else {
+              clearInterval(intervalId);
+              this.toastr.clear(inserted.toastId);
+              this.toastr.warning( 'Curation ' + this.curation.name + ' \n Time Out' , 'Warning', {
+                                    timeOut: 10000, positionClass: 'toast-top-right'});
+              $('#dataTableCurations').DataTable().destroy();
+              this.func.getCurationsList();
             }
+            iter += 1;
+          }, 100);
+        },
+        error => {
+          this.toastr.clear(inserted.toastId);
+          $('#dataTableCurations').DataTable().destroy();
+          this.func.getCurationsList();
+          alert('Error processing input molecule: '+error.error.error);
         }
-    )  
+      );
+    
+
+            
     this.activeModal.close('Close click');
+    }
+
+  checkCuration(name, inserted, intervalId){
+    this.commonService.getCurationDocumentation(name).subscribe(
+        result => {
+          // console.log(result);
+          this.toastr.clear(inserted.toastId);
+          if (result['error']){
+            this.toastr.warning('Prediction ' + name + ' finished with error ' + result['error'] , 'PREDICTION COMPLETED', {
+              timeOut: 5000, positionClass: 'toast-top-right'});
+              
+          }
+          else {
+             this.toastr.success('Prediction ' + name + ' created' , 'PREDICTION COMPLETED', {
+              timeOut: 5000, positionClass: 'toast-top-right'});
+          }
+          clearInterval(intervalId);
+          $('#dataTableCurations').DataTable().destroy();
+          this.func.getCurationsList();
+        },
+        error => { // CHECK MAX iterations
+          if (error.error.code !== 0) {
+            this.toastr.clear(inserted.toastId);
+            this.toastr.error('Prediction ' + name + ' \n '  + error.error.message , 'ERROR!', {
+              timeOut: 10000, positionClass: 'toast-top-right'});
+            clearInterval(intervalId);
+            $('#dataTableCurations').DataTable().destroy();
+            this.func.getCurationsList();
+          }
+        }
+      );
+    }
   }
-}
+
