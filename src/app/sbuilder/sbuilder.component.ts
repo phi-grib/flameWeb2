@@ -67,25 +67,38 @@ export class SbuilderComponent implements OnInit {
     return dict_out;
   }
 
+  remove_space (name, version){
+    const index = this.space.building_spaces.indexOf(name + '-' + version, 0);
+    if (index > -1) {
+      this.space.building_spaces.splice(index, 1);
+    }
+  }
+
   //builds a space using the parameters in this.space.parameters
   buildSpace(name, version): void {
     this.space.delta = {};
     this.space.delta = this.recursiveDelta(this.space.parameters);
     
-    // this.space.listspaces[name + '-' + version] = {
-    //   name: name, version: version, trained: false, numMols: '-',
-    //   variables: '-', type: '-', quality: {}, quantitative: false, conformal: false, ensemble: false
-    // };
-
-    // this.space.spaceName = undefined;
-
     const inserted = this.toastr.info('Building', 'space ' + name + '.v' + version, {
       disableTimeOut: true, positionClass: 'toast-top-right'
     });
 
     this.activeModal.close('Close click');
-    this.space.building = [name, version];
 
+    // add this space to the list of spaces being built
+    this.space.building_spaces.push(name + '-' + version);
+
+    // empty the description of this space while it is being built
+    for (var i in this.space.spaces) {
+      const ispace = this.space.spaces[i];
+      console.log (ispace);
+      if (ispace[0] == name && ispace[1] == version) {
+        this.space.spaces[i] = [name, version];
+        break;
+      }
+    }
+
+    // call buildSpace service
     this.service.buildSpace().subscribe(
       result => {
         let iter = 0;
@@ -104,7 +117,7 @@ export class SbuilderComponent implements OnInit {
         }, 1000);
       },
       error => {
-        this.space.building = ['',0];
+        this.remove_space(name, version);
         this.space.spaces = [];
         $('#dataTableSpaces').DataTable().destroy();
 
@@ -121,7 +134,7 @@ export class SbuilderComponent implements OnInit {
   checkspace(name, version, inserted, intervalId) {
     this.commonService.getSpace(name, version).subscribe(
       result => {
-        this.space.building = ['',0];
+        this.remove_space(name, version);
         this.space.spaces = [];
         $('#dataTableSpaces').DataTable().destroy();
 
@@ -138,20 +151,9 @@ export class SbuilderComponent implements OnInit {
 
         this.toastr.clear(inserted.toastId);
 
-        // this.space.listspaces[name + '-' + version] = {
-        //   name: name, version: version, spaceID: dict_info['spaceID'], trained: true,
-        //   numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['space'], quality: quality,
-        //   quantitative: dict_info['quantitative'], conformal: dict_info['conformal'], ensemble: dict_info['ensemble']
-        // };
-
         this.toastr.success('space ' + name + '.v' + version + ' created', 'space CREATED', {
           timeOut: 5000, positionClass: 'toast-top-right'
         });
-
-        // use the following code to make sure the new space list will show the space
-        // const a = Object.keys(this.space.listspaces).sort();
-        // var spaceIndex = a.indexOf(name+'-'+version);
-        // this.space.page = Math.floor(spaceIndex/this.space.pagelen);
 
         this.space.spaces = [];
         $('#dataTableSpaces').DataTable().destroy();
@@ -164,7 +166,7 @@ export class SbuilderComponent implements OnInit {
       },
       error => { // CHECK what type of error
         if (error.error.code !== 0) {
-          this.space.building = ['',0];
+          this.remove_space (name, version)
           this.space.spaces = [];
           $('#dataTableSpaces').DataTable().destroy();
           // this.space.listspaces[name + '-' + version].trained = false;

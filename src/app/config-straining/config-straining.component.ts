@@ -12,6 +12,7 @@ export class ConfigStrainingComponent {
     public space: Space
   ) { }
 
-  infoSeries = ['SDFile_name', 'normalize_method', 'convert3D_method', 'ionize_method', 'modelAutoscaling', 'computeMD_method']
+  infoSeries = ['SDFile_name', 'normalize_method', 'convert3D_method', 'ionize_method', 'modelAutoscaling', 'computeMD_method']  
+  // infoSeries = ['SDFile_name', 'normalize_method', 'convert3D_method', 'ionize_method', 'modelAutoscaling', 'computeMD_method', 'similarity_metric','similarity_cutoff_num','similarity_cutoff_distance']  
   
 }

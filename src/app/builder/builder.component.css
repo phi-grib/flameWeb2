@@ -26,30 +26,15 @@ a {
     opacity: 0.4;
 }
 
-
-/* .card-header {
-    color: white;
-    background: #22577a;
-    background-color: #22577a;
-    padding-top: 5px;
-    padding-bottom: 5px;
-} */
-
-
-/* .card-header {
-    padding-top: 10px;
-    padding-bottom: 10px;
-} */
-
 .card {
     padding-top: 0px;
     padding-bottom: 0px;
-    border-width: 0px;
+    /* border-width: 0px; */
 }
 
-.modal-body {
+/* .modal-body {
     padding: 0px;
-}
+} */
 
 .btn-ets-up {
     background: #0076a3;
@@ -92,12 +77,10 @@ a {
 }
 
 .filler {
-    width: 200px;
     height: auto;
 }
 
 .right-buttons {
-    width: 200px;
     margin: 1px;
     padding: 0.25rem;
 }

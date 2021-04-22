@@ -37,7 +37,7 @@ export class Space {
     spaceName: string = undefined;
     spaceVersion: string = undefined;
     spaceType: string = undefined;
-    building = ['',0];
+    building_spaces = [];
     file_info = undefined; // Info file ej. num mols, variables
     file_fields = undefined;
     incremental = false;

@@ -67,6 +67,9 @@ export class ConfigModelComponent implements AfterContentChecked {
     if (!this.model.parameters['quantitative'].value && (key=='normalizing_model' || key =='KNN_NN')){
       return false
     }
+    if (!Object.keys(this.model.parameters['conformal_settings'].value).includes(key)){
+      return false;
+    }
     return true;
   }
 

@@ -24,6 +24,13 @@ export class SpaceListComponent implements OnInit {
     this.func.getSpaceList();
   }
 
+  isBuilding (spaceName: string, spaceVersion: string) {
+    if (this.space.building_spaces.includes(spaceName+'-'+spaceVersion)) {
+      return true;
+    }
+    return false;
+  }
+
   selectSearch(spaceName: string, spaceVersion: string, spaceType: string) {
     this.space.spaceName = spaceName;
     this.space.spaceVersion = spaceVersion;
