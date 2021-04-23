@@ -75,11 +75,9 @@ export class CuratorComponent implements OnInit {
       });
   }
 
-  deleteEndpoint(name: string) {
-    this.curatorService.deleteEndpoint(name).subscribe((result) => {
-      if (result[0]) {
-        $("#dataTableCurations").DataTable().destroy();
-        this.func.getCurationsList();
+  deleteEndpoint(name) {
+    this.curatorService.deleteEndpoint(name).subscribe( (
+        result) => {
         this.toastr.success(
           "Curation " + this.curation.name,
           "CURATION DELETED",
@@ -88,16 +86,8 @@ export class CuratorComponent implements OnInit {
             positionClass: "toast-top-right",
           }
         );
-      } else {
-        this.toastr.error(
-          "Curation " + this.curation.name,
-          "ERROR: COULD'T DELETE",
-          {
-            timeOut: 5000,
-            positionClass: "toast-top-right",
-          }
-        );
-      }
-    });
+        $("#dataTableCurations").DataTable().destroy();
+        this.func.getCurationsList();
+      });
   }
 }

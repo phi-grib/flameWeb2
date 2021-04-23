@@ -15,7 +15,7 @@ export class CuratorService {
   }
 
   deleteEndpoint(name: string){
-    const url: string = environment.baseUrl_cmanage + 'delete/' + name;
+    const url: string = environment.baseUrl_curate + 'curate/' + name;
     return this.http.delete(url);  
   }
 }

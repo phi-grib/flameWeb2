@@ -159,10 +159,16 @@ export class EditCuratedListComponent implements OnInit {
             this.smiles = this.ObjCuratedList.selectedColumns[i];
         }  
     }
+    let remove = '';
+    if(this.ObjCuratedList.remove_problem==true){
+        remove = 'True';
+    }else{
+        remove = 'False';
+    }
     const inserted = this.toastr.info('Running!', 'Curation ' + this.curation.name , {
         disableTimeOut: true, positionClass: 'toast-top-right'});
     this.editService.curateList(name, this.file, 
-    this.cas, this.smiles, this.ObjCuratedList.separator, this.ObjCuratedList.remove_problem.toString(),
+    this.cas, this.smiles, this.ObjCuratedList.separator,remove,
     this.ObjCuratedList.output_format).subscribe(
         result=>{
             let iter = 0;
@@ -199,12 +205,12 @@ export class EditCuratedListComponent implements OnInit {
           // console.log(result);
           this.toastr.clear(inserted.toastId);
           if (result['error']){
-            this.toastr.warning('Prediction ' + name + ' finished with error ' + result['error'] , 'PREDICTION COMPLETED', {
+            this.toastr.warning('Curation ' + name + ' finished with error ' + result['error'] , 'CURATION COMPLETED', {
               timeOut: 5000, positionClass: 'toast-top-right'});
               
           }
           else {
-             this.toastr.success('Prediction ' + name + ' created' , 'PREDICTION COMPLETED', {
+             this.toastr.success('Curation ' + name + ' created' , 'CURATION COMPLETED', {
               timeOut: 5000, positionClass: 'toast-top-right'});
           }
           clearInterval(intervalId);
@@ -214,7 +220,7 @@ export class EditCuratedListComponent implements OnInit {
         error => { // CHECK MAX iterations
           if (error.error.code !== 0) {
             this.toastr.clear(inserted.toastId);
-            this.toastr.error('Prediction ' + name + ' \n '  + error.error.message , 'ERROR!', {
+            this.toastr.error('Curation ' + name + ' \n '  + error.error.message , 'ERROR!', {
               timeOut: 10000, positionClass: 'toast-top-right'});
             clearInterval(intervalId);
             $('#dataTableCurations').DataTable().destroy();

@@ -7,7 +7,7 @@
     </button>
 </div>
 
-<form #curatedListFrom="ngForm" enctype="multipart/form-data">
+<form #curatedListFrom="ngForm" enctype="multipart/form-data" name="curatedListFrom">
     <div class="modal-body">
 
         <!--START INPUT FILE-->
@@ -31,7 +31,7 @@
                         <select name="separator"
                             [(ngModel)]="ObjCuratedList.separator"
                             class="separatorInput"
-                            (ngModelChange)="onChangeSeparator($event)">
+                            (ngModelChange)="onChangeSeparator($event)" required>
                             <option [value]="item.value" *ngFor="let item of
                                 SeparatorChoices| keyvalue"> {{item.key}}
                             </option>
@@ -117,7 +117,7 @@
                                         [data]="this.ObjCuratedList.columns"
                                         [(ngModel)]="this.ObjCuratedList.selectedColumns"
                                         [settings]="dropdownSettings"
-                                        name="selectedColumns">
+                                        name="selectedColumns" required>
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
@@ -177,7 +177,7 @@
                             <label for="output">Choose the output file format</label>
                             <select class="dropdown" name="output" id="output"
                                 #output="ngModel"
-                                [(ngModel)]="ObjCuratedList.output_format">
+                                [(ngModel)]="ObjCuratedList.output_format" required>
                                 <option value="xlsx">xlsx</option>
                                 <option value="csv">csv</option>
                                 <option value="sdf">sdf</option>
@@ -189,7 +189,7 @@
                             <button *ngIf="this.ObjCuratedList.columns"
                                 type="submit"
                                 (click)="curate(this.func.curation.name)"
-                                class="btn btn-ets-down mb-0">Submit</button>
+                                class="btn btn-ets-down mb-0" [disabled]="!curatedListFrom.valid">Submit</button>
                         </div>
                     </div>
                 </div>
