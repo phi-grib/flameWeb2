@@ -165,7 +165,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       showlegend: false,
       showtitle: true,
       titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-      title: 'Predicted compounds projected on the training series. PCA built using model mol.descriptors',
+      title: 'Prediction projected on training series (using model X matrix)',
       xaxis: {
         zeroline: true,
         showgrid: true,
@@ -613,6 +613,20 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       result => {
         const info = result;
         if ('PC1' in info) {
+
+          // define appropriate labels extracting from manifest
+          const manifest = info['manifest'];
+          var labelX = 'PCA PC1';
+          var labelY = 'PCA PC2';
+          for (var iman in manifest) {
+            if (manifest[iman]['key'] == 'PC1') {
+              labelX = manifest[iman]['label'];
+            }
+            if (manifest[iman]['key'] == 'PC2') {
+              labelY = manifest[iman]['label'];
+            }
+          }
+
           setTimeout(() => {
             this.plotScores.data[0].x = info['PC1'];
             this.plotScores.data[0].y = info['PC2'];
@@ -627,13 +641,13 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               this.plotScores.data[0].marker.colorscale= 'Bluered';
             }; 
             if ('SSX' in info) {
-              this.plotScores.layout.xaxis.title = 'PCA PC1 ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
-              this.plotScores.layout.yaxis.title = 'PCA PC2 ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
+              this.plotScores.layout.xaxis.title = labelX + ' ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
+              this.plotScores.layout.yaxis.title = labelY + ' ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
               this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
               this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
             } else {
-              this.plotScores.layout.xaxis.title = 'PCA PC1'
-              this.plotScores.layout.yaxis.title = 'PCA PC2'
+              this.plotScores.layout.xaxis.title = labelX
+              this.plotScores.layout.yaxis.title = labelY
               this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
               this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
             }

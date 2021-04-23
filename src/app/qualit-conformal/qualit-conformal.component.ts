@@ -108,7 +108,7 @@ export class QualitConformalComponent implements OnChanges {
         height: 500,
         showtitle: true,
         titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-        title: 'Training series. PCA built using model mol.descriptors', 
+        title: 'Training series (using model X matrix)', 
         hovermode: 'closest',
             margin: {r: 10, t: 30, pad: 0 },
             showlegend: false,
@@ -251,19 +251,33 @@ export class QualitConformalComponent implements OnChanges {
 
           // PCA scores plot
           if ('PC1' in info) {
+
+            // define appropriate labels extracting from manifest
+            const manifest = info['manifest'];
+            var labelX = 'PCA PC1';
+            var labelY = 'PCA PC2';
+            for (var iman in manifest) {
+              if (manifest[iman]['key'] == 'PC1') {
+                labelX = manifest[iman]['label'];
+              }
+              if (manifest[iman]['key'] == 'PC2') {
+                labelY = manifest[iman]['label'];
+              }
+            }
+
             this.plotScores.data[0].x = info['PC1'];
             this.plotScores.data[0].y = info['PC2'];
             this.plotScores.data[0].text = info['obj_nam'];
             this.plotScores.data[0].marker.color = info['ymatrix'];
 
             if ('SSX' in info) {
-              this.plotScores.layout.xaxis.title = 'PCA PC1 ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
-              this.plotScores.layout.yaxis.title = 'PCA PC2 ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
+              this.plotScores.layout.xaxis.title = labelX + ' ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
+              this.plotScores.layout.yaxis.title = labelY + ' ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
               this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
               this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
             } else {
-              this.plotScores.layout.xaxis.title = 'PCA PC1'
-              this.plotScores.layout.yaxis.title = 'PCA PC2'
+              this.plotScores.layout.xaxis.title = labelX;
+              this.plotScores.layout.yaxis.title = labelY;
               this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
               this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
             }
