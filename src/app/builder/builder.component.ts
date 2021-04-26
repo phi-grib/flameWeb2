@@ -38,6 +38,17 @@ export class BuilderComponent implements OnInit {
     this.commonService.getParameters(this.model.name, this.model.version).subscribe(
       result => {
         this.model.parameters = result;
+
+        // old models store conformal confidence as conformal significance. Try path tries to provide
+        // back compatibility re-assigning the value
+        if (this.model.parameters.hasOwnProperty('conformalSignificance')) {
+
+          // deep copy conformalSignificance to conformalConfidence
+          this.model.parameters['conformalConfidence'] = JSON.parse(JSON.stringify(this.model.parameters['conformalSignificance']));
+          this.model.parameters.conformalConfidence.value = 1.0 - this.model.parameters.conformalSignificance.value;
+          this.model.parameters.conformalConfidence.description = 'Conformal estimator confidence (from 0 to 1)';
+          delete(this.model.parameters['conformalSignificance']);
+        } 
       },
       error => {
         alert(error.status + ' : ' + error.statusText);
