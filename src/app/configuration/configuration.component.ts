@@ -37,6 +37,7 @@ export class ConfigurationComponent implements OnInit {
     this.model.name = undefined;
     this.func.getModelList();
 
+    this.space.spaces = [];
     this.space.spaceName = undefined;
     this.space.spaceVersion = undefined;
     $('#dataTableSpaces').DataTable().destroy();

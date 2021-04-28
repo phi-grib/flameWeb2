@@ -375,7 +375,7 @@ export class QualitConformalComponent implements OnChanges {
           }, 100);
         },
         error => {
-          alert('Error getting model');
+          alert('Error getting model information');
         }
       );
     } 

@@ -608,7 +608,7 @@ export class QuantitConformalComponent implements OnChanges {
           }, 100);
         },
         error => {
-          alert('Error getting model 234');
+          alert('Error getting model information');
         }
         );
             
