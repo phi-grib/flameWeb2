@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Model} from '../Globals';
 
 @Component({
@@ -6,15 +6,8 @@ import { Model} from '../Globals';
   templateUrl: './config-preferences.component.html',
   styleUrls: ['./config-preferences.component.css']
 })
-export class ConfigPreferencesComponent implements OnInit {
-
+export class ConfigPreferencesComponent {
   constructor(private model: Model) { }
-
   objectKeys = Object.keys;
-
   infoPreferences = ['mol_batch', 'numCPUs', 'dimensionality_reduction','output_similar','output_format', 'output_md' ];
-
-  ngOnInit() {
-  }
-
 }
