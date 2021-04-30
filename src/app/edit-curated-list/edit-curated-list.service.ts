@@ -31,9 +31,5 @@ export class EditCuratedListService {
     return this.http.put(url, formData);
   }
 
-  curationParams(name) {
-    const url: string = environment.baseUrl_curate + "params/" + name;
-
-    return this.http.get(url);
-  }
+  
 }
