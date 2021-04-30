@@ -22,6 +22,7 @@ export class CommonFunctions {
 
   objectKeys = Object.keys;
 
+
   selectModel(name: string, version: string, modelID: string, trained: boolean, type: string, quantitative: boolean,
     conformal: boolean, ensemble: boolean, error: any) {
 
@@ -382,7 +383,7 @@ export class CommonFunctions {
 
   selectCuration(name: string) {
       this.curation.name = name;       
-      console.log(name);
+    
       //now here is where the results from the backend are requested and asigned to every attribute of the model
       this.commonService.getCurationDocumentation(name).subscribe(
           result=>{
@@ -391,7 +392,33 @@ export class CommonFunctions {
                   console.log(this.curation.result);
               }
           }
-      )
+      );
+      this.commonService.getCurationParams(name).subscribe((result) => {
+        if (result[0]) {
+          this.curation.parameters = result[2];
+          let params = new Object();
+          let keys = [];
+          let values = [];
+          let item = [];
+          for (let i = 0; i < this.curation.parameters.length; i++) {
+            let itemFiltered = this.curation.parameters[i].replace(":", ",");
+            let secondFilter =itemFiltered.replace(" ", "");
+            item = secondFilter.split(",");
+            keys.push(item[0]);
+            values.push(item[1]);
+          }
+          for (let j = 0; j < keys.length; j++) {
+            params[keys[j]] = values[j];
+          }
+          this.curation.remove = params['remove_problematic'];
+          this.curation.output_format = params['outfile_type'];
+          this.curation.separator = params['separator'];
+          console.log(this.curation.remove);
+          console.log(this.curation.output_format);
+          console.log(this.curation.separator);
+        }
+      });
+
   }
 
 

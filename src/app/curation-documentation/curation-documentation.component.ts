@@ -126,12 +126,16 @@ export class CurationDocumentationComponent implements OnChanges {
         result=>{
             if(result[0]){
                 this.curationDocumentation = result[1];
+                console.log(this.curationDocumentation);
                 this.curation.stats = this.curationDocumentation['curation_stats'];
                 this.curation.substance = this.curationDocumentation['substance_types'];
                 this.plotSummary.data[0].y =[this.curation.stats['Processed SMILES'], 
                 this.curation.stats['Unable to process']];
                 this.plotPie.data[0].labels = this.getPresentKeys();
                 this.plotPie.data[0].values = this.getPresentValues();
+                this.curation.name = this.func.curation.name;
+                this.curation.date = this.func.curation.date;
+
                 console.log(this.plotPie.data[0].labels);
             }else{
                 this.curation.error = 'No file sent';

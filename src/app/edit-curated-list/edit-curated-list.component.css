@@ -48,6 +48,15 @@
   border-bottom: 1px solid #b8dced;
   vertical-align: middle;
 }
+
+.table-display-compact{
+    margin:0;
+    position: center;
+    font-size: 14px;
+    margin-right: 3%;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
 .modal-body {
   height: auto;
 }
@@ -73,6 +82,9 @@
 #tablePreview {
   display: flex;
   flex-direction: row;
+  width: fit-content;
+  position: center;
+  padding: 3px;
 }
 
 ::ng-deep .dropdown-list {
@@ -83,4 +95,18 @@
     position: relative;
     margin-bottom: 30px;
     margin-left: .5em;
+}
+
+#inputInfo{
+    width: auto;
+}
+
+
+#multicolumns{
+    min-width: 479px;
+    padding: 16px !important;
+}
+
+#childwrap{
+    width: 462px;
 }

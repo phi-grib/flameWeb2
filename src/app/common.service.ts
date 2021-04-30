@@ -67,4 +67,9 @@ export class CommonService {
     const url: string = environment.baseUrl_curate + 'curate/' + name;
     return this.http.get(url);
   }     
+
+  getCurationParams(name) {
+    const url: string = environment.baseUrl_curate + "params/" + name;
+    return this.http.get(url);
+  }
 }

@@ -89,12 +89,21 @@ export class CustomHTMLElement extends HTMLElement {
 @Injectable()
 export class Curation {
     name: string = undefined;   // Name of the model selected in the first step
-    fileName: string = undefined;
+    fileName= undefined;
     curations = [];
     stats = false;//count of substances types, curated and non curated
     result = undefined;//the resulting table from the curation 
     date = undefined;
     substance = {};
     error=undefined;
+    separator= undefined;
+    selectedColumns=undefined;
+    format=undefined;
+    remove=false;
+    parameters = undefined;
+    columns = undefined;
+    output_format = undefined;
+    //TODO:
+    //definition of all input settings for each curation here so [(ngModel)] is binded to each curation attribute
 }
 

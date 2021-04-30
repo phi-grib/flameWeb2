@@ -38,7 +38,7 @@ export class CuratorComponent implements OnInit {
 
   curationSettings() {
     const modalRef = this.modalCuratorService.open(EditCuratedListComponent, {
-      windowClass: "modalClass",
+      windowClass: "customWindow",
     });
   }
 
@@ -53,7 +53,7 @@ export class CuratorComponent implements OnInit {
       .subscribe((result) => {
         if (result[0]) {
           $("#dataTableCurations").DataTable().destroy();
-          this.func.getCurationsList();
+          
           this.toastr.success(
             "Curation " + this.curation.name,
             "CURATION CREATED",
@@ -72,6 +72,7 @@ export class CuratorComponent implements OnInit {
             }
           );
         }
+        this.func.getCurationsList();
       });
   }
 
