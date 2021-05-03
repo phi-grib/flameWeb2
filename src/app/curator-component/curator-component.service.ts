@@ -5,7 +5,7 @@ import { environment } from "../../environments/environment";
 @Injectable({
   providedIn: "root",
 })
-export class EditCuratedListService {
+export class CuratorComponentService {
   constructor(private http: HttpClient) {}
 
   //updates an endpoint based on its name and sends the file to be curated in a string json formated

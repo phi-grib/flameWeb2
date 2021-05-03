@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CuratorComponent } from './curator.component';
+import { CuratorComponent } from './curator-component';
 
-describe('CuratorComponent', () => {
+describe('EditCuratedListComponent', () => {
   let component: CuratorComponent;
   let fixture: ComponentFixture<CuratorComponent>;
 

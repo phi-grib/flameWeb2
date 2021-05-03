@@ -1,20 +1,20 @@
 import { Component, OnInit } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Model, Curation } from "../Globals";
-import { EditCuratedListService } from "../edit-curated-list/edit-curated-list.service";
+import { CuratorComponentService } from "./curator-component.service";
 import { CommonService } from "../common.service";
-import { CuratorService } from "../curator/curator.service";
+import { ManageCurationsService } from "../manage-curations/manage-curations.service";
 import { CommonFunctions } from "../common.functions";
 import { ToastrService } from "ngx-toastr";
 
 declare var $: any;
 
 @Component({
-  selector: "app-edit-curated-list",
-  templateUrl: "./edit-curated-list.component.html",
-  styleUrls: ["./edit-curated-list.component.css"],
+  selector: "app-curator-component",
+  templateUrl: "./curator-component.html",
+  styleUrls: ["./curator-component.css"],
 })
-export class EditCuratedListComponent implements OnInit {
+export class CuratorComponent implements OnInit {
 
   ObjActiveModal: NgbActiveModal;
   fileContent: any;
@@ -33,7 +33,6 @@ export class EditCuratedListComponent implements OnInit {
   finalDict: {};
   objectArray: [];
   style: string = "mat-column-col";
-  curation: Curation;
   cas: string;
   smiles: string;
   objectKeys = Object.keys;
@@ -41,27 +40,21 @@ export class EditCuratedListComponent implements OnInit {
     openclass: "multiselect";
   };
 
-  //attributes:
-  public listName: string;
-  public separator: string;
-  public columns: [];
-  public selectedColumns: string[] = [];
-  public remove_problem: boolean = false;
-  public output_format: string;
-
   constructor(
-    public editService: EditCuratedListService,
+    public curService: CuratorComponentService,
     public activeModal: NgbActiveModal,
     public model: Model,
     private toastr: ToastrService,
     public commonService: CommonService,
-    public curatorservice: CuratorService,
+    public curation: Curation,
+    public curatorservice: ManageCurationsService,
     public func: CommonFunctions
   ) {}
 
   ngOnInit(): void {
-    this.curation = new Curation();
-    
+    this.curation.name = this.func.curation.name;
+    this.commonService.getCurationDocumentation(this.curation.name);
+    this.commonService.getCurationParams(this.curation.name);
   }
 
   seeObj() {
@@ -102,6 +95,7 @@ export class EditCuratedListComponent implements OnInit {
       ][0].split(self.curation.separator);
       var colNames = self.model.file_info["columns"].filter((item) => item);
       self.curation.columns = colNames;
+      console.log(self.fileContent);
     };
     fileReader.readAsText(file);
   }
@@ -167,7 +161,7 @@ export class EditCuratedListComponent implements OnInit {
         positionClass: "toast-top-right",
       }
     );
-    this.editService
+    this.curService
       .curateList(
         name,
         this.file,
@@ -182,6 +176,7 @@ export class EditCuratedListComponent implements OnInit {
           let iter = 0;
           const intervalId = setInterval(() => {
             if (iter < 100) {
+                $("#dataTableCurations").DataTable().destroy();
               this.checkCuration(this.curation.name, inserted, intervalId);
             } else {
               clearInterval(intervalId);
@@ -194,7 +189,7 @@ export class EditCuratedListComponent implements OnInit {
                   positionClass: "toast-top-right",
                 }
               );
-              $("#dataTableCurations").DataTable().destroy();
+             
               this.func.getCurationsList();
             }
             iter += 1;
@@ -212,13 +207,13 @@ export class EditCuratedListComponent implements OnInit {
   }
 
   checkCuration(name, inserted, intervalId) {
-    this.commonService.getCurationDocumentation(name).subscribe(
+    this.commonService.getCurationDocumentation(this.curation.name).subscribe(
       (result) => {
         // console.log(result);
         this.toastr.clear(inserted.toastId);
         if (result["error"]) {
           this.toastr.warning(
-            "Curation " + name + " finished with error " + result["error"],
+            "Curation " + this.curation.name + " finished with error " + result["error"],
             "CURATION COMPLETED",
             {
               timeOut: 5000,
@@ -226,8 +221,9 @@ export class EditCuratedListComponent implements OnInit {
             }
           );
         } else {
+            console.log(this.curation.name);
           this.toastr.success(
-            "Curation " + name + " created",
+            "Curation " + this.curation.name + " created",
             "CURATION COMPLETED",
             {
               timeOut: 5000,
@@ -244,7 +240,7 @@ export class EditCuratedListComponent implements OnInit {
         if (error.error.code !== 0) {
           this.toastr.clear(inserted.toastId);
           this.toastr.error(
-            "Curation " + name + " \n " + error.error.message,
+            "Curation " + this.curation.name + " \n " + error.error.message,
             "ERROR!",
             {
               timeOut: 10000,

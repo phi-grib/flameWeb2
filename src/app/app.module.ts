@@ -35,8 +35,8 @@ import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
 import { initializer } from './utils/app-init';
 import { LabelerComponent } from './labeler/labeler.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
-import { EditCuratedListComponent } from './edit-curated-list/edit-curated-list.component';
-import { CuratorComponent } from './curator/curator.component';
+import { CuratorComponent } from './curator-component/curator-component';
+import { ManageCurationsComponent } from './manage-curations/manage-curations';
 import { CurationDocumentationComponent } from './curation-documentation/curation-documentation.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
@@ -72,7 +72,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ModelDocumentationComponent,
     LabelerComponent,
     ConfigurationComponent,
-    EditCuratedListComponent,
+    ManageCurationsComponent,
     CuratorComponent,
     CurationDocumentationComponent
   ],

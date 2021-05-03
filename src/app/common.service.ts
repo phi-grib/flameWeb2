@@ -69,7 +69,7 @@ export class CommonService {
   }     
 
   getCurationParams(name) {
-    const url: string = environment.baseUrl_curate + "params/" + name;
+    const url: string = environment.baseUrl_cmanage + "params/" + name;
     return this.http.get(url);
   }
 }

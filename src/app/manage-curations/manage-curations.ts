@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonService } from "../common.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { EditCuratedListComponent } from "../edit-curated-list/edit-curated-list.component";
-import { CuratorService } from "./curator.service";
+import { CuratorComponent } from "../curator-component/curator-component";
+import { ManageCurationsService } from "./manage-curations.service";
 import { Curation, Globals } from "../Globals";
 import { CommonFunctions } from "../common.functions";
 import { ToastrService } from "ngx-toastr";
@@ -11,11 +11,11 @@ import { ToastrService } from "ngx-toastr";
 declare var $: any;
 
 @Component({
-  selector: "app-curator",
-  templateUrl: "./curator.component.html",
-  styleUrls: ["./curator.component.css"],
+  selector: "app-manage-curations",
+  templateUrl: "./manage-curations.html",
+  styleUrls: ["./manage-curations.css"],
 })
-export class CuratorComponent implements OnInit {
+export class ManageCurationsComponent implements OnInit {
   objectKeys = Object.keys;
   curationName: string;
   fileRegex = new RegExp('.*\..*');
@@ -24,8 +24,8 @@ export class CuratorComponent implements OnInit {
 
   constructor(
     private commonService: CommonService,
-    private modalCuratorService: NgbModal,
-    public curatorService: CuratorService,
+    private modalService: NgbModal,
+    public curatorService: ManageCurationsService,
     private toastr: ToastrService,
     public globals: Globals,
     public curation: Curation,
@@ -37,9 +37,7 @@ export class CuratorComponent implements OnInit {
   }
 
   curationSettings() {
-    const modalRef = this.modalCuratorService.open(EditCuratedListComponent, {
-      windowClass: "customWindow",
-    });
+    const modalRef = this.modalService.open( CuratorComponent, {windowClass: 'customWindow'});
   }
 
   createCuration() {
@@ -55,7 +53,7 @@ export class CuratorComponent implements OnInit {
           $("#dataTableCurations").DataTable().destroy();
           
           this.toastr.success(
-            "Curation " + this.curation.name,
+            "Curation " + this.curationName,
             "CURATION CREATED",
             {
               timeOut: 5000,

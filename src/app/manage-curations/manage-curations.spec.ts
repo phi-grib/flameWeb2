@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditCuratedListComponent } from './edit-curated-list.component';
+import { ManageCurationsComponent } from './manage-curations';
 
-describe('EditCuratedListComponent', () => {
-  let component: EditCuratedListComponent;
-  let fixture: ComponentFixture<EditCuratedListComponent>;
+describe('CuratorComponent', () => {
+  let component: ManageCurationsComponent;
+  let fixture: ComponentFixture<ManageCurationsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditCuratedListComponent ]
+      declarations: [ ManageCurationsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditCuratedListComponent);
+    fixture = TestBed.createComponent(ManageCurationsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

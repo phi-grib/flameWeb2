@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EditCuratedListService } from './edit-curated-list.service';
+import { CuratorComponentService } from './curator-component.service';
 
 describe('EditCuratedListService', () => {
-  let service: EditCuratedListService;
+  let service: CuratorComponentService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(EditCuratedListService);
+    service = TestBed.inject(CuratorComponentService);
   });
 
   it('should be created', () => {
