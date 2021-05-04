@@ -176,7 +176,6 @@ export class CuratorComponent implements OnInit {
           let iter = 0;
           const intervalId = setInterval(() => {
             if (iter < 100) {
-                $("#dataTableCurations").DataTable().destroy();
               this.checkCuration(this.curation.name, inserted, intervalId);
             } else {
               clearInterval(intervalId);
@@ -189,7 +188,7 @@ export class CuratorComponent implements OnInit {
                   positionClass: "toast-top-right",
                 }
               );
-             
+              $("#dataTableCurations").DataTable().destroy();
               this.func.getCurationsList();
             }
             iter += 1;

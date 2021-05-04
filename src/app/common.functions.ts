@@ -21,6 +21,7 @@ export class CommonFunctions {
 
 
   objectKeys = Object.keys;
+  detail = undefined;
 
 
   selectModel(name: string, version: string, modelID: string, trained: boolean, type: string, quantitative: boolean,
@@ -336,10 +337,11 @@ export class CommonFunctions {
   }
 
   getCurationsList(){
+    $("#dataTableCurations").DataTable().destroy();
     this.commonService.getCurations().subscribe(
       result => {
         if (result[0]) {
-            $("#dataTableCurations").DataTable().destroy();
+           
           this.curation.curations = result[1];
           this.globals.tableCurationVisible = false;
           
@@ -364,7 +366,6 @@ export class CommonFunctions {
                   this.curation.name = icur['curation_endpoint'];
                   this.curation.date = icur['creation_date'];
                   this.curation.fileName = icur['curation_output'];
-                  console.log(this.curation.fileName);
               }
                     }
 
@@ -413,11 +414,16 @@ export class CommonFunctions {
           this.curation.remove = params['remove_problematic'];
           this.curation.output_format = params['outfile_type'];
           this.curation.separator = params['separator'];
-          console.log(this.curation.remove);
-          console.log(this.curation.output_format);
-          console.log(this.curation.separator);
         }
       });
+      this.commonService.getCurationDetail(name).subscribe(
+          result=>{
+              if(result[0]){
+                  this.curation.head = result[1];
+                  console.log(this.curation.head);
+              }
+          }
+      )
 
   }
 

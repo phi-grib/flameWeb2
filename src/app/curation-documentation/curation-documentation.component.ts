@@ -27,7 +27,8 @@ export class CurationDocumentationComponent implements OnChanges {
   fileToUpload: File = null;
   public documentationVisible = false;
   objectKeys = Object.keys;
-  substances =[];
+  substances = [];
+  curation_head = undefined;
 
   //fake data for testing purposes
   fakesubsArray = [
@@ -110,56 +111,66 @@ export class CurationDocumentationComponent implements OnChanges {
   };
 
   ngOnChanges(): void {
-      this.curation.stats = undefined;
-      this.curation.substance = undefined;
-      this.curation.error = undefined;
-      this.curation.date = undefined;
-      this.plotPie.data[0].labels = [];
-      this.plotPie.data[0].values =[];
-      this.plotSummary.data[0].y = [];
-  this.getDocumentation();
+    this.curation.stats = undefined;
+    this.curation.substance = undefined;
+    this.curation.error = undefined;
+    this.curation.date = undefined;
+    this.plotPie.data[0].labels = [];
+    this.plotPie.data[0].values = [];
+    this.plotSummary.data[0].y = [];
+    this.getDocumentation();
   }
 
   getDocumentation() {
     this.documentationVisible = false;
-    this.commonService.getCurationDocumentation(this.curationName).subscribe(
-        result=>{
-            if(result[0]){
-                this.curationDocumentation = result[1];
-                console.log(this.curationDocumentation);
-                this.curation.stats = this.curationDocumentation['curation_stats'];
-                this.curation.substance = this.curationDocumentation['substance_types'];
-                this.plotSummary.data[0].y =[this.curation.stats['Processed SMILES'], 
-                this.curation.stats['Unable to process']];
-                this.plotPie.data[0].labels = this.getPresentKeys();
-                this.plotPie.data[0].values = this.getPresentValues();
-                this.curation.name = this.func.curation.name;
-                this.curation.date = this.func.curation.date;
+    this.commonService
+      .getCurationDocumentation(this.curationName)
+      .subscribe((result) => {
+        if (result[0]) {
+          this.curationDocumentation = result[1];
+          console.log(this.curationDocumentation);
+          this.curation.stats = this.curationDocumentation["curation_stats"];
+          this.curation.substance = this.curationDocumentation[
+            "substance_types"
+          ];
+          if (this.curation.stats["Unable to process"] != undefined) {
+            this.plotSummary.data[0].y = [
+              this.curation.stats["Processed SMILES"],
+              this.curation.stats["Unable to process"],
+            ];
+          } else {
+            this.plotSummary.data[0].y = [
+              this.curation.stats["Processed SMILES"],
+              0,
+            ];
+          }
+          this.plotPie.data[0].labels = this.getPresentKeys();
+          this.plotPie.data[0].values = this.getPresentValues();
+          this.curation.name = this.func.curation.name;
+          this.curation.date = this.func.curation.date;
 
-                console.log(this.plotPie.data[0].labels);
-            }else{
-                this.curation.error = 'No file sent';
-                console.log(this.curation.error);
-            }
+          console.log(this.plotPie.data[0].labels);
+        } else {
+          this.curation.error = "No file sent";
+          console.log(this.curation.error);
         }
-    )
+      });
   }
 
-  getPresentKeys():string[]{
-    for(let i=0; i<this.objectKeys(this.curation.substance).length;i++){
-        let item = this.objectKeys(this.curation.substance)[i];
-        this.substances.push(item);
+  getPresentKeys(): string[] {
+    for (let i = 0; i < this.objectKeys(this.curation.substance).length; i++) {
+      let item = this.objectKeys(this.curation.substance)[i];
+      this.substances.push(item);
     }
     return this.substances;
   }
 
-  getPresentValues(){
+  getPresentValues() {
     let values = [];
-    for(let i=0;i<this.substances.length;i++){
-        let item = this.curation.substance[this.substances[i]];
-        values.push(item);
-    }  
+    for (let i = 0; i < this.substances.length; i++) {
+      let item = this.curation.substance[this.substances[i]];
+      values.push(item);
+    }
     return values;
   }
-  
 }

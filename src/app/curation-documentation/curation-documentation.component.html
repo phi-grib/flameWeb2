@@ -8,38 +8,61 @@
 </div>
 <div class="container" *ngIf="this.curation.error!='No file sent'">
 
-<div id="plotpie">
-    <plotly-plot
-        [data]="plotPie.data"
-        [layout]="plotPie.layout"
-        [config]="plotPie.config">
-    </plotly-plot>
-</div>
+    <div id="plotpie">
+        <plotly-plot
+            [data]="plotPie.data"
+            [layout]="plotPie.layout"
+            [config]="plotPie.config">
+        </plotly-plot>
+    </div>
 
     <div id="plotbar">
         <plotly-plot
-        [data]="plotSummary.data"
-        [layout]="plotSummary.layout"
-        [config]="plotSummary.config">
-    </plotly-plot>
+            [data]="plotSummary.data"
+            [layout]="plotSummary.layout"
+            [config]="plotSummary.config">
+        </plotly-plot>
     </div>
-    <div class="card">
-        <div class="card-header collapsed" id="headingOneDoc" data-toggle="collapse" data-target="#collapseOneDoc" aria-expanded="false" aria-controls="collapseOneDoc">
-            <h5 class="mb-0">
-                Curation documentation <span class=comment>({{this.curationName}})</span>
-                <button class="btn btn-link pt-0 pb-0 float-right" type="button">
-                </button>
-            </h5>
-        </div>
-        <div id="collapseOneDoc" class="collapse" aria-labelledby="headingOneDoc" data-parent="#docAccordion">
-            <div class="card-body pt-0 pb-0 pl-0 pr-0">
-                <div class="table-curation-documentation">
-                    <table>
-                        <thead></thead>
-                    </table>
+    <div class="accordion mt-3" id="curatingAccordion">
+        <!--START INPUT FILE-->
+
+            <div class="card">
+                <div class="card-header" id="headingCurDoc"
+                    data-toggle="collapse"
+                    data-target="#collapseCurDoc" aria-expanded="true"
+                    aria-controls="collapseCurDoc">
+                    <h5 class="mb-0">
+                        Curation Documentation ({{this.curationName}})
+                        <button class="btn btn-link pt-0 pb-0 float-right"
+                            type="button"></button>
+                    </h5>
+                </div>
+                <div id="collapseCurDoc" class="collapse"
+                    aria-labelledby="collapseCurDoc"
+                    data-parent="#curatingAccordion">
+                    <div class="card-body p-2 pl-5 pr-5">
+                        <div class="row">
+                        <table class="tableCurated">
+                            <div *ngFor="let header of
+                                objectKeys(this.curation.head)">
+                                <thead>
+                                    <th>{{header}}</th>
+                                </thead>
+                                <tbody>
+                                    <div *ngFor="let value of
+                                        this.curation.head[header]">
+                                        <tr>
+                                            <td>{{value}}</td>
+                                        </tr>
+                                    </div>
+
+                                </tbody>
+                            </div>
+                        </table>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
-</div>
+

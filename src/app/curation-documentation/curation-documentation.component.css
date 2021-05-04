@@ -20,3 +20,21 @@
 .card{
     flex-basis:100%; 
 }
+
+.collapseCurDoc{
+    display: inline-flex;
+}
+
+#curatingAccordion{
+    width: 100%;
+    display: flex;
+}
+
+.tableCurated {
+    display: flex;
+    font-size: 12px;
+}
+
+table th td {
+    border: 1px solid black;
+}
