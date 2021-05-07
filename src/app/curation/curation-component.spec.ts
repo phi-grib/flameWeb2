@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CurationDocumentationComponent } from './curation-documentation.component';
+import { CurationComponent } from './curation-component';
 
 describe('CurationDocumentationComponent', () => {
-  let component: CurationDocumentationComponent;
-  let fixture: ComponentFixture<CurationDocumentationComponent>;
+  let component: CurationComponent;
+  let fixture: ComponentFixture<CurationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CurationDocumentationComponent ]
+      declarations: [ CurationComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CurationDocumentationComponent);
+    fixture = TestBed.createComponent(CurationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -37,7 +37,8 @@ import { LabelerComponent } from './labeler/labeler.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
 import { CuratorComponent } from './curator-component/curator-component';
 import { ManageCurationsComponent } from './manage-curations/manage-curations';
-import { CurationDocumentationComponent } from './curation-documentation/curation-documentation.component';
+import { CurationComponent } from './curation/curation-component';
+import { CurationListComponent } from './curation-list/curation-list.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -74,7 +75,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ConfigurationComponent,
     ManageCurationsComponent,
     CuratorComponent,
-    CurationDocumentationComponent
+    CurationComponent,
+    CurationListComponent
   ],
   imports: [
     BrowserModule,

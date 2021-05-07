@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#plotpie {
+  padding: 0.5em;
+  margin-top: 0em;
+}
+
+#plotbar {
+  padding: 0.5em;
+  margin-top: 0em;
+}
+
+.title {
+  color: #0076a3;
+}
+
+.card {
+  flex-basis: 100%;
+}
+
+.collapseCurDoc {
+  display: inline-flex;
+}
+
+#curatingAccordion {
+  width: 100%;
+  display: flex;
+}
+
+.tableCurated {
+  display: flex;
+  font-size: 12px;
+}
+
+table th td {
+  border: 1px solid black;
+}
+
+ul li.nav-item a {
+  background: white;
+  color: #0076a3;
+  /* font-size: 1.5rem; */
+  font-size: 1.2rem;
+}
+
+#curationTable{
+    width: 100% !important;
+}

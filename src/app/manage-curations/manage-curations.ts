@@ -41,11 +41,6 @@ export class ManageCurationsComponent implements OnInit {
   }
 
   createCuration() {
-    let date = new Date();
-    let dd = date.getDate();
-    let mm = date.getMonth();
-    let yyyy = date.getFullYear();
-    this.curation.date = dd + "-" + mm + "-" + yyyy;
     this.curatorService
       .createEndpoint(this.curation.name)
       .subscribe((result) => {
@@ -74,8 +69,8 @@ export class ManageCurationsComponent implements OnInit {
       });
   }
 
-  deleteEndpoint(name) {
-    this.curatorService.deleteEndpoint(name).subscribe( (
+  deleteEndpoint() {
+    this.curatorService.deleteEndpoint(this.curation.name).subscribe( (
         result) => {
         this.toastr.success(
           "Curation " + this.curation.name,

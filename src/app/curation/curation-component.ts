@@ -1,25 +1,31 @@
 import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { Curation } from "../Globals";
 import { CommonService } from "../common.service";
-import { ToastrService } from "ngx-toastr";
-import { CurationDocumentationService } from "./curation-documentation.service";
+import { CurationComponentService } from "./curation-component.service";
 import { CommonFunctions } from "../common.functions";
 import * as PlotlyJS from "plotly.js/dist/plotly.js";
+import * as SmilesDrawer from "smiles-drawer";
+import { ViewChildren } from "@angular/core";
+import { QueryList } from "@angular/core";
+import { ElementRef } from "@angular/core";
+
 
 @Component({
   selector: "app-curation-documentation",
-  templateUrl: "./curation-documentation.component.html",
-  styleUrls: ["./curation-documentation.component.css"],
+  templateUrl: "./curation-component.html",
+  styleUrls: ["./curation-component.css"],
 })
-export class CurationDocumentationComponent implements OnChanges {
+export class CurationComponent implements OnChanges {
+  index: number = 0;
   constructor(
-    public curationService: CurationDocumentationService,
+    public curationService: CurationComponentService,
     public func: CommonFunctions,
     public curation: Curation,
     public commonService: CommonService
   ) {}
 
   @Input() curationName;
+  @ViewChildren("cmp") components: QueryList<ElementRef>;
 
   // materialModules = [MatIconModule];
   curationDocumentation = undefined;
@@ -118,13 +124,14 @@ export class CurationDocumentationComponent implements OnChanges {
     this.plotPie.data[0].labels = [];
     this.plotPie.data[0].values = [];
     this.plotSummary.data[0].y = [];
-    this.getDocumentation();
+    this.getStatistics();
+    this.getCurationHead();
   }
 
-  getDocumentation() {
+  getStatistics() {
     this.documentationVisible = false;
     this.commonService
-      .getCurationDocumentation(this.curationName)
+      .getCurationStatistics(this.curationName)
       .subscribe((result) => {
         if (result[0]) {
           this.curationDocumentation = result[1];
@@ -172,5 +179,35 @@ export class CurationDocumentationComponent implements OnChanges {
       values.push(item);
     }
     return values;
+  }
+
+  drawCurationHeader() {
+    console.log("entra");
+    const options = { width: 600, height: 300 };
+    const smilesDrawer = new SmilesDrawer.Drawer(options);
+    for(let i=0;i<this.curation.head['structure_curated'];i++){
+    SmilesDrawer.parse(
+      this.curation.head["structure_curated"][i],
+      function (tree) {
+        // Draw to the canvas
+        smilesDrawer.draw(tree, 'one_canvas'+i, "light", false);
+      },
+      function (err) {
+        console.log(err);
+      }
+    );
+  }
+  }
+
+  getCurationHead() {
+    this.commonService
+      .getCurationHead(this.curation.name)
+      .subscribe((result) => {
+        if (result[0]) {
+          this.curation.head = result[1];
+          console.log(this.curation.head);
+          this.drawCurationHeader();
+        }
+      });
   }
 }

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CurationDocumentationService } from './curation-documentation.service';
+import { CurationComponentService} from './curation-component.service';
 
 describe('CurationDocumentationService', () => {
-  let service: CurationDocumentationService;
+  let service: CurationComponentService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CurationDocumentationService);
+    service = TestBed.inject(CurationComponentService);
   });
 
   it('should be created', () => {

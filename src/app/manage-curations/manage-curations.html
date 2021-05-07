@@ -5,7 +5,7 @@
             data-target="#newModalCuration">New</button>
         <button type="button" class="btn btn-ets-up"
             (click)="curationSettings()">Curate</button>
-        <button type="button" class="btn btn-ets-do" (click)="deleteEndpoint(this.curationName)">Delete</button>
+        <button type="button" class="btn btn-ets-do" (click)="deleteEndpoint()">Delete</button>
     </div>
 </div>
 <div class="container">
@@ -40,47 +40,10 @@
             </div>
         </div>
     </div>
-    <!-- if no info from none endpoint the table will be hidden-->
-    <div class="ml-3 mr-3" [hidden]="!this.globals.tableCurationVisible"
-        id="divTableCurations">
-        <div class="col-12 scrolltable">
-            <table id="dataTableCurations" class="table" style="width:100%">
-                <thead>
-                    <tr>
-                        <th style="max-width: 5%" class="text-center"></th>
-                        <th style="width: 12%">Name</th>
-                        <th style="width: 12%">Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of this.curation.curations"
-                        (click)="this.func.selectCuration(this.curationName=item['curation_endpoint'])" [ngClass]="{'selected':
-                        this.curationName===item['curation_endpoint']}">
-                        <td class="text-center">
-                            <i class="fas"
-                                [ngClass]="{
-                                'fa-grip-lines':
-                                item['creation_date']==undefined && item['curation_endpoint']==undefined,
-                                'fa-circle': item['creation_date']!=undefined,
-                                'fa-times': item['curation_output']=='unk',
-                                'faa-flash animated': this.curation.curations.length== 0}"
-                                [ngStyle]="{'color':item['curation_output']=='unk'  ?
-                                '#E69400' : (item['curation_output']!='unk' ? '#51cf66' :
-                                'red'
-                                ) }"
-                                aria-hidden="true"></i>
-                        </td>
-                        <td>{{item['curation_endpoint']}}</td>
-                        <td>{{item['creation_date']}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+   
 
     <!-- <div id="overlay" *ngIf="!this.globals.tableCurationVisible">
     <div class="spinner-border text-etransafe" style="width: 10rem; height: 10rem;" role="status">
         <span class="sr-only">Loading...</span>
     </div>
 </div> -->
-</div>

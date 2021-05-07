@@ -15,7 +15,6 @@ declare var $: any;
   styleUrls: ["./curator-component.css"],
 })
 export class CuratorComponent implements OnInit {
-
   ObjActiveModal: NgbActiveModal;
   fileContent: any;
   spaceBar = " ";
@@ -39,6 +38,7 @@ export class CuratorComponent implements OnInit {
   dropDownSettings: {
     openclass: "multiselect";
   };
+  molIndex=0;
 
   constructor(
     public curService: CuratorComponentService,
@@ -52,13 +52,7 @@ export class CuratorComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.curation.name = this.func.curation.name;
-    this.commonService.getCurationDocumentation(this.curation.name);
-    this.commonService.getCurationParams(this.curation.name);
-  }
-
-  seeObj() {
-    console.log(this.curation);
+    this.func.getCurationParams(this.curation.name);
   }
 
   onChangeSeparator(selectValue: any) {
@@ -126,8 +120,6 @@ export class CuratorComponent implements OnInit {
   }
 
   curate(name: string) {
-    //TODO:
-    //all settings must be saved with ngModel in curation.something so the settings are saved for each endpoint
     let regExp = new RegExp("cas", "i");
     for (let i = 0; i < this.curation.selectedColumns.length; i++) {
       if (
@@ -206,13 +198,16 @@ export class CuratorComponent implements OnInit {
   }
 
   checkCuration(name, inserted, intervalId) {
-    this.commonService.getCurationDocumentation(this.curation.name).subscribe(
+    this.commonService.getCurationStatistics(this.curation.name).subscribe(
       (result) => {
         // console.log(result);
         this.toastr.clear(inserted.toastId);
         if (result["error"]) {
           this.toastr.warning(
-            "Curation " + this.curation.name + " finished with error " + result["error"],
+            "Curation " +
+              this.curation.name +
+              " finished with error " +
+              result["error"],
             "CURATION COMPLETED",
             {
               timeOut: 5000,
@@ -220,7 +215,7 @@ export class CuratorComponent implements OnInit {
             }
           );
         } else {
-            console.log(this.curation.name);
+          console.log(this.curation.name);
           this.toastr.success(
             "Curation " + this.curation.name + " created",
             "CURATION COMPLETED",
@@ -252,7 +247,5 @@ export class CuratorComponent implements OnInit {
         }
       }
     );
-
-    
   }
 }
