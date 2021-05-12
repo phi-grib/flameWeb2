@@ -367,11 +367,13 @@ export class CommonFunctions {
             } 
             this.space.spaces.push ([iname, ivers, inobj, itype, ivars, imd]);
           }
+          // console.log(this.space.spaces)
           
           setTimeout(() => {
             const table = $('#dataTableSpaces').DataTable({
               ordering: true,
               pageLength: 10,
+              destroy: true
             });
 
             // by default selects the first space and the last version of the space
