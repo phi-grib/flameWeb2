@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
-import { Curation } from "../Globals";
+import { Curation, CustomHTMLElement } from "../Globals";
 import { CommonService } from "../common.service";
 import { CurationComponentService } from "./curation-component.service";
 import { CommonFunctions } from "../common.functions";
@@ -8,7 +8,9 @@ import * as SmilesDrawer from "smiles-drawer";
 import { ViewChildren } from "@angular/core";
 import { QueryList } from "@angular/core";
 import { ElementRef } from "@angular/core";
+import { saveAs } from "file-saver";
 
+declare var $: any;
 
 @Component({
   selector: "app-curation-documentation",
@@ -25,7 +27,7 @@ export class CurationComponent implements OnChanges {
   ) {}
 
   @Input() curationName;
-  @ViewChildren("cmp") components: QueryList<ElementRef>;
+  @ViewChildren("sml") components: QueryList<ElementRef>;
 
   // materialModules = [MatIconModule];
   curationDocumentation = undefined;
@@ -34,7 +36,7 @@ export class CurationComponent implements OnChanges {
   public documentationVisible = false;
   objectKeys = Object.keys;
   substances = [];
-  curation_head = undefined;
+  curation_head = [];
 
   //fake data for testing purposes
   fakesubsArray = [
@@ -126,6 +128,7 @@ export class CurationComponent implements OnChanges {
     this.plotSummary.data[0].y = [];
     this.getStatistics();
     this.getCurationHead();
+    // this.getFullCuration();
   }
 
   getStatistics() {
@@ -159,7 +162,6 @@ export class CurationComponent implements OnChanges {
           console.log(this.plotPie.data[0].labels);
         } else {
           this.curation.error = "No file sent";
-          console.log(this.curation.error);
         }
       });
   }
@@ -183,20 +185,16 @@ export class CurationComponent implements OnChanges {
 
   drawCurationHeader() {
     console.log("entra");
-    const options = { width: 600, height: 300 };
+    const options = { 'width': 600, 'height': 300 };
     const smilesDrawer = new SmilesDrawer.Drawer(options);
-    for(let i=0;i<this.curation.head['structure_curated'];i++){
-    SmilesDrawer.parse(
-      this.curation.head["structure_curated"][i],
-      function (tree) {
-        // Draw to the canvas
-        smilesDrawer.draw(tree, 'one_canvas'+i, "light", false);
-      },
-      function (err) {
-        console.log(err);
-      }
-    );
-  }
+    for (let i = 0; i < this.curation.head["structure_curated"]; i++) {
+        SmilesDrawer.parse(this.curation.head["structure_curated"][i], function(tree) {
+            // Draw to the canvas
+            smilesDrawer.draw(tree, 'this_canvas'+ i, 'dark', false);
+            }, function (err) {
+              console.log(err);
+          });
+    }
   }
 
   getCurationHead() {
@@ -207,7 +205,101 @@ export class CurationComponent implements OnChanges {
           this.curation.head = result[1];
           console.log(this.curation.head);
           this.drawCurationHeader();
+          $.fn.dataTable.ext.buttons.download = {
+            text: "Download",
+            action: () => {
+              this.importFile();
+            },
+          };
+          $('#curation').DataTable().destroy();
+          setTimeout(() => {
+            const table = $("#curation").DataTable({
+              /*Ordering by date */
+              // autoWidth: false,
+              dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>'
+              + 
+              '<"row"<"col-sm-12"tr>>' +  '<"row"<"col-sm-5"i><"col-sm-7"p>>'
+              ,
+              buttons: [
+                {
+                  extend: "copy",
+                  text: "Copy",
+                  className: "btn-primary",
+                  title: "",
+                },
+                {
+                  extend: "download",
+                  text: "Download",
+                  className: "btn-primary",
+                  title: "",
+                },
+                {
+                  extend: "excel",
+                  text: "Excel",
+                  className: "btn-primary",
+                  title: "",
+                },
+                {
+                  extend: "pdf",
+                  text: "Pdf",
+                  className: "btn-primary",
+                  title: "",
+                },
+                {
+                  extend: "print",
+                  text: "Print",
+                  className: "btn-primary",
+                  title: "",
+                },
+              ],
+              deferRender: true,
+              ordering: true,
+              pageLength: 10,
+              columnDefs: [{ type: "date-euro", targets: 2 }],
+              order: [[1, "desc"]],
+              destroy: true,
+            });
+          }, 50);
+        } else {
+          console.log("something went wrong");
         }
       });
   }
+
+  importFile() {
+      let str='';
+      let header='';
+    this.commonService
+      .getFullCuration(this.curation.name)
+      .subscribe((result) => {
+        if (result[0] == true) {
+          for(let keys of this.objectKeys(result[1])){
+              header+= keys + ',';
+              for(let item of result[1][keys]){
+                str+=item + ",";
+              }
+              str+= "\r\n";
+          }
+          header+= '\r\n' + str;
+          console.log(this.curation);
+        }
+      });
+
+    let blob = new Blob([header], {
+      type: "text/plain;charset=utf-8",
+    });
+    if (this.curation.fileName.includes(".sdf")) {
+      saveAs(blob, this.curation.name + ".sdf");
+    } else if (this.curation.fileName.includes(".csv")) {
+      saveAs(blob, this.curation.name + ".csv");
+    } else if (this.curation.fileName.includes(".tsv")) {
+      saveAs(blob, this.curation.name + ".tsv");
+    } else if (this.curation.fileName.includes(".json")) {
+      saveAs(blob, this.curation.name + ".json");
+    } else if (this.curation.fileName.includes(".xlsx")) {
+      saveAs(blob, this.curation.name + ".xlsx");
+    }
+  }
+
+ 
 }

@@ -30,10 +30,6 @@
   display: flex;
 }
 
-.tableCurated {
-  display: flex;
-  font-size: 12px;
-}
 
 table th td {
   border: 1px solid black;
@@ -46,6 +42,33 @@ ul li.nav-item a {
   font-size: 1.2rem;
 }
 
-#curationTable{
-    width: 100% !important;
+#curation{
+    width: fit-content;
+    position: center;
+    padding: 3px;
+}
+
+
+.col-sm-12{
+    display: flex;
+}
+
+#downloadFile{
+    height: fit-content;
+    margin-left: 10%;
+    border-radius: 5%;
+}
+
+.table-curation{
+    width: fit-content;
+    display: flex;
+}
+
+::ng-deep .align-middle{
+    width: fit-content;
+}
+
+
+tr{
+    height: 100px !important;
 }

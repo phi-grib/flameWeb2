@@ -74,7 +74,12 @@ export class CommonService {
   }
 
   getCurationHead(name){
-    const url: string = environment.baseUrl_cmanage +"documentation/" + name;
+    const url: string = environment.baseUrl_cmanage +"head/" + name;
+    return this.http.get(url)
+  }
+
+  getFullCuration(name){
+    const url: string = environment.baseUrl_cmanage +"fullfile/" + name;
     return this.http.get(url)
   }
 }

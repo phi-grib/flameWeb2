@@ -390,6 +390,7 @@ export class CommonFunctions {
               ).text();
               for (let i = 0; i < this.curation.curations.length; i++) {
                 let icur = this.curation.curations[i];
+                console.log(icur);
                 this.curation.name = icur["curation_endpoint"];
                 this.curation.date = icur["creation_date"];
                 this.curation.fileName = icur["curation_output"];

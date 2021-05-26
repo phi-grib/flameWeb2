@@ -37,7 +37,7 @@ export class ManageCurationsComponent implements OnInit {
   }
 
   curationSettings() {
-    const modalRef = this.modalService.open( CuratorComponent, {windowClass: 'customWindow'});
+    const modalRef = this.modalService.open( CuratorComponent,  { size: 'lg'});
   }
 
   createCuration() {
@@ -45,8 +45,7 @@ export class ManageCurationsComponent implements OnInit {
       .createEndpoint(this.curation.name)
       .subscribe((result) => {
         if (result[0]) {
-          $("#dataTableCurations").DataTable().destroy();
-          
+      
           this.toastr.success(
             "Curation " + this.curationName,
             "CURATION CREATED",
@@ -65,6 +64,7 @@ export class ManageCurationsComponent implements OnInit {
             }
           );
         }
+        $("#dataTableCurations").DataTable().destroy();
         this.func.getCurationsList();
       });
   }

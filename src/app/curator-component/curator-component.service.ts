@@ -16,7 +16,8 @@ export class CuratorComponentService {
     smiles: string,
     separator: string,
     remove_problem: string,
-    output_format: string
+    output_format: string,
+    metadata:any
   ) {
     const url: string = environment.baseUrl_curate + "curate/" + name;
     const formData = new FormData();
@@ -28,6 +29,7 @@ export class CuratorComponentService {
     formData.append("separator", separator);
     formData.append("remove_problematic", remove_problem);
     formData.append("outfile_type", output_format);
+    formData.append("metadata", metadata.toString())
     return this.http.put(url, formData);
   }
 

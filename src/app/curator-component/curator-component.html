@@ -115,13 +115,62 @@
                                     <label id="multimodels"
                                         class="bmd-label-static mb-1
                                         p-0">Select
-                                        the columns to proceed</label>
+                                        the substance name column if any</label>
                                     <ng-multiselect-dropdown
-                                        [placeholder]="'select
-                                        metadata'"
+                                        [placeholder]="'Substance name'"
                                         [data]="this.curation.columns"
-                                        [(ngModel)]="this.curation.selectedColumns"
+                                        [(ngModel)]="this.curation.substance_name"
                                         [settings]="dropdownSettings"
+                                        name="selectedColumns" >
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div id="multicolumns"
+                                *ngIf="this.curation.columns">
+                                <div id="childwrap">
+                                    <label id="multimodels"
+                                        class="bmd-label-static mb-1
+                                        p-0">Select
+                                        the SMILES column to proceed</label>
+                                    <ng-multiselect-dropdown
+                                        [placeholder]="'SMILES'"
+                                        [data]="this.curation.columns" 
+                                        [(ngModel)]="this.smiles"
+                                        [settings]="dropdownSettings"
+                                        name="selectedColumns" required
+                                        autocomplete="on">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div id="multicolumns"
+                                *ngIf="this.curation.columns">
+                                <div id="childwrap">
+                                    <label id="multimodels"
+                                        class="bmd-label-static mb-1
+                                        p-0">Select
+                                        the cas column</label>
+                                    <ng-multiselect-dropdown
+                                        [placeholder]="'CAS'"
+                                        [data]="this.curation.columns"
+                                        [(ngModel)]="this.cas"
+                                        [settings]="dropdownSettings"
+                                        name="selectedColumns" required
+                                        autocomplete="on">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div id="multicolumns"
+                                *ngIf="this.curation.columns">
+                                <div id="childwrap">
+                                    <label id="multimodels"
+                                        class="bmd-label-static mb-1
+                                        p-0">Select
+                                        the cas column</label>
+                                    <ng-multiselect-dropdown
+                                        [placeholder]="'CAS'"
+                                        [data]="this.curation.columns"
+                                        [(ngModel)]="this.curation.metadata"
+                                        [settings]="multidropdownSettings"
                                         name="selectedColumns" required
                                         autocomplete="on">
                                     </ng-multiselect-dropdown>
@@ -206,7 +255,7 @@
                                     <div class="col-4-mr-0">
                                         <button *ngIf="this.curation.columns"
                                             type="submit"
-                                            (click)="curate(this.func.curation.name)"
+                                            (click)="curate(this.curation.name)"
                                             class="btn btn-ets-down mb-0"
                                             [disabled]="!curatedListFrom.valid">Submit</button>
                                     </div>

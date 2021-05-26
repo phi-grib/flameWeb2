@@ -104,6 +104,9 @@ export class Curation {
     columns = undefined;
     output_format = undefined;
     head = [];
+    file_content = undefined;
+    substance_name = undefined;
+    metadata= undefined;
     //TODO:
     //definition of all input settings for each curation here so [(ngModel)] is binded to each curation attribute
 }

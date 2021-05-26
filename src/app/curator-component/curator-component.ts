@@ -6,8 +6,11 @@ import { CommonService } from "../common.service";
 import { ManageCurationsService } from "../manage-curations/manage-curations.service";
 import { CommonFunctions } from "../common.functions";
 import { ToastrService } from "ngx-toastr";
+import { IDropdownSettings } from "ng-multiselect-dropdown";
 
 declare var $: any;
+
+
 
 @Component({
   selector: "app-curator-component",
@@ -35,9 +38,24 @@ export class CuratorComponent implements OnInit {
   cas: string;
   smiles: string;
   objectKeys = Object.keys;
-  dropDownSettings: {
-    openclass: "multiselect";
-  };
+  dropdownSettings: IDropdownSettings = {
+    singleSelection: true,
+    idField: 'item_id',
+    textField: 'item_text',
+    itemsShowLimit: 5,
+    enableCheckAll: false,
+    allowSearchFilter: false,
+    closeDropDownOnSelection:true
+};
+  multidropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'item_id',
+    textField: 'item_text',
+    itemsShowLimit: 5,
+    enableCheckAll: false,
+    allowSearchFilter: false,
+    closeDropDownOnSelection:false
+  }
   molIndex=0;
 
   constructor(
@@ -59,13 +77,13 @@ export class CuratorComponent implements OnInit {
     this.curation.separator = selectValue;
   }
 
-  onchangeSelected(selected) {
-    this.curation.selectedColumns.push(selected);
-  }
+//   onchangeSelected(selected) {
+//     this.curation.selectedColumns.push(selected);
+//   }
 
-  onchangeSelectedAll(selected) {
-    this.curation.selectedColumns = selected;
-  }
+//   onchangeSelectedAll(selected) {
+//     this.curation.selectedColumns = selected;
+//   }
 
   public csvJSON(fileList: FileList) {
     const file = fileList[0];
@@ -117,28 +135,10 @@ export class CuratorComponent implements OnInit {
       objectArray.push(obj);
     });
     this.finalDict = objectArray;
+    this.curation.selectedColumns = [this.cas, this.smiles, this.curation.substance_name];
   }
 
   curate(name: string) {
-    let regExp = new RegExp("cas", "i");
-    for (let i = 0; i < this.curation.selectedColumns.length; i++) {
-      if (
-        this.curation.selectedColumns[i].match(regExp) ||
-        this.curation.selectedColumns[i].includes("molecule") ||
-        this.curation.selectedColumns[i].includes("identifier")
-      ) {
-        this.cas = this.curation.selectedColumns[i];
-      }
-    }
-
-    for (let i = 0; i < this.curation.selectedColumns.length; i++) {
-      if (
-        this.curation.selectedColumns[i].includes("struct") ||
-        this.curation.selectedColumns[i].includes("smile")
-      ) {
-        this.smiles = this.curation.selectedColumns[i];
-      }
-    }
     let remove = "";
     if (this.curation.remove == true) {
       remove = "True";
@@ -161,7 +161,8 @@ export class CuratorComponent implements OnInit {
         this.smiles,
         this.curation.separator,
         remove,
-        this.curation.output_format
+        this.curation.output_format,
+        this.curation.metadata
       )
       .subscribe(
         (result) => {
@@ -215,7 +216,6 @@ export class CuratorComponent implements OnInit {
             }
           );
         } else {
-          console.log(this.curation.name);
           this.toastr.success(
             "Curation " + this.curation.name + " created",
             "CURATION COMPLETED",

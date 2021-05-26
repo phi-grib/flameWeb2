@@ -75,6 +75,7 @@ tr.selected {
     margin: 0;
 }
 
-::ng-deep .customWindow .modal-dialog{
-    width: 900px !important;
+
+.modal-content{
+    width: 180vh !important;
 }
