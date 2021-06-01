@@ -25,6 +25,12 @@
   border-width: 0px;
 }
 
+.table {
+  background-color: white;
+  background: white;
+  color: #22577A;
+}
+
 table td {
   padding-top: 1px;
   padding-bottom: 1px;
