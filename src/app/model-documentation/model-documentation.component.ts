@@ -156,6 +156,11 @@ export class ModelDocumentationComponent implements OnChanges {
       );
   }
 
+  //calls exportToFile 
+  downloadWord() {
+    this.service.exportToFile(this.modelName, this.modelVersion, 'WORD')
+  }
+
   // compresses the changes in the GUI into a JSON delta file
   private genDelta(dict_in: {}) {
     let dict_aux = {};

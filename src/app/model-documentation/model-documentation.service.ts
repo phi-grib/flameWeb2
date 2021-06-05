@@ -24,7 +24,14 @@ export class ModelDocumentationService {
   //obtains a copy of the model documentation formated to export (usualy YAML)
   exportToFile(modelName: string, modelVersion: string, modelFormat: string): Observable<any> {
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/oformat/' + modelFormat + '/documentation';
-    return this.http.get(url)
+    if (modelFormat == 'WORD') {
+      var a = document.createElement("a");
+      a.href = url;
+      a.click();
+    }
+    else {
+      return this.http.get(url)
+    }
   }
 
 
