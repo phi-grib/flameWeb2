@@ -10,8 +10,6 @@ import { IDropdownSettings } from "ng-multiselect-dropdown";
 
 declare var $: any;
 
-
-
 @Component({
   selector: "app-curator-component",
   templateUrl: "./curator-component.html",
@@ -40,23 +38,25 @@ export class CuratorComponent implements OnInit {
   objectKeys = Object.keys;
   dropdownSettings: IDropdownSettings = {
     singleSelection: true,
-    idField: 'item_id',
-    textField: 'item_text',
-    itemsShowLimit: 5,
+    idField: "item_id",
+    textField: "value",
+    disabledField: "disabled",
+    itemsShowLimit: 7,
     enableCheckAll: false,
     allowSearchFilter: false,
-    closeDropDownOnSelection:true
-};
-  multidropdownSettings: IDropdownSettings = {
+    closeDropDownOnSelection: true,
+  };
+  dropdownSettings2: IDropdownSettings = {
     singleSelection: false,
-    idField: 'item_id',
-    textField: 'item_text',
-    itemsShowLimit: 5,
+    idField: "item_id",
+    textField: "value",
+    disabledField: "disabled",
+    itemsShowLimit: 7,
     enableCheckAll: false,
     allowSearchFilter: false,
-    closeDropDownOnSelection:false
-  }
-  molIndex=0;
+    closeDropDownOnSelection: false,
+  };
+  molIndex = 0;
 
   constructor(
     public curService: CuratorComponentService,
@@ -77,13 +77,18 @@ export class CuratorComponent implements OnInit {
     this.curation.separator = selectValue;
   }
 
-//   onchangeSelected(selected) {
-//     this.curation.selectedColumns.push(selected);
-//   }
+  // onchangeSelected(selected) {
+  //   this.curation.selectedColumns.push(selected);
+  // }
 
-//   onchangeSelectedAll(selected) {
-//     this.curation.selectedColumns = selected;
-//   }
+  onchangeSelected(selected) {
+      let value = selected.value
+    this.curation.selectedColumns.push(value);
+  }
+
+  onchangeColumns(item) {
+    this.curation.selectedColumns.push(item);
+  }
 
   public csvJSON(fileList: FileList) {
     const file = fileList[0];
@@ -105,6 +110,7 @@ export class CuratorComponent implements OnInit {
       self.model.file_info["columns"] = self.model.file_info[
         "columns"
       ][0].split(self.curation.separator);
+
       var colNames = self.model.file_info["columns"].filter((item) => item);
       self.curation.columns = colNames;
       console.log(self.fileContent);
@@ -124,7 +130,6 @@ export class CuratorComponent implements OnInit {
       temp = lines[k].split(this.curation.separator);
       filtered.push(temp.filter((item) => item));
     }
-    let result = [];
     var objectArray = [];
 
     filtered.forEach((r) => {
@@ -135,10 +140,15 @@ export class CuratorComponent implements OnInit {
       objectArray.push(obj);
     });
     this.finalDict = objectArray;
-    this.curation.selectedColumns = [this.cas, this.smiles, this.curation.substance_name];
   }
 
   curate(name: string) {
+    let met = [];
+    if (this.curation.metadata != undefined) {
+      for (let item of this.curation.metadata) {
+        met.push(item.value);
+      }
+    }
     let remove = "";
     if (this.curation.remove == true) {
       remove = "True";
@@ -153,16 +163,26 @@ export class CuratorComponent implements OnInit {
         positionClass: "toast-top-right",
       }
     );
+    console.log(
+      name,
+      this.file,
+      this.curation.casCol[0].value,
+      this.curation.smilesCol[0],
+      this.curation.separator,
+      remove,
+      this.curation.output_format,
+      this.curation.metadata
+    );
     this.curService
       .curateList(
         name,
         this.file,
-        this.cas,
-        this.smiles,
+        this.curation.casCol[0].value,
+        this.curation.smilesCol[0],
         this.curation.separator,
         remove,
         this.curation.output_format,
-        this.curation.metadata
+        met
       )
       .subscribe(
         (result) => {
@@ -247,5 +267,30 @@ export class CuratorComponent implements OnInit {
         }
       }
     );
+  }
+
+  getData() {
+    this.curation.multicolumns = this.curation.columns.map(
+      (str, index, boolean) => ({
+        value: str,
+        item_id: index + 1,
+        disabled: false,
+      })
+    );
+    for (let item of this.curation.multicolumns) {
+      if (this.curation.smilesCol !== undefined) {
+        if (item.value == this.curation.smilesCol) {
+          item.disabled = true;
+        }
+      }
+    }
+    if (this.curation.casCol !== undefined) {
+      for (let item of this.curation.multicolumns) {
+        if (item.value == this.curation.casCol[0].value) {
+          item.disabled = true;
+        }
+      }
+    }
+    return this.curation.multicolumns;
   }
 }

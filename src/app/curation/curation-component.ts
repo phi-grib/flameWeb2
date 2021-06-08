@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
-import { Curation, CustomHTMLElement } from "../Globals";
+import { Curation, CustomHTMLElement, Globals } from "../Globals";
 import { CommonService } from "../common.service";
 import { CurationComponentService } from "./curation-component.service";
 import { CommonFunctions } from "../common.functions";
@@ -9,6 +9,7 @@ import { ViewChildren } from "@angular/core";
 import { QueryList } from "@angular/core";
 import { ElementRef } from "@angular/core";
 import { saveAs } from "file-saver";
+import { type } from "os";
 
 declare var $: any;
 
@@ -23,7 +24,8 @@ export class CurationComponent implements OnChanges {
     public curationService: CurationComponentService,
     public func: CommonFunctions,
     public curation: Curation,
-    public commonService: CommonService
+    public commonService: CommonService,
+    public globals: Globals
   ) {}
 
   @Input() curationName;
@@ -185,121 +187,294 @@ export class CurationComponent implements OnChanges {
 
   drawCurationHeader() {
     console.log("entra");
-    const options = { 'width': 600, 'height': 300 };
+    const options = { width: 600, height: 300 };
     const smilesDrawer = new SmilesDrawer.Drawer(options);
     for (let i = 0; i < this.curation.head["structure_curated"]; i++) {
-        SmilesDrawer.parse(this.curation.head["structure_curated"][i], function(tree) {
-            // Draw to the canvas
-            smilesDrawer.draw(tree, 'this_canvas'+ i, 'dark', false);
-            }, function (err) {
-              console.log(err);
-          });
+      SmilesDrawer.parse(
+        this.curation.head["structure_curated"][i],
+        function (tree) {
+          // Draw to the canvas
+          smilesDrawer.draw(tree, "this_canvas" + i, "dark", false);
+        },
+        function (err) {
+          console.log(err);
+        }
+      );
     }
   }
 
   getCurationHead() {
+    $("#curation").DataTable().destroy();
+
+    let params = undefined;
+    this.curation.parameters = {};
+    this.globals.tableCurationHead = false;
+
     this.commonService
-      .getCurationHead(this.curation.name)
+      .getCurationParams(this.curation.name)
       .subscribe((result) => {
         if (result[0]) {
-          this.curation.head = result[1];
-          console.log(this.curation.head);
-          this.drawCurationHeader();
-          $.fn.dataTable.ext.buttons.download = {
-            text: "Download",
-            action: () => {
-              this.importFile();
-            },
-          };
-          $('#curation').DataTable().destroy();
-          setTimeout(() => {
-            const table = $("#curation").DataTable({
-              /*Ordering by date */
-              // autoWidth: false,
-              dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>'
-              + 
-              '<"row"<"col-sm-12"tr>>' +  '<"row"<"col-sm-5"i><"col-sm-7"p>>'
-              ,
-              buttons: [
-                {
-                  extend: "copy",
-                  text: "Copy",
-                  className: "btn-primary",
-                  title: "",
-                },
-                {
-                  extend: "download",
-                  text: "Download",
-                  className: "btn-primary",
-                  title: "",
-                },
-                {
-                  extend: "excel",
-                  text: "Excel",
-                  className: "btn-primary",
-                  title: "",
-                },
-                {
-                  extend: "pdf",
-                  text: "Pdf",
-                  className: "btn-primary",
-                  title: "",
-                },
-                {
-                  extend: "print",
-                  text: "Print",
-                  className: "btn-primary",
-                  title: "",
-                },
-              ],
-              deferRender: true,
-              ordering: true,
-              pageLength: 10,
-              columnDefs: [{ type: "date-euro", targets: 2 }],
-              order: [[1, "desc"]],
-              destroy: true,
+          params = result[2];
+          for (let item of params) {
+            let keyvalue = item.split(" : ");
+            console.log(keyvalue);
+            this.curation.parameters[keyvalue[0]] = keyvalue[1];
+          }
+          console.log(this.curation.parameters);
+          this.commonService
+            .getCurationHead(this.curation.name)
+            .subscribe((result) => {
+              if (result[0]) {
+                let response = result[1];
+                this.curation.head[
+                  this.curation.parameters["molecule_identifier"]
+                ] = response[this.curation.parameters["molecule_identifier"]];
+                this.curation.head[
+                  this.curation.parameters["structure_column"]
+                ] = response[this.curation.parameters["structure_column"]];
+                this.curation.head[
+                  this.curation.parameters["structure_curated"]
+                ] = response[this.curation.parameters["structure_curated"]];
+                this.curation.head[
+                  this.curation.parameters["substance_type_name"]
+                ] = response[this.curation.parameters["substance_type_name"]];
+                if (
+                  this.curation.head[
+                    this.curation.parameters["substance_type_name"]
+                  ] ===
+                  response[this.curation.parameters["substance_type_name"]]
+                ) {
+                  $.fn.dataTable.ext.buttons.download = {
+                    text: "Download",
+                    action: () => {
+                      this.importFile();
+                    },
+                  };
+                  $("#curation").DataTable().destroy();
+                  $("#curation").DataTable({
+                    initComplete: function (settings, json) {
+                      setTimeout(() => {
+                        const table = $("#curation").DataTable({
+                          dom:
+                            '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
+                            '<"row"<"col-sm-12"tr>>' +
+                            '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+                          buttons: [
+                            {
+                              extend: "copy",
+                              text: "Copy",
+                              className: "btn-primary",
+                              title: "",
+                            },
+                            {
+                              extend: "download",
+                              text: "Download",
+                              className: "btn-primary",
+                              title: "",
+                            },
+                            {
+                              extend: "excel",
+                              text: "Excel",
+                              className: "btn-primary",
+                              title: "",
+                            },
+                            {
+                              extend: "pdf",
+                              text: "Pdf",
+                              className: "btn-primary",
+                              title: "",
+                            },
+                            {
+                              extend: "print",
+                              text: "Print",
+                              className: "btn-primary",
+                              title: "",
+                            },
+                          ],
+                          deferRender: true,
+                          ordering: true,
+                          pageLength: 10,
+                          columnDefs: [{ type: "date-euro", targets: 2 }],
+                          order: [[1, "desc"]],
+                          destroy: true,
+                        });
+                      }, 50);
+                    },
+                  });
+                  console.log("beforetablecurationhead");
+                  this.globals.tableCurationHead = true;
+                }
+              }
+              console.log(
+                this.curation.head[
+                  this.curation.parameters["molecule_identifier"]
+                ]
+              );
+              this.drawCurationHeader();
             });
-          }, 50);
-        } else {
-          console.log("something went wrong");
         }
       });
   }
 
   importFile() {
-      let str='';
-      let header='';
+    let line = "";
     this.commonService
       .getFullCuration(this.curation.name)
       .subscribe((result) => {
         if (result[0] == true) {
-          for(let keys of this.objectKeys(result[1])){
-              header+= keys + ',';
-              for(let item of result[1][keys]){
-                str+=item + ",";
+          if (this.curation.parameters.outfile_type.includes("sdf")) {
+            // let blob = new Blob([line], {
+            //   type: "text/plain;charset=utf-8",
+            // });
+            // saveAs(blob, this.curation.name + ".sdf");
+          } else if (this.curation.parameters.outfile_type.includes("csv")) {
+            let csv = JSON.parse(result[1]);
+            var str = "";
+            line = this.objectKeys(csv[0]).toString() + "\r\n";
+            for (var i = 0; i < this.objectKeys(csv).length; i++) {
+              for (let keys of this.objectKeys(csv[i])) {
+                let pre = csv[i][keys];
+                let clean = pre.toString();
+                clean = clean.replace(",", "");
+                line += clean;
+                line += ",";
               }
-              str+= "\r\n";
+              line = line.slice(0, -1);
+              line += "\r\n";
+              console.log(line);
+            }
+            str += line;
+            let blob = new Blob([str], {
+              type: "text/plain;charset=utf-8",
+            });
+            saveAs(blob, this.curation.name + ".csv");
+          } else if (this.curation.parameters.outfile_type.includes("tsv")) {
+            let tsv = JSON.parse(result[1]);
+            var str = "";
+            line = this.objectKeys(tsv[0]).toString() + "\r\n";
+            line = line.replace(/,/g,'   ');
+            for (var i = 0; i < this.objectKeys(tsv).length; i++) {
+              for (let keys of this.objectKeys(tsv[i])) {
+                let pre = tsv[i][keys];
+                let clean = pre.toString();
+                clean = clean.replace(/\t/g, "");
+                line += clean;
+                line += "   ";
+              }
+              line = line.slice(0, -1);
+              line += "\r\n";
+              console.log(line);
+            }
+            str += line;
+            let blob = new Blob([str], {
+              type: "text/plain;charset=utf-8",
+            });
+            saveAs(blob, this.curation.name + ".tsv");
+          } else if (this.curation.parameters.outfile_type.includes("json")) {
+            let jsonR = result[1];
+            line = JSON.stringify(jsonR);
+            line = line.replace('{"0":', "");
+            line = line.substring(0, line.length - 2);
+            line += "]";
+            let blob = new Blob([line], {
+              type: "text/plain;charset=utf-8",
+            });
+            saveAs(blob, this.curation.name + ".json");
+          } else if (this.curation.parameters.outfile_type.includes("xlsx")) {
+            // console.log();
+            // let blob = new Blob([line], {
+            //   type: "text/plain;charset=utf-8",
+            // });
+            //saveAs(blob, this.curation.name + ".xlsx");
           }
-          header+= '\r\n' + str;
-          console.log(this.curation);
         }
       });
-
-    let blob = new Blob([header], {
-      type: "text/plain;charset=utf-8",
-    });
-    if (this.curation.fileName.includes(".sdf")) {
-      saveAs(blob, this.curation.name + ".sdf");
-    } else if (this.curation.fileName.includes(".csv")) {
-      saveAs(blob, this.curation.name + ".csv");
-    } else if (this.curation.fileName.includes(".tsv")) {
-      saveAs(blob, this.curation.name + ".tsv");
-    } else if (this.curation.fileName.includes(".json")) {
-      saveAs(blob, this.curation.name + ".json");
-    } else if (this.curation.fileName.includes(".xlsx")) {
-      saveAs(blob, this.curation.name + ".xlsx");
-    }
+  }
+  getCurationParams() {
+    this.commonService
+      .getCurationParams(this.curation.name)
+      .subscribe((result) => {
+        if (result[0]) {
+          this.curation.parameters = result[2];
+          console.log(this.curation.parameters);
+        }
+      });
   }
 
- 
+  convertToFileString(objArray): string {
+    let separator = "";
+    var toArrayObj = Object.keys(objArray).map((key) => [
+      String(key),
+      objArray[key],
+    ]);
+    var array =
+      typeof toArrayObj != "object" ? JSON.parse(toArrayObj) : toArrayObj;
+    console.log(array);
+    var headers = Object.keys(objArray).toString();
+    let emptyvar = undefined;
+    let csvContent = array.map((e) => e.join(",")).join("\n");
+    emptyvar = csvContent.split("\n");
+    console.log(emptyvar);
+
+    return csvContent;
+  }
 }
+
+//   async checkHeadValues() {
+//     var response = await this.commonService
+//       .getCurationHead(this.curation.name)
+//       .toPromise();
+//     if (response) {
+//       $("#curation").DataTable().destroy();
+//       $("#curation").DataTable({
+//         initComplete: function (settings, json) {
+//           setTimeout(() => {
+//             const table = $("#curation").DataTable({
+//               dom:
+//                 '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
+//                 '<"row"<"col-sm-12"tr>>' +
+//                 '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+//               buttons: [
+//                 {
+//                   extend: "copy",
+//                   text: "Copy",
+//                   className: "btn-primary",
+//                   title: "",
+//                 },
+//                 {
+//                   extend: "download",
+//                   text: "Download",
+//                   className: "btn-primary",
+//                   title: "",
+//                 },
+//                 {
+//                   extend: "excel",
+//                   text: "Excel",
+//                   className: "btn-primary",
+//                   title: "",
+//                 },
+//                 {
+//                   extend: "pdf",
+//                   text: "Pdf",
+//                   className: "btn-primary",
+//                   title: "",
+//                 },
+//                 {
+//                   extend: "print",
+//                   text: "Print",
+//                   className: "btn-primary",
+//                   title: "",
+//                 },
+//               ],
+//               deferRender: true,
+//               ordering: true,
+//               pageLength: 10,
+//               columnDefs: [{ type: "date-euro", targets: 2 }],
+//               order: [[1, "desc"]],
+//               destroy: true,
+//             });
+//           }, 50);
+//         },
+//       });
+//     }
+//   }

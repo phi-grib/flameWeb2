@@ -23,29 +23,27 @@
             [config]="plotSummary.config">
         </plotly-plot>
     </div>
-
-<button type="submit" (click)="importFile()">Download</button>
-
-    <div class="row" id="curationTable" *ngIf="this.curation.head != undefined">
-
+    <div class="row" id="curationTable" *ngIf="this.curation.head">
         <div class="col-sm-12">
-            <table id="curation" class="table table table-sm" *ngIf="this.curation.head!=undefined">
-                    <thead>
-                        <tr style="line-height: 90px;">
-                            <th>Name</th>                         
-                            <th>Structure curated</th>                         
-                            <th>CAS</th>                         
-                            <th>Substance type</th>                         
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let res of this.curation.head.CAS;let i= index">
-                            <td class="align-middle">{{this.curation.head['substance_name'][i]}}</td>
-                            <td class="align-middle"><canvas #sml [attr.id]="'this_canvas' + i">{{this.curation.head['structure_curated'][i]}}</canvas></td>
-                            <td class="align-middle">{{this.curation.head['CAS'][i]}}</td>
-                            <td class="align-middle">{{this.curation.head['substance_type_name'][i]}}</td>
-                        </tr>
-                    </tbody>
+            <table id="curation" class="table table table-sm"
+                *ngIf="this.curation.head[this.curation.parameters['molecule_identifier']]!==undefined" [hidden]="!this.globals.tableCurationHead">
+                <thead>
+                    <tr style="line-height: 90px;">
+                        <th style="width: 15% !important;">CAS-RN</th>
+                        <th style="width: 15% !important" >Structure curated</th>
+                        <th style="width: 15% !important">Structure</th>
+                        <th style="width: 15% !important">Substance type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let res of this.curation.head.substance_type_name;let i= index">
+                        <td >{{this.curation.head[this.curation.parameters['molecule_identifier']][i]}}</td>
+                        <td ><canvas #sml
+                                [attr.id]="'this_canvas' + i">{{this.curation.head["structure_curated"][i]}}</canvas></td>
+                        <td >{{this.curation.head[this.curation.parameters["structure_column"]][i]}}</td>
+                        <td >{{this.curation.head['substance_type_name'][i]}}</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>

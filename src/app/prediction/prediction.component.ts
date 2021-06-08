@@ -1043,6 +1043,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
   saveEXCEL() {
     const xls  = Object.assign([], this.info);
+    console.log(this.info);
     xls.splice(0, 0, this.head);
     /* generate worksheet */
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(xls);

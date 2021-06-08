@@ -7,8 +7,8 @@
     </button>
 </div>
 
-<form #curatedListFrom="ngForm" enctype="multipart/form-data"
-    name="curatedListFrom">
+<form #curatedListForm="ngForm" enctype="multipart/form-data"
+    name="curatedListForm">
     <div class="modal-body">
 
         <!--START INPUT FILE-->
@@ -40,11 +40,11 @@
                         </select>
                         <div class="custom-file">
                             <input id="preloadFile" type="file"
-                                onchange="this.nextElementSibling.innerText=
+                                ngModelChange="this.nextElementSibling.innerText=
                                 this.files[0].name"
                                 (change)="csvJSON($event.target.files)"
                                 style="display: none;" accept=".csv, .tsf, .sdf,
-                                .xlsx, .json" autocomplete="on">
+                                .xlsx, .json" autocomplete="on" onchange="this.nextElementSibling.innerText = this.files[0].name">
                             <label class="custom-file-label" for="preloadFile"
                                 id="preloadFile-label">Choose file</label>
                         </div>
@@ -115,28 +115,13 @@
                                     <label id="multimodels"
                                         class="bmd-label-static mb-1
                                         p-0">Select
-                                        the substance name column if any</label>
-                                    <ng-multiselect-dropdown
-                                        [placeholder]="'Substance name'"
-                                        [data]="this.curation.columns"
-                                        [(ngModel)]="this.curation.substance_name"
-                                        [settings]="dropdownSettings"
-                                        name="selectedColumns" >
-                                    </ng-multiselect-dropdown>
-                                </div>
-                            </div>
-                            <div id="multicolumns"
-                                *ngIf="this.curation.columns">
-                                <div id="childwrap">
-                                    <label id="multimodels"
-                                        class="bmd-label-static mb-1
-                                        p-0">Select
                                         the SMILES column to proceed</label>
                                     <ng-multiselect-dropdown
-                                        [placeholder]="'SMILES'"
-                                        [data]="this.curation.columns" 
-                                        [(ngModel)]="this.smiles"
+                                        (onSelect)="onchangeColumns($event)"
+                                        [placeholder]="'SMILES'" 
                                         [settings]="dropdownSettings"
+                                        [data]="this.curation.columns"
+                                        [(ngModel)]="this.curation.smilesCol"
                                         name="selectedColumns" required
                                         autocomplete="on">
                                     </ng-multiselect-dropdown>
@@ -150,10 +135,12 @@
                                         p-0">Select
                                         the cas column</label>
                                     <ng-multiselect-dropdown
-                                        [placeholder]="'CAS'"
-                                        [data]="this.curation.columns"
-                                        [(ngModel)]="this.cas"
+                                        id="multiSelect2"
+                                        (onSelect)="onchangeSelected($event)"
+                                        [placeholder]="'CAS'" 
                                         [settings]="dropdownSettings"
+                                        [data]="getData()"
+                                        [(ngModel)]="this.curation.casCol"
                                         name="selectedColumns" required
                                         autocomplete="on">
                                     </ng-multiselect-dropdown>
@@ -165,14 +152,17 @@
                                     <label id="multimodels"
                                         class="bmd-label-static mb-1
                                         p-0">Select
-                                        the cas column</label>
+                                        the metadata columns</label>
                                     <ng-multiselect-dropdown
-                                        [placeholder]="'CAS'"
-                                        [data]="this.curation.columns"
+                                        id="multiSelect3" 
+                                        (onSelect)="onchangeSelected($event)"
+                                        [placeholder]="'metadata'" 
+                                        [settings]="dropdownSettings2"
+                                        [data]="getData()"
                                         [(ngModel)]="this.curation.metadata"
-                                        [settings]="multidropdownSettings"
                                         name="selectedColumns" required
-                                        autocomplete="on">
+                                        autocomplete="on"
+                                        closeDropDownOnSelection="false">
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
@@ -257,7 +247,7 @@
                                             type="submit"
                                             (click)="curate(this.curation.name)"
                                             class="btn btn-ets-down mb-0"
-                                            [disabled]="!curatedListFrom.valid">Submit</button>
+                                            [disabled]="!curatedListForm.valid">Submit</button>
                                     </div>
                                 </div>
                             </div>

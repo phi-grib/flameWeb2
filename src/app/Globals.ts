@@ -61,6 +61,7 @@ export class Globals {
     mainTabActive: string = undefined;
     read_only = environment.read_only;
     tableCurationVisible = false;
+    tableCurationHead = false;
 }
 
 @Injectable()
@@ -97,16 +98,21 @@ export class Curation {
     substance = {};
     error=undefined;
     separator= undefined;
-    selectedColumns=undefined;
+    selectedColumns=[];
     format=undefined;
     remove=false;
     parameters = undefined;
     columns = undefined;
     output_format = undefined;
-    head = [];
+    head = undefined;
     file_content = undefined;
     substance_name = undefined;
     metadata= undefined;
+    casCol= undefined;
+    smilesCol= undefined;
+    columns2= undefined;
+    columns3= undefined;
+    multicolumns= undefined;
     //TODO:
     //definition of all input settings for each curation here so [(ngModel)] is binded to each curation attribute
 }

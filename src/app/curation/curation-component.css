@@ -33,6 +33,7 @@
 
 table th td {
   border: 1px solid black;
+  width: 15% !important;
 }
 
 ul li.nav-item a {
@@ -64,11 +65,11 @@ ul li.nav-item a {
     display: flex;
 }
 
-::ng-deep .align-middle{
-    width: fit-content;
-}
-
 
 tr{
     height: 100px !important;
+}
+
+::ng-deep th{
+    width: 15% !important;
 }
