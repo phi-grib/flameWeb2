@@ -9,7 +9,7 @@ import { ViewChildren } from "@angular/core";
 import { QueryList } from "@angular/core";
 import { ElementRef } from "@angular/core";
 import { saveAs } from "file-saver";
-import { type } from "os";
+import * as XLSX from "xlsx";
 
 declare var $: any;
 
@@ -352,7 +352,7 @@ export class CurationComponent implements OnChanges {
             let tsv = JSON.parse(result[1]);
             var str = "";
             line = this.objectKeys(tsv[0]).toString() + "\r\n";
-            line = line.replace(/,/g,'   ');
+            line = line.replace(/,/g, "   ");
             for (var i = 0; i < this.objectKeys(tsv).length; i++) {
               for (let keys of this.objectKeys(tsv[i])) {
                 let pre = tsv[i][keys];
@@ -381,11 +381,48 @@ export class CurationComponent implements OnChanges {
             });
             saveAs(blob, this.curation.name + ".json");
           } else if (this.curation.parameters.outfile_type.includes("xlsx")) {
-            // console.log();
-            // let blob = new Blob([line], {
-            //   type: "text/plain;charset=utf-8",
-            // });
-            //saveAs(blob, this.curation.name + ".xlsx");
+            
+            let content = JSON.parse(result[1]);
+            let headers = this.objectKeys(content[0]);
+            console.log(headers);
+            let temp = [];
+            let aoa = [headers];
+            for (var i = 0; i < this.objectKeys(content).length; i++) {
+                console.log(content[i]);
+                temp = [];
+                for (let keys of this.objectKeys(content[i])) {                   
+                    let pre = content[i][keys];
+                    let clean = pre.toString();
+                    clean = clean.replace(/,/g, "");
+                    console.log(clean);
+                    temp.push(clean);
+                }              
+              console.log(temp);
+              aoa.push(temp);              
+            }
+            console.log(aoa);
+            var ws_data = [
+              ["foo", "bar"],
+              [1, 2],
+            ];
+            const ws = XLSX.utils.aoa_to_sheet(aoa);
+            console.log(ws);
+            const wb = XLSX.utils.book_new();
+            wb.Props = {
+              Title: "curated data",
+              Author: "flame",
+            };
+            wb.SheetNames.push("curated_data");
+            wb.Sheets["curated_data"] = ws;
+            console.log(wb);
+            var wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+            console.log(wbout);
+            saveAs(
+              new Blob([this.convertToOctet(wbout)], {
+                type: "application/octet-stream",
+              }),
+              this.curation.name + ".xlsx"
+            );
           }
         }
       });
@@ -418,63 +455,69 @@ export class CurationComponent implements OnChanges {
 
     return csvContent;
   }
-}
 
-//   async checkHeadValues() {
-//     var response = await this.commonService
-//       .getCurationHead(this.curation.name)
-//       .toPromise();
-//     if (response) {
-//       $("#curation").DataTable().destroy();
-//       $("#curation").DataTable({
-//         initComplete: function (settings, json) {
-//           setTimeout(() => {
-//             const table = $("#curation").DataTable({
-//               dom:
-//                 '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
-//                 '<"row"<"col-sm-12"tr>>' +
-//                 '<"row"<"col-sm-5"i><"col-sm-7"p>>',
-//               buttons: [
-//                 {
-//                   extend: "copy",
-//                   text: "Copy",
-//                   className: "btn-primary",
-//                   title: "",
-//                 },
-//                 {
-//                   extend: "download",
-//                   text: "Download",
-//                   className: "btn-primary",
-//                   title: "",
-//                 },
-//                 {
-//                   extend: "excel",
-//                   text: "Excel",
-//                   className: "btn-primary",
-//                   title: "",
-//                 },
-//                 {
-//                   extend: "pdf",
-//                   text: "Pdf",
-//                   className: "btn-primary",
-//                   title: "",
-//                 },
-//                 {
-//                   extend: "print",
-//                   text: "Print",
-//                   className: "btn-primary",
-//                   title: "",
-//                 },
-//               ],
-//               deferRender: true,
-//               ordering: true,
-//               pageLength: 10,
-//               columnDefs: [{ type: "date-euro", targets: 2 }],
-//               order: [[1, "desc"]],
-//               destroy: true,
-//             });
-//           }, 50);
-//         },
-//       });
-//     }
-//   }
+  convertToOctet(wbout) {
+    var buf = new ArrayBuffer(wbout.length); //convert s to arrayBuffer
+    var view = new Uint8Array(buf); //create uint8array as viewer
+    for (var i = 0; i < wbout.length; i++) view[i] = wbout.charCodeAt(i) & 0xff; //convert to octet
+    return buf;
+  }
+
+  //   async checkHeadValues() {
+  //     var response = await this.commonService
+  //       .getCurationHead(this.curation.name)
+  //       .toPromise();
+  //     if (response) {
+  //       $("#curation").DataTable().destroy();
+  //       $("#curation").DataTable({
+  //         initComplete: function (settings, json) {
+  //           setTimeout(() => {
+  //             const table = $("#curation").DataTable({
+  //               dom:
+  //                 '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
+  //                 '<"row"<"col-sm-12"tr>>' +
+  //                 '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+  //               buttons: [
+  //                 {
+  //                   extend: "copy",
+  //                   text: "Copy",
+  //                   className: "btn-primary",
+  //                   title: "",
+  //                 },
+  //                 {
+  //                   extend: "download",
+  //                   text: "Download",
+  //                   className: "btn-primary",
+  //                   title: "",
+  //                 },
+  //                 {
+  //                   extend: "excel",
+  //                   text: "Excel",
+  //                   className: "btn-primary",
+  //                   title: "",
+  //                 },
+  //                 {
+  //                   extend: "pdf",
+  //                   text: "Pdf",
+  //                   className: "btn-primary",
+  //                   title: "",
+  //                 },
+  //                 {
+  //                   extend: "print",
+  //                   text: "Print",
+  //                   className: "btn-primary",
+  //                   title: "",
+  //                 },
+  //               ],
+  //               deferRender: true,
+  //               ordering: true,
+  //               pageLength: 10,
+  //               columnDefs: [{ type: "date-euro", targets: 2 }],
+  //               order: [[1, "desc"]],
+  //               destroy: true,
+  //             });
+  //           }, 50);
+  //         },
+  //       });
+  //     }
+}
