@@ -24,7 +24,7 @@ export class ModelDocumentationService {
   //obtains a copy of the model documentation formated to export (usualy YAML)
   exportToFile(modelName: string, modelVersion: string, modelFormat: string): Observable<any> {
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/oformat/' + modelFormat + '/documentation';
-    if (modelFormat == 'WORD') {
+    if (modelFormat == 'WORD' || modelFormat == "EXCEL") {
       var a = document.createElement("a");
       a.href = url;
       a.click();
