@@ -1,3 +1,32 @@
+ <div class="modal" id="newModalCuration" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Curation</h5>
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row form-inline">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="model_name">Curation name: </label>
+                        <input type="text" class="form-control ml-2" id="model_name"
+                            [(ngModel)]="this.curation.name"
+                            placeholder="name">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="createCuration()">Create</button>
+                <button type="button" class="btn btn-secondary"
+                    data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="btn-toolbar mt-3 mb-3 ml-4" role="toolbar" aria-label="Toolbar with
     button groups">
     <div class="btn-group mr-2" role="group" aria-label="First group">
@@ -8,9 +37,8 @@
         <button type="button" class="btn btn-ets-do" (click)="deleteEndpoint()">Delete</button>
     </div>
 </div>
-<div class="container">
-    <!--New Curation endpoint-->
-    <div class="modal fade" id="newModalCuration" tabindex="-1" role="dialog"
+<!--New Curation endpoint-->
+<!-- <div class="modal fade" id="newModalCuration" tabindex="-1" role="dialog"
         aria-labelledby="newModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content modal-sm" id="little-modal-content">
@@ -39,10 +67,8 @@
                 </div>
             </div>
         </div>
-    </div>
-   
-
-    <!-- <div id="overlay" *ngIf="!this.globals.tableCurationVisible">
+    </div> -->
+<!-- <div id="overlay" *ngIf="!this.globals.tableCurationVisible">
     <div class="spinner-border text-etransafe" style="width: 10rem; height: 10rem;" role="status">
         <span class="sr-only">Loading...</span>
     </div>

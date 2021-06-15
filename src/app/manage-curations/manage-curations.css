@@ -75,18 +75,3 @@ tr.selected {
     margin: 0;
 }
 
-
-.modal-content{
-    max-width: 90vh !important;
-    min-width: 90vh !important;
-    min-height: 40vh !important;
-    max-height: 40vh !important; 
-}
-
-::ng-deep #little-modal-content{
-    max-width: 70vh !important;
-    min-width: 70vh !important;
-    min-height: 30vh !important;
-    max-height: 30vh !important;
-
-}
