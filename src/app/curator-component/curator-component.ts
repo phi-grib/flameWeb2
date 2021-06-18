@@ -155,6 +155,7 @@ export class CuratorComponent implements OnInit {
     } else {
       remove = "False";
     }
+    if(this.curation.name!=''){
     const inserted = this.toastr.info(
       "Running!",
       "Curation " + this.curation.name,
@@ -185,10 +186,11 @@ export class CuratorComponent implements OnInit {
         met
       )
       .subscribe(
-        (result) => {
+        result => {
           let iter = 0;
           const intervalId = setInterval(() => {
-            if (iter < 100) {
+            if (iter < 500) {
+                console.log(iter);
               this.checkCuration(this.curation.name, inserted, intervalId);
             } else {
               clearInterval(intervalId);
@@ -205,9 +207,9 @@ export class CuratorComponent implements OnInit {
               this.func.getCurationsList();
             }
             iter += 1;
-          }, 200);
+          }, 500);
         },
-        (error) => {
+        error => {
           this.toastr.clear(inserted.toastId);
           $("#dataTableCurations").DataTable().destroy();
           this.func.getCurationsList();
@@ -216,11 +218,12 @@ export class CuratorComponent implements OnInit {
       );
 
     this.activeModal.close("Close click");
+    }else{alert('Curation name undefined')}
   }
 
   checkCuration(name, inserted, intervalId) {
-    this.commonService.getCurationStatistics(this.curation.name).subscribe(
-      (result) => {
+    this.commonService.getFullCuration(name).subscribe(
+      result => {
         // console.log(result);
         this.toastr.clear(inserted.toastId);
         if (result["error"]) {
@@ -249,7 +252,7 @@ export class CuratorComponent implements OnInit {
         $("#dataTableCurations").DataTable().destroy();
         this.func.getCurationsList();
       },
-      (error) => {
+      error => {
         // CHECK MAX iterations
         if (error.error.code !== 0) {
           this.toastr.clear(inserted.toastId);

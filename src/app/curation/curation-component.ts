@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { Component, Input, OnChanges, SimpleChanges, ViewChild } from "@angular/core";
 import { Curation, CustomHTMLElement, Globals } from "../Globals";
 import { CommonService } from "../common.service";
 import { CurationComponentService } from "./curation-component.service";
@@ -30,6 +30,7 @@ export class CurationComponent implements OnChanges {
 
   @Input() curationName;
   @ViewChildren("sml") components: QueryList<ElementRef>;
+  @ViewChild('downloadSdf', {static: false}) downloadSdf: ElementRef;
 
   // materialModules = [MatIconModule];
   curationDocumentation = undefined;
@@ -39,6 +40,7 @@ export class CurationComponent implements OnChanges {
   objectKeys = Object.keys;
   substances = [];
   curation_head = [];
+  sdfPath = '';
 
   //fake data for testing purposes
   fakesubsArray = [
@@ -213,7 +215,7 @@ export class CurationComponent implements OnChanges {
     this.commonService
       .getCurationParams(this.curation.name)
       .subscribe((result) => {
-        if (result[0]) {
+        if (result[0]===true) {
           params = result[2];
           for (let item of params) {
             let keyvalue = item.split(" : ");
@@ -224,7 +226,8 @@ export class CurationComponent implements OnChanges {
           this.commonService
             .getCurationHead(this.curation.name)
             .subscribe((result) => {
-              if (result[0]) {
+                console.log(result);
+              if (result[0]===true) {
                 let response = result[1];
                 this.curation.head[
                   this.curation.parameters["molecule_identifier"]
@@ -301,16 +304,10 @@ export class CurationComponent implements OnChanges {
                       }, 50);
                     },
                   });
-                  console.log("beforetablecurationhead");
                   this.globals.tableCurationHead = true;
                 }
               }
-              console.log(
-                this.curation.head[
-                  this.curation.parameters["molecule_identifier"]
-                ]
-              );
-              this.drawCurationHeader();
+              //this.drawCurationHeader();
             });
         }
       });
@@ -322,11 +319,14 @@ export class CurationComponent implements OnChanges {
       .getFullCuration(this.curation.name)
       .subscribe((result) => {
         if (result[0] == true) {
+            console.log(this.curation.parameters.outfile_type);
           if (this.curation.parameters.outfile_type.includes("sdf")) {
-            // let blob = new Blob([line], {
-            //   type: "text/plain;charset=utf-8",
-            // });
-            // saveAs(blob, this.curation.name + ".sdf");
+            //with the file route an error from the browser denies access to local files not saved in the same folder as the app  
+            console.log('sdf in');
+            let sdfPath= 'file:';
+            sdfPath += result[1];
+            console.log(sdfPath);
+            window.open(sdfPath, "mywindow", "location=1,status=1,scrollbars=1,width=300,height=300");   
           } else if (this.curation.parameters.outfile_type.includes("csv")) {
             let csv = JSON.parse(result[1]);
             var str = "";
