@@ -144,6 +144,7 @@ export class CuratorComponent implements OnInit {
 
   curate(name: string) {
     let met = [];
+    this.curation.name = name;
     if (this.curation.metadata != undefined) {
       for (let item of this.curation.metadata) {
         met.push(item.value);
@@ -155,7 +156,8 @@ export class CuratorComponent implements OnInit {
     } else {
       remove = "False";
     }
-    if(this.curation.name!=''){
+    console.log(this.curation.name);
+    if(this.curation.name!='' && this.curation.name!= undefined){
     const inserted = this.toastr.info(
       "Running!",
       "Curation " + this.curation.name,
@@ -193,13 +195,14 @@ export class CuratorComponent implements OnInit {
                 console.log(iter);
               this.checkCuration(this.curation.name, inserted, intervalId);
             } else {
+                console.log(iter);
               clearInterval(intervalId);
               this.toastr.clear(inserted.toastId);
               this.toastr.warning(
                 "Curation " + this.curation.name + " \n Time Out",
                 "Warning",
                 {
-                  timeOut: 10000,
+                  timeOut: 15000,
                   positionClass: "toast-top-right",
                 }
               );
@@ -222,9 +225,10 @@ export class CuratorComponent implements OnInit {
   }
 
   checkCuration(name, inserted, intervalId) {
+      console.log('checkcuration');
     this.commonService.getFullCuration(name).subscribe(
       result => {
-        // console.log(result);
+     console.log(result);
         this.toastr.clear(inserted.toastId);
         if (result["error"]) {
           this.toastr.warning(
@@ -243,7 +247,7 @@ export class CuratorComponent implements OnInit {
             "Curation " + this.curation.name + " created",
             "CURATION COMPLETED",
             {
-              timeOut: 5000,
+              timeOut: 50000,
               positionClass: "toast-top-right",
             }
           );
