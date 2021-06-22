@@ -424,7 +424,6 @@ export class CommonFunctions {
           result=>{
             if (result[0]) {
                 this.curation.parameters = result[2];
-                console.log(this.curation.parameters);
                 let params = new Object();
                 let keys = [];
                 let values = [];

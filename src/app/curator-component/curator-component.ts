@@ -113,7 +113,6 @@ export class CuratorComponent implements OnInit {
 
       var colNames = self.model.file_info["columns"].filter((item) => item);
       self.curation.columns = colNames;
-      console.log(self.fileContent);
     };
     fileReader.readAsText(file);
   }
@@ -156,7 +155,6 @@ export class CuratorComponent implements OnInit {
     } else {
       remove = "False";
     }
-    console.log(this.curation.name);
     if(this.curation.name!='' && this.curation.name!= undefined){
     const inserted = this.toastr.info(
       "Running!",
@@ -165,16 +163,6 @@ export class CuratorComponent implements OnInit {
         disableTimeOut: true,
         positionClass: "toast-top-right",
       }
-    );
-    console.log(
-      name,
-      this.file,
-      this.curation.casCol[0].value,
-      this.curation.smilesCol[0],
-      this.curation.separator,
-      remove,
-      this.curation.output_format,
-      this.curation.metadata
     );
     this.curService
       .curateList(
@@ -193,9 +181,9 @@ export class CuratorComponent implements OnInit {
           const intervalId = setInterval(() => {
             if (iter < 500) {
                 console.log(iter);
+                console.log(this.curation.name);
               this.checkCuration(this.curation.name, inserted, intervalId);
             } else {
-                console.log(iter);
               clearInterval(intervalId);
               this.toastr.clear(inserted.toastId);
               this.toastr.warning(
@@ -228,7 +216,6 @@ export class CuratorComponent implements OnInit {
       console.log('checkcuration');
     this.commonService.getFullCuration(name).subscribe(
       result => {
-     console.log(result);
         this.toastr.clear(inserted.toastId);
         if (result["error"]) {
           this.toastr.warning(
@@ -258,6 +245,7 @@ export class CuratorComponent implements OnInit {
       },
       error => {
         // CHECK MAX iterations
+        console.log('error=>');
         if (error.error.code !== 0) {
           this.toastr.clear(inserted.toastId);
           this.toastr.error(

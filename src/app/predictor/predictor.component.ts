@@ -186,6 +186,7 @@ export class PredictorComponent implements OnInit {
       result => {
         // console.log(result);
         this.toastr.clear(inserted.toastId);
+        console.log(result['error']);
         if (result['error']){
           this.toastr.warning('Prediction ' + name + ' finished with error ' + result['error'] , 'PREDICTION COMPLETED', {
             timeOut: 5000, positionClass: 'toast-top-right'});

@@ -1,3 +1,5 @@
+//author: Rodrigo Lorenzo Lorenzo 12-03-2021
+
 import {
   Component,
   Input,
@@ -47,23 +49,6 @@ export class CurationComponent implements OnChanges {
   substances = [];
   curation_head = [];
   sdfPath = "";
-
-  //fake data for testing purposes
-  fakesubsArray = [
-    "organic",
-    "organic_salt",
-    "organometallic",
-    "peptide",
-    "inorganic",
-    "inorganic_metal",
-    "inorganic_salt",
-    "no_sanitizable",
-    "no_sanitizable_organic",
-    "no_sanitizable_inorganic",
-    "no_sanitizable_organometallic",
-  ];
-  fakeStats = { total_curated: "", total_input: "", non_curated: "" };
-  fakefoundSubstances = { organic: "", organometallic: "", no_sanitizable: "" };
 
   plotPie = {
     data: [
@@ -148,7 +133,6 @@ export class CurationComponent implements OnChanges {
       .subscribe((result) => {
         if (result[0]) {
           this.curationDocumentation = result[1];
-          console.log(this.curationDocumentation);
           this.curation.stats = this.curationDocumentation["curation_stats"];
           this.curation.substance = this.curationDocumentation[
             "substance_types"
@@ -169,7 +153,6 @@ export class CurationComponent implements OnChanges {
           this.curation.name = this.func.curation.name;
           this.curation.date = this.func.curation.date;
 
-          console.log(this.plotPie.data[0].labels);
         } else {
           this.curation.error = "No file sent";
         }
@@ -212,8 +195,6 @@ export class CurationComponent implements OnChanges {
   }
 
   getCurationHead() {
-    if (this.commonService.getFullCuration(this.curation.name)[0] != undefined) {
-        console.log(this.commonService.getFullCuration(this.curation.name)[0]);
       $("#curation").DataTable().destroy();
 
       let params = undefined;
@@ -227,14 +208,11 @@ export class CurationComponent implements OnChanges {
             params = result[2];
             for (let item of params) {
               let keyvalue = item.split(" : ");
-              console.log(keyvalue);
               this.curation.parameters[keyvalue[0]] = keyvalue[1];
             }
-            console.log(this.curation.parameters);
             this.commonService
               .getCurationHead(this.curation.name)
               .subscribe((result) => {
-                console.log(result);
                 if (result[0] === true) {
                   let response = result[1];
                   this.curation.head[
@@ -319,9 +297,9 @@ export class CurationComponent implements OnChanges {
               });
           }
         });
-    }
+    
   }
-
+  //called from download button inserted in datatable
   importFile() {
     let line = "";
     this.commonService
@@ -334,7 +312,6 @@ export class CurationComponent implements OnChanges {
             console.log("sdf in");
             let sdfPath = "file:";
             sdfPath += result[1];
-            console.log(sdfPath);
             window.open(
               sdfPath,
               "mywindow",
@@ -396,7 +373,6 @@ export class CurationComponent implements OnChanges {
           } else if (this.curation.parameters.outfile_type.includes("xlsx")) {
             let content = JSON.parse(result[1]);
             let headers = this.objectKeys(content[0]);
-            console.log(headers);
             let temp = [];
             let aoa = [headers];
             for (var i = 0; i < this.objectKeys(content).length; i++) {
@@ -406,10 +382,8 @@ export class CurationComponent implements OnChanges {
                 let pre = content[i][keys];
                 let clean = pre.toString();
                 clean = clean.replace(/,/g, "");
-                console.log(clean);
                 temp.push(clean);
               }
-              console.log(temp);
               aoa.push(temp);
             }
             console.log(aoa);
@@ -428,7 +402,6 @@ export class CurationComponent implements OnChanges {
             wb.Sheets["curated_data"] = ws;
             console.log(wb);
             var wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
-            console.log(wbout);
             saveAs(
               new Blob([this.convertToOctet(wbout)], {
                 type: "application/octet-stream",
@@ -445,7 +418,6 @@ export class CurationComponent implements OnChanges {
       .subscribe((result) => {
         if (result[0]) {
           this.curation.parameters = result[2];
-          console.log(this.curation.parameters);
         }
       });
   }
@@ -458,12 +430,10 @@ export class CurationComponent implements OnChanges {
     ]);
     var array =
       typeof toArrayObj != "object" ? JSON.parse(toArrayObj) : toArrayObj;
-    console.log(array);
     var headers = Object.keys(objArray).toString();
     let emptyvar = undefined;
     let csvContent = array.map((e) => e.join(",")).join("\n");
     emptyvar = csvContent.split("\n");
-    console.log(emptyvar);
 
     return csvContent;
   }
@@ -475,61 +445,4 @@ export class CurationComponent implements OnChanges {
     return buf;
   }
 
-  //   async checkHeadValues() {
-  //     var response = await this.commonService
-  //       .getCurationHead(this.curation.name)
-  //       .toPromise();
-  //     if (response) {
-  //       $("#curation").DataTable().destroy();
-  //       $("#curation").DataTable({
-  //         initComplete: function (settings, json) {
-  //           setTimeout(() => {
-  //             const table = $("#curation").DataTable({
-  //               dom:
-  //                 '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
-  //                 '<"row"<"col-sm-12"tr>>' +
-  //                 '<"row"<"col-sm-5"i><"col-sm-7"p>>',
-  //               buttons: [
-  //                 {
-  //                   extend: "copy",
-  //                   text: "Copy",
-  //                   className: "btn-primary",
-  //                   title: "",
-  //                 },
-  //                 {
-  //                   extend: "download",
-  //                   text: "Download",
-  //                   className: "btn-primary",
-  //                   title: "",
-  //                 },
-  //                 {
-  //                   extend: "excel",
-  //                   text: "Excel",
-  //                   className: "btn-primary",
-  //                   title: "",
-  //                 },
-  //                 {
-  //                   extend: "pdf",
-  //                   text: "Pdf",
-  //                   className: "btn-primary",
-  //                   title: "",
-  //                 },
-  //                 {
-  //                   extend: "print",
-  //                   text: "Print",
-  //                   className: "btn-primary",
-  //                   title: "",
-  //                 },
-  //               ],
-  //               deferRender: true,
-  //               ordering: true,
-  //               pageLength: 10,
-  //               columnDefs: [{ type: "date-euro", targets: 2 }],
-  //               order: [[1, "desc"]],
-  //               destroy: true,
-  //             });
-  //           }, 50);
-  //         },
-  //       });
-  //     }
 }
