@@ -308,109 +308,18 @@ export class CurationComponent implements OnChanges {
         if (result[0] == true) {
           console.log(this.curation.parameters.outfile_type);
           if (this.curation.parameters.outfile_type.includes("sdf")) {
-            //with the file route an error from the browser denies access to local files not saved in the same folder as the app
-            console.log("sdf in");
-            let sdfPath = "file:";
-            sdfPath += result[1];
-            window.open(
-              sdfPath,
-              "mywindow",
-              "location=1,status=1,scrollbars=1,width=300,height=300"
-            );
+            this.curationService.exportFile(this.curation.name, 'sdf');            
           } else if (this.curation.parameters.outfile_type.includes("csv")) {
-            let csv = JSON.parse(result[1]);
-            var str = "";
-            line = this.objectKeys(csv[0]).toString() + "\r\n";
-            for (var i = 0; i < this.objectKeys(csv).length; i++) {
-              for (let keys of this.objectKeys(csv[i])) {
-                let pre = csv[i][keys];
-                let clean = pre.toString();
-                clean = clean.replace(",", "");
-                line += clean;
-                line += ",";
-              }
-              line = line.slice(0, -1);
-              line += "\r\n";
-              console.log(line);
-            }
-            str += line;
-            let blob = new Blob([str], {
-              type: "text/plain;charset=utf-8",
-            });
-            saveAs(blob, this.curation.name + ".csv");
+            this.curationService.exportFile(this.curation.name, 'csv');            
           } else if (this.curation.parameters.outfile_type.includes("tsv")) {
-            let tsv = JSON.parse(result[1]);
-            var str = "";
-            line = this.objectKeys(tsv[0]).toString() + "\r\n";
-            line = line.replace(/,/g, "   ");
-            for (var i = 0; i < this.objectKeys(tsv).length; i++) {
-              for (let keys of this.objectKeys(tsv[i])) {
-                let pre = tsv[i][keys];
-                let clean = pre.toString();
-                clean = clean.replace(/\t/g, "");
-                line += clean;
-                line += "   ";
-              }
-              line = line.slice(0, -1);
-              line += "\r\n";
-              console.log(line);
-            }
-            str += line;
-            let blob = new Blob([str], {
-              type: "text/plain;charset=utf-8",
-            });
-            saveAs(blob, this.curation.name + ".tsv");
+            this.curationService.exportFile(this.curation.name, 'tsv');            
           } else if (this.curation.parameters.outfile_type.includes("json")) {
-            let jsonR = result[1];
-            line = JSON.stringify(jsonR);
-            line = line.replace('{"0":', "");
-            line = line.substring(0, line.length - 2);
-            line += "]";
-            let blob = new Blob([line], {
-              type: "text/plain;charset=utf-8",
-            });
-            saveAs(blob, this.curation.name + ".json");
+            this.curationService.exportFile(this.curation.name, 'json'); 
           } else if (this.curation.parameters.outfile_type.includes("xlsx")) {
-            let content = JSON.parse(result[1]);
-            let headers = this.objectKeys(content[0]);
-            let temp = [];
-            let aoa = [headers];
-            for (var i = 0; i < this.objectKeys(content).length; i++) {
-              console.log(content[i]);
-              temp = [];
-              for (let keys of this.objectKeys(content[i])) {
-                let pre = content[i][keys];
-                let clean = pre.toString();
-                clean = clean.replace(/,/g, "");
-                temp.push(clean);
-              }
-              aoa.push(temp);
-            }
-            console.log(aoa);
-            var ws_data = [
-              ["foo", "bar"],
-              [1, 2],
-            ];
-            const ws = XLSX.utils.aoa_to_sheet(aoa);
-            console.log(ws);
-            const wb = XLSX.utils.book_new();
-            wb.Props = {
-              Title: "curated data",
-              Author: "flame",
-            };
-            wb.SheetNames.push("curated_data");
-            wb.Sheets["curated_data"] = ws;
-            console.log(wb);
-            var wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
-            saveAs(
-              new Blob([this.convertToOctet(wbout)], {
-                type: "application/octet-stream",
-              }),
-              this.curation.name + ".xlsx"
-            );
+            this.curationService.exportFile(this.curation.name, 'xlsx'); 
           }
         }
-      });
+    });
   }
   getCurationParams() {
     this.commonService

@@ -10,7 +10,15 @@ import { Observable } from "rxjs";
 export class CurationComponentService {
   constructor(private http: HttpClient) {}
 
-  downloadSDFFile(url): any {
-    return this.http.get(url, {responseType: 'blob'});
-}
+  exportFile(endpoint, oformat): any {
+    const url: string = environment.baseUrl_cmanage + "exportFile/" +endpoint + "/format/" +oformat;
+    if (oformat == 'sdf' || oformat == "xlsx" || oformat== "csv" || oformat == "tsv") {
+      var a = document.createElement("a");
+      a.href = url;
+      a.click();
+    }
+    else {
+      return this.http.get(url)
+    }
+  }
 }

@@ -180,8 +180,6 @@ export class CuratorComponent implements OnInit {
           let iter = 0;
           const intervalId = setInterval(() => {
             if (iter < 500) {
-                console.log(iter);
-                console.log(this.curation.name);
               this.checkCuration(this.curation.name, inserted, intervalId);
             } else {
               clearInterval(intervalId);
@@ -245,7 +243,6 @@ export class CuratorComponent implements OnInit {
       },
       error => {
         // CHECK MAX iterations
-        console.log('error=>');
         if (error.error.code !== 0) {
           this.toastr.clear(inserted.toastId);
           this.toastr.error(
