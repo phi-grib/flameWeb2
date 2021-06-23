@@ -113,7 +113,6 @@ export class Curation {
     columns2= undefined;
     columns3= undefined;
     multicolumns= undefined;
-    //TODO:
-    //definition of all input settings for each curation here so [(ngModel)] is binded to each curation attribute
+
 }
 

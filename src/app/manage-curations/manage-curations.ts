@@ -1,3 +1,4 @@
+//author: Rodrigo Lorenzo Lorenzo 12-03-2021
 import { Component, OnInit } from "@angular/core";
 import { CommonService } from "../common.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -35,11 +36,12 @@ export class ManageCurationsComponent implements OnInit {
   ngOnInit(): void {
     this.func.getCurationsList();
   }
-
+  //opens curator-component window
   curationSettings() {
     const modalRef = this.modalService.open( CuratorComponent,  { size: 'lg'});
   }
 
+  //creates a new endpoint through this component's service
   createCuration() {
     this.curatorService
       .createEndpoint(this.curation.name)
@@ -69,6 +71,7 @@ export class ManageCurationsComponent implements OnInit {
       });
   }
 
+  //deletes a new endpoint through this component's service
   deleteEndpoint() {
     this.curatorService.deleteEndpoint(this.curation.name).subscribe( (
         result) => {

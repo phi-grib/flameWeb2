@@ -1,5 +1,4 @@
 //author: Rodrigo Lorenzo Lorenzo 12-03-2021
-
 import {
   Component,
   Input,
@@ -50,6 +49,7 @@ export class CurationComponent implements OnChanges {
   curation_head = [];
   sdfPath = "";
 
+    //set options for pie plot
   plotPie = {
     data: [
       {
@@ -77,6 +77,7 @@ export class CurationComponent implements OnChanges {
     },
   };
 
+      //set options for bar plot
   plotSummary = {
     data: [
       {
@@ -123,9 +124,9 @@ export class CurationComponent implements OnChanges {
     this.plotSummary.data[0].y = [];
     this.getStatistics();
     this.getCurationHead();
-    // this.getFullCuration();
   }
 
+  //obtains the stats from the curation through commonService
   getStatistics() {
     this.documentationVisible = false;
     this.commonService
@@ -159,6 +160,7 @@ export class CurationComponent implements OnChanges {
       });
   }
 
+  //dinamically loads the keys for the pie plot
   getPresentKeys(): string[] {
     for (let i = 0; i < this.objectKeys(this.curation.substance).length; i++) {
       let item = this.objectKeys(this.curation.substance)[i];
@@ -166,7 +168,7 @@ export class CurationComponent implements OnChanges {
     }
     return this.substances;
   }
-
+  //dinamically loads the values for the pie plot
   getPresentValues() {
     let values = [];
     for (let i = 0; i < this.substances.length; i++) {
@@ -176,8 +178,8 @@ export class CurationComponent implements OnChanges {
     return values;
   }
 
+  //suposed to render through smilesDrawer library the curated structure of the substance
   drawCurationHeader() {
-    console.log("entra");
     const options = { width: 600, height: 300 };
     const smilesDrawer = new SmilesDrawer.Drawer(options);
     for (let i = 0; i < this.curation.head["structure_curated"]; i++) {
@@ -194,6 +196,7 @@ export class CurationComponent implements OnChanges {
     }
   }
 
+  //obtains data from the header pickl through commonService
   getCurationHead() {
       $("#curation").DataTable().destroy();
 
@@ -299,6 +302,7 @@ export class CurationComponent implements OnChanges {
         });
     
   }
+
   //called from download button inserted in datatable
   importFile() {
     let line = "";
@@ -314,13 +318,15 @@ export class CurationComponent implements OnChanges {
           } else if (this.curation.parameters.outfile_type.includes("tsv")) {
             this.curationService.exportFile(this.curation.name, 'tsv');            
           } else if (this.curation.parameters.outfile_type.includes("json")) {
-            this.curationService.exportFile(this.curation.name, 'json'); 
+            this.curationService.exportFile(this.curation.name, 'JSON');
           } else if (this.curation.parameters.outfile_type.includes("xlsx")) {
             this.curationService.exportFile(this.curation.name, 'xlsx'); 
           }
         }
     });
   }
+
+  //obtains data from the params.yaml file created with the endpoint and modified once curate function is executed commonService
   getCurationParams() {
     this.commonService
       .getCurationParams(this.curation.name)
@@ -331,27 +337,6 @@ export class CurationComponent implements OnChanges {
       });
   }
 
-  convertToFileString(objArray): string {
-    let separator = "";
-    var toArrayObj = Object.keys(objArray).map((key) => [
-      String(key),
-      objArray[key],
-    ]);
-    var array =
-      typeof toArrayObj != "object" ? JSON.parse(toArrayObj) : toArrayObj;
-    var headers = Object.keys(objArray).toString();
-    let emptyvar = undefined;
-    let csvContent = array.map((e) => e.join(",")).join("\n");
-    emptyvar = csvContent.split("\n");
 
-    return csvContent;
-  }
-
-  convertToOctet(wbout) {
-    var buf = new ArrayBuffer(wbout.length); //convert s to arrayBuffer
-    var view = new Uint8Array(buf); //create uint8array as viewer
-    for (var i = 0; i < wbout.length; i++) view[i] = wbout.charCodeAt(i) & 0xff; //convert to octet
-    return buf;
-  }
 
 }

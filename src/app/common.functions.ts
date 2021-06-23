@@ -364,6 +364,7 @@ export class CommonFunctions {
     );
   }
 
+  //gets a list with all the existing endoints and their basic info
   getCurationsList() {
     $("#dataTableCurations").DataTable().destroy();
     this.commonService.getCurations().subscribe(
@@ -408,6 +409,7 @@ export class CommonFunctions {
     );
   }
 
+  //allows to select a curation endpoint from the list of all endpoints
   selectCuration(name: string) {
     this.curation.name = name;
     this.getCurationHead(name);
@@ -419,6 +421,7 @@ export class CommonFunctions {
     });
   }
 
+  //retrieves the parameters saved in parameters.yaml
   getCurationParams(name) {
       this.commonService.getCurationParams(name).subscribe(
           result=>{
@@ -446,6 +449,8 @@ export class CommonFunctions {
            
 
 }
+
+//retrieves the first 10 substances from the curation from a pickl
 getCurationHead(name){
     this.commonService.getCurationHead(name).subscribe(
         result=>{

@@ -9,7 +9,7 @@ import { environment } from "../../environments/environment";
 export class CuratorComponentService {
   constructor(private http: HttpClient) {}
 
-  //updates an endpoint based on its name and sends the file to be curated in a string json formated
+  //updates an endpoint based on its name and sends the file to be curated with the params the user has selected
   curateList(
     name: string,
     file: any,

@@ -1,3 +1,4 @@
+//author: Rodrigo Lorenzo Lorenzo 12-03-2021
 import { Component, OnInit } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Model, Curation } from "../Globals";
@@ -36,6 +37,7 @@ export class CuratorComponent implements OnInit {
   cas: string;
   smiles: string;
   objectKeys = Object.keys;
+  //sets the options for the dropdownSelector
   dropdownSettings: IDropdownSettings = {
     singleSelection: true,
     idField: "item_id",
@@ -46,6 +48,7 @@ export class CuratorComponent implements OnInit {
     allowSearchFilter: false,
     closeDropDownOnSelection: true,
   };
+  //sets the options for the dropdownSelector accepting multiple choices
   dropdownSettings2: IDropdownSettings = {
     singleSelection: false,
     idField: "item_id",
@@ -72,17 +75,13 @@ export class CuratorComponent implements OnInit {
   ngOnInit(): void {
     this.func.getCurationParams(this.curation.name);
   }
-
+  //sets the delimiter in the file to be read
   onChangeSeparator(selectValue: any) {
     this.curation.separator = selectValue;
   }
-
-  // onchangeSelected(selected) {
-  //   this.curation.selectedColumns.push(selected);
-  // }
-
+  //adds the selected columns to curation.selectedColumns
   onchangeSelected(selected) {
-      let value = selected.value
+    let value = selected.value;
     this.curation.selectedColumns.push(value);
   }
 
@@ -90,6 +89,7 @@ export class CuratorComponent implements OnInit {
     this.curation.selectedColumns.push(item);
   }
 
+  //reads the uploaded file to present it's properties
   public csvJSON(fileList: FileList) {
     const file = fileList[0];
     this.file = file;
@@ -116,7 +116,8 @@ export class CuratorComponent implements OnInit {
     };
     fileReader.readAsText(file);
   }
-  //based on the selectedColumns, no matter the order of selection, returns
+
+  //based on the selectedColumns creates a datatable showing how the output file will look like
   createJSONstring(): any {
     var cleaning = this.fileContent.replace("\r", "");
     var lines = cleaning.split("\n").filter((item) => item);
@@ -141,6 +142,7 @@ export class CuratorComponent implements OnInit {
     this.finalDict = objectArray;
   }
 
+  //sends all parameters and file content to be proccessed by the curation tool
   curate(name: string) {
     let met = [];
     this.curation.name = name;
@@ -155,65 +157,67 @@ export class CuratorComponent implements OnInit {
     } else {
       remove = "False";
     }
-    if(this.curation.name!='' && this.curation.name!= undefined){
-    const inserted = this.toastr.info(
-      "Running!",
-      "Curation " + this.curation.name,
-      {
-        disableTimeOut: true,
-        positionClass: "toast-top-right",
-      }
-    );
-    this.curService
-      .curateList(
-        name,
-        this.file,
-        this.curation.casCol[0].value,
-        this.curation.smilesCol[0],
-        this.curation.separator,
-        remove,
-        this.curation.output_format,
-        met
-      )
-      .subscribe(
-        result => {
-          let iter = 0;
-          const intervalId = setInterval(() => {
-            if (iter < 500) {
-              this.checkCuration(this.curation.name, inserted, intervalId);
-            } else {
-              clearInterval(intervalId);
-              this.toastr.clear(inserted.toastId);
-              this.toastr.warning(
-                "Curation " + this.curation.name + " \n Time Out",
-                "Warning",
-                {
-                  timeOut: 15000,
-                  positionClass: "toast-top-right",
-                }
-              );
-              $("#dataTableCurations").DataTable().destroy();
-              this.func.getCurationsList();
-            }
-            iter += 1;
-          }, 500);
-        },
-        error => {
-          this.toastr.clear(inserted.toastId);
-          $("#dataTableCurations").DataTable().destroy();
-          this.func.getCurationsList();
-          alert("Error processing input molecule: " + error.error.error);
+    if (this.curation.name != "" && this.curation.name != undefined) {
+      const inserted = this.toastr.info(
+        "Running!",
+        "Curation " + this.curation.name,
+        {
+          disableTimeOut: true,
+          positionClass: "toast-top-right",
         }
       );
+      this.curService
+        .curateList(
+          name,
+          this.file,
+          this.curation.casCol[0].value,
+          this.curation.smilesCol[0],
+          this.curation.separator,
+          remove,
+          this.curation.output_format,
+          met
+        )
+        .subscribe(
+          (result) => {
+            let iter = 0;
+            const intervalId = setInterval(() => {
+              if (iter < 500) {
+                this.checkCuration(this.curation.name, inserted, intervalId);
+              } else {
+                clearInterval(intervalId);
+                this.toastr.clear(inserted.toastId);
+                this.toastr.warning(
+                  "Curation " + this.curation.name + " \n Time Out",
+                  "Warning",
+                  {
+                    timeOut: 15000,
+                    positionClass: "toast-top-right",
+                  }
+                );
+                $("#dataTableCurations").DataTable().destroy();
+                this.func.getCurationsList();
+              }
+              iter += 1;
+            }, 500);
+          },
+          (error) => {
+            this.toastr.clear(inserted.toastId);
+            $("#dataTableCurations").DataTable().destroy();
+            this.func.getCurationsList();
+            alert("Error processing input molecule: " + error.error.error);
+          }
+        );
 
-    this.activeModal.close("Close click");
-    }else{alert('Curation name undefined')}
+      this.activeModal.close("Close click");
+    } else {
+      alert("Curation name undefined");
+    }
   }
 
+  //periodically checks if the curation is done and the output file already exists
   checkCuration(name, inserted, intervalId) {
-      console.log('checkcuration');
     this.commonService.getFullCuration(name).subscribe(
-      result => {
+      (result) => {
         this.toastr.clear(inserted.toastId);
         if (result["error"]) {
           this.toastr.warning(
@@ -241,7 +245,7 @@ export class CuratorComponent implements OnInit {
         $("#dataTableCurations").DataTable().destroy();
         this.func.getCurationsList();
       },
-      error => {
+      (error) => {
         // CHECK MAX iterations
         if (error.error.code !== 0) {
           this.toastr.clear(inserted.toastId);
@@ -261,6 +265,7 @@ export class CuratorComponent implements OnInit {
     );
   }
 
+  //disables the capability to select the same columns twice
   getData() {
     this.curation.multicolumns = this.curation.columns.map(
       (str, index, boolean) => ({

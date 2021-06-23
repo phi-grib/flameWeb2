@@ -12,13 +12,13 @@ export class CurationComponentService {
 
   exportFile(endpoint, oformat): any {
     const url: string = environment.baseUrl_cmanage + "exportFile/" +endpoint + "/format/" +oformat;
-    if (oformat == 'sdf' || oformat == "xlsx" || oformat== "csv" || oformat == "tsv") {
+    if (oformat == 'sdf' || oformat == "xlsx" || oformat== "csv" || oformat == "tsv" || oformat=='JSON') {
       var a = document.createElement("a");
       a.href = url;
       a.click();
     }
     else {
-      return this.http.get(url)
+      return this.http.get(url);
     }
   }
 }
