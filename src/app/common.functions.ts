@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
-import { Model, Prediction, Space, Globals } from './Globals';
+import { Model, Prediction, Space, Globals, Curation } from './Globals';
 declare var $: any;
 
 @Injectable({
@@ -12,6 +12,7 @@ export class CommonFunctions {
   constructor(private http: HttpClient,
     private commonService: CommonService,
     public model: Model,
+    public curation: Curation,
     public globals: Globals,
     public prediction: Prediction,
     public space: Space) { }
@@ -416,5 +417,102 @@ export class CommonFunctions {
         alert(error.message);
       }
     );
+  }
+
+  //gets a list with all the existing endoints and their basic info
+  getCurationsList() {
+    $("#dataTableCurations").DataTable().destroy();
+    this.commonService.getCurations().subscribe(
+      (result) => {
+        if (result[0]) {
+          this.curation.curations = result[1];
+          this.globals.tableCurationVisible = false;
+
+          setTimeout(() => {
+            const table = $("#dataTableCurations").DataTable({
+              /*Ordering by date */
+              // autoWidth: false,
+              deferRender: true,
+              ordering: true,
+              pageLength: 10,
+              columnDefs: [{ type: "date-euro", targets: 2 }],
+              order: [[1, "desc"]],
+              destroy: true,
+            });
+
+            if (this.curation.curations.length > 0) {
+              this.curation.name = $(
+                "#dataTableCurations tbody tr:first td:first"
+              ).text();
+              for (let i = 0; i < this.curation.curations.length; i++) {
+                let icur = this.curation.curations[i];
+                this.curation.name = icur["curation_endpoint"];
+                this.curation.date = icur["creation_date"];
+                this.curation.fileName = icur["curation_output"];
+              }
+            }
+
+            this.globals.tableCurationVisible = true;
+          }, 50);
+        } else {
+          alert(result[1]);
+        }
+      },
+      (error) => {
+        alert(error.message);
+      }
+    );
+  }
+  
+  selectCuration(name: string) {
+    this.curation.name = name;
+    this.getCurationHead(name);
+    //now here is where the results from the backend are requested and asigned to every attribute of the model
+    this.commonService.getCurationStatistics(name).subscribe((result) => {
+      if (result[0]) {
+        this.curation.result = result[1];
+      }
+    });
+  }
+
+  //retrieves the parameters saved in parameters.yaml
+  getCurationParams(name) {
+      this.commonService.getCurationParams(name).subscribe(
+          result=>{
+            if (result[0]) {
+                this.curation.parameters = result[2];
+                let params = new Object();
+                let keys = [];
+                let values = [];
+                let item = [];
+                for (let i = 0; i < this.curation.parameters.length; i++) {
+                  let itemFiltered = this.curation.parameters[i].replace(":", ",");
+                  let secondFilter =itemFiltered.replace(" ", "");
+                  item = secondFilter.split(",");
+                  keys.push(item[0]);
+                  values.push(item[1]);
+                }
+                for (let j = 0; j < keys.length; j++) {
+                  params[keys[j]] = values[j];
+                }
+                this.curation.remove = params['remove_problematic'];
+                this.curation.output_format = params['outfile_type'];
+                this.curation.separator = params['separator'];
+              }
+            });
+
+
+  }
+
+  //retrieves the first 10 substances from the curation from a pickl
+  getCurationHead(name){
+    this.commonService.getCurationHead(name).subscribe(
+        result=>{
+            if(result[0]){
+                this.curation.head = result[1];
+            }
+        }
+    )
+
   }
 }

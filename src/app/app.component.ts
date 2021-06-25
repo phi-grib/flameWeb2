@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Model, Prediction, Search, Space, Globals } from './Globals';
+import { Model, Prediction, Search, Space, Curation, Globals } from './Globals';
 import { environment } from '../environments/environment';
 declare var $: any;
 
@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
     public search: Search,
     public space: Space,
     public model: Model,
+    public curation: Curation,
     public globals: Globals
     ) {}
 

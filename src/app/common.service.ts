@@ -78,6 +78,29 @@ export class CommonService {
     return this.http.get(url);
   }
 
+  getCurations(): Observable<any> {
+    const url: string = environment.baseUrl_cmanage+ 'list';
+    return this.http.get(url);
+  }
 
+  getCurationStatistics(name: string){
+    const url: string = environment.baseUrl_curate + 'curate/' + name;
+    return this.http.get(url);
+  }     
+
+  getCurationParams(name) {
+    const url: string = environment.baseUrl_cmanage + "params/" + name;
+    return this.http.get(url);
+  }
+
+  getCurationHead(name){
+    const url: string = environment.baseUrl_cmanage +"head/" + name;
+    return this.http.get(url)
+  }
+
+  getFullCuration(name){
+    const url: string = environment.baseUrl_cmanage +"fullfile/" + name;
+    return this.http.get(url)
+  }
 
 }

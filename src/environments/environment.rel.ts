@@ -7,5 +7,7 @@ export const environment = {
   baseUrl_predict: '/flame.kh.svc/api/v1/predict/',
   baseUrl_smanage: '/flame.kh.svc/api/v1/smanage/',
   baseUrl_sbuild: '/flame.kh.svc/api/v1/sbuild/',
-  baseUrl_search: '/flame.kh.svc/api/v1/search/'
+  baseUrl_search: '/flame.kh.svc/api/v1/search/',
+  baseUrl_cmanage: '/flame.kh.svc/api/v1/cmanage/',
+  baseUrl_curate: '/flame.kh.svc/api/v1/curate/'
 };

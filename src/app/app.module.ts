@@ -10,7 +10,7 @@ import { TrainingSeriesComponent } from './training-series/training-series.compo
 // import { SidebarComponent } from './sidebar/sidebar.component';
 import { ValidationsComponent } from './validations/validations.component';
 import { ToastrModule } from 'ngx-toastr';
-import { Model, Prediction, Globals, Manager, Similarity, Space, Search } from './Globals';
+import { Model, Prediction, Globals, Manager, Similarity, Space, Search, Curation } from './Globals';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfigTrainingComponent } from './config-training/config-training.component';
 import { ConfigModelComponent } from './config-model/config-model.component';
@@ -43,6 +43,10 @@ import { SbuilderComponent } from './sbuilder/sbuilder.component';
 import { ConfigStrainingComponent } from './config-straining/config-straining.component';
 import { TrainingSseriesComponent } from './training-sseries/training-sseries.component';
 import { ConfigSpreferencesComponent } from './config-spreferences/config-spreferences.component';
+import { CuratorComponent } from './curator-component/curator-component';
+import { ManageCurationsComponent } from './manage-curations/manage-curations';
+import { CurationComponent } from './curation/curation-component';
+import { CurationListComponent } from './curation-list/curation-list.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -84,7 +88,12 @@ PlotlyModule.plotlyjs = PlotlyJS;
     SbuilderComponent,
     ConfigStrainingComponent,
     TrainingSseriesComponent,
-    ConfigSpreferencesComponent
+    ConfigSpreferencesComponent,
+    ConfigurationComponent,
+    ManageCurationsComponent,
+    CuratorComponent,
+    CurationComponent,
+    CurationListComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +109,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     // PlotlyViaCDNModule,
     PlotlyModule
   ],
-  providers: [Model, Prediction, Globals, Manager, Similarity, Space, Search,
+  providers: [Model, Prediction, Globals, Manager, Similarity, Space, Search, Curation, 
   {
     provide: APP_INITIALIZER,
     useFactory: initializer,

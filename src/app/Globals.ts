@@ -91,6 +91,8 @@ export class Globals {
     tablePredictionVisible = false;
     tableSpaceVisible = false;
     mainTabActive: string = undefined;
+    tableCurationVisible = false;
+    tableCurationHead = false;
     read_only = environment.read_only;
 }
 
@@ -106,6 +108,35 @@ export class Similarity {
     predicting = false;
     nameSrc = undefined;
     smileSrc = undefined;
+}
+
+@Injectable()
+export class Curation {
+    name: string = undefined;   // Name of the model selected in the first step
+    fileName= undefined;
+    curations = [];
+    stats = false;//count of substances types, curated and non curated
+    result = undefined;//the resulting table from the curation 
+    date = undefined;
+    substance = {};
+    error=undefined;
+    separator= undefined;
+    selectedColumns=[];
+    format=undefined;
+    remove=false;
+    parameters = undefined;
+    columns = undefined;
+    output_format = undefined;
+    head = undefined;
+    file_content = undefined;
+    substance_name = undefined;
+    metadata= undefined;
+    casCol= undefined;
+    smilesCol= undefined;
+    columns2= undefined;
+    columns3= undefined;
+    multicolumns= undefined;
+
 }
 
 @Injectable()
