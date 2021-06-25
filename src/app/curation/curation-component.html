@@ -25,9 +25,9 @@
             [config]="plotSummary.config">
         </plotly-plot>
     </div>
-    <div class="row" id="curationTable" *ngIf="this.curation.head">
+    <div class="row" id="curationResultsDiv" *ngIf="this.curation.head">
         <div class="col-sm-12">
-            <table id="curation" class="table table table-sm"
+            <table id="curationResults" class="table table table-sm"
                 *ngIf="this.curation.head[this.curation.parameters['molecule_identifier']]!==undefined" [hidden]="!this.globals.tableCurationHead">
                 <thead>
                     <tr style="line-height: 90px;">
