@@ -441,14 +441,15 @@ export class CommonFunctions {
             });
 
             if (this.curation.curations.length > 0) {
-              this.curation.name = $(
-                "#dataTableCurations tbody tr:first td:first"
-              ).text();
-              for (let i = 0; i < this.curation.curations.length; i++) {
-                let icur = this.curation.curations[i];
-                this.curation.name = icur["curation_endpoint"];
-                this.curation.date = icur["creation_date"];
-                this.curation.fileName = icur["curation_output"];
+              this.curation.name = $('#dataTableCurations tbody tr:first td:eq(1)').text();
+              console.log ('****', this.curation.name)
+
+              let clist =  this.curation.curations;
+              for (let i = 0; i < clist.length; i++) {
+                if (this.curation.name == clist[i]["curation_endpoint"]) {
+                    this.curation.date = clist[i]["creation_date"];
+                    this.curation.fileName = clist[i]["curation_output"];
+                }
               }
             }
 
@@ -466,6 +467,7 @@ export class CommonFunctions {
   
   selectCuration(name: string) {
     this.curation.name = name;
+    console.log ('common functions, selected:', name)
     this.getCurationHead(name);
     //now here is where the results from the backend are requested and asigned to every attribute of the model
     this.commonService.getCurationStatistics(name).subscribe((result) => {

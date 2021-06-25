@@ -198,7 +198,7 @@ export class CurationComponent implements OnChanges {
 
   //obtains data from the header pickl through commonService
   getCurationHead() {
-      $("#curation").DataTable().destroy();
+      $("#curationResults").DataTable().destroy();
 
       let params = undefined;
       this.curation.parameters = {};
@@ -242,11 +242,11 @@ export class CurationComponent implements OnChanges {
                         this.importFile();
                       },
                     };
-                    $("#curation").DataTable().destroy();
-                    $("#curation").DataTable({
+                    $("#curationResults").DataTable().destroy();
+                    $("#curationResults").DataTable({
                       initComplete: function (settings, json) {
                         setTimeout(() => {
-                          const table = $("#curation").DataTable({
+                          const table = $("#curationResults").DataTable({
                             dom:
                               '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
                               '<"row"<"col-sm-12"tr>>' +
