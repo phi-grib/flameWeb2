@@ -28,6 +28,7 @@ export class CurationComponent implements OnChanges {
 
   @Input() curationName;
   @ViewChildren("sml") components: QueryList<ElementRef>;
+  
   @ViewChild("downloadSdf", { static: false }) downloadSdf: ElementRef;
 
   // materialModules = [MatIconModule];
@@ -145,21 +146,22 @@ export class CurationComponent implements OnChanges {
           this.curation.name = this.func.curation.name;
           this.curation.date = this.func.curation.date;
 
+          const options = { 'width': 300, 'height': 150 };
+          const smilesDrawer = new SmilesDrawer.Drawer(options);
+          setTimeout(() => {
+          this.components.forEach((child) => {
+            SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
+              smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
+              }, function (err) {
+                console.log(err);
+              });
+            });
+          }, 500);
+
         } else {
           this.curation.error = "No file sent";
         }
 
-        const options = { 'width': 300, 'height': 150 };
-        const smilesDrawer = new SmilesDrawer.Drawer(options);
-        setTimeout(() => {
-        this.components.forEach((child) => {
-          SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
-            smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-            }, function (err) {
-              console.log(err);
-            });
-          });
-        }, 500);
 
       });
   }
@@ -204,23 +206,12 @@ export class CurationComponent implements OnChanges {
               .subscribe((result) => {
                 if (result[0] === true) {
                   let response = result[1];
-                  this.curation.head[
-                    this.curation.parameters["molecule_identifier"]
-                  ] = response[this.curation.parameters["molecule_identifier"]];
-                  this.curation.head[
-                    this.curation.parameters["structure_column"]
-                  ] = response[this.curation.parameters["structure_column"]];
-                  this.curation.head[
-                    this.curation.parameters["structure_curated"]
-                  ] = response[this.curation.parameters["structure_curated"]];
-                  this.curation.head[
-                    this.curation.parameters["substance_type_name"]
-                  ] = response[this.curation.parameters["substance_type_name"]];
+                  this.curation.head[this.curation.parameters["molecule_identifier"]] = response[this.curation.parameters["molecule_identifier"]];
+                  this.curation.head[this.curation.parameters["structure_column"]] = response[this.curation.parameters["structure_column"]];
+                  this.curation.head[this.curation.parameters["structure_curated"]] = response[this.curation.parameters["structure_curated"]];
+                  this.curation.head[this.curation.parameters["substance_type_name"]] = response[this.curation.parameters["substance_type_name"]];
                   if (
-                    this.curation.head[
-                      this.curation.parameters["substance_type_name"]
-                    ] ===
-                    response[this.curation.parameters["substance_type_name"]]
+                    this.curation.head[this.curation.parameters["substance_type_name"]] === response[this.curation.parameters["substance_type_name"]]
                   ) {
                     $.fn.dataTable.ext.buttons.download = {
                       text: "Download",
@@ -237,38 +228,38 @@ export class CurationComponent implements OnChanges {
                               '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
                               '<"row"<"col-sm-12"tr>>' +
                               '<"row"<"col-sm-5"i><"col-sm-7"p>>',
-                            buttons: [
-                              {
-                                extend: "copy",
-                                text: "Copy",
-                                className: "btn-primary",
-                                title: "",
-                              },
-                              {
-                                extend: "download",
-                                text: "Download",
-                                className: "btn-primary",
-                                title: "",
-                              },
-                              {
-                                extend: "excel",
-                                text: "Excel",
-                                className: "btn-primary",
-                                title: "",
-                              },
-                              {
-                                extend: "pdf",
-                                text: "Pdf",
-                                className: "btn-primary",
-                                title: "",
-                              },
-                              {
-                                extend: "print",
-                                text: "Print",
-                                className: "btn-primary",
-                                title: "",
-                              },
-                            ],
+                            // buttons: [
+                            //   {
+                            //     extend: "copy",
+                            //     text: "Copy",
+                            //     className: "btn-primary",
+                            //     title: "",
+                            //   },
+                            //   {
+                            //     extend: "download",
+                            //     text: "Download",
+                            //     className: "btn-primary",
+                            //     title: "",
+                            //   },
+                            //   {
+                            //     extend: "excel",
+                            //     text: "Excel",
+                            //     className: "btn-primary",
+                            //     title: "",
+                            //   },
+                            //   {
+                            //     extend: "pdf",
+                            //     text: "Pdf",
+                            //     className: "btn-primary",
+                            //     title: "",
+                            //   },
+                            //   {
+                            //     extend: "print",
+                            //     text: "Print",
+                            //     className: "btn-primary",
+                            //     title: "",
+                            //   },
+                            // ],
                             deferRender: true,
                             ordering: true,
                             pageLength: 10,
@@ -313,15 +304,15 @@ export class CurationComponent implements OnChanges {
   }
 
   //obtains data from the params.yaml file created with the endpoint and modified once curate function is executed commonService
-  getCurationParams() {
-    this.commonService
-      .getCurationParams(this.curation.name)
-      .subscribe((result) => {
-        if (result[0]) {
-          this.curation.parameters = result[2];
-        }
-      });
-  }
+  // getCurationParams() {
+  //   this.commonService
+  //     .getCurationParams(this.curation.name)
+  //     .subscribe((result) => {
+  //       if (result[0]) {
+  //         this.curation.parameters = result[2];
+  //       }
+  //     });
+  // }
 
 
 
