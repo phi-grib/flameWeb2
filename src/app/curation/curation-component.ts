@@ -61,10 +61,10 @@ export class CurationComponent implements OnChanges {
       },
     ],
     layout: {
-      width: 300,
+      width: 400,
       height: 200,
       showlegend: true,
-      margin: { r: 30, t: 30, b: 10, l: 30, pad: 0 },
+      margin: { r: 30, t: 20, b: 20, l: 90, pad: 10 },
     },
     config: {
       displaylogo: false,
@@ -95,15 +95,15 @@ export class CurationComponent implements OnChanges {
     ],
     layout: {
       yaxis: {
-        range: [0, 100],
+        // range: [0, 100],
         // titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 24 },
         tickfont: { family: "Barlow Semi Condensed, sans-serif", size: 18 },
       },
       xaxis: {
         tickfont: { family: "Barlow Semi Condensed, sans-serif", size: 18 },
       },
-      width: 350,
-      height: 250,
+      width: 400,
+      // height: 400,
       showlegend: true,
       barmode: "group",
     },

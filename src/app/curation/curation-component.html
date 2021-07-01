@@ -4,86 +4,55 @@
     <span class="font-weight-bolder">WARNING: </span>Curation created but not
     executed. No information to show.
 </div>
-<div class="title">
-    <h5>{{this.curationName}}</h5>
-</div>
 
-<div class="container" *ngIf="this.curation.error!='No file sent'">
+<div class="row">
+    <div class="card w-100" style="min-height: 600px">
+        <div class="card-body" *ngIf="this.curation.error!='No file sent'">
 
-    <div id="plotpie">
-        <plotly-plot
-            [data]="plotPie.data"
-            [layout]="plotPie.layout"
-            [config]="plotPie.config">
-        </plotly-plot>
-    </div>
+            <span class='model_name'>{{this.curationName}}</span>
 
-    <div id="plotbar">
-        <plotly-plot
-            [data]="plotSummary.data"
-            [layout]="plotSummary.layout"
-            [config]="plotSummary.config">
-        </plotly-plot>
-    </div>
-    <div class="row" id="curationResultsDiv" *ngIf="this.curation.head">
-        <div class="col-sm-12">
-            <table id="curationResults" class="table table table-sm"
-                *ngIf="this.curation.head[this.curation.parameters['molecule_identifier']]!==undefined" [hidden]="!this.globals.tableCurationHead">
-                <thead>
-                    <tr style="line-height: 90px;">
-                        <th style="width: 15% !important;">CAS-RN</th>
-                        <th style="width: 15% !important" >Structure curated</th>
-                        <th style="width: 15% !important">Structure</th>
-                        <th style="width: 15% !important">Substance type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let res of this.curation.head.substance_type_name;let i= index">
-                        <td >{{this.curation.head[this.curation.parameters['molecule_identifier']][i]}}</td>
-                        <td ><canvas #sml
-                                [attr.id]="'this_canvas' + i">{{this.curation.head["structure_curated"][i]}}</canvas></td>
-                        <td >{{this.curation.head[this.curation.parameters["structure_column"]][i]}}</td>
-                        <td >{{this.curation.head['substance_type_name'][i]}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <!--<div class="accordion mt-3" id="curatingAccordion">
-       START INPUT FILE-->
-    <!--<div class="card">
-                 <div class="card-header" id="headingCurDoc"
-                    data-toggle="collapse"
-                    data-target="#collapseCurDoc" aria-expanded="true"
-                    aria-controls="collapseCurDoc">
-                    <h5 class="mb-0">
-                        Curation Documentation ({{this.curationName}})
-                        <button class="btn btn-link pt-0 pb-0 float-right"
-                            type="button"></button>
-                    </h5>
-                </div> -->
-    <!-- <div id="collapseCurDoc" class="collapse"
-                    aria-labelledby="collapseCurDoc"
-                    data-parent="#curatingAccordion">
-                    <div class="card-body p-2 pl-5 pr-5">
-                        <div class="row">
-                        <table class="tableCurated">
-                            <div *ngFor="let header of
-                                objectKeys(this.curation.head)">
-                                <thead>ERROR TypeError: c[k] is 
-                                    <div *ngFor="let value of
-                                        this.curation.head[header]">
-                                        <tr>
-                                            <td>{{value}}</td>
-                                        </tr>
-                                    </div>
+            <!-- <div class="row ml-3" > -->
+            <div id="container" >
+                <div id="plotpie">
+                    <plotly-plot
+                        [data]="plotPie.data"
+                        [layout]="plotPie.layout"
+                        [config]="plotPie.config">
+                    </plotly-plot>
+                </div>
+                <div id="plotbar">
+                    <plotly-plot
+                        [data]="plotSummary.data"
+                        [layout]="plotSummary.layout"
+                        [config]="plotSummary.config">
+                    </plotly-plot>
+                </div>
+            </div>
 
-                                </tbody>
-                            </div>
-                        </table>
-                    </div>
-                    </div>
+            <div class="row" id="curationResultsDiv" *ngIf="this.curation.head">
+                <div class="col-sm-12">
+                    <table id="curationResults" class="table"
+                        *ngIf="this.curation.head[this.curation.parameters['molecule_identifier']]!==undefined" [hidden]="!this.globals.tableCurationHead">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">CAS-RN</th>
+                                <th style="width: 20%">Structure curated</th>
+                                <th style="width: 40%">Structure</th>
+                                <th style="width: 30%">Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let res of this.curation.head.substance_type_name;let i= index">
+                                <td >{{this.curation.head[this.curation.parameters['molecule_identifier']][i]}}</td>
+                                <td ><canvas #sml
+                                        [attr.id]="'this_canvas' + i">{{this.curation.head["structure_curated"][i]}}</canvas></td>
+                                <td >{{this.curation.head[this.curation.parameters["structure_column"]][i]}}</td>
+                                <td >{{this.curation.head['substance_type_name'][i]}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
+</div>
