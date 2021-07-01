@@ -44,8 +44,7 @@
                         <tbody>
                             <tr *ngFor="let res of this.curation.head.substance_type_name;let i= index">
                                 <td >{{this.curation.head[this.curation.parameters['molecule_identifier']][i]}}</td>
-                                <td ><canvas #sml
-                                        [attr.id]="'this_canvas' + i">{{this.curation.head["structure_curated"][i]}}</canvas></td>
+                                <td ><canvas #sml id="{{i}}">{{this.curation.head["structure_curated"][i]}}</canvas></td>
                                 <td >{{this.curation.head[this.curation.parameters["structure_column"]][i]}}</td>
                                 <td >{{this.curation.head['substance_type_name'][i]}}</td>
                             </tr>

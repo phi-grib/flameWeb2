@@ -1,20 +1,11 @@
 //author: Rodrigo Lorenzo Lorenzo 12-03-2021
-import {
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  ViewChild,
-} from "@angular/core";
+import { Component, ViewChild, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges } from '@angular/core';
 import { Curation, CustomHTMLElement, Globals } from "../Globals";
 import { CommonService } from "../common.service";
 import { CurationComponentService } from "./curation-component.service";
 import { CommonFunctions } from "../common.functions";
 import * as PlotlyJS from "plotly.js/dist/plotly.js";
 import * as SmilesDrawer from "smiles-drawer";
-import { ViewChildren } from "@angular/core";
-import { QueryList } from "@angular/core";
-import { ElementRef } from "@angular/core";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 
@@ -157,6 +148,19 @@ export class CurationComponent implements OnChanges {
         } else {
           this.curation.error = "No file sent";
         }
+
+        const options = { 'width': 300, 'height': 150 };
+        const smilesDrawer = new SmilesDrawer.Drawer(options);
+        setTimeout(() => {
+        this.components.forEach((child) => {
+          SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
+            smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
+            }, function (err) {
+              console.log(err);
+            });
+          });
+        }, 500);
+
       });
   }
 
@@ -176,24 +180,6 @@ export class CurationComponent implements OnChanges {
       values.push(item);
     }
     return values;
-  }
-
-  //suposed to render through smilesDrawer library the curated structure of the substance
-  drawCurationHeader() {
-    const options = { width: 600, height: 300 };
-    const smilesDrawer = new SmilesDrawer.Drawer(options);
-    for (let i = 0; i < this.curation.head["structure_curated"]; i++) {
-      SmilesDrawer.parse(
-        this.curation.head["structure_curated"][i],
-        function (tree) {
-          // Draw to the canvas
-          smilesDrawer.draw(tree, "this_canvas" + i, "dark", false);
-        },
-        function (err) {
-          console.log(err);
-        }
-      );
-    }
   }
 
   //obtains data from the header pickl through commonService
