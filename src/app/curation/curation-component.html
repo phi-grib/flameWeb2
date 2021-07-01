@@ -1,8 +1,6 @@
 <!--author: Rodrigo Lorenzo Lorenzo 12-03-2021-->
-<div *ngIf="this.curation.error=='No file sent'" class="alert alert-warning
-    text-center" role="alert">
-    <span class="font-weight-bolder">WARNING: </span>Curation created but not
-    executed. No information to show.
+<div *ngIf="this.curation.error=='No file sent'" class="alert alert-warning text-center" role="alert">
+    <span class="font-weight-bolder">WARNING: </span>Curation created but not executed. No information to show.
 </div>
 
 <div class="row">
@@ -11,7 +9,6 @@
 
             <span class='model_name'>{{this.curationName}}</span>
 
-            <!-- <div class="row ml-3" > -->
             <div id="container" >
                 <div id="plotpie">
                     <plotly-plot
@@ -32,7 +29,8 @@
             <div class="row" id="curationResultsDiv" *ngIf="this.curation.head">
                 <div class="col-sm-12">
                     <table id="curationResults" class="table"
-                        *ngIf="this.curation.head[this.curation.parameters['molecule_identifier']]!==undefined" [hidden]="!this.globals.tableCurationHead">
+                        *ngIf="this.curation.head[this.curation.parameters['molecule_identifier']]!==undefined" 
+                        [hidden]="!this.globals.tableCurationHead">
                         <thead>
                             <tr>
                                 <th style="width: 10%;">CAS-RN</th>

@@ -368,7 +368,6 @@ export class CommonFunctions {
             } 
             this.space.spaces.push ([iname, ivers, inobj, itype, ivars, imd]);
           }
-          // console.log(this.space.spaces)
           
           setTimeout(() => {
             const table = $('#dataTableSpaces').DataTable({
@@ -421,7 +420,6 @@ export class CommonFunctions {
 
   //gets a list with all the existing endoints and their basic info
   getCurationsList() {
-    $("#dataTableCurations").DataTable().destroy();
     this.commonService.getCurations().subscribe(
       (result) => {
         if (result[0]) {
@@ -431,18 +429,17 @@ export class CommonFunctions {
           setTimeout(() => {
             const table = $("#dataTableCurations").DataTable({
               /*Ordering by date */
-              // autoWidth: false,
+              autoWidth: false,
               deferRender: true,
               ordering: true,
               pageLength: 10,
               columnDefs: [{ type: "date-euro", targets: 2 }],
-              order: [[1, "desc"]],
+              order: [[2, "desc"]],
               destroy: true,
             });
 
             if (this.curation.curations.length > 0) {
               this.curation.name = $('#dataTableCurations tbody tr:first td:eq(1)').text();
-              console.log ('****', this.curation.name)
 
               let clist =  this.curation.curations;
               for (let i = 0; i < clist.length; i++) {

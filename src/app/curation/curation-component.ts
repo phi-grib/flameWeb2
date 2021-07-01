@@ -94,14 +94,14 @@ export class CurationComponent implements OnChanges {
         tickfont: { family: "Barlow Semi Condensed, sans-serif", size: 18 },
       },
       width: 400,
-      // height: 400,
+      // height: 200,
+      // margin: { r: 90, t: 100, b: 20, l: 30, pad: 10 },
       showlegend: true,
       barmode: "group",
     },
     config: {
-      // displaylogo: false,
       displayModeBar: false,
-      // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']
+      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']
     },
   };
 
