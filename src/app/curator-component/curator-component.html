@@ -1,4 +1,5 @@
 <!--//author: Rodrigo Lorenzo Lorenzo 12-03-2021-->
+
 <div class="modal-header">
     <h5 class="modal-title">Curate <span class="model_name">{{this.func.curation.name}}</span></h5>
     <button type="button" class="close" aria-label="Cancel"
@@ -7,257 +8,191 @@
     </button>
 </div>
 
-<form #curatedListForm="ngForm" enctype="multipart/form-data" name="curatedListForm">
-    <div class="modal-body">
+<div class="modal-body">
 
-        <!--START INPUT FILE-->
-        <div class="accordion" id="curatingAccordion">
-            <div class="card">
-                <div class="card-header" id="headingFile" data-toggle="collapse"
-                    data-target="#collapseFile" aria-expanded="true"
-                    aria-controls="collapseFile">
-                    <h5 class="mb-0">
-                        Input file
-                        <button class="btn btn-link pt-0 pb-0 float-right"
-                            type="button"></button>
-                    </h5>
-                </div>
-                <div id="collapseFile" class="collapse show"
-                    aria-labelledby="headingFile"
-                    data-parent="#curatingAccordion">
-                    <div class="card-body p-2 pl-5 pr-5">
-                        <label for="separatorInput" id="separatorInput">Delimiter:
-                        </label>
-                        <select name="separator"
-                            [(ngModel)]="this.curation.separator"
-                            class="separatorInput"
-                            (ngModelChange)="onChangeSeparator($event)" required
-                            autocomplete="on">
-                            <option [value]="item.value" *ngFor="let item of
-                                SeparatorChoices| keyvalue"> {{item.key}}
-                            </option>
-                        </select>
-                        <div class="custom-file">
-                            <input id="preloadFile" type="file"
-                                ngModelChange="this.nextElementSibling.innerText=
-                                this.files[0].name"
-                                (change)="csvJSON($event.target.files)"
-                                style="display: none;" accept=".csv, .tsf, .sdf,
-                                .xlsx, .json" autocomplete="on" onchange="this.nextElementSibling.innerText = this.files[0].name">
-                            <label class="custom-file-label" for="preloadFile"
-                                id="preloadFile-label">Choose file</label>
+    <!--START INPUT FILE-->
+    <div class="accordion mt-3" id="curatingAccordion">
+
+        <div class="card">
+            <div class="card-header" id="headingFile" data-toggle="collapse" data-target="#collapseFile" aria-expanded="true" aria-controls="collapseFile">
+                <h5 class="mb-0">
+                    Input file
+                    <button class="btn btn-link pt-0 pb-0 float-right"  type="button"></button>
+                </h5>
+            </div>
+
+            <div id="collapseFile" class="collapse show" aria-labelledby="headingFile" data-parent="#curatingAccordion">
+                <div class="card-body p-2 pl-5 pr-5">
+                    <div class="custom-file">
+
+                        <input id="preloadFile" type="file" ngModelChange="this.nextElementSibling.innerText=this.files[0].name"
+                            (change)="csvJSON($event.target.files)"
+                            style="display: none;" accept=".csv, .tsf, .sdf, .xlsx, .json" autocomplete="on" 
+                            onchange="this.nextElementSibling.innerText = this.files[0].name">
+
+                        <label class="custom-file-label" for="preloadFile" id="preloadFile-label">Choose file</label>
+                    </div>
+
+                    <label for="separatorInput" id="separatorInput">Delimiter: </label>
+                    <select name="separator" [(ngModel)]="this.curation.separator" class="separatorInput"
+                        (ngModelChange)="onChangeSeparator($event)" required autocomplete="on">
+                        <option [value]="item.value" *ngFor="let item of SeparatorChoices| keyvalue"> {{item.key}}
+                        </option>
+                    </select>
+
+
+                    <!-- <div class="row">
+                        <div class="card-header" id="file_info">
+                            <h5>Input file info</h5>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex
+                                justify-content-between align-items-left
+                                p-1">
+                                <strong>File name </strong>
+                                {{this.model.file_info['name']}}
+                            </li>
+                            <li class="list-group-item d-flex
+                                justify-content-between align-items-left
+                                p-1">
+                                <strong>Type file </strong>
+                                {{this.model.file_info['type_file']}}
+                            </li>
+                            <li class="list-group-item d-flex
+                                justify-content-between align-items-left
+                                p-1">
+                                <strong>Size </strong>
+                                {{this.model.file_info['size_M']}} MB
+                            </li>
+                            <li class="list-group-item d-flex
+                                justify-content-between align-items-left
+                                p-1">
+                                <strong>Number of molecules </strong>
+                                <span class="badge badge-primary
+                                    badge-pill">{{this.model.file_info['num_mols']}}</span>
+                            </li>
+                        </ul>
+                    </div> -->
+
+                    <div class="row">
+                        <div id="multicolumns"
+                            *ngIf="this.curation.columns">
+                            <div id="childwrap">
+                                <label id="multimodels"
+                                    class="bmd-label-static mb-1
+                                    p-0">Select
+                                    the SMILES column to proceed</label>
+                                <ng-multiselect-dropdown
+                                    (onSelect)="onchangeColumns($event)"
+                                    [placeholder]="'SMILES'" 
+                                    [settings]="dropdownSettings"
+                                    [data]="this.curation.columns"
+                                    [(ngModel)]="this.curation.smilesCol"
+                                    name="selectedColumns" required
+                                    autocomplete="on">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div id="multicolumns"
+                            *ngIf="this.curation.columns">
+                            <div id="childwrap">
+                                <label id="multimodels"
+                                    class="bmd-label-static mb-1
+                                    p-0">Select
+                                    the 'CAS-RN' column</label>
+                                <ng-multiselect-dropdown
+                                    id="multiSelect2"
+                                    (onSelect)="onchangeSelected($event)"
+                                    [placeholder]="'CAS-RN'" 
+                                    [settings]="dropdownSettings"
+                                    [data]="getData()"
+                                    [(ngModel)]="this.curation.casCol"
+                                    name="selectedColumns" required
+                                    autocomplete="on">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                        <div id="multicolumns"
+                            *ngIf="this.curation.columns">
+                            <div id="childwrap">
+                                <label id="multimodels"
+                                    class="bmd-label-static mb-1
+                                    p-0">Select
+                                    the metadata columns</label>
+                                <ng-multiselect-dropdown
+                                    id="multiSelect3" 
+                                    (onSelect)="onchangeSelected($event)"
+                                    [placeholder]="'metadata'" 
+                                    [settings]="dropdownSettings2"
+                                    [data]="getData()"
+                                    [(ngModel)]="this.curation.metadata"
+                                    name="selectedColumns" required
+                                    autocomplete="on"
+                                    closeDropDownOnSelection="false">
+                                </ng-multiselect-dropdown>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- END INPUT FILE -->
+    </div>
+    <!-- END INPUT FILE -->
 
-        <!--START METADATA INFO-->
-        <div class="accordion" id="curatingAccordion">
-            <div class="card">
-                <div class="card-header collapsed" id="headingFileInfo"
-                    data-toggle="collapse"
-                    data-target="#collapseFileInfo" aria-expanded="false"
-                    aria-controls="collapseFileInfo">
-                    <h5 class="mb-0">
-                        Metadata info
-                        <button class="btn btn-link pt-0 pb-0 float-right"
-                            type="button"></button>
-                    </h5>
-                </div>
-
-                <div id="collapseFileInfo" class="collapse"
-                    aria-labelledby="headingFileInfo"
-                    data-parent="#curatingAccordion">
-                    <div class="card" *ngIf="this.model.file_info!==undefined"
-                        id="inputInfo">
-                        <div class="row">
-
-                            <div class="card-header" id="file_info">
-                                <h5>Input file info</h5>
-                            </div>
-                            <ul class="list-group">
-                                <li class="list-group-item d-flex
-                                    justify-content-between align-items-left
-                                    p-1">
-                                    <strong>File name </strong>
-                                    {{this.model.file_info['name']}}
-                                </li>
-                                <li class="list-group-item d-flex
-                                    justify-content-between align-items-left
-                                    p-1">
-                                    <strong>Type file </strong>
-                                    {{this.model.file_info['type_file']}}
-                                </li>
-                                <li class="list-group-item d-flex
-                                    justify-content-between align-items-left
-                                    p-1">
-                                    <strong>Size </strong>
-                                    {{this.model.file_info['size_M']}} MB
-                                </li>
-                                <li class="list-group-item d-flex
-                                    justify-content-between align-items-left
-                                    p-1">
-                                    <strong>Number of molecules </strong>
-                                    <span class="badge badge-primary
-                                        badge-pill">{{this.model.file_info['num_mols']}}</span>
-                                </li>
-                            </ul>
-
-
-                        </div>
-                        <div class="row">
-                            <div id="multicolumns"
-                                *ngIf="this.curation.columns">
-                                <div id="childwrap">
-                                    <label id="multimodels"
-                                        class="bmd-label-static mb-1
-                                        p-0">Select
-                                        the SMILES column to proceed</label>
-                                    <ng-multiselect-dropdown
-                                        (onSelect)="onchangeColumns($event)"
-                                        [placeholder]="'SMILES'" 
-                                        [settings]="dropdownSettings"
-                                        [data]="this.curation.columns"
-                                        [(ngModel)]="this.curation.smilesCol"
-                                        name="selectedColumns" required
-                                        autocomplete="on">
-                                    </ng-multiselect-dropdown>
-                                </div>
-                            </div>
-                            <div id="multicolumns"
-                                *ngIf="this.curation.columns">
-                                <div id="childwrap">
-                                    <label id="multimodels"
-                                        class="bmd-label-static mb-1
-                                        p-0">Select
-                                        the 'CAS-RN' column</label>
-                                    <ng-multiselect-dropdown
-                                        id="multiSelect2"
-                                        (onSelect)="onchangeSelected($event)"
-                                        [placeholder]="'CAS-RN'" 
-                                        [settings]="dropdownSettings"
-                                        [data]="getData()"
-                                        [(ngModel)]="this.curation.casCol"
-                                        name="selectedColumns" required
-                                        autocomplete="on">
-                                    </ng-multiselect-dropdown>
-                                </div>
-                            </div>
-                            <div id="multicolumns"
-                                *ngIf="this.curation.columns">
-                                <div id="childwrap">
-                                    <label id="multimodels"
-                                        class="bmd-label-static mb-1
-                                        p-0">Select
-                                        the metadata columns</label>
-                                    <ng-multiselect-dropdown
-                                        id="multiSelect3" 
-                                        (onSelect)="onchangeSelected($event)"
-                                        [placeholder]="'metadata'" 
-                                        [settings]="dropdownSettings2"
-                                        [data]="getData()"
-                                        [(ngModel)]="this.curation.metadata"
-                                        name="selectedColumns" required
-                                        autocomplete="on"
-                                        closeDropDownOnSelection="false">
-                                    </ng-multiselect-dropdown>
-                                </div>
-                            </div>
+    
+    <!-- OPTIONS -->
+    <div class="card">
+        <div class="card-header collapsed"
+            id="headingOutputRemove"
+            data-toggle="collapse"
+            data-target="#collapseOutputRemove"
+            aria-expanded="false"
+            aria-controls="collapseOutputRemove">
+            <h5 class="mb-0">
+                Curation settings
+                <button class="btn btn-link pt-0 pb-0
+                    float-right"
+                    type="button"></button>
+            </h5>
+        </div>
+        <div id="collapseOutputRemove" class="collapse"
+            aria-labelledby="headingOutputRemove"
+            data-parent="#curatingAccordion">
+            <div class="row">
+                <div class="card-body p-2 pl-5 pr-5">
+                    <div class="col-4-mr-0" id="removeCheckbox">
+                        <div class="checkbox">
+                            <label for="remove">Remove
+                                problematics <br></label>
+                            <input type="checkbox" name="remove"
+                                id="remove"
+                                #remove="ngModel"
+                                [(ngModel)]="this.curation.remove"
+                                autocomplete="on">
                         </div>
                     </div>
                     <div class="col-4-mr-0">
-                        <button *ngIf="this.curation.columns"
-                            type="submit" (click)="createJSONstring()"
-                            class="btn btn-ets-down mb-0">Preview</button>
-                    </div>
-                    <div class="cardTable">
-                        <div class="row">
-                            <table class="table table-striped"
-                                *ngIf="this.finalDict!=undefined">
-                                <div class="card-body p-2 pl-5 pr-5"
-                                    id="tablePreview">
-                                    <div *ngFor="let column of
-                                        this.curation.selectedColumns"
-                                        class="col-mb-5">
-                                        <th> {{column}} </th>
-                                        <tr *ngFor="let keys of
-                                            objectKeys(this.finalDict)">
-                                            <td>{{this.finalDict[keys][column]}}
-                                            </td>
-                                        </tr>
-                                    </div>
-                                </div>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!--END METADATA INFO-->
-                <div class="accordion" id="curatingAccordion">
-                    <div class="card">
-                        <div class="card-header collapsed"
-                            id="headingOutputRemove"
-                            data-toggle="collapse"
-                            data-target="#collapseOutputRemove"
-                            aria-expanded="false"
-                            aria-controls="collapseOutputRemove">
-                            <h5 class="mb-0">
-                                Curation settings
-                                <button class="btn btn-link pt-0 pb-0
-                                    float-right"
-                                    type="button"></button>
-                            </h5>
-                        </div>
-                        <div id="collapseOutputRemove" class="collapse"
-                            aria-labelledby="headingOutputRemove"
-                            data-parent="#curatingAccordion">
-                            <div class="row">
-                                <div class="card-body p-2 pl-5 pr-5">
-                                    <div class="col-4-mr-0" id="removeCheckbox">
-                                        <div class="checkbox">
-                                            <label for="remove">Remove
-                                                problematics <br></label>
-                                            <input type="checkbox" name="remove"
-                                                id="remove"
-                                                #remove="ngModel"
-                                                [(ngModel)]="this.curation.remove"
-                                                autocomplete="on">
-                                        </div>
-                                    </div>
-                                    <div class="col-4-mr-0">
-                                        <label for="output">Choose the output
-                                            file
-                                            format</label>
-                                        <select class="dropdown" name="output"
-                                            id="output"
-                                            #output="ngModel"
-                                            [(ngModel)]="this.curation.output_format"
-                                            required autocomplete="on">
-                                            <option value="xlsx">xlsx</option>
-                                            <option value="csv">csv</option>
-                                            <option value="sdf">sdf</option>
-                                            <option value="tsv">tsv</option>
-                                            <option value="json">json</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-4-mr-0">
-                                        <button *ngIf="this.curation.columns"
-                                            type="submit"
-                                            (click)="curate(this.curation.name)"
-                                            class="btn btn-ets-down mb-0"
-                                            [disabled]="!curatedListForm.valid">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <label for="output">Choose the output
+                            file
+                            format</label>
+                        <select class="dropdown" name="output"
+                            id="output"
+                            #output="ngModel"
+                            [(ngModel)]="this.curation.output_format"
+                            required autocomplete="on">
+                            <option value="xlsx">xlsx</option>
+                            <option value="csv">csv</option>
+                            <option value="sdf">sdf</option>
+                            <option value="tsv">tsv</option>
+                            <option value="json">json</option>
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
-        
-        
     </div>
+</div>
 
-
-</form>
+<div class="modal-footer">
+    <button  type= "button" class="btn btn-ets-down mb-0" (click)="curate(this.curation.name)">Submit</button>
+</div>
