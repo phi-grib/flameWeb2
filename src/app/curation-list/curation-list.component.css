@@ -30,11 +30,6 @@ tr.selected {
     background: #f7f9ea;
 }
 
-/* .model-content {
-    max-width: 350px;
-    max-height: 350px;
-} */
-
 .scrolltable{
     max-height: 90vh;
     overflow: auto;

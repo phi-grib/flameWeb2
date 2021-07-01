@@ -464,7 +464,7 @@ export class CommonFunctions {
   
   selectCuration(name: string) {
     this.curation.name = name;
-    console.log ('common functions, selected:', name)
+    // console.log ('common functions, selected:', name)
     this.getCurationHead(name);
     //now here is where the results from the backend are requested and asigned to every attribute of the model
     this.commonService.getCurationStatistics(name).subscribe((result) => {
