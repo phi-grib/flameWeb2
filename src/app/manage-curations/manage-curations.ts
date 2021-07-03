@@ -21,8 +21,6 @@ export class ManageCurationsComponent implements OnInit {
   curationName: string;
   fileRegex = new RegExp('.*\..*');
 
-
-
   constructor(
     private commonService: CommonService,
     private modalService: NgbModal,

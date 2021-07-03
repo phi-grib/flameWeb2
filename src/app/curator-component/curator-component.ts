@@ -19,12 +19,12 @@ declare var $: any;
 export class CuratorComponent implements OnInit {
   ObjActiveModal: NgbActiveModal;
   fileContent: any;
-  spaceBar = " ";
+  space = " ";
   tab = "\t";
   SeparatorChoices = {
     ",": ",",
-    "Space bar": this.spaceBar,
-    Tab: this.tab,
+    "Space": this.space,
+    "Tab": this.tab,
     "/": "/",
     ".": ".",
     ":": ":",
@@ -48,6 +48,7 @@ export class CuratorComponent implements OnInit {
     allowSearchFilter: false,
     closeDropDownOnSelection: true,
   };
+
   //sets the options for the dropdownSelector accepting multiple choices
   dropdownSettings2: IDropdownSettings = {
     singleSelection: false,
@@ -75,10 +76,12 @@ export class CuratorComponent implements OnInit {
   ngOnInit(): void {
     this.func.getCurationParams(this.curation.name);
   }
+  
   //sets the delimiter in the file to be read
   onChangeSeparator(selectValue: any) {
     this.curation.separator = selectValue;
   }
+
   //adds the selected columns to curation.selectedColumns
   onchangeSelected(selected) {
     let value = selected.value;

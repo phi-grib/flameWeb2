@@ -480,6 +480,8 @@ export class CommonFunctions {
       result=>{
         if (result[0]) {
             this.curation.parameters = result[2];
+            console.log(result[2]);
+            
             let params = new Object();
             let keys = [];
             let values = [];

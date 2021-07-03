@@ -1,4 +1,15 @@
 <!--author: Rodrigo Lorenzo Lorenzo 12-03-2021-->
+<div class="btn-toolbar mt-3 mb-3 ml-4" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        <button type="button" class="btn btn-ets-up" data-toggle="modal"
+            data-target="#newModalCuration">New</button>
+        <button type="button" class="btn btn-ets-up"
+            (click)="curationSettings()">Curate</button>
+        <button type="button" class="btn btn-ets-do" 
+            (click)="deleteEndpoint()">Delete</button>
+    </div>
+</div>
+
 <div class="modal" id="newModalCuration" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -25,17 +36,6 @@
                     data-dismiss="modal">Close</button>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="btn-toolbar mt-3 mb-3 ml-4" role="toolbar" aria-label="Toolbar with
-    button groups">
-    <div class="btn-group mr-2" role="group" aria-label="First group">
-        <button type="button" class="btn btn-ets-up" data-toggle="modal"
-            data-target="#newModalCuration">New</button>
-        <button type="button" class="btn btn-ets-up"
-            (click)="curationSettings()">Curate</button>
-        <button type="button" class="btn btn-ets-do" (click)="deleteEndpoint()">Delete</button>
     </div>
 </div>
 
