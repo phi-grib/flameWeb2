@@ -1,5 +1,5 @@
 //author: Rodrigo Lorenzo Lorenzo 12-03-2021
-import { Component, OnInit } from "@angular/core";
+import { Component, OnChanges } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Model, Curation } from "../Globals";
 import { CuratorComponentService } from "./curator-component.service";
@@ -16,7 +16,7 @@ declare var $: any;
   templateUrl: "./curator-component.html",
   styleUrls: ["./curator-component.css"],
 })
-export class CuratorComponent implements OnInit {
+export class CuratorComponent implements OnChanges {
   ObjActiveModal: NgbActiveModal;
   fileContent: any;
   space = " ";
@@ -73,7 +73,7 @@ export class CuratorComponent implements OnInit {
     public func: CommonFunctions
   ) {}
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.func.getCurationParams(this.curation.name);
   }
   
@@ -169,8 +169,7 @@ export class CuratorComponent implements OnInit {
           positionClass: "toast-top-right",
         }
       );
-      this.curService
-        .curateList(
+      this.curService.curateList(
           name,
           this.file,
           this.curation.casCol[0].value,

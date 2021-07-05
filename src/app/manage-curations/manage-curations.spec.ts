@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ManageCurationsComponent } from './manage-curations';
 
 describe('CuratorComponent', () => {
   let component: ManageCurationsComponent;
   let fixture: ComponentFixture<ManageCurationsComponent>;
+
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,4 +22,5 @@ describe('CuratorComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });

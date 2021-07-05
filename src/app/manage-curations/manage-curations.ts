@@ -1,6 +1,5 @@
 //author: Rodrigo Lorenzo Lorenzo 12-03-2021
-import { Component, OnInit } from "@angular/core";
-import { CommonService } from "../common.service";
+import { Component } from "@angular/core";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { CuratorComponent } from "../curator-component/curator-component";
 import { ManageCurationsService } from "./manage-curations.service";
@@ -16,13 +15,12 @@ declare var $: any;
   templateUrl: "./manage-curations.html",
   styleUrls: ["./manage-curations.css"],
 })
-export class ManageCurationsComponent implements OnInit {
+export class ManageCurationsComponent {
+
   objectKeys = Object.keys;
   curationName: string;
-  fileRegex = new RegExp('.*\..*');
 
   constructor(
-    private commonService: CommonService,
     private modalService: NgbModal,
     public curatorService: ManageCurationsService,
     private toastr: ToastrService,
@@ -31,9 +29,7 @@ export class ManageCurationsComponent implements OnInit {
     public func: CommonFunctions
   ) {}
 
-  ngOnInit(): void {
-    this.func.getCurationsList();
-  }
+
   //opens curator-component window
   curationSettings() {
     const modalRef = this.modalService.open( CuratorComponent,  { size: 'lg'});
@@ -41,48 +37,37 @@ export class ManageCurationsComponent implements OnInit {
 
   //creates a new endpoint through this component's service
   createCuration() {
-    this.curatorService
-      .createEndpoint(this.curation.name)
-      .subscribe((result) => {
+    this.curatorService.createEndpoint(this.curationName).subscribe((result) => {
         if (result[0]) {
       
-          this.toastr.success(
-            "Curation " + this.curationName,
-            "CURATION CREATED",
-            {
-              timeOut: 5000,
-              positionClass: "toast-top-right",
-            }
-          );
+          $("#dataTableCurations").DataTable().destroy();
+          this.curation.name = this.curationName;
+          this.func.getCurationsList();
+
+          this.toastr.success("Curation " + this.curationName, "CURATION CREATED", {
+            timeOut: 4000, positionClass: "toast-top-right",progressBar: true
+          });
         } else {
-          this.toastr.error(
-            "Curation " + this.curation.name,
-            "ALREADY EXISTS",
-            {
-              timeOut: 5000,
-              positionClass: "toast-top-right",
-            }
-          );
+          this.toastr.error("Curation " + this.curationName, "ALREADY EXISTS",{
+            timeOut: 4000, positionClass: "toast-top-right",progressBar: true
+          });
         }
-        $("#dataTableCurations").DataTable().destroy();
-        this.func.getCurationsList();
       });
   }
 
   //deletes a new endpoint through this component's service
   deleteEndpoint() {
-    this.curatorService.deleteEndpoint(this.curation.name).subscribe( (
-        result) => {
-        this.toastr.success(
-          "Curation " + this.curation.name,
-          "CURATION DELETED",
-          {
-            timeOut: 5000,
-            positionClass: "toast-top-right",
+    this.curatorService.deleteEndpoint(this.curation.name).subscribe( 
+        (result) => {
+
+          $("#dataTableCurations").DataTable().destroy();
+          // this.curation.name = undefined;
+          this.func.getCurationsList();
+
+          this.toastr.success("Curation " + this.curation.name,"CURATION DELETED", {
+            timeOut: 4000, positionClass: "toast-top-right", progressBar: true
           }
         );
-        $("#dataTableCurations").DataTable().destroy();
-        this.func.getCurationsList();
       });
   }
 }

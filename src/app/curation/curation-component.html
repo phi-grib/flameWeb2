@@ -3,9 +3,17 @@
     <span class="font-weight-bolder">WARNING: </span>Curation created but not executed. No information to show.
 </div>
 
-<div class="row">
+<div class="row"  *ngIf="this.curation.error!='No file sent'">
     <div class="card w-100" style="min-height: 600px">
+
+        
         <div class="card-body" *ngIf="this.curation.error!='No file sent'">
+            
+            <div id="overlay" *ngIf="!this.globals.tableCurationHead">
+                <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+            </div>
 
             <span class='model_name'>{{this.curationName}}</span>
 
@@ -40,7 +48,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let res of this.curation.head.substance_type_name;let i= index">
+                            <tr *ngFor="let res of this.curation.head.substance_type_name;let i=index">
                                 <td >{{this.curation.head[this.curation.parameters['molecule_identifier']][i]}}</td>
                                 <td ><canvas #sml id="{{i}}">{{this.curation.head["structure_curated"][i]}}</canvas></td>
                                 <td >{{this.curation.head[this.curation.parameters["structure_column"]][i]}}</td>

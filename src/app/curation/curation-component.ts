@@ -1,6 +1,6 @@
 //author: Rodrigo Lorenzo Lorenzo 12-03-2021
 import { Component, ViewChild, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges } from '@angular/core';
-import { Curation, CustomHTMLElement, Globals } from "../Globals";
+import { Curation, Globals } from "../Globals";
 import { CommonService } from "../common.service";
 import { CurationComponentService } from "./curation-component.service";
 import { CommonFunctions } from "../common.functions";
@@ -28,15 +28,15 @@ export class CurationComponent implements OnChanges {
 
   @Input() curationName;
   @ViewChildren("sml") components: QueryList<ElementRef>;
-  
   @ViewChild("downloadSdf", { static: false }) downloadSdf: ElementRef;
+
+  objectKeys = Object.keys;
 
   // materialModules = [MatIconModule];
   curationDocumentation = undefined;
   downloadLink = undefined;
   fileToUpload: File = null;
   public documentationVisible = false;
-  objectKeys = Object.keys;
   substances = [];
   curation_head = [];
   sdfPath = "";
@@ -114,56 +114,40 @@ export class CurationComponent implements OnChanges {
     this.plotPie.data[0].labels = [];
     this.plotPie.data[0].values = [];
     this.plotSummary.data[0].y = [];
+
     this.getStatistics();
     this.getCurationHead();
   }
 
   //obtains the stats from the curation through commonService
   getStatistics() {
-    this.documentationVisible = false;
-    this.commonService
-      .getCurationStatistics(this.curationName)
-      .subscribe((result) => {
-        if (result[0]) {
-          this.curationDocumentation = result[1];
-          this.curation.stats = this.curationDocumentation["curation_stats"];
-          this.curation.substance = this.curationDocumentation[
-            "substance_types"
+    this.commonService.getCurationStatistics(this.curationName).subscribe((result) => {
+      if (result[0]) {
+        this.curationDocumentation = result[1];
+        this.curation.stats = this.curationDocumentation["curation_stats"];
+        this.curation.substance = this.curationDocumentation[
+          "substance_types"
+        ];
+        if (this.curation.stats["Unable to process"] != undefined) {
+          this.plotSummary.data[0].y = [
+            this.curation.stats["Processed SMILES"],
+            this.curation.stats["Unable to process"],
           ];
-          if (this.curation.stats["Unable to process"] != undefined) {
-            this.plotSummary.data[0].y = [
-              this.curation.stats["Processed SMILES"],
-              this.curation.stats["Unable to process"],
-            ];
-          } else {
-            this.plotSummary.data[0].y = [
-              this.curation.stats["Processed SMILES"],
-              0,
-            ];
-          }
-          this.plotPie.data[0].labels = this.getPresentKeys();
-          this.plotPie.data[0].values = this.getPresentValues();
-          this.curation.name = this.func.curation.name;
-          this.curation.date = this.func.curation.date;
-
-          const options = { 'width': 300, 'height': 150 };
-          const smilesDrawer = new SmilesDrawer.Drawer(options);
-          setTimeout(() => {
-          this.components.forEach((child) => {
-            SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
-              smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-              }, function (err) {
-                console.log(err);
-              });
-            });
-          }, 500);
-
         } else {
-          this.curation.error = "No file sent";
+          this.plotSummary.data[0].y = [
+            this.curation.stats["Processed SMILES"],
+            0,
+          ];
         }
+        this.plotPie.data[0].labels = this.getPresentKeys();
+        this.plotPie.data[0].values = this.getPresentValues();
+        this.curation.name = this.func.curation.name;
+        this.curation.date = this.func.curation.date;
 
-
-      });
+      } else {
+        this.curation.error = "No file sent";
+      }
+    });
   }
 
   //dinamically loads the keys for the pie plot
@@ -184,136 +168,122 @@ export class CurationComponent implements OnChanges {
     return values;
   }
 
+  
   //obtains data from the header pickl through commonService
   getCurationHead() {
       $("#curationResults").DataTable().destroy();
 
-      let params = undefined;
+      // let params = undefined;
       this.curation.parameters = {};
       this.globals.tableCurationHead = false;
 
-      this.commonService
-        .getCurationParams(this.curation.name)
-        .subscribe((result) => {
-          if (result[0] === true) {
-            params = result[2];
-            for (let item of params) {
-              let keyvalue = item.split(" : ");
-              this.curation.parameters[keyvalue[0]] = keyvalue[1];
-            }
-            this.commonService
-              .getCurationHead(this.curation.name)
-              .subscribe((result) => {
-                if (result[0] === true) {
-                  let response = result[1];
-                  this.curation.head[this.curation.parameters["molecule_identifier"]] = response[this.curation.parameters["molecule_identifier"]];
-                  this.curation.head[this.curation.parameters["structure_column"]] = response[this.curation.parameters["structure_column"]];
-                  this.curation.head[this.curation.parameters["structure_curated"]] = response[this.curation.parameters["structure_curated"]];
-                  this.curation.head[this.curation.parameters["substance_type_name"]] = response[this.curation.parameters["substance_type_name"]];
-                  if (
-                    this.curation.head[this.curation.parameters["substance_type_name"]] === response[this.curation.parameters["substance_type_name"]]
-                  ) {
-                    $.fn.dataTable.ext.buttons.download = {
-                      text: "Download",
-                      action: () => {
-                        this.importFile();
-                      },
-                    };
-                    $("#curationResults").DataTable().destroy();
-                    $("#curationResults").DataTable({
-                      initComplete: function (settings, json) {
-                        setTimeout(() => {
-                          const table = $("#curationResults").DataTable({
-                            dom:
-                              '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
-                              '<"row"<"col-sm-12"tr>>' +
-                              '<"row"<"col-sm-5"i><"col-sm-7"p>>',
-                            // buttons: [
-                            //   {
-                            //     extend: "copy",
-                            //     text: "Copy",
-                            //     className: "btn-primary",
-                            //     title: "",
-                            //   },
-                            //   {
-                            //     extend: "download",
-                            //     text: "Download",
-                            //     className: "btn-primary",
-                            //     title: "",
-                            //   },
-                            //   {
-                            //     extend: "excel",
-                            //     text: "Excel",
-                            //     className: "btn-primary",
-                            //     title: "",
-                            //   },
-                            //   {
-                            //     extend: "pdf",
-                            //     text: "Pdf",
-                            //     className: "btn-primary",
-                            //     title: "",
-                            //   },
-                            //   {
-                            //     extend: "print",
-                            //     text: "Print",
-                            //     className: "btn-primary",
-                            //     title: "",
-                            //   },
-                            // ],
-                            deferRender: true,
-                            ordering: true,
-                            pageLength: 10,
-                            columnDefs: [{ type: "date-euro", targets: 2 }],
-                            order: [[1, "desc"]],
-                            destroy: true,
-                          });
-                        }, 50);
-                      },
+      this.commonService.getCurationParams(this.curation.name).subscribe(
+        (result) => {
+          this.curation.parameters = result;
+
+          this.commonService.getCurationHead(this.curation.name).subscribe(
+            (result) => {
+              if (result[0] === true) {
+                this.curation.head = result[1];
+
+                const options = { 'width': 300, 'height': 150 };
+                const smilesDrawer = new SmilesDrawer.Drawer(options);
+                setTimeout(() => {
+                this.components.forEach((child) => {
+                  SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
+                    smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
+                    }, function (err) {
+                      console.log(err);
                     });
-                    this.globals.tableCurationHead = true;
-                  }
-                }
-                //this.drawCurationHeader();
-              });
-          }
+                  });
+                }, 50);
+
+                $.fn.dataTable.ext.buttons.download = {
+                  text: "Download",
+                  action: () => {
+                    this.importFile();
+                  },
+                };
+
+                setTimeout(() => {
+                  const settingsObj: any = {
+                    dom:
+                      '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
+                      '<"row"<"col-sm-12"tr>>' +
+                      '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+                    buttons: [
+                      {
+                        extend: "copy",
+                        text: "Copy",
+                        className: "btn-primary",
+                        title: "",
+                      },
+                      {
+                        extend: "download",
+                        text: "Download",
+                        className: "btn-primary",
+                        title: "",
+                      },
+                      {
+                        extend: "excel",
+                        text: "Excel",
+                        className: "btn-primary",
+                        title: "",
+                      },
+                      {
+                        extend: "pdf",
+                        text: "PDF",
+                        className: "btn-primary",
+                        title: "",
+                      },
+                      {
+                        extend: "print",
+                        text: "Print",
+                        className: "btn-primary",
+                        title: "",
+                      },
+                    ],
+                    deferRender: true,
+                    ordering: true,
+                    pageLength: 10,
+                    // columnDefs: [{ type: "date-euro", targets: 2 }],
+                    order: [[1, "desc"]],
+                    destroy: true,
+                  };
+
+                  $("#curationResults").DataTable(settingsObj);
+                }, 50);
+
+                this.globals.tableCurationHead = true;
+              }
+            }
+          );
+        }, 
+        (error)=>{
+          alert(error.message);
         });
-    
   }
 
   //called from download button inserted in datatable
   importFile() {
-    let line = "";
-    this.commonService
-      .getFullCuration(this.curation.name)
-      .subscribe((result) => {
+    this.commonService.getFullCuration(this.curation.name).subscribe((result) => {
         if (result[0] == true) {
-          console.log(this.curation.parameters.outfile_type);
-          if (this.curation.parameters.outfile_type.includes("sdf")) {
+          const of = this.curation.parameters.outfile_type;
+
+          // console.log(this.curation.parameters.outfile_type);
+          if (of.includes("sdf")) {
             this.curationService.exportFile(this.curation.name, 'sdf');            
-          } else if (this.curation.parameters.outfile_type.includes("csv")) {
+          } else if (of.includes("csv")) {
             this.curationService.exportFile(this.curation.name, 'csv');            
-          } else if (this.curation.parameters.outfile_type.includes("tsv")) {
+          } else if (of.includes("tsv")) {
             this.curationService.exportFile(this.curation.name, 'tsv');            
-          } else if (this.curation.parameters.outfile_type.includes("json")) {
+          } else if (of.includes("json")) {
             this.curationService.exportFile(this.curation.name, 'JSON');
-          } else if (this.curation.parameters.outfile_type.includes("xlsx")) {
+          } else if (of.includes("xlsx")) {
             this.curationService.exportFile(this.curation.name, 'xlsx'); 
           }
         }
     });
   }
-
-  //obtains data from the params.yaml file created with the endpoint and modified once curate function is executed commonService
-  // getCurationParams() {
-  //   this.commonService
-  //     .getCurationParams(this.curation.name)
-  //     .subscribe((result) => {
-  //       if (result[0]) {
-  //         this.curation.parameters = result[2];
-  //       }
-  //     });
-  // }
-
-
 
 }
