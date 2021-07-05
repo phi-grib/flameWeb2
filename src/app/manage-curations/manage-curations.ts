@@ -38,15 +38,16 @@ export class ManageCurationsComponent {
   //creates a new endpoint through this component's service
   createCuration() {
     this.curatorService.createEndpoint(this.curationName).subscribe((result) => {
-        if (result[0]) {
-      
+        if (result[0]) {      
+          
+          this.toastr.success("Curation " + this.curationName, "CURATION CREATED", {
+            timeOut: 4000, positionClass: "toast-top-right",progressBar: true
+          });
+          
           $("#dataTableCurations").DataTable().destroy();
           this.curation.name = this.curationName;
           this.func.getCurationsList();
 
-          this.toastr.success("Curation " + this.curationName, "CURATION CREATED", {
-            timeOut: 4000, positionClass: "toast-top-right",progressBar: true
-          });
         } else {
           this.toastr.error("Curation " + this.curationName, "ALREADY EXISTS",{
             timeOut: 4000, positionClass: "toast-top-right",progressBar: true
@@ -57,17 +58,17 @@ export class ManageCurationsComponent {
 
   //deletes a new endpoint through this component's service
   deleteEndpoint() {
-    this.curatorService.deleteEndpoint(this.curation.name).subscribe( 
+    this.curationName = this.curation.name;
+    this.curatorService.deleteEndpoint(this.curationName).subscribe( 
         (result) => {
 
-          $("#dataTableCurations").DataTable().destroy();
-          // this.curation.name = undefined;
-          this.func.getCurationsList();
-
-          this.toastr.success("Curation " + this.curation.name,"CURATION DELETED", {
+          this.toastr.success("Curation " + this.curationName,"CURATION DELETED", {
             timeOut: 4000, positionClass: "toast-top-right", progressBar: true
-          }
-        );
-      });
+          });
+
+          $("#dataTableCurations").DataTable().destroy();
+          this.func.getCurationsList();
+          
+        });
   }
 }

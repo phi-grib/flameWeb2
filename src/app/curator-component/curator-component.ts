@@ -74,7 +74,9 @@ export class CuratorComponent implements OnChanges {
   ) {}
 
   ngOnChanges(): void {
-    this.func.getCurationParams(this.curation.name);
+    if (this.curation.name != undefined) {
+      this.func.getCurationParams(this.curation.name);
+    }
   }
   
   //sets the delimiter in the file to be read
@@ -147,6 +149,9 @@ export class CuratorComponent implements OnChanges {
 
   //sends all parameters and file content to be proccessed by the curation tool
   curate(name: string) {
+
+    console.log('>>>>>',name);
+
     let met = [];
     this.curation.name = name;
     if (this.curation.metadata != undefined) {
@@ -160,42 +165,31 @@ export class CuratorComponent implements OnChanges {
     } else {
       remove = "False";
     }
-    if (this.curation.name != "" && this.curation.name != undefined) {
+    if (name != "" && name != undefined) {
       const inserted = this.toastr.info(
         "Running!",
-        "Curation " + this.curation.name,
+        "Curation " + name,
         {
           disableTimeOut: true,
           positionClass: "toast-top-right",
         }
       );
-      this.curService.curateList(
-          name,
-          this.file,
-          this.curation.casCol[0].value,
-          this.curation.smilesCol[0],
-          this.curation.separator,
-          remove,
-          this.curation.output_format,
-          met
+      this.curService.curateList(name, this.file, this.curation.casCol[0].value, this.curation.smilesCol[0], this.curation.separator,
+                                 remove, this.curation.output_format, met
         )
         .subscribe(
           (result) => {
             let iter = 0;
             const intervalId = setInterval(() => {
               if (iter < 500) {
-                this.checkCuration(this.curation.name, inserted, intervalId);
-              } else {
+                this.checkCuration(name, inserted, intervalId);
+              } else 
+              {
                 clearInterval(intervalId);
                 this.toastr.clear(inserted.toastId);
-                this.toastr.warning(
-                  "Curation " + this.curation.name + " \n Time Out",
-                  "Warning",
-                  {
-                    timeOut: 15000,
-                    positionClass: "toast-top-right",
-                  }
-                );
+                this.toastr.warning("Curation " + name + " \n Time Out", "Warning", 
+                  {  timeOut: 10000, positionClass: "toast-top-right", });
+
                 $("#dataTableCurations").DataTable().destroy();
                 this.func.getCurationsList();
               }
@@ -222,26 +216,11 @@ export class CuratorComponent implements OnChanges {
       (result) => {
         this.toastr.clear(inserted.toastId);
         if (result["error"]) {
-          this.toastr.warning(
-            "Curation " +
-              this.curation.name +
-              " finished with error " +
-              result["error"],
-            "CURATION COMPLETED",
-            {
-              timeOut: 5000,
-              positionClass: "toast-top-right",
-            }
-          );
+          this.toastr.warning("Curation " + name + " finished with error " + result["error"], "CURATION COMPLETED",
+          {timeOut: 10000, positionClass: "toast-top-right", });
         } else {
-          this.toastr.success(
-            "Curation " + this.curation.name + " created",
-            "CURATION COMPLETED",
-            {
-              timeOut: 50000,
-              positionClass: "toast-top-right",
-            }
-          );
+          this.toastr.success("Curation " + name + " created", "CURATION COMPLETED",
+          {timeOut: 5000, positionClass: "toast-top-right", });
         }
         clearInterval(intervalId);
         $("#dataTableCurations").DataTable().destroy();
@@ -251,14 +230,8 @@ export class CuratorComponent implements OnChanges {
         // CHECK MAX iterations
         if (error.error.code !== 0) {
           this.toastr.clear(inserted.toastId);
-          this.toastr.error(
-            "Curation " + this.curation.name + " \n " + error.error.message,
-            "ERROR!",
-            {
-              timeOut: 10000,
-              positionClass: "toast-top-right",
-            }
-          );
+          this.toastr.error("Curation " + name + " \n " + error.error.message, "ERROR!",
+            { timeOut: 10000, positionClass: "toast-top-right", });
           clearInterval(intervalId);
           $("#dataTableCurations").DataTable().destroy();
           this.func.getCurationsList();
