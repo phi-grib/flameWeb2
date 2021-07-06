@@ -1,0 +1,69 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">
+        Model:<span class="model_name ml-1">{{ this.model.name }}</span
+    ><span class="comment ml-1">{{ this.model.modelID }}</span>
+    </h5>
+    <button type="button" class="close" (click)="cancelInput()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+<!--START CARD CONFIG TRAIN-->
+
+<!-- END CONFIG TRAIN-->
+
+
+<div class="modal-body" *ngIf="this.verificationFromApi != false; else firstVerification">
+    <div class="accordion mt-3" id="buildingAccordion">
+        <div class="card">
+            <div class="card-header" id="headingZero" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+                <h5 class="mb-0">
+                    1 - Model Verification
+                    <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+                </h5>
+            </div>
+            <div id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#buildingAccordion">
+                <div class="card-body p-2 pl-5 pr-5">
+                    <!-- <div class="alert-warning">{{ verificationFromApi | json}}</div> -->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Stage</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let verification of verificationFromApi">
+                                <td>{{verification.stage}}</td>
+                                <td [ngStyle]="{color: verification.status =='Passed' ? 'green': 'red'}">
+                                    {{verification.status}}
+                                </td>
+                                <td>{{verification.Comments}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #firstVerification>
+    <div class="alert alert-warning" role="alert">
+        Press verify button to generate the model verification
+    </div>
+</ng-template>
+
+<!-- modal footer -->
+<div class="form-row">
+    <div class="form-group col-md-7 ml-5">
+        <button type="button" class="btn btn-ets-do mr-2" (click)="verifyModel(this.model.name)">Verify</button>
+        <button type="button" class="btn btn-ets-do" [ngStyle]="{display:this.verificationFromApi === false ? 'none':'inline-block' }" [disabled]="!this.verificationFromApi" (click)="Report(this.model.name)">Generate report</button>
+    </div>
+    <div class="form-group col-md-3 ml-5">
+        <button type="button" class="btn btn-ets-ext mr-4" [ngStyle]="{display:this.verificationFromApi === false ? 'none':'inline-block' }" [disabled]="!this.verificationFromApi" (click)="Sign()">Sign</button>
+        <button type="button" class="btn btn-ets-delete" (click)="cancelInput()">Cancel</button>
+    </div>
+</div>

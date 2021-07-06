@@ -8,6 +8,7 @@ import { BuilderComponent} from '../builder/builder.component';
 import { LabelerComponent} from '../labeler/labeler.component';
 import { PredictorComponent} from '../predictor/predictor.component';
 import { CommonFunctions } from '../common.functions';
+import { VerificatorComponent } from '../verificator/verificator.component';
 declare var $: any;
 
 @Component({
@@ -38,6 +39,11 @@ export class ManageModelsComponent {
 
   labelModel(name: string, version: string) {
     const modalRef = this.modalService.open(LabelerComponent, { size: 'lg'});
+    modalRef.componentInstance.name = name;
+    modalRef.componentInstance.version = version;
+  }
+  validateModel(name: string, version: string){
+    const modalRef = this.modalService.open(VerificatorComponent, {size: 'lg'});
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.version = version;
   }
