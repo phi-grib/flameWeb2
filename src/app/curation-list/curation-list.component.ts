@@ -24,7 +24,7 @@ export class CurationListComponent implements OnInit {
   selectCuration (item) {
     this.func.selectCuration(item['curation_endpoint'])
   }
-  
+
   ngOnInit(): void {
     this.func.getCurationsList();
   }
