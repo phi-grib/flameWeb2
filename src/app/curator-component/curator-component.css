@@ -98,3 +98,11 @@ table td {
   z-index: 2;
   cursor: pointer;
 }
+
+#tablePreview {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    position: center;
+    padding: 3px;
+  }

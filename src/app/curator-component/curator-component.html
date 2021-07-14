@@ -27,33 +27,55 @@
                     aria-labelledby="headingFile"
                     data-parent="#curatingAccordion">
                     <div class="card-body p-2 pl-5 pr-5">
-                        <label for="separatorInput" id="separatorInput">Delimiter:
-                        </label>
-                        <select name="separator"
-                            [(ngModel)]="this.curation.separator"
-                            class="separatorInput"
-                            (ngModelChange)="onChangeSeparator($event)" required
-                            autocomplete="on">
-                            <option [value]="item.value" *ngFor="let item of
-                                SeparatorChoices| keyvalue"> {{item.key}}
-                            </option>
-                        </select>
                         <div class="custom-file">
                             <input id="preloadFile" type="file"
                                 ngModelChange="this.nextElementSibling.innerText=
                                 this.files[0].name"
                                 (change)="csvJSON($event.target.files)"
                                 style="display: none;" accept=".csv, .tsf, .sdf,
-                                .xlsx, .json" autocomplete="on" onchange="this.nextElementSibling.innerText = this.files[0].name">
+                                .xlsx, .json" autocomplete="on"
+                                onchange="this.nextElementSibling.innerText=
+                                this.files[0].name">
                             <label class="custom-file-label" for="preloadFile"
                                 id="preloadFile-label">Choose file</label>
                         </div>
+                            <label for="separatorInput" id="separatorInput" >Delimiter:
+                            </label>
+                            <select name="separator" 
+                                [disabled]= "this.readOnly"
+                                [(ngModel)]="this.curation.separator"
+                                class="separatorInput" 
+                                (change)="this.createJSONstring(this.fileContent)"
+                                (ngModelChange)="onChangeSeparator($event)" required
+                                autocomplete="on">
+                                <option [value]="item.value" *ngFor="let item of
+                                    SeparatorChoices| keyvalue"> {{item.key}}
+                                </option>
+                            </select>            
                     </div>
                 </div>
             </div>
         </div>
         <!-- END INPUT FILE -->
-
+        <div class="card">
+            <div class="row">
+                <table class="table table-striped">
+                    <div class="card-body p-2 pl-5 pr-5"
+                        id="tablePreview">
+                        <div *ngFor="let column of
+                            this.headers"
+                            class="col-mb-5">
+                            <th> {{column}} </th>
+                            <tr *ngFor="let keys of
+                                objectKeys(this.finalDict)">
+                                <td>{{this.finalDict[keys][column]}}
+                                </td>
+                            </tr>
+                        </div>
+                    </div>
+                </table>
+            </div>
+        </div>
         <!--START METADATA INFO-->
         <div class="accordion" id="curatingAccordion">
             <div class="card">
@@ -257,8 +279,4 @@
             </div>
         </div>
     </div>
-
-
-
-
 </form>

@@ -8,6 +8,7 @@ import { ManageCurationsService } from "../manage-curations/manage-curations.ser
 import { CommonFunctions } from "../common.functions";
 import { ToastrService } from "ngx-toastr";
 import { IDropdownSettings } from "ng-multiselect-dropdown";
+import * as XLSX from "xlsx";
 
 declare var $: any;
 
@@ -18,6 +19,7 @@ declare var $: any;
 })
 export class CuratorComponent implements OnChanges {
   ObjActiveModal: NgbActiveModal;
+  readOnly = false;
   fileContent: any;
   space = " ";
   tab = "\t";
@@ -33,6 +35,7 @@ export class CuratorComponent implements OnChanges {
   file = undefined;
   finalDict: {};
   objectArray: [];
+  headers: any;
   style: string = "mat-column-col";
   cas: string;
   smiles: string;
@@ -61,6 +64,7 @@ export class CuratorComponent implements OnChanges {
     closeDropDownOnSelection: false,
   };
   molIndex = 0;
+  arrayBuffer: any;
 
   constructor(
     public curService: CuratorComponentService,
@@ -104,27 +108,77 @@ export class CuratorComponent implements OnChanges {
     this.model.file_info["type_file"] = extension[1];
     const fileReader: FileReader = new FileReader();
     const self = this;
-    fileReader.onloadend = function (x) {
-      self.fileContent = fileReader.result;
-      self.model.file_info["num_mols"] = self.fileContent.split("\n").length;
-      self.model.file_info["rows"] = self.fileContent.split("\n");
-      var reCol = new RegExp(".*$", "m");
-      self.model.file_info["columns"] = self.fileContent.match(reCol);
-      self.model.file_info["columns"] = self.model.file_info[
-        "columns"
-      ][0].split(self.curation.separator);
 
-      var colNames = self.model.file_info["columns"].filter((item) => item);
-      self.curation.columns = colNames;
-    };
-    fileReader.readAsText(file);
-  }
-
-  //based on the selectedColumns creates a datatable showing how the output file will look like
-  createJSONstring(): any {
-    var cleaning = this.fileContent.replace("\r", "");
-    var lines = cleaning.split("\n").filter((item) => item);
-    var headers = lines[0]
+    if (file.name.includes("xlsx")) {
+        this.readOnly = true;
+        console.log("entra");
+        let fileReader = new FileReader();
+        fileReader.readAsArrayBuffer(this.file);
+        fileReader.onload = (e) => {
+          this.arrayBuffer = fileReader.result;
+          var data = new Uint8Array(this.arrayBuffer);
+          var arr = new Array();
+          for (var i = 0; i != data.length; ++i)
+            arr[i] = String.fromCharCode(data[i]);
+          var bstr = arr.join("");
+          var workbook = XLSX.read(bstr, { type: "binary" });
+          var first_sheet_name = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[first_sheet_name];
+          var arraylist = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+          for (let elem of arraylist) {
+            for (let item of this.objectKeys(arraylist[0])) {
+              elem[item] = elem[item].toString().replace(",", "");
+            }
+          }
+          self.model.file_info["columns"] = this.objectKeys(arraylist[0]);
+          var colNames = self.model.file_info["columns"].filter((item) => item);
+          self.curation.columns = colNames;
+          self.model.file_info["num_mols"] = arraylist.length;
+          this.headers = colNames;
+          let str = colNames.toString() + "\n";
+          for (let j = 0; j < 10; j++) {
+            for (i = 0; i < colNames.length; i++) {
+              str += arraylist[j][colNames[i]];
+              str += ",";
+            }
+            str = str.slice(0, -1);
+            str += "\r\n";
+            console.log(str);
+          }
+          this.fileContent = str;
+          this.createJSONstring(this.fileContent);
+        };
+      } else {
+        this.readOnly = false;
+        fileReader.onloadend = function (x) {
+          self.fileContent = fileReader.result;
+          self.model.file_info["num_mols"] = self.fileContent.split("\n").length;
+          self.model.file_info["rows"] = self.fileContent.split("\n");
+          var reCol = new RegExp(".*$", "m");
+          self.model.file_info["columns"] = self.fileContent.match(reCol);
+          self.model.file_info["columns"] = self.model.file_info[
+            "columns"
+          ][0].split(self.curation.separator);
+  
+          var colNames = self.model.file_info["columns"].filter((item) => item);
+          self.curation.columns = colNames;
+          self.createJSONstring(self.fileContent);
+        };
+        fileReader.readAsText(file);
+        this.fileContent = self.fileContent;
+      }
+    }
+  
+    //based on the selectedColumns creates a datatable showing how the output file will look like
+    createJSONstring(fileContent): any {
+      var cleaning = fileContent.replace("\r", "");
+      var lines = cleaning.split("\n").filter((item) => item);
+      console.log(lines);
+  
+      if (this.model.file_info["name"].includes("xlsx")) {
+        this.curation.separator = ",";
+      }
+    this.headers = lines[0]
       .split(this.curation.separator)
       .filter((item) => item);
     let filtered = [];
@@ -138,7 +192,7 @@ export class CuratorComponent implements OnChanges {
     filtered.forEach((r) => {
       let obj = {};
       r.forEach((r, i) => {
-        obj[headers[i]] = r;
+        obj[this.headers[i]] = r;
       });
       objectArray.push(obj);
     });
