@@ -161,11 +161,8 @@
                                 <tr *ngFor="let key of this.docLevel[2]">
                                     <td>{{this.cleanStr(key)}}</td>
 
-                                    <!-- non-objects -->
                                     <td class="doc-value" *ngIf="this.modelDocumentation[key].value && !isObject(this.modelDocumentation[key].value)">
                                         {{this.modelDocumentation[key].value}}</td>
-
-                                    <!-- objects -->
                                     <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
 
                                         <table class="table" id="documentationTable">
