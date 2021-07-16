@@ -26,8 +26,8 @@
                         <table class="table documentation">
                             <thead>
                                 <tr style="vertical-align: middle;">
-                                    <th style="width: 25%"><button type="button" class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" (click)=editSection(0) data-target="#docSection">Edit</button></th>
-
+                                    <th style="width: 25%"><button type="button" *ngIf="this.globals.read_only == false" 
+                                                                   class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" (click)=editSection(0) data-target="#docSection">Edit</button></th>
                                     <th style="width: 60%">Value</th>
                                     <th style="width: 15%" class="text-right">Description</th>
                                 </tr>
@@ -89,7 +89,8 @@
                         <table class="table documentation">
                             <thead>
                                 <tr style="vertical-align: middle;">
-                                    <th style="width: 25%"><button type="button" class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" (click)=editSection(1) data-target="#docSection">Edit</button></th>
+                                    <th style="width: 25%"><button type="button" *ngIf="this.globals.read_only == false" 
+                                                                   class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" (click)=editSection(1) data-target="#docSection">Edit</button></th>
                                     <th style="width: 60%">Value</th>
                                     <th style="width: 15%" class="text-right">Description</th>
                                 </tr>
@@ -150,7 +151,8 @@
                         <table class="table documentation">
                             <thead>
                                 <tr style="vertical-align: middle;">
-                                    <th style="width: 25%"><button type="button" class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" (click)=editSection(2) data-target="#docSection">Edit</button></th>
+                                    <th style="width: 25%"><button type="button" *ngIf="this.globals.read_only == false" 
+                                                                   class="btn btn-sm btn-outline-primary ml-2" data-toggle="modal" (click)=editSection(2) data-target="#docSection">Edit</button></th>
                                     <th style="width: 60%">Value</th>
                                     <th style="width: 15%" class="text-right">Description</th>
                                 </tr>

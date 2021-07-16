@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { Model } from '../Globals';
+import { Model, Globals } from '../Globals';
 import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModelDocumentationService } from './model-documentation.service';
@@ -23,6 +23,7 @@ export class ModelDocumentationComponent implements OnChanges {
   constructor(public model: Model,
     public service: ModelDocumentationService,
     private toastr: ToastrService,
+    private globals: Globals,
     private commonService: CommonService) { }
 
   @Input() modelName;
