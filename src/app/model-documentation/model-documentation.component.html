@@ -40,12 +40,12 @@
                                         {{this.modelDocumentation[key].value}}</td>
                                     <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
 
-                                        <table class="table" id="documentationTable">
+                                        <table class="table" style="table-layout: fixed; width: 100%" id="documentationTable">
                                             <tbody>
                                                 <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
                                                     <td style="width: 25%">{{this.cleanStr(key2)}}</td>
 
-                                                    <td style="width: 50%" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                    <td style="width: 50%; word-wrap: break-word" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
                                                         {{this.modelDocumentation[key].value[key2].value}}</td>
                                                     <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
                                                         {{this.modelDocumentation[key].value[key2]}}</td>
@@ -103,12 +103,12 @@
                                         {{this.modelDocumentation[key].value}}</td>
                                     <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
 
-                                        <table class="table" id="documentationTable">
+                                        <table class="table" style="table-layout: fixed; width: 100%" id="documentationTable">
                                             <tbody>
                                                 <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
                                                     <td style="width: 25%">{{this.cleanStr(key2)}}</td>
 
-                                                    <td style="width: 50%" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                    <td style="width: 50%; word-wrap: break-word" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
                                                         {{this.modelDocumentation[key].value[key2].value}}</td>
                                                     <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
                                                         {{this.modelDocumentation[key].value[key2]}}</td>
@@ -165,12 +165,12 @@
                                         {{this.modelDocumentation[key].value}}</td>
                                     <td *ngIf="this.modelDocumentation[key].value && isObject(this.modelDocumentation[key].value)">
 
-                                        <table class="table" id="documentationTable">
+                                        <table class="table"  style="table-layout: fixed; width: 100%" id="documentationTable">
                                             <tbody>
                                                 <tr *ngFor="let key2 of this.objectKeys(this.modelDocumentation[key].value)">
                                                     <td style="width: 25%">{{this.cleanStr(key2)}}</td>
 
-                                                    <td style="width: 50%" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
+                                                    <td style="width: 50%; word-wrap: break-word" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
                                                         {{this.modelDocumentation[key].value[key2].value}}</td>
                                                     <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
                                                         {{this.modelDocumentation[key].value[key2]}}</td>
