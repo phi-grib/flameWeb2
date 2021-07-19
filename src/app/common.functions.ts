@@ -27,6 +27,7 @@ export class CommonFunctions {
     this.model.name = name;
     this.model.version = version;
     this.model.modelID = modelID;
+    this.model.type = type;
     this.model.trained = trained;
     this.model.conformal = conformal;
     this.model.quantitative = quantitative;
@@ -42,6 +43,7 @@ export class CommonFunctions {
     this.model.name = this.model.listModels[index].name;
     this.model.version = this.model.listModels[index].version;
     this.model.modelID = this.model.listModels[index].modelID;
+    this.model.type = this.model.listModels[index].type;
     this.model.trained = this.model.listModels[index].trained;
     this.model.conformal = this.model.listModels[index].conformal;
     this.model.quantitative = this.model.listModels[index].quantitative;

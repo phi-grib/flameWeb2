@@ -29,7 +29,8 @@
                         aria-describedby="inputGroupFileAddon01" onchange="this.nextElementSibling.innerText = this.files[0].name" 
                         (change)="change($event.target.files)">
                         <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                        <small class="text-muted">Enter a SDFile format input file.</small>
+                        <small *ngIf='this.model.input_type === "molecule"' class="text-muted">Enter a SDFile format input file.</small>
+                        <small *ngIf='this.model.input_type === "data"' class="text-muted">Enter a TSV format input file.</small>
                       </div>
                     </div>
                   </div>
@@ -46,7 +47,7 @@
         <!-- END INPUT FILE-->
 
         <!--START CARD SKETCH-->
-        <div class="card">
+        <div *ngIf='this.model.input_type === "molecule"' class="card">
             <div class="card-header collapsed" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                 <h5 class="mb-0">
                     Sketch structure

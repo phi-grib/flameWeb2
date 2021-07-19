@@ -8,6 +8,7 @@ export class Model {
   modelID: string = undefined;
   file: any = undefined;  // Name of file uploaded in the second step
   type: string;
+  input_type: string = undefined;
   trained = false; // Model is already trained
   file_info = undefined; // Info file ej. num mols, variables
   file_fields = undefined;

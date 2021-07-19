@@ -360,6 +360,9 @@ export class QuantitConformalComponent implements OnChanges {
           const info = result;
           // console.log(this.modelID);
           
+          this.model.input_type = info.meta.input_type;
+          // console.log(this.model.input_type);
+
           // process warnings
           if (info.warning){
             this.modelWarning = info.warning;

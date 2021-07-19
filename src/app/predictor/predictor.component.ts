@@ -39,19 +39,21 @@ export class PredictorComponent implements OnInit {
 
   ngOnInit() {
 
-    // inject into the HTML code these two scripts required by JSME
-    const jsme_script = this.renderer2.createElement('script');
-    jsme_script.type = 'text/javascript';
-    jsme_script.src = 'assets/jsme/jsme.nocache.js';
-    jsme_script.text = ``;
-    this.renderer2.appendChild(document.body, jsme_script);
-
-    const jsme_init = this.renderer2.createElement('script');
-    jsme_init.type = 'text/javascript';
-    // jsme_init.src = 'assets/jsme/init.js';
-    jsme_init.src = 'assets/jsme/initQuery.js';
-    jsme_init.text = ``;
-    this.renderer2.appendChild(document.body, jsme_init);
+    if (this.model.input_type == 'molecule') {
+      // inject into the HTML code these two scripts required by JSME
+      const jsme_script = this.renderer2.createElement('script');
+      jsme_script.type = 'text/javascript';
+      jsme_script.src = 'assets/jsme/jsme.nocache.js';
+      jsme_script.text = ``;
+      this.renderer2.appendChild(document.body, jsme_script);
+  
+      const jsme_init = this.renderer2.createElement('script');
+      jsme_init.type = 'text/javascript';
+      // jsme_init.src = 'assets/jsme/init.js';
+      jsme_init.src = 'assets/jsme/initQuery.js';
+      jsme_init.text = ``;
+      this.renderer2.appendChild(document.body, jsme_init);
+    }
 
     for (const name of this.prediction.predictions) {
       this.predictionsNames[name[0]] = true;
