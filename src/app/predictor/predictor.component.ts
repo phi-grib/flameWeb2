@@ -39,7 +39,7 @@ export class PredictorComponent implements OnInit {
 
   ngOnInit() {
 
-    if (this.model.input_type == 'molecule') {
+    if (this.model.input_type != 'data') {
       // inject into the HTML code these two scripts required by JSME
       const jsme_script = this.renderer2.createElement('script');
       jsme_script.type = 'text/javascript';
