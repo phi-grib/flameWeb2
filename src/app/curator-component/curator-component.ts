@@ -229,7 +229,7 @@ export class CuratorComponent implements OnChanges {
         }
       );
       this.curService.curateList(name, this.file, this.curation.casCol[0].value, this.curation.smilesCol[0], this.curation.separator,
-                                 remove, this.curation.output_format, met
+                                 remove, met
         )
         .subscribe(
           (result) => {

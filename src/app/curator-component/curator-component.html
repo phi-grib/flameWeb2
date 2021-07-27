@@ -39,34 +39,34 @@
                             <label class="custom-file-label" for="preloadFile"
                                 id="preloadFile-label">Choose file</label>
                         </div>
-                            <label for="separatorInput" id="separatorInput" >Delimiter:
-                            </label>
-                            <select name="separator" 
-                                [disabled]= "this.readOnly"
-                                [(ngModel)]="this.curation.separator"
-                                class="separatorInput" 
-                                (change)="this.createJSONstring(this.fileContent)"
-                                (ngModelChange)="onChangeSeparator($event)" required
-                                autocomplete="on">
-                                <option [value]="item.value" *ngFor="let item of
-                                    SeparatorChoices| keyvalue"> {{item.key}}
-                                </option>
-                            </select>            
+                        <label for="separatorInput" id="separatorInput">Delimiter:
+                        </label>
+                        <select name="separator"
+                            [disabled]="this.readOnly"
+                            [(ngModel)]="this.curation.separator"
+                            class="separatorInput"
+                            (change)="this.createJSONstring(this.fileContent)"
+                            (ngModelChange)="onChangeSeparator($event)" required
+                            autocomplete="on">
+                            <option [value]="item.value" *ngFor="let item of
+                                SeparatorChoices| keyvalue"> {{item.key}}
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
         <!-- END INPUT FILE -->
-        <div class="card">
-            <div class="row">
+        <div class="card" *ngIf="this.fileContent">
+            <div class="row" id="previewDiv">
                 <table class="table table-striped">
                     <div class="card-body p-2 pl-5 pr-5"
                         id="tablePreview">
                         <div *ngFor="let column of
                             this.headers"
                             class="col-mb-5">
-                            <th> {{column}} </th>
-                            <tr *ngFor="let keys of
+                            <th style="width:16%"> {{column}} </th>
+                            <tr style="width:16%" *ngFor="let keys of
                                 objectKeys(this.finalDict)">
                                 <td>{{this.finalDict[keys][column]}}
                                 </td>
@@ -140,7 +140,7 @@
                                         the SMILES column to proceed</label>
                                     <ng-multiselect-dropdown
                                         (onSelect)="onchangeColumns($event)"
-                                        [placeholder]="'SMILES'" 
+                                        [placeholder]="'SMILES'"
                                         [settings]="dropdownSettings"
                                         [data]="this.curation.columns"
                                         [(ngModel)]="this.curation.smilesCol"
@@ -159,7 +159,7 @@
                                     <ng-multiselect-dropdown
                                         id="multiSelect2"
                                         (onSelect)="onchangeSelected($event)"
-                                        [placeholder]="'CAS-RN'" 
+                                        [placeholder]="'CAS-RN'"
                                         [settings]="dropdownSettings"
                                         [data]="getData()"
                                         [(ngModel)]="this.curation.casCol"
@@ -176,9 +176,9 @@
                                         p-0">Select
                                         the metadata columns</label>
                                     <ng-multiselect-dropdown
-                                        id="multiSelect3" 
+                                        id="multiSelect3"
                                         (onSelect)="onchangeSelected($event)"
-                                        [placeholder]="'metadata'" 
+                                        [placeholder]="'metadata'"
                                         [settings]="dropdownSettings2"
                                         [data]="getData()"
                                         [(ngModel)]="this.curation.metadata"
@@ -190,87 +190,30 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4-mr-0">
-                        <button *ngIf="this.curation.columns"
-                            type="submit" (click)="createJSONstring()"
-                            class="btn btn-ets-down mb-0">Preview</button>
-                    </div>
-                    <div class="cardTable">
-                        <div class="row">
-                            <table class="table table-striped"
-                                *ngIf="this.finalDict!=undefined">
-                                <div class="card-body p-2 pl-5 pr-5"
-                                    id="tablePreview">
-                                    <div *ngFor="let column of
-                                        this.curation.selectedColumns"
-                                        class="col-mb-5">
-                                        <th> {{column}} </th>
-                                        <tr *ngFor="let keys of
-                                            objectKeys(this.finalDict)">
-                                            <td>{{this.finalDict[keys][column]}}
-                                            </td>
-                                        </tr>
-                                    </div>
-                                </div>
-                            </table>
-                        </div>
-                    </div>
                 </div>
                 <!--END METADATA INFO-->
-                <div class="accordion" id="curatingAccordion">
-                    <div class="card">
-                        <div class="card-header collapsed"
-                            id="headingOutputRemove"
-                            data-toggle="collapse"
-                            data-target="#collapseOutputRemove"
-                            aria-expanded="false"
-                            aria-controls="collapseOutputRemove">
-                            <h5 class="mb-0">
-                                Curation settings
-                                <button class="btn btn-link pt-0 pb-0
-                                    float-right"
-                                    type="button"></button>
-                            </h5>
-                        </div>
-                        <div id="collapseOutputRemove" class="collapse"
-                            aria-labelledby="headingOutputRemove"
-                            data-parent="#curatingAccordion">
-                            <div class="row">
-                                <div class="card-body p-2 pl-5 pr-5">
-                                    <div class="col-4-mr-0" id="removeCheckbox">
-                                        <div class="checkbox">
-                                            <label for="remove">Remove
-                                                problematics <br></label>
-                                            <input type="checkbox" name="remove"
-                                                id="remove"
-                                                #remove="ngModel"
-                                                [(ngModel)]="this.curation.remove"
-                                                autocomplete="on">
-                                        </div>
+
+                <div class="card">
+                        <div class="row">
+                            <div class="card-body p-2 pl-5 pr-5">
+                                <div class="col-4-mr-0" id="removeCheckbox">
+                                    <div class="checkbox">
+                                        <label for="remove">Remove
+                                            problematics (an Excel file will be
+                                            created with the deleted substances)<br></label>
+                                        <input type="checkbox" name="remove"
+                                            id="remove"
+                                            #remove="ngModel"
+                                            [(ngModel)]="this.curation.remove"
+                                            autocomplete="on">
                                     </div>
-                                    <div class="col-4-mr-0">
-                                        <label for="output">Choose the output
-                                            file
-                                            format</label>
-                                        <select class="dropdown" name="output"
-                                            id="output"
-                                            #output="ngModel"
-                                            [(ngModel)]="this.curation.output_format"
-                                            required autocomplete="on">
-                                            <option value="xlsx">xlsx</option>
-                                            <option value="csv">csv</option>
-                                            <option value="sdf">sdf</option>
-                                            <option value="tsv">tsv</option>
-                                            <option value="json">json</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-4-mr-0">
-                                        <button *ngIf="this.curation.columns"
-                                            type="submit"
-                                            (click)="curate(this.curation.name)"
-                                            class="btn btn-ets-down mb-0"
-                                            [disabled]="!curatedListForm.valid">Submit</button>
-                                    </div>
+                                </div>
+                                <div class="col-4-mr-0">
+                                    <button
+                                        type="submit"
+                                        (click)="curate(this.curation.name)"
+                                        class="btn btn-ets-down mb-0"
+                                        [disabled]="!curatedListForm.valid">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -278,5 +221,9 @@
                 </div>
             </div>
         </div>
-    </div>
+ 
+
+
+
+
 </form>

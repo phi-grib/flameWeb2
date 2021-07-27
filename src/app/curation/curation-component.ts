@@ -185,7 +185,87 @@ export class CurationComponent implements OnChanges {
             (result) => {
               if (result[0] === true) {
                 this.curation.head = result[1];
-
+                $.fn.dataTable.ext.buttons.sdf = {
+                    text: "SDF",
+                    action: () => {
+                      this.importFile("sdf");
+                    },
+                  };
+                  $.fn.dataTable.ext.buttons.csv = {
+                    text: "csv",
+                    action: () => {
+                      this.importFile("csv");
+                    },
+                  };
+                  $.fn.dataTable.ext.buttons.xlsx = {
+                    text: "Excel",
+                    action: () => {
+                      this.importFile("xlsx");
+                    },
+                  };
+                  $.fn.dataTable.ext.buttons.tsv = {
+                    text: "TSV",
+                    action: () => {
+                      this.importFile("tsv");
+                    },
+                  };
+                  $.fn.dataTable.ext.buttons.json = {
+                    text: "JSON",
+                    action: () => {
+                      this.importFile("json");
+                    },
+                  };
+                  $("#curation").DataTable().destroy();
+                  $("#curation").DataTable({
+                    initComplete: function (settings, json) {
+                      setTimeout(() => {
+                        const table = $("#curation").DataTable({
+                          dom:
+                            '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
+                            '<"row"<"col-sm-12"tr>>' +
+                            '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+                          buttons: [
+                            {
+                              extend: "sdf",
+                              text: "SDF",
+                              className: "btn-primary",
+                              title: "",
+                            },
+                            {
+                              extend: "csv",
+                              text: "CSV",
+                              className: "btn-primary",
+                              title: "",
+                            },
+                            {
+                              extend: "xlsx",
+                              text: "Excel",
+                              className: "btn-primary",
+                              title: "",
+                            },
+                            {
+                              extend: "tsv",
+                              text: "TSV",
+                              className: "btn-primary",
+                              title: "",
+                            },
+                            {
+                              extend: "json",
+                              text: "JSON",
+                              className: "btn-primary",
+                              title: "",
+                            },
+                          ],
+                          deferRender: true,
+                          ordering: true,
+                          pageLength: 10,
+                          columnDefs: [{ type: "date-euro", targets: 2 }],
+                          order: [[1, "desc"]],
+                          destroy: true,
+                        });
+                      }, 50);
+                    },
+                  });
                 const options = { 'width': 300, 'height': 150 };
                 const smilesDrawer = new SmilesDrawer.Drawer(options);
                 setTimeout(() => {
@@ -198,62 +278,7 @@ export class CurationComponent implements OnChanges {
                   });
                 }, 50);
 
-                $.fn.dataTable.ext.buttons.download = {
-                  text: "Download",
-                  action: () => {
-                    this.importFile();
-                  },
-                };
-
-                setTimeout(() => {
-                  const settingsObj: any = {
-                    dom:
-                      '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
-                      '<"row"<"col-sm-12"tr>>' +
-                      '<"row"<"col-sm-5"i><"col-sm-7"p>>',
-                    buttons: [
-                      {
-                        extend: "copy",
-                        text: "Copy",
-                        className: "btn-primary",
-                        title: "",
-                      },
-                      {
-                        extend: "download",
-                        text: "Download",
-                        className: "btn-primary",
-                        title: "",
-                      },
-                      {
-                        extend: "excel",
-                        text: "Excel",
-                        className: "btn-primary",
-                        title: "",
-                      },
-                      {
-                        extend: "pdf",
-                        text: "PDF",
-                        className: "btn-primary",
-                        title: "",
-                      },
-                      {
-                        extend: "print",
-                        text: "Print",
-                        className: "btn-primary",
-                        title: "",
-                      },
-                    ],
-                    deferRender: true,
-                    ordering: true,
-                    pageLength: 10,
-                    // columnDefs: [{ type: "date-euro", targets: 2 }],
-                    order: [[1, "desc"]],
-                    destroy: true,
-                  };
-
-                  $("#curationResults").DataTable(settingsObj);
-                }, 50);
-
+                
                 this.globals.tableCurationHead = true;
               }
             }
@@ -265,25 +290,9 @@ export class CurationComponent implements OnChanges {
   }
 
   //called from download button inserted in datatable
-  importFile() {
-    this.commonService.getFullCuration(this.curation.name).subscribe((result) => {
-        if (result[0] == true) {
-          const of = this.curation.parameters.outfile_type;
-
-          // console.log(this.curation.parameters.outfile_type);
-          if (of.includes("sdf")) {
-            this.curationService.exportFile(this.curation.name, 'sdf');            
-          } else if (of.includes("csv")) {
-            this.curationService.exportFile(this.curation.name, 'csv');            
-          } else if (of.includes("tsv")) {
-            this.curationService.exportFile(this.curation.name, 'tsv');            
-          } else if (of.includes("json")) {
-            this.curationService.exportFile(this.curation.name, 'JSON');
-          } else if (of.includes("xlsx")) {
-            this.curationService.exportFile(this.curation.name, 'xlsx'); 
-          }
-        }
-    });
-  }
+  importFile(format) {
+    console.log(format);
+  this.curationService.exportFile(this.curation.name, format);
+}
 
 }

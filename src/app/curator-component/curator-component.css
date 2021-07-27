@@ -100,9 +100,31 @@ table td {
 }
 
 #tablePreview {
+    max-width: 640px;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    margin: 0px;
     display: flex;
     flex-direction: row;
     width: fit-content;
     position: center;
     padding: 3px;
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+  
   }
+
+  #previewDiv {
+    max-width: 640px;
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+  }
+
+  td{
+      display:ruby-text;
+      white-space:nowrap;
+    }
