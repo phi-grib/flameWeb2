@@ -171,7 +171,7 @@ export class CurationComponent implements OnChanges {
   
   //obtains data from the header pickl through commonService
   getCurationHead() {
-      $("#curationResults").DataTable().destroy();
+    $("#curationResults").DataTable().destroy();
 
       // let params = undefined;
       this.curation.parameters = {};
@@ -185,6 +185,7 @@ export class CurationComponent implements OnChanges {
             (result) => {
               if (result[0] === true) {
                 this.curation.head = result[1];
+                console.log(result[0]);
                 $.fn.dataTable.ext.buttons.sdf = {
                     text: "SDF",
                     action: () => {
@@ -215,11 +216,12 @@ export class CurationComponent implements OnChanges {
                       this.importFile("json");
                     },
                   };
-                  $("#curation").DataTable().destroy();
-                  $("#curation").DataTable({
+                  $("#curationResults").DataTable().destroy();
+                  $("#curationResults").DataTable({
                     initComplete: function (settings, json) {
                       setTimeout(() => {
-                        const table = $("#curation").DataTable({
+                          console.log('load buttons');
+                        const table = $("#curationResults").DataTable({
                           dom:
                             '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
                             '<"row"<"col-sm-12"tr>>' +

@@ -12,7 +12,7 @@ export class CurationComponentService {
 
   exportFile(endpoint, oformat): any {
     const url: string = environment.baseUrl_cmanage + "exportFile/" +endpoint + "/format/" +oformat;
-    if (oformat == 'sdf' || oformat == "xlsx" || oformat== "csv" || oformat == "tsv" || oformat=='JSON') {
+    if (oformat == 'sdf' || oformat == "xlsx" || oformat== "csv" || oformat == "tsv" || oformat=='json') {
       var a = document.createElement("a");
       a.href = url;
       a.click();

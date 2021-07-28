@@ -22,7 +22,7 @@
 
 
 .form-row {
-  align-items: center;
+  align-items: left;
 }
 
 
@@ -52,6 +52,7 @@ table td {
   height: 500px; 
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .text-etransafe {
@@ -128,3 +129,18 @@ table td {
       display:ruby-text;
       white-space:nowrap;
     }
+
+  #multicolumns{
+    max-width: 840px;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    padding: 3px;
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    min-width: 840px;
+    padding: 16px !important;
+  }

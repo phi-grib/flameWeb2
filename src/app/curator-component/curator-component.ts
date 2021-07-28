@@ -25,8 +25,8 @@ export class CuratorComponent implements OnChanges {
   tab = "\t";
   SeparatorChoices = {
     ",": ",",
-    "Space": this.space,
-    "Tab": this.tab,
+    Space: this.space,
+    Tab: this.tab,
     "/": "/",
     ".": ".",
     ":": ":",
@@ -82,7 +82,7 @@ export class CuratorComponent implements OnChanges {
       this.func.getCurationParams(this.curation.name);
     }
   }
-  
+
   //sets the delimiter in the file to be read
   onChangeSeparator(selectValue: any) {
     this.curation.separator = selectValue;
@@ -112,77 +112,77 @@ export class CuratorComponent implements OnChanges {
     const self = this;
 
     if (file.name.includes("xlsx")) {
-        this.readOnly = true;
-        console.log("entra");
-        let fileReader = new FileReader();
-        fileReader.readAsArrayBuffer(this.file);
-        fileReader.onload = (e) => {
-          this.arrayBuffer = fileReader.result;
-          var data = new Uint8Array(this.arrayBuffer);
-          var arr = new Array();
-          for (var i = 0; i != data.length; ++i)
-            arr[i] = String.fromCharCode(data[i]);
-          var bstr = arr.join("");
-          var workbook = XLSX.read(bstr, { type: "binary" });
-          var first_sheet_name = workbook.SheetNames[0];
-          var worksheet = workbook.Sheets[first_sheet_name];
-          var arraylist = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-          for (let elem of arraylist) {
-            for (let item of this.objectKeys(arraylist[0])) {
-              elem[item] = elem[item].toString().replace(",", "");
-            }
+      this.readOnly = true;
+      console.log("entra");
+      let fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(this.file);
+      fileReader.onload = (e) => {
+        this.arrayBuffer = fileReader.result;
+        var data = new Uint8Array(this.arrayBuffer);
+        var arr = new Array();
+        for (var i = 0; i != data.length; ++i)
+          arr[i] = String.fromCharCode(data[i]);
+        var bstr = arr.join("");
+        var workbook = XLSX.read(bstr, { type: "binary" });
+        var first_sheet_name = workbook.SheetNames[0];
+        var worksheet = workbook.Sheets[first_sheet_name];
+        var arraylist = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+        for (let elem of arraylist) {
+          for (let item of this.objectKeys(arraylist[0])) {
+            elem[item] = elem[item].toString().replace(",", "");
           }
-          self.model.file_info["columns"] = this.objectKeys(arraylist[0]);
-          var colNames = self.model.file_info["columns"].filter((item) => item);
-          self.curation.columns = colNames;
-          self.model.file_info["num_mols"] = arraylist.length;
-          this.headers = colNames;
-          let str = colNames.toString() + "\n";
-          for (let j = 0; j < 10; j++) {
-            for (i = 0; i < colNames.length; i++) {
-              str += arraylist[j][colNames[i]];
-              str += ",";
-            }
-            str = str.slice(0, -1);
-            str += "\r\n";
-            console.log(str);
+        }
+        self.model.file_info["columns"] = this.objectKeys(arraylist[0]);
+        var colNames = self.model.file_info["columns"].filter((item) => item);
+        self.curation.columns = colNames;
+        self.model.file_info["num_mols"] = arraylist.length;
+        this.headers = colNames;
+        let str = colNames.toString() + "\n";
+        for (let j = 0; j < 10; j++) {
+          for (i = 0; i < colNames.length; i++) {
+            str += arraylist[j][colNames[i]];
+            str += ",";
           }
-          this.fileContent = str;
-          this.createJSONstring(this.fileContent);
-        };
-      } else {
-        this.readOnly = false;
-        fileReader.onloadend = function (x) {
-          self.fileContent = fileReader.result;
-          self.model.file_info["num_mols"] = self.fileContent.split("\n").length;
-          self.model.file_info["rows"] = self.fileContent.split("\n");
-          var reCol = new RegExp(".*$", "m");
-          self.model.file_info["columns"] = self.fileContent.match(reCol);
-          self.model.file_info["columns"] = self.model.file_info[
-            "columns"
-          ][0].split(self.curation.separator);
-  
-          var colNames = self.model.file_info["columns"].filter((item) => item);
-          self.curation.columns = colNames;
-          self.createJSONstring(self.fileContent);
-        };
-        fileReader.readAsText(file);
-        this.fileContent = self.fileContent;
-      }
+          str = str.slice(0, -1);
+          str += "\r\n";
+          console.log(str);
+        }
+        this.fileContent = str;
+        this.createJSONstring(this.fileContent);
+      };
+    } else {
+      this.readOnly = false;
+      fileReader.onloadend = function (x) {
+        self.fileContent = fileReader.result;
+        self.model.file_info["num_mols"] = self.fileContent.split("\n").length;
+        self.model.file_info["rows"] = self.fileContent.split("\n");
+        var reCol = new RegExp(".*$", "m");
+        self.model.file_info["columns"] = self.fileContent.match(reCol);
+        self.model.file_info["columns"] = self.model.file_info[
+          "columns"
+        ][0].split(self.curation.separator);
+
+        var colNames = self.model.file_info["columns"].filter((item) => item);
+        self.curation.columns = colNames;
+        self.createJSONstring(self.fileContent);
+      };
+      fileReader.readAsText(file);
+      this.fileContent = self.fileContent;
     }
-  
-    //based on the selectedColumns creates a datatable showing how the output file will look like
-    createJSONstring(fileContent): any {
-      var cleaning = fileContent.replace("\r", "");
-      var lines = cleaning.split("\n").filter((item) => item);
-      console.log(lines);
-  
-      if (this.model.file_info["name"].includes("xlsx")) {
-        this.curation.separator = ",";
-      }
+  }
+
+  //based on the selectedColumns creates a datatable showing how the output file will look like
+  createJSONstring(fileContent): any {
+    var cleaning = fileContent.replace("\r", "");
+    var lines = cleaning.split("\n").filter((item) => item);
+
+    if (this.model.file_info["name"].includes("xlsx")) {
+      this.curation.separator = ",";
+    }
     this.headers = lines[0]
       .split(this.curation.separator)
       .filter((item) => item);
+    this.curation.columns = this.headers;
     let filtered = [];
     let temp = [];
     for (let k = 1; k < 5; k++) {
@@ -203,8 +203,7 @@ export class CuratorComponent implements OnChanges {
 
   //sends all parameters and file content to be proccessed by the curation tool
   curate(name: string) {
-
-    console.log('>>>>>',name);
+    console.log(">>>>>", name);
 
     let met = [];
     this.curation.name = name;
@@ -220,16 +219,19 @@ export class CuratorComponent implements OnChanges {
       remove = "False";
     }
     if (name != "" && name != undefined) {
-      const inserted = this.toastr.info(
-        "Running!",
-        "Curation " + name,
-        {
-          disableTimeOut: true,
-          positionClass: "toast-top-right",
-        }
-      );
-      this.curService.curateList(name, this.file, this.curation.casCol[0].value, this.curation.smilesCol[0], this.curation.separator,
-                                 remove, met
+      const inserted = this.toastr.info("Running!", "Curation " + name, {
+        disableTimeOut: true,
+        positionClass: "toast-top-right",
+      });
+      this.curService
+        .curateList(
+          name,
+          this.file,
+          this.curation.casCol[0].value,
+          this.curation.smilesCol[0],
+          this.curation.separator,
+          remove,
+          met
         )
         .subscribe(
           (result) => {
@@ -237,12 +239,14 @@ export class CuratorComponent implements OnChanges {
             const intervalId = setInterval(() => {
               if (iter < 500) {
                 this.checkCuration(name, inserted, intervalId);
-              } else 
-              {
+              } else {
                 clearInterval(intervalId);
                 this.toastr.clear(inserted.toastId);
-                this.toastr.warning("Curation " + name + " \n Time Out", "Warning", 
-                  {  timeOut: 10000, positionClass: "toast-top-right", });
+                this.toastr.warning(
+                  "Curation " + name + " \n Time Out",
+                  "Warning",
+                  { timeOut: 10000, positionClass: "toast-top-right" }
+                );
 
                 $("#dataTableCurations").DataTable().destroy();
                 this.func.getCurationsList();
@@ -270,11 +274,17 @@ export class CuratorComponent implements OnChanges {
       (result) => {
         this.toastr.clear(inserted.toastId);
         if (result["error"]) {
-          this.toastr.warning("Curation " + name + " finished with error " + result["error"], "CURATION COMPLETED",
-          {timeOut: 10000, positionClass: "toast-top-right", });
+          this.toastr.warning(
+            "Curation " + name + " finished with error " + result["error"],
+            "CURATION COMPLETED",
+            { timeOut: 10000, positionClass: "toast-top-right" }
+          );
         } else {
-          this.toastr.success("Curation " + name + " created", "CURATION COMPLETED",
-          {timeOut: 5000, positionClass: "toast-top-right", });
+          this.toastr.success(
+            "Curation " + name + " created",
+            "CURATION COMPLETED",
+            { timeOut: 5000, positionClass: "toast-top-right" }
+          );
         }
         clearInterval(intervalId);
         $("#dataTableCurations").DataTable().destroy();
@@ -284,8 +294,11 @@ export class CuratorComponent implements OnChanges {
         // CHECK MAX iterations
         if (error.error.code !== 0) {
           this.toastr.clear(inserted.toastId);
-          this.toastr.error("Curation " + name + " \n " + error.error.message, "ERROR!",
-            { timeOut: 10000, positionClass: "toast-top-right", });
+          this.toastr.error(
+            "Curation " + name + " \n " + error.error.message,
+            "ERROR!",
+            { timeOut: 10000, positionClass: "toast-top-right" }
+          );
           clearInterval(intervalId);
           $("#dataTableCurations").DataTable().destroy();
           this.func.getCurationsList();

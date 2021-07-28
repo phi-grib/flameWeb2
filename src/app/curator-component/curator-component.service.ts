@@ -21,7 +21,6 @@ export class CuratorComponentService {
   ) {
     const url: string = environment.baseUrl_curate + "curate/" + name;
     const formData = new FormData();
-    console.log(name, file, cas, smiles, remove_problem, output_format);
     formData.append("endpoint", name);
     formData.append("data_input", file);
     formData.append("molecule_identifier", cas);
