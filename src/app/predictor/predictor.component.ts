@@ -167,7 +167,7 @@ export class PredictorComponent implements OnInit {
               this.func.getPredictionList();
             }
             iter += 1;
-          }, 500);
+          }, 2000); // every two seconds
         },
         error => {
           this.toastr.clear(inserted.toastId);
@@ -188,20 +188,22 @@ export class PredictorComponent implements OnInit {
     this.commonService.getPrediction(name).subscribe(
       result => {
         // console.log(result);
-        this.toastr.clear(inserted.toastId);
-        if (result['error']){
-          this.toastr.warning('Prediction ' + name + ' finished with error ' + result['error'] , 'PREDICTION COMPLETED', {
-            timeOut: 5000, positionClass: 'toast-top-right'});
-            
+        if (!result ['waiting']) {
+          this.toastr.clear(inserted.toastId);
+          if (result['error']){
+            this.toastr.warning('Prediction ' + name + ' finished with error ' + result['error'] , 'PREDICTION COMPLETED', {
+              timeOut: 5000, positionClass: 'toast-top-right'});
+              
+          }
+          else {
+             this.toastr.success('Prediction ' + name + ' created' , 'PREDICTION COMPLETED', {
+              timeOut: 5000, positionClass: 'toast-top-right'});
+          }
+          clearInterval(intervalId);
+          delete this.prediction.predicting[this.predictName];
+          $('#dataTablePredictions').DataTable().destroy();
+          this.func.getPredictionList();
         }
-        else {
-           this.toastr.success('Prediction ' + name + ' created' , 'PREDICTION COMPLETED', {
-            timeOut: 5000, positionClass: 'toast-top-right'});
-        }
-        clearInterval(intervalId);
-        delete this.prediction.predicting[this.predictName];
-        $('#dataTablePredictions').DataTable().destroy();
-        this.func.getPredictionList();
       },
       error => { // CHECK MAX iterations
         if (error.error.code !== 0) {
