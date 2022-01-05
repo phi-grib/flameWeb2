@@ -206,15 +206,13 @@ export class PredictorComponent implements OnInit {
         }
       },
       error => { // CHECK MAX iterations
-        if (error.error.code !== 0) {
-          this.toastr.clear(inserted.toastId);
-          this.toastr.error('Prediction ' + name + ' \n '  + error.error.message , 'ERROR!', {
-            timeOut: 10000, positionClass: 'toast-top-right'});
-          clearInterval(intervalId);
-          delete this.prediction.predicting[this.predictName];
-          $('#dataTablePredictions').DataTable().destroy();
-          this.func.getPredictionList();
-        }
+        this.toastr.clear(inserted.toastId);
+        this.toastr.error('Prediction ' + name + ' \n '  + error.error.message , 'ERROR!', {
+          timeOut: 10000, positionClass: 'toast-top-right'});
+        clearInterval(intervalId);
+        delete this.prediction.predicting[this.predictName];
+        $('#dataTablePredictions').DataTable().destroy();
+        this.func.getPredictionList();
       }
     );
   }

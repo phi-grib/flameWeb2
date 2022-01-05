@@ -149,50 +149,55 @@ export class BuilderComponent implements OnInit {
     this.commonService.getModel(name, version).subscribe(
       result => {
 
-        $('#dataTableModels').DataTable().destroy();
+        if (!result ['waiting']) {
 
-        const dict_info = {};
-        for (const aux of result) {
-          dict_info[aux[0]] = aux[2];
-        }
-        const quality = {};
-        for (const info of (Object.keys(dict_info))) {
-          if (typeof (dict_info[info]) === 'number') {
-            quality[info] = parseFloat(dict_info[info].toFixed(3));
+          $('#dataTableModels').DataTable().destroy();
+  
+          const dict_info = {};
+          for (const aux of result) {
+            dict_info[aux[0]] = aux[2];
           }
+          const quality = {};
+          for (const info of (Object.keys(dict_info))) {
+            if (typeof (dict_info[info]) === 'number') {
+              quality[info] = parseFloat(dict_info[info].toFixed(3));
+            }
+          }
+          this.model.trained_models.push(name + ' .v' + version);
+  
+          const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
+          if (index > -1) {
+            this.model.trainig_models.splice(index, 1);
+          }
+          this.toastr.clear(inserted.toastId);
+  
+          this.model.listModels[name + '-' + version] = {
+            name: name, version: version, modelID: dict_info['modelID'], trained: true,
+            numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality,
+            quantitative: dict_info['quantitative'], conformal: dict_info['conformal'], ensemble: dict_info['ensemble']
+          };
+  
+          this.model.trained_models.push(name + ' .v' + version);
+          this.toastr.success('Model ' + name + '.v' + version + ' created', 'MODEL CREATED', {
+            timeOut: 5000, positionClass: 'toast-top-right'
+          });
+  
+          // use the following code to make sure the new model list will show the model
+          // const a = Object.keys(this.model.listModels).sort();
+          // var modelIndex = a.indexOf(name+'-'+version);
+          // this.model.page = Math.floor(modelIndex/this.model.pagelen);
+  
+          this.model.name = name;
+          this.model.version = version;
+          this.func.getModelList();
+          clearInterval(intervalId);
         }
-        this.model.trained_models.push(name + ' .v' + version);
 
-        const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
-        if (index > -1) {
-          this.model.trainig_models.splice(index, 1);
-        }
-        this.toastr.clear(inserted.toastId);
 
-        this.model.listModels[name + '-' + version] = {
-          name: name, version: version, modelID: dict_info['modelID'], trained: true,
-          numMols: dict_info['nobj'], variables: dict_info['nvarx'], type: dict_info['model'], quality: quality,
-          quantitative: dict_info['quantitative'], conformal: dict_info['conformal'], ensemble: dict_info['ensemble']
-        };
-
-        this.model.trained_models.push(name + ' .v' + version);
-        this.toastr.success('Model ' + name + '.v' + version + ' created', 'MODEL CREATED', {
-          timeOut: 5000, positionClass: 'toast-top-right'
-        });
-
-        // use the following code to make sure the new model list will show the model
-        // const a = Object.keys(this.model.listModels).sort();
-        // var modelIndex = a.indexOf(name+'-'+version);
-        // this.model.page = Math.floor(modelIndex/this.model.pagelen);
-
-        this.model.name = name;
-        this.model.version = version;
-        this.func.getModelList();
-        clearInterval(intervalId);
 
       },
       error => { // CHECK what type of error
-        if (error.error.code !== 0) {
+        // if (error.error.code !== 0) {
           $('#dataTableModels').DataTable().destroy();
           const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
           if (index > -1) {
@@ -206,7 +211,7 @@ export class BuilderComponent implements OnInit {
           clearInterval(intervalId);
 
           this.func.getModelList();
-        }
+        // }
       }
     );
   }
