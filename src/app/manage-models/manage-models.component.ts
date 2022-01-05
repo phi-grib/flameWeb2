@@ -138,14 +138,66 @@ export class ManageModelsComponent {
     );
   }
 
+
+
+  // exportModel() {
+  //   const url: string = environment.baseUrl_manage + 'model/' + this.model.name + '/export';
+
+  //   var a = document.createElement("a");
+  //   a.href = url;
+  //   a.click();
+
+  //   // window.open(url);
+  // }
+
   exportModel() {
-    const url: string = environment.baseUrl_manage + 'model/' + this.model.name + '/export';
 
-    var a = document.createElement("a");
-    a.href = url;
-    a.click();
+    const inserted = this.toastr.info('Running!', 'Exporting ' + this.model.name , {
+      disableTimeOut: true, positionClass: 'toast-top-right'});
 
-    // window.open(url);
+    this.service.exportModel(this.model.name).subscribe(
+      result => {
+        if (result['temp_dir']) {
+          let iter = 0;
+          const temp_dir : string = result['temp_dir'];
+          const intervalId = setInterval(() => {
+            if (iter < 500) {
+              this.testModel(this.model.name, temp_dir, inserted, intervalId);
+            } else {
+              clearInterval(intervalId);
+              this.toastr.clear(inserted.toastId);
+              this.toastr.warning( 'Exporting ' + this.model.name + ' \n Timed Out' , 'Warning', {
+                                    timeOut: 10000, positionClass: 'toast-top-right'});
+            }
+            iter += 1;
+          }, 5000); // every five seconds
+
+        }
+      },
+      error => {
+        this.toastr.clear(inserted.toastId);
+        alert('Error exporting: '+error.error.error);
+      }
+    );
+  }
+
+  testModel(modelname, temp_dir, inserted, intervalId) {
+    this.service.testModel(modelname, temp_dir).subscribe(
+      result => {
+        // console.log(result);
+        if (result ['ready']) {
+          this.toastr.clear(inserted.toastId);
+          clearInterval(intervalId);
+          
+          const url: string = environment.baseUrl_manage + 'model/' + this.model.name + '/temp_dir/' + temp_dir + '/download';
+          var a = document.createElement("a");
+          a.href = url;
+          a.click();
+
+        }
+      }
+    );
+
   }
 
   importModel(fileList: FileList) {

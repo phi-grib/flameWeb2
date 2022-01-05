@@ -41,7 +41,16 @@ export class ManageModelService {
     // formData.append('parameters',  this.model.parameters);
     const url: string = environment.baseUrl_manage + 'model/import';
     return this.http.post(url, formData);
-
+  }
+  
+  exportModel(model: string) {
+    const url: string = environment.baseUrl_manage + 'model/' + model +'/export';
+    return this.http.get(url);
+  }
+  
+  testModel(model: string, temp_dir: string) {
+    const url: string = environment.baseUrl_manage + 'model/' + model +'/temp_dir/' + temp_dir +'/test';
+    return this.http.get(url);
   }
 
 }
