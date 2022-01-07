@@ -163,7 +163,7 @@ export class SearcherComponent implements OnInit {
                                     timeOut: 10000, positionClass: 'toast-top-right'});
             }
             iter += 1;
-          }, 500);
+          }, 1000);
         },
         error => {
           this.toastr.clear(inserted.toastId);
@@ -179,26 +179,28 @@ export class SearcherComponent implements OnInit {
   checkSearch(searchName, inserted, intervalId) {
     this.commonService.getSearch(searchName).subscribe(
       result => {
-        // console.log(result)
-        this.search.result = result.search_results;
-        this.search.nameSrc = result.obj_nam;
-        this.search.smileSrc = result.SMILES;
-        this.search.metric = result.metric;
-        // console.log(result.metric)
-        this.search.spaceName = this.spaceName;
-        this.search.spaceVersion = this.spaceVersion;
-        clearInterval(intervalId);
-        this.toastr.clear(inserted.toastId);
-        this.toastr.success('Search finished' , 'SEARCH COMPLETED', {
-          timeOut: 2000, positionClass: 'toast-top-right'});
+        if (!result['waiting']){
+          // console.log(result)
+          this.search.result = result.search_results;
+          this.search.nameSrc = result.obj_nam;
+          this.search.smileSrc = result.SMILES;
+          this.search.metric = result.metric;
+          // console.log(result.metric)
+          this.search.spaceName = this.spaceName;
+          this.search.spaceVersion = this.spaceVersion;
+          clearInterval(intervalId);
+          this.toastr.clear(inserted.toastId);
+          this.toastr.success('Search finished' , 'SEARCH COMPLETED', {
+            timeOut: 2000, positionClass: 'toast-top-right'});
+        }
         
       },
       error => {
-        if (error.error.code !== 0) {
+        // if (error.error.code !== 0) {
           this.toastr.clear(inserted.toastId);
           clearInterval(intervalId);
           alert('Error search: '+error.error.error);
-        }
+        // }
       }
     );
   }

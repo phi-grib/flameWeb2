@@ -138,20 +138,7 @@ export class ManageModelsComponent {
     );
   }
 
-
-
-  // exportModel() {
-  //   const url: string = environment.baseUrl_manage + 'model/' + this.model.name + '/export';
-
-  //   var a = document.createElement("a");
-  //   a.href = url;
-  //   a.click();
-
-  //   // window.open(url);
-  // }
-
   exportModel() {
-
     const inserted = this.toastr.info('Running!', 'Exporting ' + this.model.name , {
       disableTimeOut: true, positionClass: 'toast-top-right'});
 
@@ -182,18 +169,12 @@ export class ManageModelsComponent {
   }
 
   testModel(modelname, temp_dir, inserted, intervalId) {
-    this.service.testModel(modelname, temp_dir).subscribe(
+    this.service.exportTestModel(modelname, temp_dir).subscribe(
       result => {
-        // console.log(result);
         if (result ['ready']) {
           this.toastr.clear(inserted.toastId);
           clearInterval(intervalId);
-          
-          const url: string = environment.baseUrl_manage + 'model/' + this.model.name + '/temp_dir/' + temp_dir + '/download';
-          var a = document.createElement("a");
-          a.href = url;
-          a.click();
-
+          this.service.exportTestDownload(modelname, temp_dir)
         }
       }
     );

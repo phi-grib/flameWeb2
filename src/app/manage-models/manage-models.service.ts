@@ -48,9 +48,16 @@ export class ManageModelService {
     return this.http.get(url);
   }
   
-  testModel(model: string, temp_dir: string) {
-    const url: string = environment.baseUrl_manage + 'model/' + model +'/temp_dir/' + temp_dir +'/test';
+  exportTestModel(model: string, temp_dir: string) {
+    const url: string = environment.baseUrl_manage + 'model/' + model +'/temp_dir/' + temp_dir +'/export_test';
     return this.http.get(url);
+  }
+
+  exportTestDownload(model: string, temp_dir: string) {
+    const url: string = environment.baseUrl_manage + 'model/' + model + '/temp_dir/' + temp_dir + '/export_download';
+    const a = document.createElement("a");
+    a.href = url;
+    a.click();
   }
 
 }

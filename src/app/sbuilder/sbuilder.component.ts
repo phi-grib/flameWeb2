@@ -109,7 +109,7 @@ export class SbuilderComponent implements OnInit {
     
             this.toastr.clear(inserted.toastId);
             this.toastr.warning('space ' + name + '.v' + version + ' \n ', 'Interactive timeout exceeded, check latter...', {
-              timeOut: 10000, positionClass: 'toast-top-right'
+              timeOut: 40000, positionClass: 'toast-top-right'
             });
           }
           iter += 1;
@@ -133,36 +133,37 @@ export class SbuilderComponent implements OnInit {
   checkspace(name, version, inserted, intervalId) {
     this.commonService.getSpace(name, version).subscribe(
       result => {
-        this.toastr.clear(inserted.toastId);
-
-        this.remove_building_space(name, version);
-        this.space.spaces = [];
-        this.space.spaceName = name;
-        this.space.spaceVersion = version;
-        $('#dataTableSpaces').DataTable().destroy();
-
-        this.toastr.success('space ' + name + '.v' + version + ' created', 'space CREATED', {
-          timeOut: 5000, positionClass: 'toast-top-right'
-        });
-
-        this.func.getSpaceList();
-
-        const dict_info = {};
-        for (const aux of result) {
-          dict_info[aux[0]] = aux[2];
-        }
-        const quality = {};
-        for (const info of (Object.keys(dict_info))) {
-          if (typeof (dict_info[info]) === 'number') {
-            quality[info] = parseFloat(dict_info[info].toFixed(3));
+        if (!result ['waiting']) {
+          this.toastr.clear(inserted.toastId);
+  
+          this.remove_building_space(name, version);
+          this.space.spaces = [];
+          this.space.spaceName = name;
+          this.space.spaceVersion = version;
+          $('#dataTableSpaces').DataTable().destroy();
+  
+          this.toastr.success('space ' + name + '.v' + version + ' created', 'space CREATED', {
+            timeOut: 5000, positionClass: 'toast-top-right'
+          });
+  
+          this.func.getSpaceList();
+  
+          const dict_info = {};
+          for (const aux of result) {
+            dict_info[aux[0]] = aux[2];
           }
+          const quality = {};
+          for (const info of (Object.keys(dict_info))) {
+            if (typeof (dict_info[info]) === 'number') {
+              quality[info] = parseFloat(dict_info[info].toFixed(3));
+            }
+          }
+  
+          clearInterval(intervalId);
         }
-
-        clearInterval(intervalId);
-
       },
       error => { // CHECK what type of error
-        if (error.error.code !== 0) {
+        // if (error.error.code !== 0) {
           this.remove_building_space (name, version)
           this.space.spaces = [];
           $('#dataTableSpaces').DataTable().destroy();
@@ -174,7 +175,7 @@ export class SbuilderComponent implements OnInit {
           clearInterval(intervalId);
 
           this.func.getSpaceList();
-        }
+        // }
       }
     );
   }

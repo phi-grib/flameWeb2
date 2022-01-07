@@ -121,7 +121,7 @@ export class BuilderComponent implements OnInit {
 
             this.toastr.clear(inserted.toastId);
             this.toastr.warning('Model ' + name + '.v' + version + ' \n ', 'Interactive timeout exceeded, check latter...', {
-              timeOut: 10000, positionClass: 'toast-top-right'
+              timeOut: 40000, positionClass: 'toast-top-right'
             });
           }
           iter += 1;
@@ -192,9 +192,6 @@ export class BuilderComponent implements OnInit {
           this.func.getModelList();
           clearInterval(intervalId);
         }
-
-
-
       },
       error => { // CHECK what type of error
         // if (error.error.code !== 0) {
