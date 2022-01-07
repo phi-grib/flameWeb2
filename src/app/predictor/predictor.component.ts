@@ -127,7 +127,7 @@ export class PredictorComponent implements OnInit {
               this.func.getPredictionList();
             }
             iter += 1;
-          }, 500);
+          }, 2000);
         },
         error => {
           this.toastr.clear(inserted.toastId);
@@ -205,7 +205,7 @@ export class PredictorComponent implements OnInit {
           this.func.getPredictionList();
         }
       },
-      error => { // CHECK MAX iterations
+      error => { 
         this.toastr.clear(inserted.toastId);
         this.toastr.error('Prediction ' + name + ' \n '  + error.error.message , 'ERROR!', {
           timeOut: 10000, positionClass: 'toast-top-right'});
