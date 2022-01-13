@@ -112,11 +112,11 @@
                                     </tr>
                                     <ng-container *ngIf="this.model.conformal">
                                         <tr *ngIf="modelValidationInfo['Conformal_accuracy']">
-                                            <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SDEP'][0]}}"><strong>Conformal accuracy</strong></td>
+                                            <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Conformal_accuracy'][0]}}"><strong>Conformal accuracy</strong></td>
                                             <td class="text-right text-capitalize">{{modelValidationInfo['Conformal_accuracy'][1]}}</td>
                                         </tr>
                                         <tr *ngIf="modelValidationInfo['Conformal_mean_interval']">
-                                            <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SDEP'][0]}}"><strong>Mean interval</strong></td>
+                                            <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Conformal_mean_interval'][0]}}"><strong>Mean interval</strong></td>
                                             <td class="text-right text-capitalize">{{modelValidationInfo['Conformal_mean_interval'][1]}}</td>
                                         </tr>
                                     </ng-container>
@@ -140,24 +140,24 @@
                             <table class="table table-sm mt-4">
                                 <tbody>
                                     <tr *ngIf="modelValidationInfo['scoringR']">
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['scoringP'][0]}}"><strong>Scoring</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['scoringR'][0]}}"><strong>Scoring</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['scoringR'][1]}}</td>
                                     </tr>
                                     <tr *ngIf="modelValidationInfo['R2']">
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Q2'][0]}}"><strong>R2</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['R2'][0]}}"><strong>R2</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['R2'][1]}}</td>
                                     </tr>
                                     <tr *ngIf="modelValidationInfo['SDEC']">
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SDEP'][0]}}"><strong>SDEC</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SDEC'][0]}}"><strong>SDEC</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['SDEC'][1]}}</td>
                                     </tr>
                                     <ng-container *ngIf="this.model.conformal">
                                         <tr *ngIf="modelValidationInfo['Conformal_accuracy_fitting']">
-                                            <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SDEP'][0]}}"><strong>Conformal accuracy</strong></td>
+                                            <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Conformal_accuracy_fitting'][0]}}"><strong>Conformal accuracy</strong></td>
                                             <td class="text-right text-capitalize">{{modelValidationInfo['Conformal_accuracy_fitting'][1]}}</td>
                                         </tr>
                                         <tr *ngIf="modelValidationInfo['Conformal_mean_interval_fitting']">
-                                            <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['SDEP'][0]}}"><strong>Mean interval</strong></td>
+                                            <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Conformal_mean_interval_fitting'][0]}}"><strong>Mean interval</strong></td>
                                             <td class="text-right text-capitalize">{{modelValidationInfo['Conformal_mean_interval_fitting'][1]}}</td>
                                         </tr>
                                     </ng-container>

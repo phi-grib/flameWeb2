@@ -154,24 +154,24 @@
                             <table class="table table-sm">
                                 <tbody>
                                     <tr>
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity'][0]}}"><strong>Sensitivity</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity_f'][0]}}"><strong>Sensitivity</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['Sensitivity_f'][1]}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Specificity'][0]}}"><strong>Specificity</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Specificity_f'][0]}}"><strong>Specificity</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['Specificity_f'][1]}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCC'][0]}}"><strong>MCC</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCC_f'][0]}}"><strong>MCC</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['MCC_f'][1]}}</td>
                                     </tr>
                                        
                                     <tr *ngIf="modelValidationInfo['Conformal_coverage_f']">
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Conformal_coverage'][0]}}"><strong>Conformal coverage</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Conformal_coverage_f'][0]}}"><strong>Conformal coverage</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['Conformal_coverage_f'][1]}}</td>
                                     </tr>
                                     <tr *ngIf="modelValidationInfo['Conformal_accuracy_f']">
-                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Conformal_accuracy'][0]}}"><strong>Conformal accuracy</strong></td>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Conformal_accuracy_f'][0]}}"><strong>Conformal accuracy</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['Conformal_accuracy_f'][1]}}</td>
                                     </tr>
                                 </tbody>
