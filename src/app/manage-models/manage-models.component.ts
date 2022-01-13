@@ -43,7 +43,7 @@ export class ManageModelsComponent {
     modalRef.componentInstance.version = version;
   }
   validateModel(name: string, version: string){
-    const modalRef = this.modalService.open(VerificatorComponent, {size: 'lg'});
+    const modalRef = this.modalService.open(VerificatorComponent, {size: 'xl'});
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.version = version;
   }

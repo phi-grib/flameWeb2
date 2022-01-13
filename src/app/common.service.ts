@@ -26,9 +26,8 @@ export class CommonService {
     const url: string = environment.baseUrl_manage + "predictions";
     return this.http.get(url);
   }
-  // test get verification from backend
-  getVerification(model: string): Observable<any> {
-    const url: string = environment.baseUrl_verification + "verification" + "/" + model;
+  getVerification(model: string, version: number): Observable<any> {
+    const url: string = environment.baseUrl_verification + "verification" + "/" + model+'/'+version;
     return this.http.get(url);
   }
 

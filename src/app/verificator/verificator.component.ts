@@ -18,36 +18,42 @@ export class VerificatorComponent implements OnInit {
     private toastr: ToastrService,
     private commonService: CommonService,
     private verificatorService: VerificatorService
+
   ) {}
-
-  verificationFromApi: any;
+  objectKeys = Object.keys;
+  data: any = "";
   verificatorname: string;
+  datachekinglevel = "";
+  key = '';
+  detailMessage = '';
 
-  ngOnInit(): void {
-      this.getVerification();
-  }
+  detailsInfo = {'documentation':{'Passed':'TO DO','Failed':'The following fields must be filled in:'},'data':{'Passed':'','Failed':''},'prediction':{'Passed':'','Failed':''} }
 
   getVerification(): void {
-    this.commonService.getVerification(this.model.name).subscribe(
+    this.commonService.getVerification(this.model.name,this.model.version).subscribe(
       (result) => {
-        this.verificationFromApi = result;
+        this.data = result;
       },
       (error) => {
         alert(error);
       }
     );
   }
-
+  ngOnInit(): void {
+      this.getVerification();
+      
+  }
   cancelInput(): void {
     this.activeModal.close("Close click");
   }
 
+  //TO DO
   Sign(): void {
-    //TODOOO
-
+    
   }
 
   // verificationname: string,verificatorname: string
+  // TO DO
   Report(verificationname: string): void{
     
     verificationname = verificationname+"_verification";//generate fake verification name.
@@ -72,25 +78,31 @@ export class VerificatorComponent implements OnInit {
     
   }
 
-  verifyModel(modelname : string): void {
+  verifyModel(modelname : string, version: number): void {
 
-  this.verificatorService.generateVerification(modelname).subscribe(
+  this.verificatorService.generateVerification(modelname,version).subscribe(
     result => {
-      this.verificationFromApi = result;
-    },
-    error => {
-      console.log(error)
-    }
+      this.toastr.success(
+        "Model " + this.model.name,
+        "VERIFICATED SUCCESSFULLY",
+        {
+          timeOut: 4000,
+          positionClass: "toast-top-right",
+          progressBar: true,
+    });
+    this.data = result;
+    
+  },
+  error => {
+    console.log(error)
+  });   
+  }
 
-  )   
-    this.toastr.success(
-      "Model " + this.model.name,
-      "VERIFICATED SUCCESSFULLY",
-      {
-        timeOut: 4000,
-        positionClass: "toast-top-right",
-        progressBar: true,
-      }
-    );
+  details(key: string): void {
+    
+    this.datachekinglevel = this.data[1][key];
+    // information to user 
+    this.detailMessage = this.detailsInfo[key][this.datachekinglevel['status']]
+    
   }
 }

@@ -16,7 +16,7 @@
         <button type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#deleteVersion" [ngClass]="{'disabled': model.name === undefined || model.version == '0'}">Delete Version</button>
     </div>
     <div>
-        <button type="button" class="btn btn-ets-do mr-1" [ngClass]="{'disabled': model.name === undefined}" (click)="validateModel(model.name,model.modelID)">Validate</button>
+        <button type="button" class="btn btn-ets-do mr-1" [ngClass]="{'disabled': model.name === undefined || this.model.error=='Info file not found'}" (click)="validateModel(model.name,model.modelID)">Verify</button>
         <button type="button" class="btn btn-ets-do mr-1" [ngClass]="{'disabled': model.name === undefined || model.version == '0'}" (click)="newPrediction(model.name, model.version)">Predict</button>
     </div>
 </div>

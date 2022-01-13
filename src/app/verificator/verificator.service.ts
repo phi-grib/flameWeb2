@@ -8,8 +8,8 @@ import { environment } from '../../environments/environment';
 export class VerificatorService {
   constructor(private http: HttpClient) {}
   //MANAGE VERIFICATIONS
-  generateVerification(modelName : string): Observable<any> {
-    const url: string  = environment.baseUrl_verification + 'verification/'+modelName;
+  generateVerification(modelName : string, version: number): Observable<any> {
+    const url: string  = environment.baseUrl_verification + 'verification/'+modelName +'/'+version;
     return this.http.post(url,null);
   }
 
