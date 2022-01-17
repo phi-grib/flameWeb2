@@ -61,6 +61,10 @@ export class ModelDocumentationComponent implements OnChanges {
     return str.replace(/_/g, ' ');
   }
 
+  cleanFit(str: string) {
+    return str.replace(/_f/g, '');
+  }
+
   private isDict(v) {
     return typeof v === 'object' && v !== null && !(v instanceof Array) && !(v instanceof Date);
   }
