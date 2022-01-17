@@ -379,6 +379,17 @@ export class QuantitConformalComponent implements OnChanges {
             if (typeof modelInfo[2] !== 'object') {
               this.modelValidationInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
             } 
+
+            // translation for back_compatibility
+            if (modelInfo[0]==='Conformal_accuracy_fitting') {
+              this.modelValidationInfo ['Conformal_accuracy_f'] = [modelInfo[1], modelInfo[2]];
+            }
+
+            // translation for back_compatibility
+            if (modelInfo[0]==='Conformal_mean_interval_fitting') {
+              this.modelValidationInfo ['Conformal_mean_interval_f'] = [modelInfo[1], modelInfo[2]];
+            }
+
             // else {
             //   if (this.model.conformal){
             //     this.modelConformal[modelInfo[0]] = modelInfo[2];
@@ -458,14 +469,14 @@ export class QuantitConformalComponent implements OnChanges {
             this.plotViolin.data[0].y = info['ymatrix'];
             this.plotViolin.data[0].text = info['obj_nam'];
 
-            if (this.modelValidationInfo['Conformal_accuracy'] && this.modelValidationInfo['Conformal_accuracy_fitting']) {
+            if (this.modelValidationInfo['Conformal_accuracy'] && this.modelValidationInfo['Conformal_accuracy_f']) {
               this.plotSummary.data[1].y = [
                 this.modelValidationInfo['Q2'][1],
                 this.modelValidationInfo['Conformal_accuracy'][1]];
               
               this.plotSummary.data[0].y = [
                 this.modelValidationInfo['R2'][1],
-                this.modelValidationInfo['Conformal_accuracy_fitting'][1]];
+                this.modelValidationInfo['Conformal_accuracy_f'][1]];
             }
             else {
               this.plotSummary.data[1].y = [
