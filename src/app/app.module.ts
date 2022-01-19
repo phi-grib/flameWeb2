@@ -43,6 +43,7 @@ import { SbuilderComponent } from './sbuilder/sbuilder.component';
 import { ConfigStrainingComponent } from './config-straining/config-straining.component';
 import { TrainingSseriesComponent } from './training-sseries/training-sseries.component';
 import { ConfigSpreferencesComponent } from './config-spreferences/config-spreferences.component';
+import { VerificatorComponent } from './verificator/verificator.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -84,7 +85,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     SbuilderComponent,
     ConfigStrainingComponent,
     TrainingSseriesComponent,
-    ConfigSpreferencesComponent
+    ConfigSpreferencesComponent,
+    VerificatorComponent
   ],
   imports: [
     BrowserModule,

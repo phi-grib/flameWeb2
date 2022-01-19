@@ -1,0 +1,145 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">
+        Model:<span class="model_name ml-1">{{ this.model.name }}</span
+    ><span class="comment ml-1">{{ this.model.modelID }}</span>
+    </h5>
+    <button type="button" class="close" (click)="cancelInput()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+<div class="modal-body" *ngIf="this.data != false; else firstVerification">
+    <div class="accordion mt-3" id="buildingAccordion">
+        <div class="card">
+            <div class="card-header" id="headingZero" data-toggle="collapse" data-target="#collapseZero" aria-expanded="false" aria-controls="collapseZero">
+                <h5 class="mb-0">
+                    1 - Data checking
+                    <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+                </h5>
+            </div>
+            <div id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#buildingAccordion">
+                <div class="card-body p-2 pl-5 pr-5">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Stage</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Comments</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let key of objectKeys(data[1])">
+                                <td>{{key}}</td>
+                                <td [ngStyle]="{color: data[1][key].status =='Passed' ? 'green': 'red'}">{{data[1][key].status}}</td>
+                                <td>
+                                    {{data[1][key].comments}}
+                                </td>
+                                <td>
+                                    <a *ngIf="data[1][key].status == 'Failed'" href="#detailsModal" role="button" class="btn btn-ets-do" data-toggle="modal" (click)="details(key)">Details</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <h5 class="mb-0">
+                    2 - Model testing
+                    <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#buildingAccordion">
+                <div class="card-body p-2 pl-5 pr-5">
+                    <!-- TO DO  -->
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                <h5 class="mb-0">
+                    3 - Inspection of Model
+                    <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#buildingAccordion">
+                <div class="card-body p-2 pl-5 pr-5">
+                    <!-- TO DO  -->
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingFour" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                <h5 class="mb-0">
+                    4 - Examination of Executive summary
+                    <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+                </h5>
+            </div>
+            <div id="collapseFour" class="collapse show" aria-labelledby="headingFour" data-parent="#buildingAccordion">
+                <div class="card-body p-2 pl-5 pr-5">
+                    <!-- TO DO -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal / Ventana / Overlay en HTML -->
+<div id="detailsModal" class="modal fade mt-3">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Model:<span class="model_name ml-1">{{ model.name }}</span
+                ><span class="comment ml-1">{{ model.modelID }}</span>
+                </h5>
+            </div>
+            <div class="modal-body">
+                <div class="accordion mt-3" id="detailsAccordion">
+                    <div class="card">
+                        <div class="card-header" id="headingDetailsZero" data-toggle="collapse" data-target="#collapseDetailsZero" aria-expanded="true" aria-controls="collapseDetailsZero">
+                            <h5 class="mb-0">
+                                {{key | titlecase }}
+                                <!-- <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button> -->
+                            </h5>
+
+                        </div>
+                        <div id="collapseDetailsZero" class="collapse show" aria-labelledby="headingDetailsZero" data-parent="#detailsAccordion">
+                            <div class="card-body p-2 pl-5 pr-5">
+                                <h5>{{detailMessage}} </h5>
+                                <span [ngStyle]="{color: datachekinglevel['status'] == 'Failed' ? 'red': 'green'}" *ngFor="let info of datachekinglevel['Information']">{{info}},  </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-ets-do" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #firstVerification>
+    <div class="alert alert-warning" role="alert">
+        Press verify button to generate the model verification
+    </div>
+</ng-template>
+
+<!-- modal footer -->
+<div class="form-row">
+    <div class="form-group col-md-7 ml-5">
+        <button type="button" class="btn btn-ets-do mr-2" (click)="verifyModel(this.model.name,this.model.version)">Verify</button>
+        <button type="button" class="btn btn-ets-do" [ngStyle]="{display:this.data === false ? 'none':'inline-block' }" [disabled]="!this.data" (click)="Report(this.model.name)">Generate report</button>
+    </div>
+    <div class="form-group col-md-3 ml-5">
+        <button type="button" class="btn btn-ets-ext mr-4" [ngStyle]="{display:this.data === false ? 'none':'inline-block' }" [disabled]="!this.data" (click)="Sign()">Sign</button>
+        <button type="button" class="btn btn-ets-delete" (click)="cancelInput()">Cancel</button>
+    </div>
+</div>
