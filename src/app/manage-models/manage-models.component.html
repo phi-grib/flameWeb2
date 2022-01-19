@@ -4,7 +4,7 @@
         <button type="button" class="btn btn-ets-do" [ngClass]="{'disabled': model.name === undefined || model.version != '0'}" (click)="buildModel(model.name, model.version)">Build</button>
         <button type="button" class="btn btn-ets-do" [ngClass]="{'disabled': model.name === undefined}" (click)="labelModel(model.name, model.version)">Label</button>
         <button type="button" class="btn btn-ets-do" [ngClass]="{'disabled': model.name === undefined}" (click)="cloneModel()">Publish</button>
-        <button type="button" class="btn btn-ets-do mr-1" [ngClass]="{'disabled': model.name === undefined || this.model.error=='Info file not found'}" (click)="validateModel(model.name,model.modelID)">Verify</button>
+        <!-- <button type="button" class="btn btn-ets-do mr-1" [ngClass]="{'disabled': model.name === undefined || this.model.error=='Info file not found'}" (click)="validateModel(model.name,model.modelID)">Verify</button> -->
     </div>
     <div *ngIf="this.globals.read_only == false" class="btn-group mr-2" role="group" aria-label="second group">
         <button type="button" class="btn btn-ets-ext" (click)="exportModel()" [ngClass]="{'disabled': model.name === undefined}">Export</button>
