@@ -35,7 +35,7 @@
     "chartjs-plugin-error-bars": "^1.2.2",
     "checklist-model": "^1.0.0",
     "core-js": "^3.6.4",
-    "datatables.net": "^1.10.20",
+    "datatables.net": "^1.11.3",
     "datatables.net-bs4": "^1.10.20",
     "datatables.net-buttons": "^1.6.1",
     "datatables.net-buttons-bs4": "^1.6.1",
