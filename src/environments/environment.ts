@@ -9,7 +9,7 @@ export const environment = {
   baseUrl_smanage: 'http://localhost:8000/api/v1/smanage/',
   baseUrl_sbuild: 'http://localhost:8000/api/v1/sbuild/',
   baseUrl_search: 'http://localhost:8000/api/v1/search/',
-  baseUrl_verification: 'http://localhost:8000/api/v1/verification/',
+  baseUrl_verification: 'http://localhost:8000/api/v1/verification/'
 
 };
 
