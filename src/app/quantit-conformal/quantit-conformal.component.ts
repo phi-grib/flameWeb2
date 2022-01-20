@@ -256,8 +256,66 @@ export class QuantitConformalComponent implements OnChanges {
         },
         modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
       }
+      
+    }
+    
+    plotFeatures= {
+      data : [{
+        type: 'bar',
+        y: [],
+        x: [],
+        // text: [],
+        // points: 'all',
+        // pointpos: 2,
+        // hoveron: "points",
+        hoverlabel: { bgcolor: "#22577"},
+        // line: {color: '#22577'},
+        // hovertemplate: '<b>%{text}</b><br>%{y:.2f}<extra></extra>',
+        hovertemplate: '<b>%{x}</b><br>%{y:.2f}<extra></extra>',
+        fillcolor: "#B8DCED",
+        // opacity: 0.8,
+        // meanline: {visible: true},
+        // name: 'Feature importance'
+      }],
+      layout : {
+        title: 'Feature importance',
+        font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        width: 800,
+        height: 600,
+        hovermode: 'closest',
+        // margin: {r: 10, t: 30, b: 0, l:10, pad: 0},
+        // margin: {r: 0, t: 50, b: 150, l:40, pad: 0},
+        margin: {b:200, t:50, pad: 10},
+        xaxis: {
+          tickangle: -45,
+          // categoryorder: 'array',
+          // categoryarray: [],
+          // zeroline: false,
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif' },
+        }
+      },
+      config: {
+        displaylogo: false,
+        showtitle: true, 
+        showlegend: false, 
+        xaxis: {
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
+        },
+        yaxis: {
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        },
+        toImageButtonOptions: {
+          format: 'svg', // one of png, svg, jpeg, webp
+          filename: 'flame_features',
+          width: 600,
+          height: 500,
+          scale: 2 // Multiply title/legend/axis/canvas sizes by this factor
+        },
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+      }
 
     }
+
     plotSummary = {
       data:  [{
             x: ['R2/Q2', 'Conformal accuracy'],
@@ -324,6 +382,8 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotScores.data[0].marker.color = [];
       this.plotViolin.data[0].y =[];
       this.plotViolin.data[0].text =[];
+      this.plotFeatures.data[0].y =[];
+      this.plotFeatures.data[0].x =[];
       this.plotSummary.data[0].y = [];
       this.plotSummary.data[1].y = [];
       
@@ -468,6 +528,22 @@ export class QuantitConformalComponent implements OnChanges {
 
             this.plotViolin.data[0].y = info['ymatrix'];
             this.plotViolin.data[0].text = info['obj_nam'];
+            
+            
+            const fval = info['feature_importances'];
+            const fnam = info['var_nam'];
+
+            const indices = Array.from(fval.keys());
+            indices.sort((a, b) => fval[b] - fval[a]);
+            
+            const sortedFval = indices.map(i => fval[i]);
+            const sortedFnam = indices.map(i => fnam[i]);
+
+            const nfeatures = Math.min(fval.length, 50)
+
+            this.plotFeatures.data[0].y = sortedFval.slice(0,nfeatures);
+            this.plotFeatures.data[0].x = sortedFnam.slice(0,nfeatures);
+            
 
             if (this.modelValidationInfo['Conformal_accuracy'] && this.modelValidationInfo['Conformal_accuracy_f']) {
               this.plotSummary.data[1].y = [
