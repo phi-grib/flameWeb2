@@ -261,6 +261,7 @@ export class QualitConformalComponent implements OnChanges {
           
     ngOnChanges(): void {
       this.modelVisible = false;
+      this.features = false;
       this.modelWarning = '';
       this.plotScores.data[0].x =[];
       this.plotScores.data[0].y =[];
@@ -353,7 +354,7 @@ export class QualitConformalComponent implements OnChanges {
           if ('feature_importances' in info) {
 
             console.log ('features detected!');
-            
+
             const fval = info['feature_importances'];
             const fnam = info['var_nam'];
 

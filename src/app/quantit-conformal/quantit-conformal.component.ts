@@ -348,6 +348,7 @@ export class QuantitConformalComponent implements OnChanges {
 
     ngOnChanges(): void {
       this.modelVisible = false;
+      this.features = false;
       this.modelWarning = '';
       this.plotFitted.data[0].x = [];
       this.plotFitted.data[0].y = [];
