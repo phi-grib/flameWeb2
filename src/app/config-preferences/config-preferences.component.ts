@@ -9,5 +9,5 @@ import { Model} from '../Globals';
 export class ConfigPreferencesComponent {
   constructor(private model: Model) { }
   objectKeys = Object.keys;
-  infoPreferences = ['mol_batch', 'numCPUs', 'dimensionality_reduction','output_similar','output_format', 'output_md' ];
+  infoPreferences = ['mol_batch', 'numCPUs', 'dimensionality_reduction', 'feature_importances_method', 'output_similar','output_format', 'output_md' ];
 }

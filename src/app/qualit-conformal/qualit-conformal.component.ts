@@ -351,9 +351,7 @@ export class QualitConformalComponent implements OnChanges {
             this.modelTypeInfo[ielement[0]]=[ielement[1], ielement[2]]
           }
 
-          if ('feature_importances' in info) {
-
-            console.log ('features detected!');
+          if ('feature_importances' in info && info['feature_importances']!= null) {
 
             const fval = info['feature_importances'];
             const fnam = info['var_nam'];

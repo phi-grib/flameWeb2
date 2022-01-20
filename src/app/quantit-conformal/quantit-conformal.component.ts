@@ -518,7 +518,7 @@ export class QuantitConformalComponent implements OnChanges {
             this.plotViolin.data[0].text = info['obj_nam'];
             
             // bar plot with feature importances 
-            if ('feature_importances' in info) {
+            if ('feature_importances' in info && info['feature_importances']!= null) {
               const fval = info['feature_importances'];
               const fnam = info['var_nam'];
   
