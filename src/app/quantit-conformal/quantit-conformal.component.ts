@@ -270,7 +270,7 @@ export class QuantitConformalComponent implements OnChanges {
         fillcolor: "#B8DCED",
       }],
       layout : {
-        title: 'Feature importance',
+        title: 'Feature importances (top 50)',
         font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
         width: 800,
         height: 600,
