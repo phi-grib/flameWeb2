@@ -358,9 +358,10 @@ export class QualitConformalComponent implements OnChanges {
 
             // sort the values and select the 50 top 
             const indices = Array.from(fval.keys());
-            indices.sort((a, b) => fval[b] - fval[a]);
-            const sortedFval = indices.map(i => fval[i]);
-            const sortedFnam = indices.map(i => fnam[i]);
+            indices.sort((a:number, b:number) => fval[b] - fval[a]);
+
+            const sortedFval = indices.map(function(num:number) { return fval[num]});
+            const sortedFnam = indices.map(function(num:number) {return fnam[num]});
 
             const nfeatures = Math.min(fval.length, 50);
 
