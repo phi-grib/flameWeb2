@@ -300,7 +300,6 @@ export class QuantitConformalComponent implements OnChanges {
         },
         modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
       }
-
     }
 
     plotSummary = {

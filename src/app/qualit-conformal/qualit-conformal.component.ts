@@ -351,6 +351,9 @@ export class QualitConformalComponent implements OnChanges {
           }
 
           if ('feature_importances' in info) {
+
+            console.log ('features detected!');
+            
             const fval = info['feature_importances'];
             const fnam = info['var_nam'];
 
