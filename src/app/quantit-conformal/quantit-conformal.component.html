@@ -197,7 +197,7 @@
             <div class="tab-pane fade" id="pills-other" role="tabpanel" aria-labelledby="pills-other-tab">
                 <div class="card-body">
                     <div class="row justify-content-between">
-                        <div class="col">
+                        <div class="col" *ngIf="this.features">
                             <plotly-plot 
                                 [data]="plotFeatures.data" 
                                 [layout]="plotFeatures.layout" 

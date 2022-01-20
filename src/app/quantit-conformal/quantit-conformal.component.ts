@@ -25,6 +25,7 @@ export class QuantitConformalComponent implements OnChanges {
     modelBuildInfo = {};
     modelWarning = '';
     modelVisible = false;
+    features = false;
 
     plotFitted = {
       data: [{ x: [], 
@@ -264,18 +265,9 @@ export class QuantitConformalComponent implements OnChanges {
         type: 'bar',
         y: [],
         x: [],
-        // text: [],
-        // points: 'all',
-        // pointpos: 2,
-        // hoveron: "points",
         hoverlabel: { bgcolor: "#22577"},
-        // line: {color: '#22577'},
-        // hovertemplate: '<b>%{text}</b><br>%{y:.2f}<extra></extra>',
-        hovertemplate: '<b>%{x}</b><br>%{y:.2f}<extra></extra>',
+        hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>',
         fillcolor: "#B8DCED",
-        // opacity: 0.8,
-        // meanline: {visible: true},
-        // name: 'Feature importance'
       }],
       layout : {
         title: 'Feature importance',
@@ -283,14 +275,9 @@ export class QuantitConformalComponent implements OnChanges {
         width: 800,
         height: 600,
         hovermode: 'closest',
-        // margin: {r: 10, t: 30, b: 0, l:10, pad: 0},
-        // margin: {r: 0, t: 50, b: 150, l:40, pad: 0},
         margin: {b:200, t:50, pad: 10},
         xaxis: {
           tickangle: -45,
-          // categoryorder: 'array',
-          // categoryarray: [],
-          // zeroline: false,
           tickfont: {family: 'Barlow Semi Condensed, sans-serif' },
         }
       },
@@ -520,31 +507,34 @@ export class QuantitConformalComponent implements OnChanges {
                 smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
               });
             });
+
             // on onhover, clear the canvas
             myPlot.on('plotly_unhover', function(data){
               context.clearRect(0, 0, canvas.width, canvas.height);
             });
 
-
+            // violin plot with activity values
             this.plotViolin.data[0].y = info['ymatrix'];
             this.plotViolin.data[0].text = info['obj_nam'];
             
+            // bar plot with feature importances 
+            if ('feature_importances' in info) {
+              const fval = info['feature_importances'];
+              const fnam = info['var_nam'];
+  
+              // sort the values and select the 50 top 
+              const indices = Array.from(fval.keys());
+              indices.sort((a, b) => fval[b] - fval[a]);
+              const sortedFval = indices.map(i => fval[i]);
+              const sortedFnam = indices.map(i => fnam[i]);
+  
+              const nfeatures = Math.min(fval.length, 50);
+  
+              this.plotFeatures.data[0].y = sortedFval.slice(0,nfeatures);
+              this.plotFeatures.data[0].x = sortedFnam.slice(0,nfeatures);
+              this.features = true;
+            }
             
-            const fval = info['feature_importances'];
-            const fnam = info['var_nam'];
-
-            const indices = Array.from(fval.keys());
-            indices.sort((a, b) => fval[b] - fval[a]);
-            
-            const sortedFval = indices.map(i => fval[i]);
-            const sortedFnam = indices.map(i => fnam[i]);
-
-            const nfeatures = Math.min(fval.length, 50)
-
-            this.plotFeatures.data[0].y = sortedFval.slice(0,nfeatures);
-            this.plotFeatures.data[0].x = sortedFnam.slice(0,nfeatures);
-            
-
             if (this.modelValidationInfo['Conformal_accuracy'] && this.modelValidationInfo['Conformal_accuracy_f']) {
               this.plotSummary.data[1].y = [
                 this.modelValidationInfo['Q2'][1],

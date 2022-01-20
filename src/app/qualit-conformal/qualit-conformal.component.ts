@@ -25,6 +25,7 @@ export class QualitConformalComponent implements OnChanges {
     modelBuildInfo = {};
     modelWarning = '';
     modelVisible = false;
+    features = false;
     
     predictData = [{
         offset: 45, 
@@ -170,6 +171,48 @@ export class QualitConformalComponent implements OnChanges {
       }
     }
 
+    plotFeatures= {
+      data : [{
+        type: 'bar',
+        y: [],
+        x: [],
+        hoverlabel: { bgcolor: "#22577"},
+        hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>',
+        fillcolor: "#B8DCED",
+      }],
+      layout : {
+        title: 'Feature importance',
+        font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        width: 800,
+        height: 600,
+        hovermode: 'closest',
+        margin: {b:200, t:50, pad: 10},
+        xaxis: {
+          tickangle: -45,
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif' },
+        }
+      },
+      config: {
+        displaylogo: false,
+        showtitle: true, 
+        showlegend: false, 
+        xaxis: {
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
+        },
+        yaxis: {
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        },
+        toImageButtonOptions: {
+          format: 'svg', // one of png, svg, jpeg, webp
+          filename: 'flame_features',
+          width: 600,
+          height: 500,
+          scale: 2 // Multiply title/legend/axis/canvas sizes by this factor
+        },
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+      }
+    }
+
     plotSummary = {
       data:  [{
             x: ['Sensitivity', 'Specificity', 'MCC', 'Coverage'],
@@ -226,6 +269,8 @@ export class QualitConformalComponent implements OnChanges {
       this.predictData[0].r = [0, 0, 0, 0];
       this.fittingData[0].r = [0, 0, 0, 0];
       this.plotPie.data[0].values = [];
+      this.plotFeatures.data[0].y =[];
+      this.plotFeatures.data[0].x =[];
       this.plotSummary.data[0].y = [];
       this.plotSummary.data[1].y = [];
       this.getValidation();
@@ -305,6 +350,23 @@ export class QualitConformalComponent implements OnChanges {
             this.modelTypeInfo[ielement[0]]=[ielement[1], ielement[2]]
           }
 
+          if ('feature_importances' in info) {
+            const fval = info['feature_importances'];
+            const fnam = info['var_nam'];
+
+            // sort the values and select the 50 top 
+            const indices = Array.from(fval.keys());
+            indices.sort((a, b) => fval[b] - fval[a]);
+            const sortedFval = indices.map(i => fval[i]);
+            const sortedFnam = indices.map(i => fnam[i]);
+
+            const nfeatures = Math.min(fval.length, 50);
+
+            this.plotFeatures.data[0].y = sortedFval.slice(0,nfeatures);
+            this.plotFeatures.data[0].x = sortedFnam.slice(0,nfeatures);
+            this.features = true;
+          }
+
           setTimeout(() => {
             if (this.modelValidationInfo['TP']) {
               this.predictData[0].r = [this.modelValidationInfo['TP'][1], 
@@ -316,6 +378,9 @@ export class QualitConformalComponent implements OnChanges {
                                         this.modelValidationInfo['FN'][1],
                                         this.modelValidationInfo['TN'][1]+
                                         this.modelValidationInfo['FP'][1]];
+
+                                                    // bar plot with feature importances 
+
               this.plotSummary.data[1].y = [
                                         this.modelValidationInfo['Sensitivity'][1],
                                         this.modelValidationInfo['Specificity'][1],
