@@ -25,6 +25,7 @@ export class QuantitConformalComponent implements OnChanges {
     modelBuildInfo = {};
     modelWarning = '';
     modelVisible = false;
+    features = false;
 
     plotFitted = {
       data: [{ x: [], 
@@ -256,8 +257,51 @@ export class QuantitConformalComponent implements OnChanges {
         },
         modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
       }
-
+      
     }
+    
+    plotFeatures= {
+      data : [{
+        type: 'bar',
+        y: [],
+        x: [],
+        hoverlabel: { bgcolor: "#22577"},
+        hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>',
+        fillcolor: "#B8DCED",
+      }],
+      layout : {
+        title: 'Feature importances (top 50)',
+        font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        width: 800,
+        height: 600,
+        hovermode: 'closest',
+        margin: {b:200, t:50, pad: 10},
+        xaxis: {
+          tickangle: -45,
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif' },
+        }
+      },
+      config: {
+        displaylogo: false,
+        showtitle: true, 
+        showlegend: false, 
+        xaxis: {
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
+        },
+        yaxis: {
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        },
+        toImageButtonOptions: {
+          format: 'svg', // one of png, svg, jpeg, webp
+          filename: 'flame_features',
+          width: 600,
+          height: 500,
+          scale: 2 // Multiply title/legend/axis/canvas sizes by this factor
+        },
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+      }
+    }
+
     plotSummary = {
       data:  [{
             x: ['R2/Q2', 'Conformal accuracy'],
@@ -304,6 +348,7 @@ export class QuantitConformalComponent implements OnChanges {
 
     ngOnChanges(): void {
       this.modelVisible = false;
+      this.features = false;
       this.modelWarning = '';
       this.plotFitted.data[0].x = [];
       this.plotFitted.data[0].y = [];
@@ -324,6 +369,8 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotScores.data[0].marker.color = [];
       this.plotViolin.data[0].y =[];
       this.plotViolin.data[0].text =[];
+      this.plotFeatures.data[0].y =[];
+      this.plotFeatures.data[0].x =[];
       this.plotSummary.data[0].y = [];
       this.plotSummary.data[1].y = [];
       
@@ -460,15 +507,35 @@ export class QuantitConformalComponent implements OnChanges {
                 smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
               });
             });
+
             // on onhover, clear the canvas
             myPlot.on('plotly_unhover', function(data){
               context.clearRect(0, 0, canvas.width, canvas.height);
             });
 
-
+            // violin plot with activity values
             this.plotViolin.data[0].y = info['ymatrix'];
             this.plotViolin.data[0].text = info['obj_nam'];
+            
+            // bar plot with feature importances 
+            if ('feature_importances' in info && info['feature_importances']!= null) {
+              const fval = info['feature_importances'];
+              const fnam = info['var_nam'];
+  
+              // sort the values and select the 50 top 
+              const indices = Array.from(fval.keys());
+              indices.sort((a:number, b:number) => fval[b] - fval[a]);
 
+              const sortedFval = indices.map(function(num:number) {return fval[num]});
+              const sortedFnam = indices.map(function(num:number) {return fnam[num]});
+  
+              const nfeatures = Math.min(fval.length, 50);
+  
+              this.plotFeatures.data[0].y = sortedFval.slice(0,nfeatures);
+              this.plotFeatures.data[0].x = sortedFnam.slice(0,nfeatures);
+              this.features = true;
+            }
+            
             if (this.modelValidationInfo['Conformal_accuracy'] && this.modelValidationInfo['Conformal_accuracy_f']) {
               this.plotSummary.data[1].y = [
                 this.modelValidationInfo['Q2'][1],

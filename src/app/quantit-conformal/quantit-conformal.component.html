@@ -22,6 +22,9 @@
             <li class="nav-item">
                 <a class="nav-link" id="pills-series-tab" data-toggle="tab" href="#pills-series" role="tab" aria-controls="pills-series" aria-selected="false">Series</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-other-tab" data-toggle="tab" href="#pills-other" role="tab" aria-controls="pills-other" aria-selected="false">Other</a>
+            </li>
         </ul>
  
         <div class="tab-content" id="pills-tabContent" [hidden]="!this.modelVisible">
@@ -189,6 +192,23 @@
                 </div>
             </div>
             <!--SERIES TAB END-->
+
+            <!--SERIES TAB-->
+            <div class="tab-pane fade" id="pills-other" role="tabpanel" aria-labelledby="pills-other-tab">
+                <div class="card-body">
+                    <div class="row justify-content-between">
+                        <div class="col" *ngIf="this.features">
+                            <plotly-plot 
+                                [data]="plotFeatures.data" 
+                                [layout]="plotFeatures.layout" 
+                                [config]="plotFeatures.config">
+                            </plotly-plot>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--SERIES TAB END-->
+
 
         </div>
     </div>
