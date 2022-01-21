@@ -228,7 +228,14 @@
                                 [layout]="plotFeatures.layout" 
                                 [config]="plotFeatures.config">
                             </plotly-plot>  
+                            <p class="method_description">Feature importances computed using {{this.features_method}} method</p>
                         </div>
+                        <div class="card-body" *ngIf="!this.features"> 
+                            <div class="alert alert-info text-center" role="alert">
+                              No additional model information
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

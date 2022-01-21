@@ -26,6 +26,7 @@ export class QuantitConformalComponent implements OnChanges {
     modelWarning = '';
     modelVisible = false;
     features = false;
+    features_method = '';
 
     plotFitted = {
       data: [{ x: [], 
@@ -349,6 +350,7 @@ export class QuantitConformalComponent implements OnChanges {
     ngOnChanges(): void {
       this.modelVisible = false;
       this.features = false;
+      this.features_method = '';
       this.modelWarning = '';
       this.plotFitted.data[0].x = [];
       this.plotFitted.data[0].y = [];
@@ -535,6 +537,7 @@ export class QuantitConformalComponent implements OnChanges {
               this.plotFeatures.data[0].x = sortedFnam.slice(0,nfeatures);
               this.features = true;
             }
+            this.features_method = info['feature_importances_method'];
             
             if (this.modelValidationInfo['Conformal_accuracy'] && this.modelValidationInfo['Conformal_accuracy_f']) {
               this.plotSummary.data[1].y = [
