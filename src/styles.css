@@ -16,6 +16,11 @@ body {
   border: 1px solid #ebebeb;
 }
 
+.method_description {
+    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+    font-size: 18px;
+    color:#22577a ;
+  }
 
 .model_name {
     color:#e59300;

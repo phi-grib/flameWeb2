@@ -26,6 +26,7 @@ export class QualitConformalComponent implements OnChanges {
     modelWarning = '';
     modelVisible = false;
     features = false;
+    features_method = '';
     
     predictData = [{
         offset: 45, 
@@ -262,6 +263,7 @@ export class QualitConformalComponent implements OnChanges {
     ngOnChanges(): void {
       this.modelVisible = false;
       this.features = false;
+      this.features_method = '';
       this.modelWarning = '';
       this.plotScores.data[0].x =[];
       this.plotScores.data[0].y =[];
@@ -369,6 +371,7 @@ export class QualitConformalComponent implements OnChanges {
             this.plotFeatures.data[0].x = sortedFnam.slice(0,nfeatures);
             this.features = true;
           }
+          this.features_method = info['feature_importances_method'];
 
           setTimeout(() => {
             if (this.modelValidationInfo['TP']) {
