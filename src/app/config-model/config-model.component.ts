@@ -37,7 +37,8 @@ export class ConfigModelComponent implements AfterContentChecked {
     molecule: ['RF',  'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
     model_ensemble: ['RF', 'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM', 'mean', 'median', 'majority', 'logicalOR', 'matrix'],
     combo_models: ['mean', 'median', 'majority', 'logicalOR', 'matrix'],
-    no_conformal: ['PLSDA', 'majority', 'logicalOR']
+    // no_conformal: ['PLSDA', 'majority', 'logicalOR']
+    no_conformal: ['majority', 'logicalOR']
   };
 
   conformal_settings = ['aggregated', 'normalizing_model', 'KNN_NN', 'conformal_predictors', 'ACP_sampler', 'aggregation_function'];
@@ -76,9 +77,9 @@ export class ConfigModelComponent implements AfterContentChecked {
   ngAfterContentChecked() {
     // CHECK DELTA DEPENDENCIES
     // NOW IS HARDCODED, BUT IT WILL BE AUTOMATED
-    if (this.model.parameters['model'].value === 'PLSDA') {
-      this.model.parameters['conformal'].value = false;
-    }
+    // if (this.model.parameters['model'].value === 'PLSDA') {
+    //   this.model.parameters['conformal'].value = false;
+    // }
     if (this.model.parameters['model'].value === 'mean' || this.model.parameters['model'].value === 'median') {
       this.model.parameters['quantitative'].value = true;
       // this.model.parameters['conformal'].value = false;
