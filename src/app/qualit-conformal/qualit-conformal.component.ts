@@ -184,25 +184,24 @@ export class QualitConformalComponent implements OnChanges {
       layout : {
         title: 'Feature importances (top 50)',
         font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
-        width: 800,
+        width: 900,
         height: 600,
+        barmode: 'overlay',
         hovermode: 'closest',
         margin: {b:200, t:50, pad: 10},
         xaxis: {
           tickangle: -45,
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif' },
-        }
-      },
-      config: {
-        displaylogo: false,
-        showtitle: true, 
-        showlegend: false, 
-        xaxis: {
+          dtick: 1, 
           tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
         },
         yaxis: {
           tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
         },
+      },
+      config: {
+        displaylogo: false,
+        showtitle: true, 
+        showlegend: false, 
         toImageButtonOptions: {
           format: 'svg', // one of png, svg, jpeg, webp
           filename: 'flame_features',
