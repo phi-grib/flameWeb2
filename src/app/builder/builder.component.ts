@@ -157,9 +157,9 @@ export class BuilderComponent implements OnInit {
           }
           this.model.listModels[name + '-' + version].trained = false;
           this.toastr.clear(inserted.toastId);
-          this.toastr.error('Model ' + name + ' building tasks has not completed. Check the browser console for more information', 'Aborted', {
-            timeOut: 10000, positionClass: 'toast-top-right'
-          });
+          this.toastr.error('Model \"' + name + '\" building task has not completed. Check the browser console for more information', 
+            'Aborted', { timeOut: 10000, positionClass: 'toast-top-right'});
+          console.log('ERROR report produced by building task of model ', name, 'version', version);
           console.log(result['aborted']);
           clearInterval(intervalId);
           this.func.getModelList();
