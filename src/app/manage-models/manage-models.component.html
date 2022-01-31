@@ -9,8 +9,9 @@
     <div *ngIf="this.globals.read_only == false" class="btn-group mr-2" role="group" aria-label="second group">
         <button type="button" class="btn btn-ets-ext" (click)="exportModel()" [ngClass]="{'disabled': model.name === undefined}">Export</button>
         <label class="btn btn-ets-ext mb-0" for="manager">
-          <input id="manager" type="file" style="display:none;" (change)="importModel($event.target.files)">Import
+            <input id="manager" type="file" style="display:none;" (change)="importModel($event.target.files)">Import
         </label>
+        <button type="button" class="btn btn-ets-ext" (click)="refreshModel()" [ngClass]="{'disabled': model.name === undefined}">Refresh</button>
     </div>
     <!-- <div *ngIf="this.globals.read_only == false" class="btn-group mr-2" role="group" aria-label="third group">
         <button id="btnGroupDrop1" type="button" class="btn btn-ets-delete dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
