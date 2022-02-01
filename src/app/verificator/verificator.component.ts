@@ -27,8 +27,8 @@ export class VerificatorComponent implements OnInit {
   key = '';
   detailMessage = '';
 
-  detailsInfo = {'documentation':{'Passed':'TO DO','Failed':'The following fields must be filled in:'},'data':{'Passed':'','Failed':''},'prediction':{'Passed':'','Failed':''} }
-
+  detailsInfo = {'documentation':{'Passed':'TO DO','Failed':'The following fields must be filled in:'},'data':{'Passed':'','Failed':''},'prediction':{'Passed':'','Failed':''},'model':{'Passed':'','Failed':''}}
+  
   getVerification(): void {
     this.commonService.getVerification(this.model.name,this.model.version).subscribe(
       (result) => {
@@ -79,7 +79,6 @@ export class VerificatorComponent implements OnInit {
   }
 
   verifyModel(modelname : string, version: number): void {
-
   this.verificatorService.generateVerification(modelname,version).subscribe(
     result => {
       this.toastr.success(
@@ -98,11 +97,18 @@ export class VerificatorComponent implements OnInit {
   });   
   }
 
+  /**
+   * provides extra information to the user if needed
+   * @param key 
+   */
   details(key: string): void {
     
-    this.datachekinglevel = this.data[1][key];
-    // information to user 
+    
+    this.datachekinglevel = (key != 'model') ? this.data[1]['Data cheking'][key]: this.data[1]['Model testing'][key];
+    this.key = key;
+    // extra information to user in the GUI
     this.detailMessage = this.detailsInfo[key][this.datachekinglevel['status']]
     
   }
+
 }
