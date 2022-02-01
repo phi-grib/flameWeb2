@@ -27,6 +27,7 @@ export class QualitConformalComponent implements OnChanges {
     modelVisible = false;
     features = false;
     features_method = '';
+    featuresTSV = '';
     
     predictData = [{
         offset: 45, 
@@ -275,6 +276,8 @@ export class QualitConformalComponent implements OnChanges {
       this.plotFeatures.data[0].x =[];
       this.plotSummary.data[0].y = [];
       this.plotSummary.data[1].y = [];
+      this.featuresTSV = '';
+
       this.getValidation();
       // this.modelVisible = true;
     }
@@ -286,6 +289,16 @@ export class QualitConformalComponent implements OnChanges {
       return typeof val === 'object';
     }
       
+    downloadFeatures () {
+      var element = document.createElement("a");
+      element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(this.featuresTSV));
+      element.setAttribute('download', 'feature_importances'+this.modelName+'v'+this.modelVersion+'.tsv');
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
+
     getValidation() {
       this.commonService.getValidation(this.modelName, this.modelVersion).subscribe(
         result => {
@@ -356,6 +369,10 @@ export class QualitConformalComponent implements OnChanges {
 
             const fval = info['feature_importances'];
             const fnam = info['var_nam'];
+
+            for (let i = 0; i<fval.length; i++){
+              this.featuresTSV+= fnam[i] + '\t' + fval[i].toFixed(4) + '\n';
+            }
 
             // sort the values and select the 50 top 
             const indices = Array.from(fval.keys());

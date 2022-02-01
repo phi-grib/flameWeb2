@@ -87,4 +87,19 @@ ul li.nav-item a.active{
   cursor: pointer;
 }
 
+.btn-ets-ext {
+  background: #e9a933;
+  color: #ffffff;
+  border-width: 0;
+  font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+  letter-spacing: 0.05em;
+  border-radius: 0;
+  max-height: 36px;
+}
+.btn-ets-ext:hover,
+.btn-ets-ext:focus,
+.btn-ets-ext.active {
+  background: #e59300 ;
+  color: #ffffff;
+}
 

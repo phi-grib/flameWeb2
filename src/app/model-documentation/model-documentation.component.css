@@ -92,7 +92,7 @@ table td {
 .btn-ets-up:hover,
 .btn-ets-up:focus,
 .btn-ets-up.active {
-    background: #0076a3;
+    background: #22577a;
     color: #ffffff;
 }
 
@@ -108,7 +108,7 @@ table td {
 .btn-ets-down:hover,
 .btn-ets-down:focus,
 .btn-ets-down.active {
-    background: #E9A933;
+    background: #e59300;
     color: #ffffff;
 }
 
