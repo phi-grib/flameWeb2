@@ -174,6 +174,22 @@ export class ManageModelsComponent {
     );
   }
 
+  refreshModel (modelname) {
+    this.service.refreshModel(this.model.name).subscribe(
+      result => {
+        this.toastr.success( 'Model ' + modelname + ' has been updated', 'REFRESH' , {
+          timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
+        });
+        this.model.listModels = {};
+        $('#dataTableModels').DataTable().destroy();
+        this.func.getModelList();
+      },
+      error => {
+        alert('Refresh ERROR');
+      }
+    );
+  }
+
   testModel(modelname, temp_dir, inserted, intervalId) {
     this.service.exportTestModel(modelname, temp_dir).subscribe(
       result => {

@@ -25,6 +25,9 @@ export class QuantitConformalComponent implements OnChanges {
     modelBuildInfo = {};
     modelWarning = '';
     modelVisible = false;
+    features = false;
+    features_method = '';
+    featuresTSV = '';
 
     plotFitted = {
       data: [{ x: [], 
@@ -256,8 +259,50 @@ export class QuantitConformalComponent implements OnChanges {
         },
         modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
       }
-
+      
     }
+    
+    plotFeatures= {
+      data : [{
+        type: 'bar',
+        y: [],
+        x: [],
+        hoverlabel: { bgcolor: "#22577"},
+        hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>',
+        fillcolor: "#B8DCED",
+      }],
+      layout : {
+        title: 'Feature importances (top 50)',
+        font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        width: 900,
+        height: 600,
+        barmode: 'overlay',
+        hovermode: 'closest',
+        margin: {b:200, t:50, pad: 10},
+        xaxis: {
+          tickangle: -45,
+          dtick: 1, 
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
+        },
+        yaxis: {
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        },
+      },
+      config: {
+        displaylogo: false,
+        showtitle: true, 
+        showlegend: false, 
+        toImageButtonOptions: {
+          format: 'svg', // one of png, svg, jpeg, webp
+          filename: 'flame_features',
+          width: 600,
+          height: 500,
+          scale: 2 // Multiply title/legend/axis/canvas sizes by this factor
+        },
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+      }
+    }
+
     plotSummary = {
       data:  [{
             x: ['R2/Q2', 'Conformal accuracy'],
@@ -304,6 +349,8 @@ export class QuantitConformalComponent implements OnChanges {
 
     ngOnChanges(): void {
       this.modelVisible = false;
+      this.features = false;
+      this.features_method = '';
       this.modelWarning = '';
       this.plotFitted.data[0].x = [];
       this.plotFitted.data[0].y = [];
@@ -324,8 +371,11 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotScores.data[0].marker.color = [];
       this.plotViolin.data[0].y =[];
       this.plotViolin.data[0].text =[];
+      this.plotFeatures.data[0].y =[];
+      this.plotFeatures.data[0].x =[];
       this.plotSummary.data[0].y = [];
       this.plotSummary.data[1].y = [];
+      this.featuresTSV = '';
       
       this.getValidation();
       this.getDocumentation();
@@ -352,6 +402,16 @@ export class QuantitConformalComponent implements OnChanges {
           this.plotScatter.layout.yaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 };
         }
       );
+    }
+
+    downloadFeatures () {
+      var element = document.createElement("a");
+      element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(this.featuresTSV));
+      element.setAttribute('download', 'feature_importances'+this.modelName+'v'+this.modelVersion+'.tsv');
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
     }
 
     getValidation() {
@@ -460,15 +520,40 @@ export class QuantitConformalComponent implements OnChanges {
                 smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
               });
             });
+
             // on onhover, clear the canvas
             myPlot.on('plotly_unhover', function(data){
               context.clearRect(0, 0, canvas.width, canvas.height);
             });
 
-
+            // violin plot with activity values
             this.plotViolin.data[0].y = info['ymatrix'];
             this.plotViolin.data[0].text = info['obj_nam'];
+            
+            // bar plot with feature importances 
+            if ('feature_importances' in info && info['feature_importances']!= null) {
+              const fval = info['feature_importances'];
+              const fnam = info['var_nam'];
 
+              for (let i = 0; i<fval.length; i++){
+                this.featuresTSV+= fnam[i] + '\t' + fval[i].toFixed(4) + '\n';
+              }
+              
+              // sort the values and select the 50 top 
+              const indices = Array.from(fval.keys());
+              indices.sort((a:number, b:number) => fval[b] - fval[a]);
+
+              const sortedFval = indices.map(function(num:number) {return fval[num]});
+              const sortedFnam = indices.map(function(num:number) {return fnam[num]});
+  
+              const nfeatures = Math.min(fval.length, 50);
+  
+              this.plotFeatures.data[0].y = sortedFval.slice(0,nfeatures);
+              this.plotFeatures.data[0].x = sortedFnam.slice(0,nfeatures);
+              this.features = true;
+            }
+            this.features_method = info['feature_importances_method'];
+            
             if (this.modelValidationInfo['Conformal_accuracy'] && this.modelValidationInfo['Conformal_accuracy_f']) {
               this.plotSummary.data[1].y = [
                 this.modelValidationInfo['Q2'][1],

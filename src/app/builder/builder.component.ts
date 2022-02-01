@@ -149,6 +149,23 @@ export class BuilderComponent implements OnInit {
     this.commonService.getModel(name, version).subscribe(
       result => {
 
+        if (result['aborted']) {
+          $('#dataTableModels').DataTable().destroy();
+          const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
+          if (index > -1) {
+            this.model.trainig_models.splice(index, 1);
+          }
+          this.model.listModels[name + '-' + version].trained = false;
+          this.toastr.clear(inserted.toastId);
+          this.toastr.error('Model \"' + name + '\" building task has not completed. Check the browser console for more information', 
+            'Aborted', { timeOut: 10000, positionClass: 'toast-top-right'});
+          console.log('ERROR report produced by building task of model ', name, 'version', version);
+          console.log(result['aborted']);
+          clearInterval(intervalId);
+          this.func.getModelList();
+          return;
+        }
+
         if (!result ['waiting']) {
 
           $('#dataTableModels').DataTable().destroy();

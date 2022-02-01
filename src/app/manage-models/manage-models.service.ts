@@ -60,4 +60,9 @@ export class ManageModelService {
     a.click();
   }
 
+  refreshModel(model: string) {
+    const url: string = environment.baseUrl_manage + 'model/' + model +'/refresh';
+    return this.http.get(url);
+  }
+
 }

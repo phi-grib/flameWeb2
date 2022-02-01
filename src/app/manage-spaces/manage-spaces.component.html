@@ -5,8 +5,9 @@
       <button type="button" class="btn btn-ets-do" [ngClass]="{'disabled': space.spaceName === undefined}" (click)="cloneSpace()">Publish</button>
     </div>
     <div *ngIf="this.globals.read_only == false" class="btn-group mr-2" role="group" aria-label="space delete">
-        <button type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#deleteSpace"  [ngClass]="{'disabled': space.spaceVersion != '0'}">Delete Space</button>
-        <button type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#deleteSpaceVersion"[ngClass]="{'disabled': space.spaceVersion == '0'}">Delete Version</button>
+        <!-- <button type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#deleteSpace"  [ngClass]="{'disabled': space.spaceVersion != '0'}">Delete Space</button>
+        <button type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#deleteSpaceVersion"[ngClass]="{'disabled': space.spaceVersion == '0'}">Delete Version</button> -->
+        <button type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#deleteSpace" [ngClass]="{'disabled': space.spaceName === undefined}">Delete</button>
     </div>  
     <div class="btn-group mr-2" role="group" aria-label="space search">
         <button type="button" class="btn btn-ets-do" (click)="search(space.spaceName, space.spaceVersion, space.spaceType)">Search</button>
@@ -39,7 +40,48 @@
   </div>
 </div>
 
+
+
   <!-- Delete Space-->
+  <div class="modal fade" id="deleteSpace" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div *ngIf="space.spaceVersion == '0' " class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete space <span class="model_name">{{space.spaceName}}</span></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this space?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id ="action" data-dismiss="modal" (click)="deleteSpace()">Delete</button>
+        </div>
+      </div>
+      <div *ngIf="space.spaceVersion != '0' " class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete version <span class="model_name">{{space.spaceName}} v.{{space.spaceVersion}}</span></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this space version?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id ="action" data-dismiss="modal" (click)="deleteSpaceVersion()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+<!-- 
   <div class="modal fade" id="deleteSpace" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -60,7 +102,6 @@
     </div>
   </div>
 
-  <!-- Delete Version-->
   <div class="modal fade" id="deleteSpaceVersion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -79,4 +120,4 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->

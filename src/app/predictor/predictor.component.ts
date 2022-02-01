@@ -188,12 +188,25 @@ export class PredictorComponent implements OnInit {
     this.commonService.getPrediction(name).subscribe(
       result => {
         // console.log(result);
+
+        if (result['aborted']) {
+          this.toastr.clear(inserted.toastId);
+          this.toastr.error("Prediction \"" + name + "\" task has not completed. Check the browser console for more information", 
+            'Aborted', {timeOut: 10000, positionClass: 'toast-top-right'});
+          console.log('ERROR report produced by prediction task ', name);
+          console.log(result['aborted']);
+          clearInterval(intervalId);
+          delete this.prediction.predicting[this.predictName];
+          $('#dataTablePredictions').DataTable().destroy();
+          this.func.getPredictionList();
+          return;
+        }
+
         if (!result ['waiting']) {
           this.toastr.clear(inserted.toastId);
           if (result['error']){
             this.toastr.warning('Prediction ' + name + ' finished with error ' + result['error'] , 'PREDICTION COMPLETED', {
               timeOut: 5000, positionClass: 'toast-top-right'});
-              
           }
           else {
              this.toastr.success('Prediction ' + name + ' created' , 'PREDICTION COMPLETED', {
