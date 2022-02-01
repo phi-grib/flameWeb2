@@ -196,21 +196,25 @@
             <!--SERIES TAB-->
             <div class="tab-pane fade" id="pills-other" role="tabpanel" aria-labelledby="pills-other-tab">
                 <div class="card-body">
-                    <div class="row justify-content-between">
+                    <!-- <div class="row justify-content-between"> -->
                         <div class="col" *ngIf="this.features">
                             <plotly-plot 
                                 [data]="plotFeatures.data" 
                                 [layout]="plotFeatures.layout" 
                                 [config]="plotFeatures.config">
                             </plotly-plot>  
-                            <p class="method_description">Feature importances computed using {{this.features_method}} method</p>
+                            <div class="btn-toolbar mt-3 mb-3 ml-4 justify-content-between" role="toolbar" aria-label="Toolbar plot import/export">
+                            <!-- <div class="row justify-content-between"> -->
+                                <p class="method_description ">Feature importances computed using {{this.features_method}} method</p>
+                                <button type="button" class="btn btn-ets-ext" data-toggle="modal" (click)="downloadFeatures()">Download</button>
+                            </div>
                         </div>
                         <div class="card-body" *ngIf="!this.features"> 
                             <div class="alert alert-info text-center" role="alert">
                               No additional model information
                             </div>
                         </div>
-                    </div>
+                    <!-- </div> -->
                 </div>
             </div>
             <!--SERIES TAB END-->

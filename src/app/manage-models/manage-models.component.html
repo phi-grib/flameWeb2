@@ -4,27 +4,24 @@
         <button type="button" class="btn btn-ets-do" [ngClass]="{'disabled': model.name === undefined || model.version != '0'}" (click)="buildModel(model.name, model.version)">Build</button>
         <button type="button" class="btn btn-ets-do" [ngClass]="{'disabled': model.name === undefined}" (click)="labelModel(model.name, model.version)">Label</button>
         <button type="button" class="btn btn-ets-do" [ngClass]="{'disabled': model.name === undefined}" (click)="cloneModel()">Publish</button>
-        <!-- <button type="button" class="btn btn-ets-do mr-1" [ngClass]="{'disabled': model.name === undefined || this.model.error=='Info file not found'}" (click)="validateModel(model.name,model.modelID)">Verify</button> -->
     </div>
     <div *ngIf="this.globals.read_only == false" class="btn-group mr-2" role="group" aria-label="second group">
         <button type="button" class="btn btn-ets-ext" (click)="exportModel()" [ngClass]="{'disabled': model.name === undefined}">Export</button>
         <label class="btn btn-ets-ext mb-0" for="manager">
             <input id="manager" type="file" style="display:none;" (change)="importModel($event.target.files)">Import
         </label>
-        <button type="button" class="btn btn-ets-ext" (click)="refreshModel()" [ngClass]="{'disabled': model.name === undefined}">Refresh</button>
+        <!-- <button type="button" class="btn btn-ets-ext" (click)="refreshModel()" [ngClass]="{'disabled': model.name === undefined}">Refresh</button> -->
+        <button id="btnGroupDrop1" type="button" class="btn btn-ets-ext dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Other
+          </button>
+          <div class="dropdown-menu column" aria-labelledby="btnGroupDrop1">
+            <button type="button" class="dropdown-item btn btn-ets-ext" data-toggle="modal" data-target="#refresh" [ngClass]="{'disabled': model.name === undefined}">Refresh</button>
+            <button type="button" class="dropdown-item btn btn-ets-ext" data-toggle="modal" (click)="validateModel(model.name,model.modelID)" [ngClass]="{'disabled': model.name === undefined}">Verify</button>
+          </div> 
+
     </div>
-    <!-- <div *ngIf="this.globals.read_only == false" class="btn-group mr-2" role="group" aria-label="third group">
-        <button id="btnGroupDrop1" type="button" class="btn btn-ets-delete dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Delete
-        </button>
-        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-          <button type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#deleteModel" [ngClass]="{'disabled': model.name === undefined || model.version != '0'}">Delete model</button>
-          <button type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#deleteVersion" [ngClass]="{'disabled': model.name === undefined || model.version == '0'}">Delete version</button>
-        </div> 
-    </div> -->
+
     <div *ngIf="this.globals.read_only == false" class="btn-group mr-2" role="group" aria-label="third group">
-        <!-- <button type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#deleteModel" [ngClass]="{'disabled': model.name === undefined || model.version != '0'}">Delete Model</button>
-        <button type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#deleteVersion" [ngClass]="{'disabled': model.name === undefined || model.version == '0'}">Delete Version</button> -->
         <button type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#delete" [ngClass]="{'disabled': model.name === undefined}">Delete</button>
     </div>
 
@@ -91,6 +88,28 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" id="action" data-dismiss="modal" (click)="deleteVersion()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="refresh" tabindex="-1" role="dialog" aria-labelledby="refreshModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="refreshModalLabel">Refresh model tree <span class="model_name">{{this.model.name}}</span></h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
+                        <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>The process will rebuild all the model versions and can be very time consuming. Please be patient and do not interrupt it.</p>
+                <p>Do you want to proceed?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="action" data-dismiss="modal" (click)="refreshModel(model.name)">Refresh</button>
             </div>
         </div>
     </div>

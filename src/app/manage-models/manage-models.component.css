@@ -53,7 +53,6 @@ label.disabled {
 }
 
 .btn-ets-delete:hover,
-.btn-ets-delete:active,
 .btn-ets-delete:focus,
 .btn-ets-delete.active {
     background-color:#b41147 ;
@@ -69,7 +68,6 @@ label.disabled {
     border-radius: 0;
 }
 .btn-ets-do:hover,
-.btn-ets-do:active,
 .btn-ets-do:focus,
 .btn-ets-do.active {
     background:#22577a ;
@@ -85,7 +83,6 @@ label.disabled {
     border-radius: 0;
 }
 .btn-ets-ext:hover,
-.btn-ets-ext:active,
 .btn-ets-ext:focus,
 .btn-ets-ext.active {
     background: #e59300 ;

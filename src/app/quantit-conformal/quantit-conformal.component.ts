@@ -27,6 +27,7 @@ export class QuantitConformalComponent implements OnChanges {
     modelVisible = false;
     features = false;
     features_method = '';
+    featuresTSV = '';
 
     plotFitted = {
       data: [{ x: [], 
@@ -374,6 +375,7 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotFeatures.data[0].x =[];
       this.plotSummary.data[0].y = [];
       this.plotSummary.data[1].y = [];
+      this.featuresTSV = '';
       
       this.getValidation();
       this.getDocumentation();
@@ -400,6 +402,16 @@ export class QuantitConformalComponent implements OnChanges {
           this.plotScatter.layout.yaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 };
         }
       );
+    }
+
+    downloadFeatures () {
+      var element = document.createElement("a");
+      element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(this.featuresTSV));
+      element.setAttribute('download', 'feature_importances'+this.modelName+'v'+this.modelVersion+'.tsv');
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
     }
 
     getValidation() {
@@ -522,7 +534,11 @@ export class QuantitConformalComponent implements OnChanges {
             if ('feature_importances' in info && info['feature_importances']!= null) {
               const fval = info['feature_importances'];
               const fnam = info['var_nam'];
-  
+
+              for (let i = 0; i<fval.length; i++){
+                this.featuresTSV+= fnam[i] + '\t' + fval[i].toFixed(4) + '\n';
+              }
+              
               // sort the values and select the 50 top 
               const indices = Array.from(fval.keys());
               indices.sort((a:number, b:number) => fval[b] - fval[a]);
