@@ -65,4 +65,9 @@ export class ManageModelService {
     return this.http.get(url);
   }
 
+  testRefresh(model: string) {
+    const url: string = environment.baseUrl_manage + 'model/' + model +'/refresh_test';
+    return this.http.get(url);
+  }
+
 }

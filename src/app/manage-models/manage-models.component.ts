@@ -20,6 +20,8 @@ declare var $: any;
 export class ManageModelsComponent {
 
   modelName: string;
+  toast_refresh: any;
+  last_refresh: string = '';
   
   objectKeys = Object.keys;
 
@@ -175,19 +177,59 @@ export class ManageModelsComponent {
   }
 
   refreshModel (modelname) {
+    this.toast_refresh = this.toastr.info('Running!', 'Refreshing ' + this.model.name , {
+              disableTimeOut: true, positionClass: 'toast-top-right'});
+
     this.service.refreshModel(this.model.name).subscribe(
       result => {
-        this.toastr.success( 'Model ' + modelname + ' has been updated', 'REFRESH' , {
-          timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
-        });
-        this.model.listModels = {};
-        $('#dataTableModels').DataTable().destroy();
-        this.func.getModelList();
+        let iter = 0;
+        const intervalId = setInterval(() => {
+          if (iter < 10000) {
+            this.testRefresh(this.model.name, intervalId);
+          } else {
+            clearInterval(intervalId);
+            this.toastr.clear(this.toast_refresh.toastId);
+            this.toastr.warning( 'Refreshing ' + this.model.name + ' \n Timed Out' , 'Warning', {
+                                  timeOut: 10000, positionClass: 'toast-top-right'});
+          }
+          iter += 1;
+        }, 5000); // every five seconds
       },
       error => {
-        alert('Refresh ERROR');
+          alert('Refresh ERROR');
       }
     );
+  }
+    
+  testRefresh (modelname, intervalId) {
+    this.service.testRefresh(modelname).subscribe(
+      result => {
+        if (result ['ready']) {
+          this.toastr.clear(this.toast_refresh.toastId);
+          clearInterval(intervalId);
+          
+          this.toastr.success( 'Model ' + modelname + ' has been updated', 'REFRESH' , {
+            timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
+          });
+          this.model.listModels = {};
+          $('#dataTableModels').DataTable().destroy();
+          this.func.getModelList();
+        }
+        else {
+          // update the toast with progress info, but only if the message has changed
+          if (result["progress"]!=this.last_refresh){
+            this.last_refresh = result["progress"];
+            this.toastr.clear(this.toast_refresh.toastId);
+            this.toast_refresh = this.toastr.info('Running!', 'Refreshing ' + result['progress'], {
+              disableTimeOut: true, positionClass: 'toast-top-right'});
+          }
+        }
+      },
+      error => {
+        this.toastr.error('Error:\'' + error.error.error.toString() + '\' ' , 'ERROR REFRESHING MODEL', {
+          timeOut: 5000, positionClass: 'toast-top-right'});
+      }
+  );
   }
 
   testModel(modelname, temp_dir, inserted, intervalId) {
@@ -200,7 +242,6 @@ export class ManageModelsComponent {
         }
       }
     );
-
   }
 
   importModel(fileList: FileList) {
