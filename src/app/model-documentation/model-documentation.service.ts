@@ -44,6 +44,14 @@ export class ModelDocumentationService {
     document.body.removeChild(a);
   }
 
+  getYAMLfromParameters(modelName: string, modelVersion: string){
+    // delta is a TS object and must be passed as JSON, so it can be interpreted by the Python backend 
+    const formdata = new FormData();
+    // formdata.append('parameters', JSON.stringify('*'))
+    formdata.append('parameters', '*')
+    const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/parameters2yaml';
+    return this.http.post(url, formdata);
+  }
 
 
 }

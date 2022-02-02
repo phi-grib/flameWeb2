@@ -203,6 +203,22 @@ export class ModelDocumentationComponent implements OnChanges {
     this.service.downloadSeries(this.model.name, this.model.version)
   }
 
+  downloadParameters () {
+    this.service.getYAMLfromParameters(this.model.name, this.model.version).subscribe(
+      result => {
+        let text: string = '';
+        for (const x in result) {
+          text = text + result[x] + '\n';
+        }
+        let blob = new Blob([text], { type: "text/plain;charset=utf-8" })
+        saveAs(blob, this.model.name + '.yaml');
+      },
+      error => {
+        alert('Error downloading parameters');
+      }
+    );
+  }
+
   // updates the documentation in the backend using the changes introduced in the GUI
   applyInput() {
     let delta = JSON.stringify(this.genDelta(this.modelDocumentation));

@@ -228,10 +228,15 @@
 
                         Series:
 
-                        <div class="btn-group ml-2" role="group" aria-label="group3">
+                        <div class="btn-group ml-2 pr-5" role="group" aria-label="group3">
                             <button class="btn btn-ets-down ml-2" (click)="downloadSeries()" [ngClass]="{'disabled': model.name === undefined}">Download</button>
                         </div>
 
+                        Parameters:
+
+                        <div class="btn-group ml-2" role="group" aria-label="group4">
+                            <button class="btn btn-ets-down ml-2" (click)="downloadParameters()" [ngClass]="{'disabled': model.name === undefined}">Download</button>
+                        </div>
                     </div>
                 </div>
             </div>
