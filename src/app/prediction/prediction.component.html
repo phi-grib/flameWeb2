@@ -133,6 +133,8 @@
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.c1">Active</th>-->
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">Ensemble Class 0</th>-->
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">Ensemble Class 1</th>-->
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.p0">Prob. Class 0</th>
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.p1">Prob. Class 1</th>
       
                   </tr>
                 </thead>
@@ -153,6 +155,9 @@
                     <td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">
                       {{this.predictionResult.lower_limit[i].toFixed(3)}} to {{this.predictionResult.upper_limit[i].toFixed(3)}}
                     </td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.p0">{{this.predictionResult.p0[i].toFixed(3)}}</td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.p1">{{this.predictionResult.p1[i].toFixed(3)}}</td>
+
                     <!-- <td class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">{{this.predictionResult.lower_limit[i].toFixed(3)}}</td> -->
                     <!--<td class="align-middle text-center" *ngIf="this.predictionResult.c0">{{this.predictionResult.c0[i]}}</td>-->
                     <!--<td class="align-middle text-center" *ngIf="this.predictionResult.c1">{{this.predictionResult.c1[i]}}</td>-->
@@ -273,6 +278,9 @@
                         {{this.predictionResult.lower_limit[molIndex].toFixed(3)}} 
                      to {{this.predictionResult.upper_limit[molIndex].toFixed(3)}}</span>
                   <span *ngIf="this.modelBuildInfo['conformal'] && !this.modelBuildInfo['quantitative']">{{(this.modelBuildInfo['conformal_confidence'])*100}}% confidence</span>
+                  
+                  <span *ngIf="this.predictionResult.p0"><br>Prob. Class 0: {{(this.predictionResult.p0[molIndex].toFixed(3))}} </span>
+                  <span *ngIf="this.predictionResult.p1"><br>Prob. Class 1: {{(this.predictionResult.p1[molIndex].toFixed(3))}} </span>
 
                 </div>
               </div>

@@ -94,11 +94,18 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       [1.0, 'rgb(160, 160, 160)'],
     ];
   
+    // greencolorscale = [
+    //   [0.0, 'rgb(107, 232, 49)'],
+    //   [0.5, 'rgb(107, 232, 49)'],
+    //   [1.0, 'rgb(107, 232, 49)'],
+    // ];
+
     greencolorscale = [
-      [0.0, 'rgb(107, 232, 49)'],
-      [0.5, 'rgb(107, 232, 49)'],
-      [1.0, 'rgb(107, 232, 49)'],
+      [0.0, 'rgb(107, 107, 107)'],
+      [0.5, 'rgb(107, 107, 107)'],
+      [1.0, 'rgb(107, 107, 107)'],
     ];
+
 
     redcolorscale = [
       [0.0, 'rgb(255, 0, 0)'],
@@ -138,7 +145,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         mode: 'markers+text', 
         textfont : {
           fontStyle: 'Barlow Semi Condensed, sans-serif',
-          color: '#59c427',
+          // color: '#59c427',
+          color: 'grey',
           size: 16
         },
         textposition: 'top right',
