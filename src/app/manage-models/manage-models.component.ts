@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { Manager, Model, Globals } from '../Globals';
 import { ManageModelService } from './manage-models.service';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BuilderComponent} from '../builder/builder.component';
 import { LabelerComponent} from '../labeler/labeler.component';
 import { PredictorComponent} from '../predictor/predictor.component';
 import { CommonFunctions } from '../common.functions';
 import { VerificatorComponent } from '../verificator/verificator.component';
+import { stringify } from 'querystring';
 declare var $: any;
 
 @Component({
@@ -204,7 +204,18 @@ export class ManageModelsComponent {
   testRefresh (modelname, intervalId) {
     this.service.testRefresh(modelname).subscribe(
       result => {
-        if (result ['ready']) {
+        if (result['status']==='aborted') {
+          this.toastr.clear(this.toast_refresh.toastId);
+          this.toastr.error('Model \"' + modelname + '\" refreshing task has not completed. Check the browser console for more information', 
+            'Aborted', { timeOut: 10000, positionClass: 'toast-top-right'});
+          console.log('ERROR report produced by refreshing task of model ', modelname);
+          console.log(result['message']);
+          clearInterval(intervalId);
+          $('#dataTableModels').DataTable().destroy();
+          this.func.getModelList();
+          return;
+        }
+        if (result ['status']==='ready') {
           this.toastr.clear(this.toast_refresh.toastId);
           clearInterval(intervalId);
           
@@ -217,10 +228,10 @@ export class ManageModelsComponent {
         }
         else {
           // update the toast with progress info, but only if the message has changed
-          if (result["progress"]!=this.last_refresh){
-            this.last_refresh = result["progress"];
+          if (result["message"]!=this.last_refresh){
+            this.last_refresh = result['message'];
             this.toastr.clear(this.toast_refresh.toastId);
-            this.toast_refresh = this.toastr.info('Running!', 'Refreshing ' + result['progress'], {
+            this.toast_refresh = this.toastr.info('Running!', 'Refreshing ' + result['message'], {
               disableTimeOut: true, positionClass: 'toast-top-right'});
           }
         }

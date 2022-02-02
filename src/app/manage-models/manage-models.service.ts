@@ -56,8 +56,11 @@ export class ManageModelService {
   exportTestDownload(model: string, temp_dir: string) {
     const url: string = environment.baseUrl_manage + 'model/' + model + '/temp_dir/' + temp_dir + '/export_download';
     const a = document.createElement("a");
+    a.style.display = 'none';
+    document.body.appendChild(a);
     a.href = url;
     a.click();
+    document.body.removeChild(a);
   }
 
   refreshModel(model: string) {

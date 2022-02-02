@@ -3,7 +3,7 @@ import { Model, Globals } from '../Globals';
 import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModelDocumentationService } from './model-documentation.service';
-import { environment } from '../../environments/environment';
+// import { environment } from '../../environments/environment';
 
 // import { MatIconModule } from '@angular/material/icon';
 // import * as FileSaver from 'file-saver';
@@ -144,29 +144,31 @@ export class ModelDocumentationComponent implements OnChanges {
     this.documentationVisible = true;
   }
 
-  //calls exportToFile from model-documentation-service to trigger file download (file format modelName.yaml)
+  // YAML files cannot be downloaded directly, because DJANGO shows them in their internal framework
   downloadFile() {
-      this.service.exportToFile(this.modelName, this.modelVersion, 'YAML').subscribe (
-          result => {
-            let text : string = '';
-            for (const x in result){
-              text = text + result[x] + '\n';
-            }
-            let blob = new Blob ([text],  {type: "text/plain;charset=utf-8"})
-            saveAs(blob, this.modelName + '.yaml');
-          },
-          error => {
-            alert('Error updating documentation');
+    this.service.exportToFile(this.modelName, this.modelVersion, 'YAML').subscribe (
+        result => {
+          let text : string = '';
+          for (const x in result){
+            text += result[x] + '\n';
           }
-      );
+          let blob = new Blob ([text],  {type: "text/plain;charset=utf-8"})
+          saveAs(blob, this.modelName + '.yaml');
+        },
+        error => {
+          alert('Error updating documentation');
+        }
+    );
   }
 
-  //calls exportToFile 
+  // calls exportToFile 
   downloadWord() {
     this.service.exportToFile(this.modelName, this.modelVersion, 'WORD')
   }
+
+  // calls exportToFile
   downloadExcel(){
-    this.service.exportToFile(this.modelName,this.modelVersion,'EXCEL')
+    this.service.exportToFile(this.modelName,this.modelVersion, 'EXCEL')
   }
   
   // compresses the changes in the GUI into a JSON delta file
@@ -198,11 +200,7 @@ export class ModelDocumentationComponent implements OnChanges {
 
   // download the training series of the currently selected model/version
   downloadSeries () {
-    const url: string = environment.baseUrl_manage + 'model/' + this.model.name + '/version/' + this.modelVersion + '/series';
-
-    var a = document.createElement("a");
-    a.href = url;
-    a.click();
+    this.service.downloadSeries(this.model.name, this.model.version)
   }
 
   // updates the documentation in the backend using the changes introduced in the GUI
@@ -245,6 +243,5 @@ export class ModelDocumentationComponent implements OnChanges {
       }
     
   }
-
 
 }
