@@ -18,32 +18,46 @@
     </small> 
   </div>
 
-  <!--CONFORMAL-->
-
-  <!-- <div class="form-group col-md-4" *ngIf="this.isConformalPossible() && !this.isComboModel()"> -->
-  <div class="form-group col-md-4" *ngIf="this.isConformalPossible()">
+  <!--CONFIDENTIAL-->
+  <div class="form-group col-md-4" >
     <div class="checkbox">
       <label>
-        <input type="checkbox" [(ngModel)]="this.model.parameters['conformal'].value">
-        Conformal
+        <input type="checkbox" [(ngModel)]="this.model.parameters['confidential'].value">
+        Confidential
       </label>
     </div>
-    <small id="conformal" class="text-muted">
-        {{this.model.parameters['conformal'].description}}
+    <small id="confidential" class="text-muted">
+        {{this.model.parameters['confidential'].description}}
     </small>
   </div> 
 
-  <div class="form-group col-md-4" >
-    <div *ngIf="this.isConformalPossible() && this.model.parameters['conformal'].value && this.model.parameters['conformalConfidence']!=undefined" style="margin-top: 0px;">
-      <label class="bmd-label-static" for="conformalConfidence" style="margin-top: 0px;">Conformal confidence</label>
-      <input class="form-control" [(ngModel)]="this.model.parameters['conformalConfidence'].value" type='number' step="0.05">
-      <small id="conformalConfidence" class="text-muted">
+  <!--CONFORMAL-->
+  <!-- <div class="form-group col-md-4" *ngIf="this.isConformalPossible() && !this.isComboModel()"> -->
+    <div class="form-group col-md-4" *ngIf="this.isConformalPossible()">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" [(ngModel)]="this.model.parameters['conformal'].value">
+          Conformal
+        </label>
+      </div>
+      <small id="conformal" class="text-muted">
+        {{this.model.parameters['conformal'].description}}
+      </small>
+    </div> 
+    
+    <div class="form-group col-md-4" >
+      <div *ngIf="this.isConformalPossible() && this.model.parameters['conformal'].value && this.model.parameters['conformalConfidence']!=undefined" style="margin-top: 0px;">
+        <label class="bmd-label-static" for="conformalConfidence" style="margin-top: 0px;">Conformal confidence</label>
+        <input class="form-control" [(ngModel)]="this.model.parameters['conformalConfidence'].value" type='number' step="0.05">
+        <small id="conformalConfidence" class="text-muted">
           {{this.model.parameters['conformalConfidence'].description}}
       </small>
     </div>
   </div> 
   <!--Conformal confidence-->
 </div>
+
+
 
 <div class="form-row" *ngIf="!this.isComboModel()">
   <div class="form-group col-md-4">
