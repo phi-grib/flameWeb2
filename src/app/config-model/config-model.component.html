@@ -84,14 +84,6 @@
         {{this.model.parameters['ModelValidationN'].description}}
     </small>
   </div>
-  
-  <div class="form-group col-md-4" *ngIf="this.model.parameters['ModelValidationCV'].value=='lpo'" style="margin-top: 0px;">
-      <label class="bmd-label-static" for="ModelValidationP">ModelValidationP</label>
-    <input class="form-control" [(ngModel)]="this.model.parameters['ModelValidationP'].value" type='number' step="1">
-    <small id="ModelValidationP" class="text-muted">
-        {{this.model.parameters['ModelValidationP'].description}}
-    </small>
-  </div>
 
 </div>
 
@@ -120,12 +112,10 @@
         {{this.model.parameters['feature_number'].description}}
     </small>
   </div>
-</div>
-
-<div class="form-row" *ngIf="!this.isComboModel()">
+<!-- </div> -->
 
 <!--REST OF PARAMETERS-->
-
+<!-- <div class="form-row" *ngIf="!this.isComboModel()"> -->
   <div *ngFor="let key of infoModel" class="form-group col-md-4">
 
     <div *ngIf="this.model.parameters[key].writable" style="margin-top: 0px;">
@@ -172,14 +162,15 @@
 
 <!--CONFORMAL SETTINGS-->
 
-<fieldset class="border" *ngIf="this.model.parameters['conformal'].value && this.model.parameters['conformal_settings']!=null && this.model.parameters['conformal_settings'].value['aggregated']!=null">
+<fieldset class="form-row border" *ngIf="this.model.parameters['conformal'].value && this.model.parameters['conformal_settings']!=null && this.model.parameters['conformal_settings'].value['aggregated']!=null">
   <legend>Conformal settings</legend>
-    <div class="m-2 w-50" *ngFor="let key of conformal_settings" >
+      <div class="form-group col-md-4" *ngFor="let key of conformal_settings" >
+      <!-- <div class="form-group m-2 w-50" *ngFor="let key of conformal_settings" > -->
       <div *ngIf="this.validConformalKey(key)">
-        <div class="form-group" *ngIf="this.model.parameters['conformal_settings'].value[key].writable">
+        <div *ngIf="this.model.parameters['conformal_settings'].value[key].writable">
+        <!-- <div class="form-group" *ngIf="this.model.parameters['conformal_settings'].value[key].writable"> -->
           <label class="bmd-label-static">{{key}}</label>
             <input class="form-control" [(ngModel)]="this.model.parameters['conformal_settings'].value[key].value" *ngIf="this.model.parameters['conformal_settings'].value[key].object_type==='int'" id="key" type='number'>
-            <!-- <input class="form-control" [(ngModel)]="this.model.parameters['conformal_settings'].value[key].value" *ngIf="this.model.parameters['conformal_settings'].value[key].object_type==='float'" id="key" type='number' step=0.01> -->
             <small id="key" class="text-muted">
               {{this.model.parameters['conformal_settings'].value[key].description}}
             </small>
@@ -195,7 +186,8 @@
           </small>
         </div>
   
-        <div class="form-group" *ngIf="!this.model.parameters['conformal_settings'].value[key].writable && this.model.parameters['conformal_settings'].value[key].object_type!='list' && this.model.parameters['conformal_settings'].value[key].object_type!='boolean'">
+        <div *ngIf="!this.model.parameters['conformal_settings'].value[key].writable && this.model.parameters['conformal_settings'].value[key].object_type!='list' && this.model.parameters['conformal_settings'].value[key].object_type!='boolean'">
+          <!-- <div class="form-group" *ngIf="!this.model.parameters['conformal_settings'].value[key].writable && this.model.parameters['conformal_settings'].value[key].object_type!='list' && this.model.parameters['conformal_settings'].value[key].object_type!='boolean'"> -->
           <label for="key" class="bmd-label-static">{{key}}</label>
           <select id="key" class="form-control" [(ngModel)]="this.model.parameters['conformal_settings'].value[key].value">
             <option *ngFor="let value of this.model.parameters['conformal_settings'].value[key].options" [value]='value'>
@@ -219,10 +211,11 @@
 
 <!--MODEL PARAMETERS-->
 
-    <fieldset class="border" *ngIf="!this.isComboModel()">  
+    <fieldset class="form-row border" *ngIf="!this.isComboModel()">  
     <legend>{{this.model.parameters['model'].value}} parameters</legend>
-      <div class="m-2 w-50" *ngFor="let key of objectKeys(this.model.parameters[parametersModel[this.model.parameters['model'].value]].value)" >
-        <div class="form-group" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable">
+      <div class="form-group col-md-4" *ngFor="let key of objectKeys(this.model.parameters[parametersModel[this.model.parameters['model'].value]].value)" >
+        <!-- <div class="form-group col-md-4" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable"> -->
+          <div *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable">
           <label class="bmd-label-static">{{key}}</label>
             <input class="form-control" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='string'" id="key" type='text' placeholder="{{key}}" >
             <input class="form-control" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='int'" id="key" type='number'>
@@ -240,7 +233,8 @@
           {{this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].description}}
           </small>
         </div>
-        <div class="form-group" *ngIf="!this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type!='list' && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type!='boolean'">
+        <!-- <div class="form-group col-md-4" *ngIf="!this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type!='list' && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type!='boolean'"> -->
+          <div *ngIf="!this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type!='list' && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type!='boolean'">
           <label for="key" class="bmd-label-static">{{key}}</label>
           <select id="key" class="form-control" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value">
             <option *ngFor="let value of this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].options" [value]='value'>
