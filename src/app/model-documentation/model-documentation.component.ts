@@ -80,12 +80,44 @@ export class ModelDocumentationComponent implements OnChanges {
     this.modelDocumentation = JSON.parse(JSON.stringify(this.modelDocumentationBackup));
   }
 
+  array_to_string (inerval: any) {
+    var sval : string = '[';
+    for (let ielement of inerval) {
+      sval += ielement.toString();
+      sval += ', ';
+    }
+    sval = sval.slice(0, -2);
+    sval +=']';
+    return sval;
+  }
+
   //requests documentation from the API through ManageDocumentation get method params(modelName, modelVersion, 'JSON')
   getDocumentation(): void {
     this.documentationVisible = false;
     this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
       result => {
         this.modelDocumentation = result;
+
+        // convert arrays to strings
+        for (const key in this.modelDocumentation){
+          if (typeof this.modelDocumentation[key].value === 'object' ){
+            for (const key2 in this.modelDocumentation[key].value) {
+              const ineritem = this.modelDocumentation[key].value[key2];
+              if (ineritem == null) continue;
+              if (Array.isArray(ineritem)){
+                this.modelDocumentation[key].value[key2] = this.array_to_string(ineritem);
+              }
+              else {
+                if (typeof ineritem === 'object' && 'value' in ineritem){
+                  const inerval = this.modelDocumentation[key].value[key2].value;
+                  if (Array.isArray(inerval)){
+                      this.modelDocumentation[key].value[key2] = this.array_to_string(inerval);
+                  }
+                }
+              }
+            }
+          }
+        }
 
         // once Documentation fields are loaded, update the template to load ONLY these fields present in the loaded
         // documentation. 

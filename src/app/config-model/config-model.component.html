@@ -131,7 +131,7 @@
         {{key.replace('_',' ')}}
       </label>
     </div>  
-    <div *ngIf="!this.model.parameters[key].writable && this.model.parameters[key].object_type!='list' && this.model.parameters[key].object_type!='boolean'">
+    <div class="col" *ngIf="!this.model.parameters[key].writable && this.model.parameters[key].object_type!='list' && this.model.parameters[key].object_type!='boolean'">
       <label class="bmd-label-static" for="key">{{key.replace('_',' ')}}</label>
       <select id="key" class="form-control" [(ngModel)]="this.model.parameters[key].value">
         <option *ngFor="let value of this.model.parameters[key].options" [value]='value'>
@@ -145,7 +145,7 @@
       </select>
     </div>
 
-    <div class="checkbox" *ngIf="!this.model.parameters[key].writable && this.model.parameters[key].object_type==='list' ">
+    <div class="col checkbox" *ngIf="!this.model.parameters[key].writable && this.model.parameters[key].object_type==='list' ">
       <label id="key" class="bmd-label-floating mb-2 p-0">{{key.replace('_',' ')}}</label>
       <label id="key" class="mr-2 mb-2 w-100" *ngFor="let value of this.model.parameters[key].options">
         <input id="key" type="checkbox"
