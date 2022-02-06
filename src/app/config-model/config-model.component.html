@@ -32,7 +32,6 @@
   </div> 
 
   <!--CONFORMAL-->
-  <!-- <div class="form-group col-md-4" *ngIf="this.isConformalPossible() && !this.isComboModel()"> -->
     <div class="form-group col-md-4" *ngIf="this.isConformalPossible()">
       <div class="checkbox">
         <label>
@@ -54,13 +53,11 @@
       </small>
     </div>
   </div> 
-  <!--Conformal confidence-->
 </div>
-
-
 
 <div class="form-row" *ngIf="!this.isComboModel()">
   <div class="form-group col-md-4">
+    
     <label class="bmd-label-static" for="key">ModelValidationCV</label>
     <select id="ModelValidationCV" class="form-control" [(ngModel)]="this.model.parameters['ModelValidationCV'].value">
       <option *ngFor="let value of this.model.parameters['ModelValidationCV'].options" [value]='value'>
@@ -84,7 +81,6 @@
         {{this.model.parameters['ModelValidationN'].description}}
     </small>
   </div>
-
 </div>
 
 <div class="form-row" *ngIf="!this.isComboModel()">
@@ -104,18 +100,16 @@
         {{this.model.parameters['feature_selection'].description}}
     </small>  
   </div>
+
   <div class="form-group col-md-4" *ngIf="this.model.parameters['feature_selection'].value=='Kbest'" >
-    <!-- <div class="form-group col-md-4" *ngIf="this.model.parameters['feature_selection'].value=='Kbest'" style="margin-top: 11px;"> -->
       <label class="bmd-label-static" for="feature_number">Feature number</label>
     <input class="form-control" [(ngModel)]="this.model.parameters['feature_number'].value" type='text' step="1">
     <small id="feature_number" class="text-muted">
         {{this.model.parameters['feature_number'].description}}
     </small>
   </div>
-<!-- </div> -->
 
-<!--REST OF PARAMETERS-->
-<!-- <div class="form-row" *ngIf="!this.isComboModel()"> -->
+  <!--REST OF PARAMETERS-->
   <div *ngFor="let key of infoModel" class="form-group col-md-4">
 
     <div *ngIf="this.model.parameters[key].writable" style="margin-top: 0px;">
@@ -125,13 +119,15 @@
         <input class="form-control" [(ngModel)]="this.model.parameters[key].value" *ngIf="this.model.parameters[key].object_type==='string'" id="key" type='text' placeholder="{{key}}">
         <input class="form-control" [(ngModel)]="this.model.parameters[key].value" *ngIf="this.model.parameters[key].object_type==='list'" id="key" type='text' placeholder="{{key}}">
     </div>
+    
     <div class="checkbox" *ngIf="!this.model.parameters[key].writable && this.model.parameters[key].object_type==='boolean'">
       <label>
         <input  type="checkbox" [(ngModel)]="this.model.parameters[key].value">
         {{key.replace('_',' ')}}
       </label>
     </div>  
-    <div class="col" *ngIf="!this.model.parameters[key].writable && this.model.parameters[key].object_type!='list' && this.model.parameters[key].object_type!='boolean'">
+    
+    <div *ngIf="!this.model.parameters[key].writable && this.model.parameters[key].object_type!='list' && this.model.parameters[key].object_type!='boolean'">
       <label class="bmd-label-static" for="key">{{key.replace('_',' ')}}</label>
       <select id="key" class="form-control" [(ngModel)]="this.model.parameters[key].value">
         <option *ngFor="let value of this.model.parameters[key].options" [value]='value'>
@@ -154,9 +150,11 @@
             {{value}}
       </label>
     </div>
+
     <small id="key" class="text-muted">
       {{this.model.parameters[key].description}}
     </small>
+
   </div>
 </div>
 
@@ -164,16 +162,13 @@
 
 <fieldset class="form-row border" *ngIf="this.model.parameters['conformal'].value && this.model.parameters['conformal_settings']!=null && this.model.parameters['conformal_settings'].value['aggregated']!=null">
   <legend>Conformal settings</legend>
-      <div class="form-group col-md-4" *ngFor="let key of conformal_settings" >
-      <!-- <div class="form-group m-2 w-50" *ngFor="let key of conformal_settings" > -->
+      
+  <div class="form-group col-md-4" *ngFor="let key of conformal_settings" >
       <div *ngIf="this.validConformalKey(key)">
+        
         <div *ngIf="this.model.parameters['conformal_settings'].value[key].writable">
-        <!-- <div class="form-group" *ngIf="this.model.parameters['conformal_settings'].value[key].writable"> -->
           <label class="bmd-label-static">{{key}}</label>
             <input class="form-control" [(ngModel)]="this.model.parameters['conformal_settings'].value[key].value" *ngIf="this.model.parameters['conformal_settings'].value[key].object_type==='int'" id="key" type='number'>
-            <small id="key" class="text-muted">
-              {{this.model.parameters['conformal_settings'].value[key].description}}
-            </small>
         </div>
   
         <div class="checkbox" *ngIf="!this.model.parameters['conformal_settings'].value[key].writable && this.model.parameters['conformal_settings'].value[key].object_type==='boolean'">
@@ -181,13 +176,9 @@
             <input type="checkbox" [(ngModel)]="this.model.parameters['conformal_settings'].value[key].value">
             {{key}}
           </label>
-          <small id="key" class="text-muted">
-          {{this.model.parameters['conformal_settings'].value[key].description}}
-          </small>
         </div>
   
         <div *ngIf="!this.model.parameters['conformal_settings'].value[key].writable && this.model.parameters['conformal_settings'].value[key].object_type!='list' && this.model.parameters['conformal_settings'].value[key].object_type!='boolean'">
-          <!-- <div class="form-group" *ngIf="!this.model.parameters['conformal_settings'].value[key].writable && this.model.parameters['conformal_settings'].value[key].object_type!='list' && this.model.parameters['conformal_settings'].value[key].object_type!='boolean'"> -->
           <label for="key" class="bmd-label-static">{{key}}</label>
           <select id="key" class="form-control" [(ngModel)]="this.model.parameters['conformal_settings'].value[key].value">
             <option *ngFor="let value of this.model.parameters['conformal_settings'].value[key].options" [value]='value'>
@@ -199,149 +190,83 @@
               </div>
             </option>
           </select>
-          <small id="key" class="text-muted">
-          {{this.model.parameters['conformal_settings'].value[key].description}}
-          </small>
         </div>
-      </div>
 
+        <small id="key" class="text-muted">
+          {{this.model.parameters['conformal_settings'].value[key].description}}
+        </small>
+
+      </div>
     
     </div>
 </fieldset>
 
 <!--MODEL PARAMETERS-->
 
-    <fieldset class="form-row border" *ngIf="!this.isComboModel()">  
-    <legend>{{this.model.parameters['model'].value}} parameters</legend>
-      <div class="form-group col-md-4" *ngFor="let key of objectKeys(this.model.parameters[parametersModel[this.model.parameters['model'].value]].value)" >
-        <!-- <div class="form-group col-md-4" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable"> -->
-          <div *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable">
-          <label class="bmd-label-static">{{key}}</label>
-            <input class="form-control" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='string'" id="key" type='text' placeholder="{{key}}" >
-            <input class="form-control" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='int'" id="key" type='number'>
-            <input class="form-control" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='float'" id="key" type='number' step=0.01>
-            <small id="key" class="text-muted">
-              {{this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].description}}
-            </small>
-        </div>
-        <div class="checkbox" *ngIf="!this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='boolean'">
-          <label>
-            <input type="checkbox"  [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value">
-            {{key}}
-          </label>
-          <small id="key" class="text-muted">
-          {{this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].description}}
-          </small>
-        </div>
-        <!-- <div class="form-group col-md-4" *ngIf="!this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type!='list' && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type!='boolean'"> -->
-          <div *ngIf="!this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type!='list' && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type!='boolean'">
-          <label for="key" class="bmd-label-static">{{key}}</label>
-          <select id="key" class="form-control" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value">
-            <option *ngFor="let value of this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].options" [value]='value'>
-              <div *ngIf="value==null">
-                --none--
-              </div>
-              <div *ngIf="value!=null">
-                {{value}}
-              </div>
-            </option>
-          </select>
-          <small id="key" class="text-muted">
-          {{this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].description}}
-          </small>
-        </div>
-
-        <!--CASE NO XGBOOST-->
-        <div class="checkbox" *ngIf="!this.model.parameters['model'].value=='XGBOOST' && !this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='list' ">
-          <label id="key" class="bmd-label-static mb-2 p-0">{{key}}</label>
-          <label id="key" class="mr-2 mb-2 w-100" *ngFor="let value of this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].options">
-           
-            <input id="key" type="checkbox"
-                  [(checklist)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value"
-                  [checklistValue]="value" />
-                {{value}}
-
-          </label>
-          <small id="key" class="text-muted">
-            {{this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].description}}
-          </small>
-        </div>
-
-         <!--CASE XGBOOST-->
-         <div *ngIf="this.model.parameters['model'].value=='XGBOOST' && !this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='list' ">
-            <label id="key" class="bmd-label-static mb-2 p-0">{{key}}</label><br>
-            <div class="form-check form-check-inline" *ngFor="let value of this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].options">
-              <input class="form-check-input" type="radio" id="value" name="inlineRadioOptions" [value]="value" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value"
-             >
-              <label class="form-check-label" for="value">{{value}}</label>
-            </div>
-            <br>
-            <small id="key" class="text-muted">
-              {{this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].description}}
-            </small>
-          </div>
-      </div>
-</fieldset>
-
-<!-- TUNE HARDCODED-->
-
-<br>
-<!-- <div class="checkbox" *ngIf="this.model.parameters['model'].value != 'mean' && this.model.parameters['model'].value != 'majority' 
-&& this.model.parameters['model'].value != 'median'"> -->
-<div class="checkbox" *ngIf="!this.isComboModel()">
- <label>
-     <input type="checkbox" [(ngModel)]="this.model.parameters['tune'].value">
-      Tune (optimization settings can be defined in the parameter file)
-    </label>
-</div>
-
-<!--MODEL OPTIMIZE-->
-<!-- <fieldset class="border" *ngIf="this.model.parameters['tune'].value">  
-  <legend>{{this.model.parameters['model'].value}} optimize</legend>
-    <div class="m-2 w-50" *ngFor="let key of objectKeys(this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value)" >
-      <div class="form-group" *ngIf="this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].writable">
-        <label class="bmd-label-static">{{key}}</label>
-          <input class="form-control" [(ngModel)]="this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].value" *ngIf="this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].object_type==='string'" id="key" type='text' placeholder="{{key}}" >
-          <input class="form-control" [(ngModel)]="this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].value" *ngIf="this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].object_type==='int'" id="key" type='number'>
-          <input class="form-control" [(ngModel)]="this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].value" *ngIf="this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].object_type==='float'" id="key" type='number' step=0.01>
-          <small id="key" class="text-muted">
-            {{this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].description}}
-          </small>
-      </div>
-      <div class="checkbox" *ngIf="!this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].object_type==='boolean'">
-        <label>
-          <input type="checkbox" [(ngModel)]="this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].value">
-          {{key}}
-        </label>
-        <small id="key" class="text-muted">
-        {{this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].description}}
-        </small>
-      </div>
-      <div class="form-group" *ngIf="!this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].object_type!='list' && this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].object_type!='boolean'">
-        <label class="bmd-label-static" for="key">{{key}}</label>
-        <select id="key" class="form-control" [(ngModel)]="this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].value">
-          <option *ngFor="let value of this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].options" [value]='value'>
-            <div *ngIf="value==null">
-              --none--
-            </div>
-            <div *ngIf="value!=null">
-              {{value}}
-            </div>
-          </option>
-        </select>
-        <small id="key" class="text-muted">
-        {{this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].description}}
-      </small>
-      </div>
-      <div class="form-group" *ngIf="!this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].object_type==='list' ">
-        <label for="key" class="bmd-label-static">{{key}}</label>
-        <select multiple id="key" class="form-control">
-          <option *ngFor="let value of this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].options">{{value}}</option>
-        </select>
-        <small id="key" class="text-muted">
-          {{this.model.parameters[optimizeModel[this.model.parameters['model'].value]].value[key].description}}
-        </small>
-      </div>
-      
+<fieldset class="form-row border" *ngIf="!this.isComboModel()">  
+  <legend>{{this.model.parameters['model'].value}} parameters</legend>
+    
+  <div class="form-group col-md-4" *ngFor="let key of objectKeys(this.model.parameters[parametersModel[this.model.parameters['model'].value]].value)" >
+        
+    <div *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable">
+      <label class="bmd-label-static">{{key}}</label>
+        <input class="form-control" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='string'" id="key" type='text' placeholder="{{key}}" >
+        <input class="form-control" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='int'" id="key" type='number'>
+        <input class="form-control" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value" *ngIf="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='float'" id="key" type='number' step=0.01>
     </div>
-</fieldset> -->
+
+    <div class="checkbox" *ngIf="!this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='boolean'">
+      <label>
+        <input type="checkbox"  [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value">
+          {{key}}
+      </label>
+    </div>
+
+    <div *ngIf="!this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type!='list' && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type!='boolean'">
+      <label for="key" class="bmd-label-static">{{key}}</label>
+      <select id="key" class="form-control" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value">
+        <option *ngFor="let value of this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].options" [value]='value'>
+          <div *ngIf="value==null">
+              --none--
+          </div>
+          <div *ngIf="value!=null">
+              {{value}}
+          </div>
+        </option>
+      </select>
+    </div>
+      
+    <!--CASE NO XGBOOST-->
+    <div class="checkbox" *ngIf="!this.model.parameters['model'].value=='XGBOOST' && !this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='list' ">
+      <label id="key" class="bmd-label-static mb-2 p-0">{{key}}</label>
+      <label id="key" class="mr-2 mb-2 w-100" *ngFor="let value of this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].options">
+        <input id="key" type="checkbox"
+          [(checklist)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value"
+          [checklistValue]="value" />
+          {{value}}
+      </label>
+    </div>
+      
+    <!--CASE XGBOOST-->
+    <div *ngIf="this.model.parameters['model'].value=='XGBOOST' && !this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].writable && this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].object_type==='list' ">
+      <label id="key" class="bmd-label-static mb-2 p-0">{{key}}</label><br>
+      <div class="form-check form-check-inline" *ngFor="let value of this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].options">
+        <input class="form-check-input" type="radio" id="value" name="inlineRadioOptions" [value]="value" [(ngModel)]="this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].value">
+        <label class="form-check-label" for="value">{{value}}</label>
+      </div>
+    </div>
+        
+    <small id="key" class="text-muted">
+      {{this.model.parameters[parametersModel[this.model.parameters['model'].value]].value[key].description}}
+    </small>
+        
+  </div>
+</fieldset>
+    
+<!-- TUNE HARDCODED-->
+<div class="checkbox" *ngIf="!this.isComboModel()">
+  <label>
+    <input type="checkbox" [(ngModel)]="this.model.parameters['tune'].value">
+          Tune (optimization settings can be defined in the parameter file)
+   </label>
+</div>
