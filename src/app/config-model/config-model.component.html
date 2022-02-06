@@ -1,5 +1,4 @@
-<div class="row">
-  
+<div class="form-row" >
   <!--Model-->
   <div class="form-group col-md-4">
     <label class="bmd-label-static" for="model">Model</label>
@@ -31,6 +30,19 @@
     </small>
   </div> 
 
+  <!-- TUNE-->
+  <div class="form-group col-md-4" >
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" [(ngModel)]="this.model.parameters['tune'].value">
+        Tune
+      </label>
+    </div>
+    <small id="tune" class="text-muted">
+        {{this.model.parameters['tune'].description}}
+    </small>
+  </div> 
+
   <!--CONFORMAL-->
     <div class="form-group col-md-4" *ngIf="this.isConformalPossible()">
       <div class="checkbox">
@@ -45,8 +57,8 @@
     </div> 
     
     <div class="form-group col-md-4" >
-      <div *ngIf="this.isConformalPossible() && this.model.parameters['conformal'].value && this.model.parameters['conformalConfidence']!=undefined" style="margin-top: 0px;">
-        <label class="bmd-label-static" for="conformalConfidence" style="margin-top: 0px;">Conformal confidence</label>
+      <div *ngIf="this.isConformalPossible() && this.model.parameters['conformal'].value && this.model.parameters['conformalConfidence']!=undefined" >
+        <label class="bmd-label-static" for="conformalConfidence" >Conformal confidence</label>
         <input class="form-control" [(ngModel)]="this.model.parameters['conformalConfidence'].value" type='number' step="0.05">
         <small id="conformalConfidence" class="text-muted">
           {{this.model.parameters['conformalConfidence'].description}}
@@ -74,7 +86,7 @@
     </small>  
   </div>
   
-  <div class="form-group col-md-4" *ngIf="this.model.parameters['ModelValidationCV'].value=='kfold'" style="margin-top: 0px;">
+  <div class="form-group col-md-4" *ngIf="this.model.parameters['ModelValidationCV'].value=='kfold'">
       <label class="bmd-label-static" for="ModelValidationN">ModelValidationN</label>
     <input class="form-control" [(ngModel)]="this.model.parameters['ModelValidationN'].value" type='number' step="1">
     <small id="ModelValidationN" class="text-muted">
@@ -85,6 +97,7 @@
 
 <div class="form-row" *ngIf="!this.isComboModel()">
   <div class="form-group col-md-4">
+
     <label class="bmd-label-static" for="key">Feature selection</label>
     <select id="feature_selection" class="form-control" [(ngModel)]="this.model.parameters['feature_selection'].value">
       <option *ngFor="let value of this.model.parameters['feature_selection'].options" [value]='value'>
@@ -262,11 +275,3 @@
         
   </div>
 </fieldset>
-    
-<!-- TUNE HARDCODED-->
-<div class="checkbox" *ngIf="!this.isComboModel()">
-  <label>
-    <input type="checkbox" [(ngModel)]="this.model.parameters['tune'].value">
-          Tune (optimization settings can be defined in the parameter file)
-   </label>
-</div>
