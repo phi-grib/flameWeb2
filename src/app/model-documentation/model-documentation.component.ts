@@ -138,7 +138,7 @@ export class ModelDocumentationComponent implements OnChanges {
           ];
 
         const eBlocks = [
-          ['ID', 'Version', 'Model_title', 'Model_description', 'Keywords', 'Contact', 'Institution', 'Date', 'Endpoint',
+          ['Model_title', 'Model_description', 'Keywords', 'Contact', 'Institution', 'Date', 'Endpoint',
             'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
             'Limits_applicability', 'Experimental_protocol', 'Model_availability',
             'Data_info'],
