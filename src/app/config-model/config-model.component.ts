@@ -42,7 +42,17 @@ export class ConfigModelComponent implements AfterContentChecked {
   };
 
   conformal_settings = ['aggregated', 'normalizing_model', 'KNN_NN', 'conformal_predictors', 'ACP_sampler', 'aggregation_function'];
-  
+
+  model_settings = {
+    RF: ['class_weight', 'max_depth', 'max_features', 'n_estimators', 'min_samples_split', 'oob_score', 'random_state'], 
+    XGBOOST: ['booster', 'learning_rate', 'max_depth', 'n_estimators'],
+    PLSDA: ['n_components', 'threshold'],
+    PLSR: ['n_components'],
+    SVM: ['kernel', 'C', 'class_weight', 'coef0', 'degree', 'gamma', 'probability', 'shrinking', 'random_state'],
+    GNB: ['prior_negative', 'prior_positive', 'var_smoothing']
+  }
+
+
   isComboModel () {
     if (this.type_models.combo_models.includes(this.model.parameters['model'].value)){
       return true;
