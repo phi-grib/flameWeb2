@@ -171,6 +171,7 @@ export class ModelDocumentationComponent implements OnChanges {
       },
       error => {
         this.modelDocumentation = undefined;
+        // alert('documentation file not found');
       }
     );
     this.documentationVisible = true;

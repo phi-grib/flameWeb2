@@ -24,6 +24,7 @@ export class QuantitConformalComponent implements OnChanges {
     modelTypeInfo = {};
     modelBuildInfo = {};
     modelWarning = '';
+    modelConfidential = false;
     modelVisible = false;
     features = false;
     features_method = '';
@@ -349,6 +350,10 @@ export class QuantitConformalComponent implements OnChanges {
 
     ngOnChanges(): void {
       this.modelVisible = false;
+      this.modelConfidential = false;
+      this.modelTypeInfo = {};
+      this.modelValidationInfo = {};
+      this.modelBuildInfo = {};
       this.features = false;
       this.features_method = '';
       this.modelWarning = '';
@@ -422,39 +427,34 @@ export class QuantitConformalComponent implements OnChanges {
           
           this.model.input_type = info.meta.input_type;
           // console.log(this.model.input_type);
-
+          
           // process warnings
           if (info.warning){
             this.modelWarning = info.warning;
           }
-
-          this.modelValidationInfo = {};
-
+          
+          // this.modelValidationInfo = {};
+          
           for (const modelInfo of info['model_valid_info']) {
             
             if (typeof modelInfo[2] === 'number') {
               modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
             }
-
+            
             if (typeof modelInfo[2] !== 'object') {
               this.modelValidationInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
             } 
-
+            
             // translation for back_compatibility
             if (modelInfo[0]==='Conformal_accuracy_fitting') {
               this.modelValidationInfo ['Conformal_accuracy_f'] = [modelInfo[1], modelInfo[2]];
             }
-
+            
             // translation for back_compatibility
             if (modelInfo[0]==='Conformal_mean_interval_fitting') {
               this.modelValidationInfo ['Conformal_mean_interval_f'] = [modelInfo[1], modelInfo[2]];
             }
-
-            // else {
-            //   if (this.model.conformal){
-            //     this.modelConformal[modelInfo[0]] = modelInfo[2];
-            //   }
-            // }
+            
           }
 
           for (let ielement of info['model_build_info']) {
@@ -462,6 +462,22 @@ export class QuantitConformalComponent implements OnChanges {
           }
           for (let ielement of info['model_type_info']) {
             this.modelTypeInfo[ielement[0]]=[ielement[1], ielement[2]]
+          }
+          
+          // this.modelConfidential = false;
+
+          if ('confidential' in this.modelTypeInfo) {
+            if (this.modelTypeInfo['confidential']) {
+              this.modelConfidential = true;
+              
+              this.plotSummary.data[1].y = [
+                this.modelValidationInfo['Q2'][1]];
+              this.plotSummary.data[0].y = [
+                this.modelValidationInfo['R2'][1]];
+                
+              this.modelVisible = true;
+              return;
+            }
           }
 
           setTimeout(() => {
@@ -710,8 +726,6 @@ export class QuantitConformalComponent implements OnChanges {
           alert('Error getting model information');
         }
         );
-            
-            
         };
     }
 

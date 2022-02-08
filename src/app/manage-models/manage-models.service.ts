@@ -43,18 +43,18 @@ export class ManageModelService {
     return this.http.post(url, formData);
   }
   
-  exportModel(model: string) {
-    const url: string = environment.baseUrl_manage + 'model/' + model +'/export';
+  exportModel(model: string, version: string) {
+    const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/export';
     return this.http.get(url);
   }
   
-  exportTestModel(model: string, temp_dir: string) {
-    const url: string = environment.baseUrl_manage + 'model/' + model +'/temp_dir/' + temp_dir +'/export_test';
+  exportTestModel(model: string, version: string, temp_dir: string) {
+    const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/temp_dir/' + temp_dir +'/export_test';
     return this.http.get(url);
   }
 
-  exportTestDownload(model: string, temp_dir: string) {
-    const url: string = environment.baseUrl_manage + 'model/' + model + '/temp_dir/' + temp_dir + '/export_download';
+  exportTestDownload(model: string, version: string, temp_dir: string) {
+    const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/temp_dir/' + temp_dir + '/export_download';
     const a = document.createElement("a");
     a.style.display = 'none';
     document.body.appendChild(a);
