@@ -4,6 +4,7 @@ import { LabelerService } from "../labeler/labeler.service";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { CommonService } from "../common.service";
+import * as SmilesDrawer from 'smiles-drawer';
 import { VerificatorService } from "./verificator.service";
 @Component({
   selector: "app-verificator",
@@ -28,7 +29,7 @@ export class VerificatorComponent implements OnInit {
   detailMessage = '';
 
   detailsInfo = {'documentation':{'Passed':'TO DO','Failed':'The following fields must be filled in:'},'data':{'Passed':'','Failed':''},'prediction':{'Passed':'','Failed':''},'model':{'Passed':'','Failed':''}}
-  
+
   getVerification(): void {
     this.commonService.getVerification(this.model.name,this.model.version).subscribe(
       (result) => {
@@ -102,13 +103,25 @@ export class VerificatorComponent implements OnInit {
    * @param key 
    */
   details(key: string): void {
-    
-    
+
     this.datachekinglevel = (key != 'model') ? this.data[1]['Data cheking'][key]: this.data[1]['Model testing'][key];
     this.key = key;
     // extra information to user in the GUI
     this.detailMessage = this.detailsInfo[key][this.datachekinglevel['status']]
-    
   }
 
+  /**
+   * Receives the SMILES and converts it to 2d structure
+   * @param smiles 
+   * @param canvasID 
+   */
+  draw2dStructure(smiles,canvasID){
+    
+    const options = {'width': 340, 'height': 175};
+    const smilesDrawer = new SmilesDrawer.Drawer(options);
+    SmilesDrawer.parse(smiles, function(tree) {
+
+      smilesDrawer.draw(tree,canvasID, 'light', false);
+  });
+  }
 }

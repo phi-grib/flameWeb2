@@ -176,22 +176,32 @@
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Drug name</th>
-                                            <th scope="col">Input SMILES</th>
-                                            <th scope="col">ToxHub SMILES</th>
+                                            <th scope="col" class="text-center">Input SMILES</th>
+                                            <th scope="col" class="text-center">ToxHub SMILES</th>
                                             <th scope="col">Similarity</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- display:block y establecer overflow-x:auto -->
                                         <tr *ngFor="let model of datachekinglevel['Information']; let i = index">
                                             <th scope="row"> {{i+1}}</th>
-                                            <td class="font-weight-bold">{{model['namedrug']}}</td>
-                                            <td>{{model['input_smiles']}}</td>
-                                            <td>{{model['toxhub_smiles']}}</td>
-                                            <td class="text-center font-weight-bold">{{ model['similarity'] * 100 | number: '1.0-0'}}%</td>
+                                            <td class="font-weight-bold">{{model['drugname']}}</td>
+                                            <td (mouseover)="draw2dStructure(model['input_smiles'],canvasTemplate.id)">
+                                                <canvas data-toggle="tooltip" [title]="model['input_smiles']" #canvasTemplate id="input-smiles-canvas{{i}}"></canvas>
+                                            </td>
+                                            <td (mouseover)="draw2dStructure(model['toxhub_smiles'],canvasTemplate2.id)">
+                                                <canvas data-toggle="tooltip" [title]="model['toxhub_smiles']" #canvasTemplate2 id="toxhub-smiles-canvas{{i}}"></canvas>
+                                            </td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar progress-bar-similarity" role="progressbar" [ngStyle]="{'width':(model['similarity']*100)+'%'}">
+                                                        {{ model['similarity'] * 100 | number: '1.0-0'}}%
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
                     </div>
