@@ -154,8 +154,8 @@ export class ManageModelsComponent {
     } else {
       message += name + ' version ' + version
     } 
-    if (this.model.confidential) {
-      message += 'AS A SECRET MODEL'
+    if (version !='0' && this.model.confidential) {
+      message += ' AS A SECRET MODEL'
     }
     
     const inserted = this.toastr.info('Running!', message, {

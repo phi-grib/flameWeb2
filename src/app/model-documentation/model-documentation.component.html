@@ -240,10 +240,10 @@
                             </label>
                         </div>
 
-                        Series:
+                        <div *ngIf="!model.secret">Series:</div>
 
-                        <div class="btn-group ml-2 pr-5" role="group" aria-label="group3">
-                            <button class="btn btn-ets-down ml-2" (click)="downloadSeries()" [ngClass]="{'disabled': model.name === undefined}">Download</button>
+                        <div class="btn-group ml-2 pr-5" role="group" aria-label="group3" *ngIf="!model.secret">
+                            <button class="btn btn-ets-down ml-2" (click)="downloadSeries()" [ngClass]="{'disabled': model.name === undefined }">Download</button>
                         </div>
 
                         Parameters:
