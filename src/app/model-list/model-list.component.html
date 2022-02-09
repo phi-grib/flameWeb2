@@ -26,7 +26,7 @@
           [ngClass]="{'selected': (model.listModels[key].name===this.model.name) && (model.listModels[key].version===this.model.version),
                       'version': model.listModels[key].version > 0}"
           (click)= "this.func.selectModel(model.listModels[key].name, model.listModels[key].version, model.listModels[key].modelID, model.listModels[key].trained,model.listModels[key].type,model.listModels[key].quantitative
-          , model.listModels[key].conformal, model.listModels[key].ensemble, model.listModels[key].error)"
+          , model.listModels[key].conformal, model.listModels[key].confidential, model.listModels[key].secret, model.listModels[key].ensemble, model.listModels[key].error)"
           
           title="{{model.listModels[key].quantitative ? 'quantitative' : 'qualitative'}} | {{model.listModels[key].type}} {{model.listModels[key].conformal ? 'conformal' : ''}} | {{model.listModels[key].numMols}} mols | {{model.listModels[key].variables}} vars ">
           <td class="text-center">
@@ -34,10 +34,17 @@
                         [ngClass]="{
                           'fa-grip-lines': !model.listModels[key].quantitative,
                           'fa-circle': model.listModels[key].quantitative,
-                          'fa-times': model.listModels[key].type == '-',
+                          'fa-times-circle': model.listModels[key].type == '-',
                           'faa-flash animated': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version)}"
                         [ngStyle]="{'color': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version) ? '#E69400' : (model.listModels[key].trained ? '#51cf66' : 'red' ) }" 
                         aria-hidden="true"></i> 
+            <i class = "fas"
+                        [ngClass] = "{
+                          'fa-lock': model.listModels[key].secret,
+                          'fa-lock-open': model.listModels[key].confidential && !model.listModels[key].secret
+                        }"
+                           aria-hidden="true"></i>
+                        
           </td>
           <td>{{model.listModels[key].name}}</td>
           <td>{{model.listModels[key].version}}</td>
@@ -55,7 +62,7 @@
           <th>Name</th>
           <th>Ver</th>
           <th>Maturity</th>
-          <th>Type</th>3
+          <th>Type</th>
           <th>Subtype</th>
           <th>Endpoint</th>
           <th>Species</th>

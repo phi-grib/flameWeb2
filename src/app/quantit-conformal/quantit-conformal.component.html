@@ -1,15 +1,23 @@
 <div class="row">
  
-    <div class="card w-100" style="min-height: 600px">
-
+    <div class="card w-100" style="min-height: 600px" >
         <div id="overlay" *ngIf="!this.modelVisible">
             <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
               <span class="sr-only">Loading...</span>
             </div>
         </div>
+        <div class="row" *ngIf="this.model.secret">
+            <div class="card w-100">
+                <div class="card-body"> 
+                  <div class="alert alert-info text-center" role="alert">
+                    Secret mode model. No training series data has been imported.
+                  </div>
+                </div>
+            </div>
+        </div>
 
         <!--NAVS tables-->
-        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" *ngIf="!this.model.secret">
             <li class="nav-item">
                 <a class="nav-link active" id="pills-summary-tab" data-toggle="tab" href="#pills-summary" role="tab" aria-controls="pills-summary" aria-selected="true">Summary</a>
               </li>
@@ -62,6 +70,10 @@
                                         <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelTypeInfo['ensemble'][0]}}"><strong>Ensemble</strong></td>
                                         <td class="text-right text-capitalize">{{this.modelTypeInfo['ensemble'][1]}}</td>
                                     </tr>
+                                    <tr *ngIf="this.modelTypeInfo.confidential">
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelTypeInfo['confidential'][0]}}"><strong>Confidential</strong></td>
+                                        <td class="text-right text-capitalize">{{this.modelTypeInfo['confidential'][1]}}</td>
+                                    </tr>
                                     <!-- <tr *ngIf="this.modelTypeInfo['ensemble'][1]">
                                         <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelTypeInfo['ensemble_names'][0]}}"><strong>Ensemble models</strong></td>
                                         <td class="text-right text-capitalize">{{this.modelTypeInfo['ensemble_names'][1]}}</td>
@@ -82,7 +94,7 @@
                         </plotly-plot> 
 
                         <!-- pie plot with positive and negative -->
-                        <plotly-plot 
+                        <plotly-plot *ngIf="!this.model.secret"
                             [data]="plotViolin.data" 
                             [layout]="plotViolin.layout" 
                             [config]="plotViolin.config">
@@ -93,7 +105,7 @@
             <!-- SUMMARY TAB END-->
 
             <!--PREDICTION TAB START-->
-            <div class="tab-pane fade" id="pills-predict" role="tabpanel" aria-labelledby="pills-predict-tab" >
+            <div class="tab-pane fade" id="pills-predict" role="tabpanel" aria-labelledby="pills-predict-tab"  >
  
                 <div class="card-body">
                     <div class="row justify-content-between">
@@ -215,8 +227,6 @@
                 </div>
             </div>
             <!--SERIES TAB END-->
-
-
         </div>
     </div>
 </div>
