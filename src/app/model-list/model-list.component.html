@@ -26,7 +26,7 @@
           [ngClass]="{'selected': (model.listModels[key].name===this.model.name) && (model.listModels[key].version===this.model.version),
                       'version': model.listModels[key].version > 0}"
           (click)= "this.func.selectModel(model.listModels[key].name, model.listModels[key].version, model.listModels[key].modelID, model.listModels[key].trained,model.listModels[key].type,model.listModels[key].quantitative
-          , model.listModels[key].conformal, model.listModels[key].ensemble, model.listModels[key].error)"
+          , model.listModels[key].conformal, model.listModels[key].confidential, model.listModels[key].secret, model.listModels[key].ensemble, model.listModels[key].error)"
           
           title="{{model.listModels[key].quantitative ? 'quantitative' : 'qualitative'}} | {{model.listModels[key].type}} {{model.listModels[key].conformal ? 'conformal' : ''}} | {{model.listModels[key].numMols}} mols | {{model.listModels[key].variables}} vars ">
           <td class="text-center">

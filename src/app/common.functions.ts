@@ -19,7 +19,7 @@ export class CommonFunctions {
   objectKeys = Object.keys;
 
   selectModel(name: string, version: string, modelID: string, trained: boolean, type: string, quantitative: boolean,
-    conformal: boolean, ensemble: boolean, error: any) {
+    conformal: boolean, confidential: boolean, secret: boolean, ensemble: boolean, error: any) {
 
     if (version === '-' || version === 'dev') {
       version = '0';
@@ -30,6 +30,8 @@ export class CommonFunctions {
     this.model.type = type;
     this.model.trained = trained;
     this.model.conformal = conformal;
+    this.model.confidential = confidential;
+    this.model.secret = secret;
     this.model.quantitative = quantitative;
     this.model.ensemble = ensemble;
     this.model.error = error;
@@ -46,6 +48,8 @@ export class CommonFunctions {
     this.model.type = this.model.listModels[index].type;
     this.model.trained = this.model.listModels[index].trained;
     this.model.conformal = this.model.listModels[index].conformal;
+    this.model.confidential = this.model.listModels[index].confidential;
+    this.model.secret = this.model.listModels[index].secret;
     this.model.quantitative = this.model.listModels[index].quantitative;
     this.model.ensemble = this.model.listModels[index].ensemble;
     this.model.error = this.model.listModels[index].error;
@@ -104,6 +108,8 @@ export class CommonFunctions {
                     quality: {}, 
                     quantitative: false, 
                     conformal: false, 
+                    confidential: false, 
+                    secret: false, 
                     ensemble: false, 
                     maturity : dict_label['maturity'],
                     bio_type : dict_label['type'],
@@ -141,6 +147,8 @@ export class CommonFunctions {
                       quality: quality,
                       quantitative: dict_info['quantitative'], 
                       conformal: dict_info['conformal'], 
+                      confidential: dict_info['confidential'], 
+                      secret: dict_info['secret'], 
                       ensemble: dict_info['ensemble'], 
                       maturity : dict_label['maturity'],
                       bio_type : dict_label['type'],

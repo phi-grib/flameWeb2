@@ -147,7 +147,18 @@ export class ManageModelsComponent {
   }
 
   exportModel(name: string, version: string) {
-    const inserted = this.toastr.info('Running!', 'Exporting ' + this.model.name , {
+
+    let message = 'Exporting ';
+    if (version == '0') {
+      message += name + ' model tree';
+    } else {
+      message += name + ' version ' + version
+    } 
+    if (this.model.confidential) {
+      message += 'AS A SECRET MODEL'
+    }
+    
+    const inserted = this.toastr.info('Running!', message, {
       disableTimeOut: true, positionClass: 'toast-top-right'});
 
     this.service.exportModel(name, version).subscribe(
@@ -157,21 +168,32 @@ export class ManageModelsComponent {
           const temp_dir : string = result['temp_dir'];
           const intervalId = setInterval(() => {
             if (iter < 500) {
-              this.testModel(name, version, temp_dir, inserted, intervalId);
+              this.testExport(name, version, temp_dir, inserted, intervalId);
             } else {
               clearInterval(intervalId);
               this.toastr.clear(inserted.toastId);
-              this.toastr.warning( 'Exporting ' + name + 'version' + version + ' \n Timed Out' , 'Warning', {
-                                    timeOut: 10000, positionClass: 'toast-top-right'});
+              this.toastr.warning( message + ' \n Timed Out' , 'Warning', {
+                                   timeOut: 10000, positionClass: 'toast-top-right'});
             }
             iter += 1;
           }, 5000); // every five seconds
-
         }
       },
       error => {
         this.toastr.clear(inserted.toastId);
         alert('Error exporting: '+error.error.error);
+      }
+    );
+  }
+    
+  testExport(modelname, version,  temp_dir, inserted, intervalId) {
+    this.service.exportTestModel(modelname, version, temp_dir).subscribe(
+      result => {
+        if (result ['ready']) {
+          this.toastr.clear(inserted.toastId);
+          clearInterval(intervalId);
+          this.service.exportTestDownload(modelname, version, temp_dir)
+        }
       }
     );
   }
@@ -190,15 +212,15 @@ export class ManageModelsComponent {
             clearInterval(intervalId);
             this.toastr.clear(this.toast_refresh.toastId);
             this.toastr.warning( 'Refreshing ' + this.model.name + ' \n Timed Out' , 'Warning', {
-                                  timeOut: 10000, positionClass: 'toast-top-right'});
-          }
-          iter += 1;
-        }, 5000); // every five seconds
-      },
-      error => {
+              timeOut: 10000, positionClass: 'toast-top-right'});
+            }
+            iter += 1;
+          }, 5000); // every five seconds
+        },
+        error => {
           alert('Refresh ERROR');
-      }
-    );
+        }
+        );
   }
     
   testRefresh (modelname, intervalId) {
@@ -243,17 +265,6 @@ export class ManageModelsComponent {
   );
   }
 
-  testModel(modelname, version,  temp_dir, inserted, intervalId) {
-    this.service.exportTestModel(modelname, version, temp_dir).subscribe(
-      result => {
-        if (result ['ready']) {
-          this.toastr.clear(inserted.toastId);
-          clearInterval(intervalId);
-          this.service.exportTestDownload(modelname, version, temp_dir)
-        }
-      }
-    );
-  }
 
   importModel(fileList: FileList) {
     const file = fileList[0];
@@ -273,6 +284,7 @@ export class ManageModelsComponent {
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
         this.func.getModelList();
+        // this.model.secret = true;
       },
       error => {
         this.toastr.error('Error:\'' + error.error.error.toString() + '\' ' , 'ERROR IMPORTING', {
