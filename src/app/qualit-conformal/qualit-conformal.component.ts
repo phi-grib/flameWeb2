@@ -259,9 +259,11 @@ export class QualitConformalComponent implements OnChanges {
       }
     }
    
-          
     ngOnChanges(): void {
       this.modelVisible = false;
+      this.modelTypeInfo = {};
+      this.modelValidationInfo = {};
+      this.modelBuildInfo = {};
       this.features = false;
       this.features_method = '';
       this.modelWarning = '';
@@ -279,7 +281,6 @@ export class QualitConformalComponent implements OnChanges {
       this.featuresTSV = '';
 
       this.getValidation();
-      // this.modelVisible = true;
     }
     
     isObject(val) {
@@ -305,11 +306,27 @@ export class QualitConformalComponent implements OnChanges {
           const info = result;
           
           this.model.input_type = info.meta.input_type;
-          // console.log(this.model.input_type);
 
           // process warnings
           if (info.warning){
             this.modelWarning = info.warning;
+          }
+
+          for (const modelInfo of info['model_valid_info']) {
+            if (typeof modelInfo[2] === 'number') {
+              modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
+            }
+            if (typeof modelInfo[2] !== 'object') {
+              this.modelValidationInfo[modelInfo[0]] = [modelInfo[1], modelInfo[2]];
+            }
+          }
+          
+          for (let ielement of info['model_build_info']) {
+            this.modelBuildInfo[ielement[0]]=[ielement[1], ielement[2]]
+          }
+          
+          for (let ielement of info['model_type_info']) {
+            this.modelTypeInfo[ielement[0]]=[ielement[1], ielement[2]]
           }
 
           // PCA scores plot
@@ -346,27 +363,9 @@ export class QualitConformalComponent implements OnChanges {
             }
           }
 
-          // INFO ABOUT VALIDATION
-          this.modelValidationInfo = {};
-          for (const modelInfo of info['model_valid_info']) {
-            if (typeof modelInfo[2] === 'number') {
-              modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
-            }
-            if (typeof modelInfo[2] !== 'object') {
-              this.modelValidationInfo[modelInfo[0]] = [modelInfo[1], modelInfo[2]];
-            }
-          }
-
-          for (let ielement of info['model_build_info']) {
-            this.modelBuildInfo[ielement[0]]=[ielement[1], ielement[2]]
-          }
-
-          for (let ielement of info['model_type_info']) {
-            this.modelTypeInfo[ielement[0]]=[ielement[1], ielement[2]]
-          }
 
           if ('feature_importances' in info && info['feature_importances']!= null) {
-
+            
             const fval = info['feature_importances'];
             const fnam = info['var_nam'];
 

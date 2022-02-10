@@ -1,4 +1,14 @@
-<div class="row">
+<div class="col">
+
+    <div class="row" *ngIf="this.model.secret">
+        <div class="card w-100">
+            <div class="card-body"> 
+              <div class="alert alert-info text-center" role="alert">
+                Secret mode model. No training series data has been imported.
+              </div>
+            </div>
+        </div>
+    </div>
 
     <div class="card w-100" style="min-height: 600px">
 
@@ -7,6 +17,7 @@
               <span class="sr-only">Loading...</span>
             </div>
         </div>
+
 
         <!--NAVS tables-->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -19,10 +30,10 @@
             <li class="nav-item">
               <a class="nav-link" id="pills-fitting-tab" data-toggle="tab" href="#pills-fitting" role="tab" aria-controls="pills-fitting" aria-selected="false">Fitting</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="!this.model.secret">
                 <a class="nav-link" id="pills-series-tab" data-toggle="tab" href="#pills-series" role="tab" aria-controls="pills-series" aria-selected="false">Series</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="!this.model.secret">
                 <a class="nav-link" id="pills-other-tab" data-toggle="tab" href="#pills-other" role="tab" aria-controls="pills-other" aria-selected="false">Other</a>
             </li>
         </ul>
@@ -60,6 +71,10 @@
                                     <tr>
                                         <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelTypeInfo['ensemble'][0]}}"><strong>Ensemble</strong></td>
                                         <td class="text-right text-capitalize">{{this.modelTypeInfo['ensemble'][1]}}</td>
+                                    </tr>
+                                    <tr *ngIf="this.modelTypeInfo.confidential">
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelTypeInfo['confidential'][0]}}"><strong>Confidential</strong></td>
+                                        <td class="text-right text-capitalize">{{this.modelTypeInfo['confidential'][1]}}</td>
                                     </tr>
                                     <!-- <tr *ngIf="this.modelTypeInfo['ensemble'][1]">
                                         <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelTypeInfo['ensemble_names'][0]}}"><strong>Ensemble models</strong></td>
@@ -164,7 +179,7 @@
                                         <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Specificity_f'][0]}}"><strong>Specificity</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['Specificity_f'][1]}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr  *ngIf="modelValidationInfo['MCC_f']">
                                         <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCC_f'][0]}}"><strong>MCC</strong></td>
                                         <td class="text-right text-capitalize">{{modelValidationInfo['MCC_f'][1]}}</td>
                                     </tr>
