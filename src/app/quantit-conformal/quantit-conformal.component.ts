@@ -504,36 +504,34 @@ export class QuantitConformalComponent implements OnChanges {
               }
             }
 
-            if (!this.model.secret) {
-              // common to all plots in this component
-              const options = {'width': 300, 'height': 250};
-              const smilesDrawer = new SmilesDrawer.Drawer(options);
-  
-              // scores plot                 
-              const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
-              const context = canvas.getContext('2d');
-  
-              PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
-              
-              let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
-              
-              // on hover, draw the molecule
-              myPlot.on('plotly_hover', function(eventdata){ 
-                var points = eventdata.points[0];
-                SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                  smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
-                });
+            // common to all plots in this component
+            const options = {'width': 300, 'height': 250};
+            const smilesDrawer = new SmilesDrawer.Drawer(options);
+
+            // scores plot                 
+            const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
+            const context = canvas.getContext('2d');
+
+            PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+            
+            let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
+            
+            // on hover, draw the molecule
+            myPlot.on('plotly_hover', function(eventdata){ 
+              var points = eventdata.points[0];
+              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
               });
-  
-              // on onhover, clear the canvas
-              myPlot.on('plotly_unhover', function(data){
-                context.clearRect(0, 0, canvas.width, canvas.height);
-              });
-  
-              // violin plot with activity values
-              this.plotViolin.data[0].y = info['ymatrix'];
-              this.plotViolin.data[0].text = info['obj_nam'];
-            }
+            });
+
+            // on onhover, clear the canvas
+            myPlot.on('plotly_unhover', function(data){
+              context.clearRect(0, 0, canvas.width, canvas.height);
+            });
+
+            // violin plot with activity values
+            this.plotViolin.data[0].y = info['ymatrix'];
+            this.plotViolin.data[0].text = info['obj_nam'];
             
             // bar plot with feature importances 
             if ('feature_importances' in info && info['feature_importances']!= null) {
@@ -662,56 +660,51 @@ export class QuantitConformalComponent implements OnChanges {
               // this.plotFitted.data[1].y = [ Math.min.apply(Math, info['Y_adj']),Math.max.apply(Math, info['Y_adj'])];
             }
 
-            if (!this.model.secret) {
+            const me = this;
+            // predicted plot                 
+            const canvas_pred = <HTMLCanvasElement>document.getElementById('scatter_pred_canvas');
+            const context_pred = canvas_pred.getContext('2d');
 
-              const me = this;
-              // predicted plot                 
-              const canvas_pred = <HTMLCanvasElement>document.getElementById('scatter_pred_canvas');
-              const context_pred = canvas_pred.getContext('2d');
-  
-              PlotlyJS.newPlot('scatterPredDIV', this.plotPredicted.data, this.plotScatter.layout, this.plotScatter.config);
-              
-              let myPlotPred = <CustomHTMLElement>document.getElementById('scatterPredDIV');
-  
-              // on hover, draw the molecule
-              myPlotPred.on('plotly_hover', function(eventdata){ 
-                var points = eventdata.points[0];
-                SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                  smilesDrawer.draw(tree, 'scatter_pred_canvas', 'light', false);
-                });
-              });
-  
-              // on onhover, clear the canvas
-              myPlotPred.on('plotly_unhover', function(data){
-                context_pred.clearRect(0, 0, canvas_pred.width, canvas_pred.height);
-              });
-  
-              // fitted plott
-              const canvas_fit = <HTMLCanvasElement>document.getElementById('scatter_fit_canvas');
-              const context_fit = canvas_fit.getContext('2d');
-  
-              PlotlyJS.newPlot('scatterFitDIV', this.plotFitted.data, this.plotScatter.layout, this.plotScatter.config);
-              
-              let myPlotFit = <CustomHTMLElement>document.getElementById('scatterFitDIV');
-              
-              // on hover, draw the molecule
-              myPlotFit.on('plotly_hover', function(eventdata){ 
-                var points = eventdata.points[0];
-                SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                  smilesDrawer.draw(tree, 'scatter_fit_canvas', 'light', false);
-                });
-              });
-              // on onhover, clear the canvas
-              myPlotFit.on('plotly_unhover', function(data){
-                context_fit.clearRect(0, 0, canvas_fit.width, canvas_fit.height);
-              });
-  
-              myPlotFit.on ('plotly_afterplot', function(data){
-                me.modelVisible = true;
-              });
-            }
+            PlotlyJS.newPlot('scatterPredDIV', this.plotPredicted.data, this.plotScatter.layout, this.plotScatter.config);
+            
+            let myPlotPred = <CustomHTMLElement>document.getElementById('scatterPredDIV');
 
+            // on hover, draw the molecule
+            myPlotPred.on('plotly_hover', function(eventdata){ 
+              var points = eventdata.points[0];
+              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                smilesDrawer.draw(tree, 'scatter_pred_canvas', 'light', false);
+              });
+            });
 
+            // on onhover, clear the canvas
+            myPlotPred.on('plotly_unhover', function(data){
+              context_pred.clearRect(0, 0, canvas_pred.width, canvas_pred.height);
+            });
+
+            // fitted plott
+            const canvas_fit = <HTMLCanvasElement>document.getElementById('scatter_fit_canvas');
+            const context_fit = canvas_fit.getContext('2d');
+
+            PlotlyJS.newPlot('scatterFitDIV', this.plotFitted.data, this.plotScatter.layout, this.plotScatter.config);
+            
+            let myPlotFit = <CustomHTMLElement>document.getElementById('scatterFitDIV');
+            
+            // on hover, draw the molecule
+            myPlotFit.on('plotly_hover', function(eventdata){ 
+              var points = eventdata.points[0];
+              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                smilesDrawer.draw(tree, 'scatter_fit_canvas', 'light', false);
+              });
+            });
+            // on onhover, clear the canvas
+            myPlotFit.on('plotly_unhover', function(data){
+              context_fit.clearRect(0, 0, canvas_fit.width, canvas_fit.height);
+            });
+
+            myPlotFit.on ('plotly_afterplot', function(data){
+              me.modelVisible = true;
+            });
           }, 100);
         },
         error => {

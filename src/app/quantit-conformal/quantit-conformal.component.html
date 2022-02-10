@@ -143,7 +143,7 @@
                             </table>    
                             <canvas id="scatter_pred_canvas"></canvas>
                         </div>
-                        <div id="scatterPredDIV"></div>
+                        <div id="scatterPredDIV" *ngIf="!this.model.secret"></div>
                     </div>
                 </div>
             </div>
@@ -184,7 +184,7 @@
                             </table>
                             <canvas id="scatter_fit_canvas" ></canvas>    
                         </div>
-                        <div id="scatterFitDIV"></div>
+                        <div id="scatterFitDIV" *ngIf="!this.model.secret"></div>
                     </div>
                 </div>
             </div>

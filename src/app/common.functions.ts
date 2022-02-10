@@ -168,8 +168,10 @@ export class CommonFunctions {
                 alert('Unexpected result: ' + model.info );
               } 
               num_models--;
-
             }
+
+            // console.log(this.model.listModels);
+
             const intervalId = setInterval(() => {
               
               // if list reading was correct num_models == 0

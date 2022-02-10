@@ -57,7 +57,7 @@
           <li class="nav-item">
             <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false">Report</a>
           </li>
-          <li class="nav-item" *ngIf="this.modelMatch && this.modelPresent">
+          <li class="nav-item" *ngIf="this.modelMatch && this.modelPresent && this.predictionResult.PC1proj">
             <a class="nav-link" id="pills-two-tab" data-toggle="tab" href="#pills-two" role="tab" aria-controls="pills-two" aria-selected="false">Projection</a>
           </li>
         </ul>
