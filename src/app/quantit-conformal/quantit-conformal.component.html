@@ -1,14 +1,14 @@
-<div class="col">
- 
-    <div class="row" *ngIf="this.model.secret">
-        <div class="card w-100">
-            <div class="card-body"> 
-              <div class="alert alert-info text-center" role="alert">
-                Secret mode model. No training series data has been imported.
-              </div>
-            </div>
+<div class="row" *ngIf="this.model.secret">
+    <div class="card w-100">
+        <div class="card-body"> 
+          <div class="alert alert-info text-center" role="alert">
+            Secret mode model. No training series data has been imported.
+          </div>
         </div>
     </div>
+</div>
+
+<div class="col">
 
     <div class="card w-100" style="min-height: 600px" >
 

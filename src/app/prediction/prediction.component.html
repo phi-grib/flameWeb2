@@ -38,18 +38,10 @@
     </div>
   </div>
 
-
-  <div class="row" *ngIf="this.predictionResult != undefined && this.predictionError == ''">
-    <!-- <div class="col scrollable" style="padding-left:0px;"> -->
+  <div class="col" *ngIf="this.predictionResult != undefined && this.predictionError == ''">
 
       <div class="card w-100">
-        <!-- <div id="overlay" *ngIf="!this.predictionVisible">
-          <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </div> -->
 
-        <!-- <div id="overlay" *ngIf="!this.predictionVisible && this.globals.mainTabActive=='#predict'"> -->
         <div id="overlay" *ngIf="!this.predictionVisible">
           <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
             <span class="sr-only">Loading...</span>
@@ -76,36 +68,32 @@
           <!--ALL PREDICTIONS-->
           <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
             
-            <div class="row" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
-              <div class="card w-100" style="width: 18rem;">
-                <div class="card-body" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']"> 
-                  <div id="container">
-                    <div class="col-3">
-                      <table class="table table-sm">
-                        <tbody>
-                          <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
-                            <td *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key.split('_').join(' ')}}</strong></td>
-                            <td *ngIf="!this.q_measures.includes(key)" class="text-right text-capitalize">{{modelValidationInfo[key][1]}}</td>
-                          </tr>
-                        </tbody>
-                      </table> 
-                    </div>
-                    <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
-                      <app-confusion-matrix 
-                      [TP] = "this.modelValidationInfo['TP'][1]"
-                      [FP] = "this.modelValidationInfo['FP'][1]"
-                      [FN] = "this.modelValidationInfo['FN'][1]"
-                      [TN] = "this.modelValidationInfo['TN'][1]"
-                      ></app-confusion-matrix>                 
-                    </div>
-                    <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
-                      <plotly-plot 
-                      [data]="predictData" 
-                      [layout]="plotCommon.layout"
-                      [config]="plotCommon.config">
-                      </plotly-plot> 
-                    </div>
-                  </div>
+            <div class="card-body" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']"> 
+                <div id="container">
+                <div class="col-3">
+                  <table class="table table-sm">
+                    <tbody>
+                      <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
+                        <td *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key.split('_').join(' ')}}</strong></td>
+                        <td *ngIf="!this.q_measures.includes(key)" class="text-right text-capitalize">{{modelValidationInfo[key][1]}}</td>
+                      </tr>
+                    </tbody>
+                  </table> 
+                </div>
+                <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
+                  <app-confusion-matrix 
+                  [TP] = "this.modelValidationInfo['TP'][1]"
+                  [FP] = "this.modelValidationInfo['FP'][1]"
+                  [FN] = "this.modelValidationInfo['FN'][1]"
+                  [TN] = "this.modelValidationInfo['TN'][1]"
+                  ></app-confusion-matrix>                 
+                </div>
+                <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
+                  <plotly-plot 
+                  [data]="predictData" 
+                  [layout]="plotCommon.layout"
+                  [config]="plotCommon.config">
+                  </plotly-plot> 
                 </div>
               </div>
             </div>
