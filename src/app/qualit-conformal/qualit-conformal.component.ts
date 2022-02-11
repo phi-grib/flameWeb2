@@ -441,25 +441,30 @@ export class QualitConformalComponent implements OnChanges {
             const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
             const context = canvas.getContext('2d');
 
-            PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
-            
-            let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
-            
-            // on hover, draw the molecule
-            myPlot.on('plotly_hover', function(eventdata){ 
-              var points = eventdata.points[0];
-              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
+            if (!this.model.secret) {
+              PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+              
+              let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
+              
+              // on hover, draw the molecule
+              myPlot.on('plotly_hover', function(eventdata){ 
+                var points = eventdata.points[0];
+                SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                  smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
+                });
               });
-            });
-            // on onhover, clear the canvas
-            myPlot.on('plotly_unhover', function(data){
-              context.clearRect(0, 0, canvas.width, canvas.height);
-            });
-
-            myPlot.on ('plotly_afterplot', function(data){
-              me.modelVisible = true;
-            });
+              // on onhover, clear the canvas
+              myPlot.on('plotly_unhover', function(data){
+                context.clearRect(0, 0, canvas.width, canvas.height);
+              });
+              
+              myPlot.on ('plotly_afterplot', function(data){
+                me.modelVisible = true;
+              });
+            }
+            else {
+              this.modelVisible = true;
+            }
 
           }, 100);
         },

@@ -455,12 +455,8 @@ export class QuantitConformalComponent implements OnChanges {
             this.modelTypeInfo[ielement[0]]=[ielement[1], ielement[2]]
           }
 
-          // console.log(this.modelTypeInfo);
-
           // if (this.modelTypeInfo['secret'][1]) {
           if (this.model.secret) {
-
-              console.log(this.model.secret);
 
               this.model.secret = true;
               this.plotSummary.data[1].y = [
