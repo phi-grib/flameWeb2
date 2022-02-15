@@ -111,7 +111,7 @@ export class ModelDocumentationComponent implements OnChanges {
                 if (typeof ineritem === 'object' && 'value' in ineritem){
                   const inerval = this.modelDocumentation[key].value[key2].value;
                   if (Array.isArray(inerval)){
-                      this.modelDocumentation[key].value[key2] = this.array_to_string(inerval);
+                      this.modelDocumentation[key].value[key2].value = this.array_to_string(inerval);
                   }
                 }
               }

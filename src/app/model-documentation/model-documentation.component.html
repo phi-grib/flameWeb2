@@ -110,15 +110,15 @@
                                                     <td style="width: 25%">{{this.cleanStr(key2)}}</td>
 
                                                     <td style="width: 50%; word-wrap: break-word" class="doc-value" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
-                                                        <!-- {{this.arrayproc(this.modelDocumentation[key].value[key2].value)}}</td> -->
                                                         {{this.modelDocumentation[key].value[key2].value}}</td>
-
-                                                    <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
-                                                        {{this.modelDocumentation[key].value[key2]}}</td>
 
                                                     <td style="width: 25%" class="text-right comment" *ngIf="isObject(this.modelDocumentation[key].value[key2])">
                                                         {{this.modelDocumentation[key].value[key2].description}}
                                                     </td>
+
+                                                    <td style="width: 50%" class="doc-value" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
+                                                        {{this.modelDocumentation[key].value[key2]}}</td>
+
                                                     <td style="width: 25%" class="text-right comment" *ngIf="!isObject(this.modelDocumentation[key].value[key2])">
                                                         na</td>
                                                 </tr>
