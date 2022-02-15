@@ -27,6 +27,7 @@ export class VerificatorComponent implements OnInit {
   datachekinglevel = "";
   key = '';
   detailMessage = '';
+  verificationVisible = true;
 
   detailsInfo = {'documentation':{'Passed':'TO DO','Failed':'The following fields must be filled in:'},'data':{'Passed':'','Failed':''},'prediction':{'Passed':'','Failed':''},'model':{'Passed':'','Failed':''}}
 
@@ -80,6 +81,7 @@ export class VerificatorComponent implements OnInit {
   }
 
   verifyModel(modelname : string, version: number): void {
+  this.verificationVisible = false;
   this.verificatorService.generateVerification(modelname,version).subscribe(
     result => {
       this.toastr.success(
@@ -91,11 +93,11 @@ export class VerificatorComponent implements OnInit {
           progressBar: true,
     });
     this.data = result;
-    
+    this.verificationVisible = true;
   },
   error => {
-    console.log(error)
-  });   
+    console.log(error);
+  }); 
   }
 
   /**

@@ -7,8 +7,14 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body" *ngIf="this.data != false; else firstVerification">
-    <div class="accordion mt-3" id="buildingAccordion">
+
+<div class="modal-body">
+    <div class="d-flex justify-content-center" *ngIf="!this.verificationVisible">
+        <div class="spinner-border text-etransafe" style="width: 16rem; height: 16rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <div *ngIf="(this.data && this.verificationVisible)" class="accordion mt-3" id="buildingAccordion">
         <div class="card">
             <div class="card-header" data-toggle="collapse" data-target="#collapseZero" aria-expanded="false">
                 <h5 class="mb-0">
@@ -193,7 +199,7 @@
                                             </td>
                                             <td>
                                                 <div class="progress">
-                                                    <div class="progress-bar progress-bar-similarity" role="progressbar" [ngStyle]="{'width':(model['similarity']*100)+'%'}">
+                                                    <div class="progress-bar progress-bar-similarity" role="progressbar" [ngClass]="{'bg-danger': (model['similarity']*100) < 15}" [ngStyle]="{'width':(model['similarity']*100)+'%'}">
                                                         {{ model['similarity'] * 100 | number: '1.0-0'}}%
                                                     </div>
                                                 </div>
@@ -217,20 +223,20 @@
     </div>
 </div>
 
-<ng-template #firstVerification>
+<div *ngIf="!this.data">
     <div class="alert alert-warning" role="alert">
         Press verify button to generate the model verification
     </div>
-</ng-template>
+</div>
 
 <!-- modal footer -->
 <div class="form-row">
     <div class="form-group col-md-7 ml-5">
-        <button type="button" class="btn btn-ets-do mr-2" (click)="verifyModel(this.model.name,this.model.version)">Verify</button>
-        <button type="button" class="btn btn-ets-do" [ngStyle]="{display:this.data === false ? 'none':'inline-block' }" [disabled]="!this.data" (click)="Report(this.model.name)">Generate report</button>
+        <button type="button" class="btn btn-ets-do mr-2" [disabled]="!this.verificationVisible" (click)="verifyModel(this.model.name,this.model.version)">Verify</button>
+        <button type="button" class="btn btn-ets-do" [ngStyle]="{display:this.data === false ? 'none':'inline-block' }" [disabled]="!this.verificationVisible" (click)="Report(this.model.name)">Generate report</button>
     </div>
     <div class="form-group col-md-4 d-flex justify-content-end">
-        <button type="button" class="btn btn-ets-ext mr-4" [ngStyle]="{display:this.data === false ? 'none':'inline-block' }" [disabled]="!this.data" (click)="Sign()">Sign</button>
-        <button type="button" class="btn btn-ets-delete" (click)="cancelInput()">Cancel</button>
+        <button type="button" class="btn btn-ets-ext mr-4" [ngStyle]="{display:this.data === false ? 'none':'inline-block' }" [disabled]="!this.verificationVisible" (click)="Sign()">Sign</button>
+        <button type="button" class="btn btn-ets-delete" [disabled]="!this.verificationVisible" (click)="cancelInput()">Cancel</button>
     </div>
 </div>
