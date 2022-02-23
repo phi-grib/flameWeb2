@@ -22,18 +22,20 @@ export class VerificatorComponent implements OnInit {
 
   ) {}
   objectKeys = Object.keys;
-  data: any = "";
+  data: any = '';
   verificatorname: string;
-  datachekinglevel = "";
-  key = '';
+  datacheckinglevel = "";
   detailMessage = '';
+  key = '';
   verificationVisible = true;
+  error: boolean = false;
 
-  detailsInfo = {'documentation':{'Passed':'TO DO','Failed':'The following fields must be filled in:'},'data':{'Passed':'','Failed':''},'prediction':{'Passed':'','Failed':''},'model':{'Passed':'','Failed':''}}
+  detailsInfo = {'documentation':{'Passed':'TO DO','Failed':'The following fields must be filled in:'}}
 
   getVerification(): void {
     this.commonService.getVerification(this.model.name,this.model.version).subscribe(
       (result) => {
+        
         this.data = result;
       },
       (error) => {
@@ -81,9 +83,11 @@ export class VerificatorComponent implements OnInit {
   }
 
   verifyModel(modelname : string, version: number): void {
+    
   this.verificationVisible = false;
   this.verificatorService.generateVerification(modelname,version).subscribe(
     result => {
+      if(result[0]){
       this.toastr.success(
         "Model " + this.model.name,
         "VERIFICATED SUCCESSFULLY",
@@ -92,6 +96,17 @@ export class VerificatorComponent implements OnInit {
           positionClass: "toast-top-right",
           progressBar: true,
     });
+
+  }else{
+    this.error = true;
+    this.toastr.error('Model \"' + this.model.name + '\" Verification task has not completed. Check the browser console for more information', 
+    'Aborted', { timeOut: 10000, positionClass: 'toast-top-right'});
+    
+    for (const [key, value] of Object.entries(result[1])) {
+      if (value['status'] == 'Aborted') console.log(key+':'+value['comments']);
+    }
+  
+  }
     this.data = result;
     this.verificationVisible = true;
   },
@@ -102,14 +117,16 @@ export class VerificatorComponent implements OnInit {
 
   /**
    * provides extra information to the user if needed
+   * @param level
    * @param key 
    */
-  details(key: string): void {
-
-    this.datachekinglevel = (key != 'model') ? this.data[1]['Data cheking'][key]: this.data[1]['Model testing'][key];
-    this.key = key;
+  details(level:string,key: string): void {
+    this.key = key
+    this.datacheckinglevel = this.data[1][level][key]
+    console.log(this.datacheckinglevel);
+    
     // extra information to user in the GUI
-    this.detailMessage = this.detailsInfo[key][this.datachekinglevel['status']]
+    //this.detailMessage = this.detailsInfo[key][this.datacheckinglevel['status']]
   }
 
   /**
