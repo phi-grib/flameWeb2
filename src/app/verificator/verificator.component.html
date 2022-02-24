@@ -151,7 +151,7 @@
                             </div>
                             <div>
                                 <div class="card-body p-2 pl-5 pr-5">
-                                    <table *ngIf="datacheckinglevel['Information']?.length > 0" class="table table-hover" style="display:block;overflow-x:auto;">
+                                    <table *ngIf="datalevel['Information']?.length > 0" class="table table-hover" style="display:block;overflow-x:auto;">
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
@@ -162,7 +162,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let model of datacheckinglevel['Information']; let i = index">
+                                            <tr *ngFor="let model of datalevel['Information']; let i = index">
                                                 <th scope="row"> {{i+1}}</th>
                                                 <td class="font-weight-bold">{{model['drugname']}}</td>
                                                 <td (mouseover)="draw2dStructure(model['input_smiles'],canvasTemplate.id)">
@@ -181,9 +181,9 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div *ngIf="datacheckinglevel['Extra_Information']?.length > 0">
+                                    <div *ngIf="datalevel['Extra_Information']?.length > 0">
                                         <h5 class="font-weight-bold">SMILES could not be obtained for the following compounds:</h5>
-                                        <span [ngStyle]="{color: this.datacheckinglevel['status'] == 'Failed' ? 'red': 'green'}" *ngFor="let field of datacheckinglevel['Extra_Information']">{{field}},</span>
+                                        <span [ngStyle]="{color: this.datalevel['status'] == 'Failed' ? 'red': 'green'}" *ngFor="let field of datalevel['Extra_Information']">{{field}} </span>
                                     </div>
                                 </div>
                             </div>
@@ -227,11 +227,10 @@
                             </div>
                             <div>
                                 <div class="card-body p-2 pl-5 pr-5">
-                                    <h5>{{detailMessage}} </h5>
                                     <div id="collapseDetailsZero" class="collapse show" aria-labelledby="headingDetailsZero" data-parent="#detailsAccordion">
                                         <div class="card-body p-2 pl-5 pr-5">
-                                            <h5>{{detailMessage}} </h5>
-                                            <span [ngStyle]="{color: this.datacheckinglevel['status'] == 'Failed' ? 'red': 'green'}" *ngFor="let field of datacheckinglevel['Information']">{{field}},  </span>
+                                            <h5>{{this.detailsInfo[key]}} </h5>
+                                            <span [ngStyle]="{color: this.datalevel['status'] == 'Failed' ? 'red': 'green'}" *ngFor="let field of datalevel['Information']">{{field}}  </span>
                                         </div>
                                     </div>
 

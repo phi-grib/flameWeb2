@@ -24,13 +24,14 @@ export class VerificatorComponent implements OnInit {
   objectKeys = Object.keys;
   data: any = '';
   verificatorname: string;
-  datacheckinglevel = "";
+  datalevel = "";
   detailMessage = '';
   key = '';
   verificationVisible = true;
   error: boolean = false;
 
-  detailsInfo = {'documentation':{'Passed':'TO DO','Failed':'The following fields must be filled in:'}}
+  // more information to user in GUI when failed a step
+  detailsInfo = {'fields':'The following fields must be filled in:'}
 
   getVerification(): void {
     this.commonService.getVerification(this.model.name,this.model.version).subscribe(
@@ -84,7 +85,7 @@ export class VerificatorComponent implements OnInit {
 
   verifyModel(modelname : string, version: number): void {
     
-  this.verificationVisible = false;
+  this.verificationVisible = false; 
   this.verificatorService.generateVerification(modelname,version).subscribe(
     result => {
       if(result[0]){
@@ -99,7 +100,8 @@ export class VerificatorComponent implements OnInit {
 
   }else{
     this.error = true;
-    this.toastr.error('Model \"' + this.model.name + '\" Verification task has not completed. Check the browser console for more information', 
+    this.cancelInput()
+    this.toastr.error('Model \"' + this.model.name + '\" Verification process has been aborted. Check the browser console for more information', 
     'Aborted', { timeOut: 10000, positionClass: 'toast-top-right'});
     
     for (const [key, value] of Object.entries(result[1])) {
@@ -122,11 +124,7 @@ export class VerificatorComponent implements OnInit {
    */
   details(level:string,key: string): void {
     this.key = key
-    this.datacheckinglevel = this.data[1][level][key]
-    console.log(this.datacheckinglevel);
-    
-    // extra information to user in the GUI
-    //this.detailMessage = this.detailsInfo[key][this.datacheckinglevel['status']]
+    this.datalevel = this.data[1][level][key]
   }
 
   /**
@@ -135,7 +133,6 @@ export class VerificatorComponent implements OnInit {
    * @param canvasID 
    */
   draw2dStructure(smiles,canvasID){
-    
     const options = {'width': 340, 'height': 175};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
     SmilesDrawer.parse(smiles, function(tree) {
