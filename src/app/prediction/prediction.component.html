@@ -483,9 +483,9 @@
 
                     <div id="scoresPreDIV"></div>
 
-                    <label class="pt-2">Predicted compounds shown as: 
+                    <label class="pt-2">Prediction marks: 
                       <select id="projectStyle" (change)="changeProjectStyle($event.target.value)">
-                        <option value='names'>circles & names (colored by Activity)</option>
+                        <option value='names'>circles and names (colored by Activity)</option>
                         <option value='points'>dots (red)</option>
                         <option *ngIf="this.dmodx==true" value='dmodx'>dots (colored by DModX)</option>
                       </select>
