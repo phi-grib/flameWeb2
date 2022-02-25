@@ -9,6 +9,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { flatten } from '@angular/compiler';
+import { stringify } from 'querystring';
 
 declare var $: any;
 
@@ -207,7 +208,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         height: 600,
         scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
       },
-      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']
+      // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']
+      modeBarButtonsToRemove: ['select2d', 'autoScale2d','hoverCompareCartesian']
     }
   };
 
@@ -462,6 +464,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     PlotlyJS.restyle('scoresPreDIV', update1, 1);
     // console.log(update0);
   }
+
+
+
+
+
 
   drawReportHeader () {
     const options = {'width': 600, 'height': 300};
@@ -983,7 +990,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
             ],
             rowCallback: (row: Node, data: any[] | Object, index: number) => {
-              const self = this;
+              // const self = this;
               $('td', row).unbind('click');
               $('td', row).bind('click', () => {
                 this.tabClickHandler(data);
@@ -1007,11 +1014,11 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
 
           if (this.modelMatch){
 
-            const options = {'width': 300, 'height': 300};
+            const options = {'width': 400, 'height': 250};
             const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
     
-            const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
-            const context_ref = canvas_ref.getContext('2d');
+            // const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
+            // const context_ref = canvas_ref.getContext('2d');
     
             const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
             const context = canvas.getContext('2d');
@@ -1023,13 +1030,13 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             // on hover, draw the molecule
             myPlot.on('plotly_hover', function(eventdata){ 
               var points = eventdata.points[0];
-              // console.log (points)
               if (points.curveNumber === 1) {
                 SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
-                  smilesDrawerScores.draw(tree, 'scores_canvas_ref', 'light', false);
+                  smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
+                  // smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
                 });   
-                context_ref.font = "30px Barlow Semi Condensed";
-                context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
+                // context_ref.font = "30px Barlow Semi Condensed";
+                // context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
               }
               else {
                 SmilesDrawer.parse(points.meta, function(tree) {
@@ -1037,6 +1044,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
                 });
               }
             });
+
             // on onhover, clear the canvas
             myPlot.on('plotly_unhover', function(eventdata){
               var points = eventdata.points[0];
@@ -1044,14 +1052,66 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
                 context.clearRect(0, 0, canvas.width, canvas.height);
               }
             });
-            myPlot.on('plotly_click', function(eventdata){
-              var points = eventdata.points[0];
-              if (points.curveNumber === 1) {
-                context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
-              }
-            });
-          }
+
+            // myPlot.on('plotly_click', function(eventdata){
+            //   var points = eventdata.points[0];
+            //   if (points.curveNumber === 1) {
+            //     context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
+            //   }
+            // });
             
+            const sel_options = {'width': 200, 'height': 125};
+            const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);   
+
+            // TODO: replace by something simpler
+            myPlot.on('plotly_selected', function(eventdata){
+              var tbl = <HTMLTableElement>document.getElementById('tableSelections');
+              if (eventdata != null && 'points' in eventdata) {
+                var points = eventdata.points;
+                console.log(points);
+                points.forEach(function(pt) {
+                  const tr = tbl.insertRow();
+
+                  var ismiles = '';
+                  var iactiv = ''; 
+                  var canvasid = '';
+                  if (pt.curveNumber === 0) {
+                    ismiles = pt.meta;
+                    iactiv = pt["marker.color"];
+                    canvasid = 'reference'+pt.pointNumber;
+                  }
+                  else {
+                    tr.setAttribute('style', 'background: #f7f9ea');
+                    ismiles = result['SMILES'][pt.pointNumber];
+                    iactiv = pt.meta.toFixed(2);
+                    canvasid = 'prediction'+pt.pointNumber;
+                  }
+                  const tdname = tr.insertCell();
+                  tdname.appendChild(document.createTextNode(pt.text));
+
+                  const tdsmiles = tr.insertCell();
+                  tdsmiles.setAttribute('class', 'align-middle text-center' )
+                  const icanvas = document.createElement('canvas')
+                  icanvas.setAttribute('id', canvasid);
+                  tdsmiles.appendChild(icanvas);
+                  SmilesDrawer.parse(ismiles, function(tree) {
+                    smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
+                  });
+
+                  const tdactiv = tr.insertCell();
+                  tdactiv.setAttribute('class', 'align-right' )
+                  tdactiv.appendChild(document.createTextNode(iactiv));
+
+                });
+              }
+              else {
+                for(var i = 1;i<tbl.rows.length;){
+                  tbl.deleteRow(i);
+              }
+              }  
+            });
+
+          }
             
           this.predictionVisible = true;
             
