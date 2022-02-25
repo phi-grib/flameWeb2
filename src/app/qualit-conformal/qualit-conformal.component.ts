@@ -149,7 +149,8 @@ export class QualitConformalComponent implements OnChanges {
               height: 500,
               scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
             },
-            modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+            // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+            modeBarButtonsToRemove: ['autoScale2d', 'hoverCompareCartesian']    
       }
     };
 
@@ -434,7 +435,7 @@ export class QualitConformalComponent implements OnChanges {
             const me = this;
             
             // common to all plots in this component
-            const options = {'width': 300, 'height': 250};
+            const options = {'width': 400, 'height': 250};
             const smilesDrawer = new SmilesDrawer.Drawer(options);
 
             // scores plot                 
@@ -453,9 +454,52 @@ export class QualitConformalComponent implements OnChanges {
                   smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
                 });
               });
+              
               // on onhover, clear the canvas
               myPlot.on('plotly_unhover', function(data){
                 context.clearRect(0, 0, canvas.width, canvas.height);
+              });
+
+              const sel_options = {'width': 200, 'height': 125};
+              const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);  
+
+              myPlot.on('plotly_selected', function(eventdata){
+                var tbl = <HTMLTableElement>document.getElementById('tableSelections');
+                if (eventdata != null && 'points' in eventdata) {
+                  var points = eventdata.points;
+                  console.log(points);
+                  points.forEach(function(pt) {
+                    const tr = tbl.insertRow();
+          
+                    var ismiles = info['SMILES'][pt.pointNumber];
+                    var iactiv = pt["marker.color"];
+                    var canvasid = 'qlseries'+pt.pointNumber;
+
+                    // iactiv = pt.meta.toFixed(2);
+
+                    const tdname = tr.insertCell();
+                    tdname.appendChild(document.createTextNode(pt.text));
+          
+                    const tdsmiles = tr.insertCell();
+                    tdsmiles.setAttribute('class', 'align-middle text-center' )
+                    const icanvas = document.createElement('canvas')
+                    icanvas.setAttribute('id', canvasid);
+                    tdsmiles.appendChild(icanvas);
+                    SmilesDrawer.parse(ismiles, function(tree) {
+                      smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
+                    });
+          
+                    const tdactiv = tr.insertCell();
+                    tdactiv.setAttribute('class', 'align-right' )
+                    tdactiv.appendChild(document.createTextNode(iactiv));
+          
+                  });
+                }
+                else {
+                  for(var i = 1;i<tbl.rows.length;){
+                    tbl.deleteRow(i);
+                  }
+                }  
               });
               
               myPlot.on ('plotly_afterplot', function(data){

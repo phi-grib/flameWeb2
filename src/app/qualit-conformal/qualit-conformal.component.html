@@ -221,17 +221,32 @@
                     <canvas id="scores_canvas"></canvas>
                     <div id="scoresDIV"></div>
                 </div>
+
                 <div class="card-body" *ngIf="!this.model.secret">
                         <div class="row justify-content-between">
+                            <div id="scoresDIV"></div>
                             <div class="col">
-                                <plotly-plot 
+                                <canvas class= "fixed_canvas" id="scores_canvas"></canvas>
+
+                                <table id ="tableSelections" class="minitable compact">
+                                    <thead>
+                                      <tr>
+                                        <th style="width: 20%">Name</th>
+                                        <th class="align-middle text-center" style="width: 70%">Structure</th>
+                                        <th class="align-right" style="width: 10%">Activity</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+
+                                <!-- <plotly-plot 
                                     [data]="plotPie.data" 
                                     [layout]="plotPie.layout" 
                                     [config]="plotPie.config">
-                                </plotly-plot>  
-                                <canvas id="scores_canvas"></canvas>
+                                </plotly-plot>   -->
+
                             </div>
-                            <div id="scoresDIV"></div>
                         </div>
                 </div>
             </div>

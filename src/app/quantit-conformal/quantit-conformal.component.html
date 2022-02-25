@@ -199,26 +199,43 @@
                 
                 <div class="card-body"  *ngIf="!this.model.secret">
                     <div class="row justify-content-between">
+                        <div id="scoresDIV"></div>
                         <div class="col">
-                            <plotly-plot 
+                            <canvas class="fixed_canvas"  id="scores_canvas"></canvas>
+
+                            <table id ="tableSelections" class="minitable compact">
+                                <thead>
+                                  <tr>
+                                    <th style="width: 20%">Name</th>
+                                    <th class="align-middle text-center" style="width: 70%">Structure</th>
+                                    <th class="align-right" style="width: 10%">Activity</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                            <!-- <plotly-plot 
                                 [data]="plotViolin.data" 
                                 [layout]="plotViolin.layout" 
                                 [config]="plotViolin.config">
-                            </plotly-plot>  
-                            <canvas id="scores_canvas"></canvas>
+                            </plotly-plot>   -->
+                            
                         </div>
-                        <div id="scoresDIV"></div>
                     </div>
                 </div>
             </div>
             <!--SERIES TAB END-->
 
-            <!--SERIES TAB-->
+            <!--OTHER TAB-->
             <div class="tab-pane fade" id="pills-other" role="tabpanel" aria-labelledby="pills-other-tab">
                 <div class="card-body" *ngIf="this.model.secret">
                     Nothing to show for secret models
                 </div>
+
+
                 <div class="card-body" *ngIf="!this.model.secret">
+
                     <div class="col" *ngIf="this.features">
                         <plotly-plot 
                             [data]="plotFeatures.data" 
@@ -230,6 +247,7 @@
                             <button type="button" class="btn btn-ets-ext" data-toggle="modal" (click)="downloadFeatures()">Download</button>
                         </div>
                     </div>
+
                     <div class="card-body" *ngIf="!this.features"> 
                         <div class="alert alert-info text-center" role="alert">
                             No additional model information
@@ -237,7 +255,7 @@
                     </div>
                 </div>
             </div>
-            <!--SERIES TAB END-->
+            <!--OTHER TAB END-->
         </div>
     </div>
 </div>

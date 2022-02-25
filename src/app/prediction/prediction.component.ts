@@ -958,7 +958,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     const sel_options = {'width': 200, 'height': 125};
     const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);   
 
-    // TODO: replace by something simpler
     myPlot.on('plotly_selected', function(eventdata){
       var tbl = <HTMLTableElement>document.getElementById('tableSelections');
       if (eventdata != null && 'points' in eventdata) {
