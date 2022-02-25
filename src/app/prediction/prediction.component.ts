@@ -954,7 +954,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);   
 
     myPlot.on('plotly_selected', function(eventdata){
-      var tbl = <HTMLTableElement>document.getElementById('tableSelections');
+      var tbl = <HTMLTableElement>document.getElementById('tablePredictionSelections');
       if (eventdata != null && 'points' in eventdata) {
         var points = eventdata.points;
         console.log(points);
