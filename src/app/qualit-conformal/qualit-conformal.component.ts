@@ -454,7 +454,7 @@ export class QualitConformalComponent implements OnChanges {
                   smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
                 });
               });
-              
+
               // on onhover, clear the canvas
               myPlot.on('plotly_unhover', function(data){
                 context.clearRect(0, 0, canvas.width, canvas.height);
@@ -479,6 +479,7 @@ export class QualitConformalComponent implements OnChanges {
 
                     const tdname = tr.insertCell();
                     tdname.appendChild(document.createTextNode(pt.text));
+                    tdname.setAttribute('style', 'max-width:100px')
           
                     const tdsmiles = tr.insertCell();
                     tdsmiles.setAttribute('class', 'align-middle text-center' )

@@ -550,6 +550,7 @@ export class QuantitConformalComponent implements OnChanges {
 
                   const tdname = tr.insertCell();
                   tdname.appendChild(document.createTextNode(pt.text));
+                  tdname.setAttribute('style', 'max-width:100px')
         
                   const tdsmiles = tr.insertCell();
                   tdsmiles.setAttribute('class', 'align-middle text-center' )

@@ -465,11 +465,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     // console.log(update0);
   }
 
-
-
-
-
-
   drawReportHeader () {
     const options = {'width': 600, 'height': 300};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
@@ -982,6 +977,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
           }
           const tdname = tr.insertCell();
           tdname.appendChild(document.createTextNode(pt.text));
+          tdname.setAttribute('style', 'max-width:100px')
 
           const tdsmiles = tr.insertCell();
           tdsmiles.setAttribute('class', 'align-middle text-center' )
@@ -1001,7 +997,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       else {
         for(var i = 1;i<tbl.rows.length;){
           tbl.deleteRow(i);
-      }
+        }
       }  
     });
   }
