@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges } from '@angular/core';
+import { Component, ViewChildren, QueryList, ElementRef, Input, OnChanges } from '@angular/core';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonService } from '../common.service';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
@@ -6,10 +6,10 @@ import { PredictionService } from './prediction.service';
 import { Prediction, CustomHTMLElement, Globals } from '../Globals';
 import 'datatables.net-bs4';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
-import { flatten } from '@angular/compiler';
-import { stringify } from 'querystring';
+// import { flatten } from '@angular/compiler';
+// import { stringify } from 'querystring';
 
 declare var $: any;
 
@@ -20,7 +20,8 @@ declare var $: any;
   encapsulation: ViewEncapsulation.ShadowDom*/
 })
 
-export class PredictionComponent implements AfterViewInit, OnChanges {
+// export class PredictionComponent implements AfterViewInit, OnChanges {
+export class PredictionComponent implements OnChanges {
 
   @Input() predictionName;
   @ViewChildren('cmp') components: QueryList<ElementRef>;
@@ -1144,86 +1145,103 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   savePDF() {
 
     const pdf = new jsPDF();
-    pdf.autoTable({
-      head: [this.head],
-      body: this.info,
-      headStyles: {
-        2: { halign: 'center'},
-        3: { halign: 'center'},
-      },
-      columnStyles: {
-        0: {columnWidth: 40},
-        1: {columnWidth: 40},
-        2: {columnWidth: 10, halign: 'center'},
-        3: {columnWidth: 10, halign: 'center'},
-      }
-    });
+
+    // old version of autoTable
+
+    // pdf.autoTable({
+    //   head: [this.head],
+    //   body: this.info,
+    //   headStyles: {
+    //     2: { halign: 'center'},
+    //     3: { halign: 'center'},
+    //   },
+    //   columnStyles: {
+    //     0: {columnWidth: 40},
+    //     1: {columnWidth: 40},
+    //     2: {columnWidth: 10, halign: 'center'},
+    //     3: {columnWidth: 10, halign: 'center'},
+    //   }
+    // });
+
+    // autoTable (pdf,{
+    //   head: [this.head],
+    //   body: this.info,
+    //   columnStyles: {
+    //     0: {cellWidth: 40},
+    //     1: {cellWidth: 40},
+    //     2: {cellWidth: 10},
+    //     3: {cellWidth: 10}
+    //   }
+    // } );
+
+    autoTable (pdf,{html: '#prediction'} );
+
     pdf.save(this.prediction.name + '.pdf');
   }
 
-  ngAfterViewInit() {
-    // pdf.autoTable({html: '#info'});
-    this.info = [];
-    this.head = ['Name', 'Mol'];
+//   ngAfterViewInit() {
+//     // pdf.autoTable({html: '#info'});
+//     this.info = [];
+//     this.head = ['Name', 'Mol'];
 
-    if (this.predictionResult !== undefined) {
-      if (this.predictionResult.ymatrix) {
-        this.head.push('Value');
-      }
-      if ( this.predictionResult.values) {
-        this.head.push('Prediction');
-      }
-      if ( this.predictionResult.upper_limit) {
-        this.head.push('Upper limit');
-      }
-      if ( this.predictionResult.lower_limit) {
-        this.head.push('Lower limit');
-      }
-      if ( this.predictionResult.c0) {
-        this.head.push('Inactive');
-      }
-      if ( this.predictionResult.c1) {
-        this.head.push('Active');
-      }
-      if ( this.predictionResult.ensemble_c0) {
-        this.head.push('Ensemble Class 0');
-      }
-      if ( this.predictionResult.ensemble_c1) {
-        this.head.push('Ensemble Class 1');
-      }
+//     if (this.predictionResult !== undefined) {
+//       if (this.predictionResult.ymatrix) {
+//         this.head.push('Value');
+//       }
+//       if ( this.predictionResult.values) {
+//         this.head.push('Prediction');
+//       }
+//       if ( this.predictionResult.upper_limit) {
+//         this.head.push('Upper limit');
+//       }
+//       if ( this.predictionResult.lower_limit) {
+//         this.head.push('Lower limit');
+//       }
+//       if ( this.predictionResult.c0) {
+//         this.head.push('Inactive');
+//       }
+//       if ( this.predictionResult.c1) {
+//         this.head.push('Active');
+//       }
+//       if ( this.predictionResult.ensemble_c0) {
+//         this.head.push('Ensemble Class 0');
+//       }
+//       if ( this.predictionResult.ensemble_c1) {
+//         this.head.push('Ensemble Class 1');
+//       }
 
-      let prediction = [];
-      for (let i = 0; i < this.predictionResult.SMILES.length;) {
-        prediction = [];
-        prediction = [this.predictionResult.obj_nam[i], this.predictionResult.SMILES[i]];
+//       let prediction = [];
+//       for (let i = 0; i < this.predictionResult.SMILES.length;) {
+//         prediction = [];
+//         prediction = [this.predictionResult.obj_nam[i], this.predictionResult.SMILES[i]];
 
-        if (this.predictionResult.ymatrix) {
-          prediction.push(this.predictionResult.ymatrix[i].toFixed(3));
-        }
-        if (this.predictionResult.values) {
-          prediction.push(this.predictionResult.values[i].toFixed(3));
-        }
-        if (this.predictionResult.upper_limit) {
-          prediction.push(this.predictionResult.upper_limit[i].toFixed(3));
-        }
-        if (this.predictionResult.lower_limit) {
-          prediction.push(this.predictionResult.lower_limit[i].toFixed(3));
-        }
-        if (this.predictionResult.c0) {
-          prediction.push(this.predictionResult.c0[i]);
-        }
-        if (this.predictionResult.c1) {
-          prediction.push(this.predictionResult.c1[i]);
-        }
-        if ( this.predictionResult.ensemble_c0) {
-          this.head.push(this.predictionResult.ensemble_c0[i].toFixed(3));
-        }
-        if ( this.predictionResult.ensemble_c1) {
-          this.head.push(this.predictionResult.ensemble_c1[i].toFixed(3));
-        }
-        this.info.push(prediction);
-        i = i + 1;
-      }
-    }
-  }
+//         if (this.predictionResult.ymatrix) {
+//           prediction.push(this.predictionResult.ymatrix[i].toFixed(3));
+//         }
+//         if (this.predictionResult.values) {
+//           prediction.push(this.predictionResult.values[i].toFixed(3));
+//         }
+//         if (this.predictionResult.upper_limit) {
+//           prediction.push(this.predictionResult.upper_limit[i].toFixed(3));
+//         }
+//         if (this.predictionResult.lower_limit) {
+//           prediction.push(this.predictionResult.lower_limit[i].toFixed(3));
+//         }
+//         if (this.predictionResult.c0) {
+//           prediction.push(this.predictionResult.c0[i]);
+//         }
+//         if (this.predictionResult.c1) {
+//           prediction.push(this.predictionResult.c1[i]);
+//         }
+//         if ( this.predictionResult.ensemble_c0) {
+//           this.head.push(this.predictionResult.ensemble_c0[i].toFixed(3));
+//         }
+//         if ( this.predictionResult.ensemble_c1) {
+//           this.head.push(this.predictionResult.ensemble_c1[i].toFixed(3));
+//         }
+//         this.info.push(prediction);
+//         i = i + 1;
+//       }
+//     }
+//   }
 }
