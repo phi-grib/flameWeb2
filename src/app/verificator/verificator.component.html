@@ -43,7 +43,8 @@
                                         {{data[1]['Data checking'][key].comments}}
                                     </td>
                                     <td>
-                                        <a *ngIf="data[1]['Data checking'][key].status == 'Failed' && data[1]['Data checking'][key].Information.length > 0" [href]="'#Datachecking_'+key" role="button" class="btn btn-ets-do" data-toggle="modal" (click)="details('Data checking',key)">Details</a>
+                                        <a *ngIf="data[1]['Data checking'][key].status == 'Failed' && (data[1]['Data checking'][key].Information.length > 0 || data[1]['Data checking'][key].Extra_Information?.length > 0) " [href]="'#Datachecking_'+key" role="button" class="btn btn-ets-do" data-toggle="modal"
+                                            (click)="details('Data checking',key)">Details</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -71,7 +72,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-
                                 <tr *ngFor="let key of objectKeys(data[1]['Model testing'])">
                                     <td>{{key}}</td>
                                     <td [ngStyle]="{color: data[1]['Model testing'][key].status =='Passed' ? 'green': 'red'}">{{data[1]['Model testing'][key].status}}</td>
@@ -87,7 +87,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="card">
                 <div class="card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                     <h5 class="mb-0">
@@ -110,12 +109,12 @@
 
                                 <tr *ngFor="let key of objectKeys(data[1]['Documentation'])">
                                     <td>{{key}}</td>
-                                    <td [ngStyle]="{color: data[1]['Documentation'][key].status =='Passed' ? 'green': 'red'}">{{data[1]['Documentation'][key].status}}</td>
+                                    <td [ngStyle]="{color: data[1]['Documentation'][key].status =='Passed' ? 'green': data[1]['Documentation'][key].status == 'Review' ? '#e9a933': 'red'}">{{data[1]['Documentation'][key].status}}</td>
                                     <td class="text-justify">
                                         {{data[1]['Documentation'][key].comments}}
                                     </td>
                                     <td>
-                                        <a *ngIf="data[1]['Documentation'][key].status == 'Failed' && data[1]['Documentation'][key].Information.length > 0" [href]="'#Documentation_'+key" role="button" class="btn btn-ets-do" data-toggle="modal" (click)="details('Documentation',key)">Details</a>
+                                        <a *ngIf="data[1]['Documentation'][key].status == 'Failed' || 'Review' && objectKeys(data[1]['Documentation'][key].Information).length > 0" [href]="'#Documentation_'+key" role="button" class="btn btn-ets-do" data-toggle="modal" (click)="details('Documentation',key)">Details</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -124,7 +123,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- Modals 1- Data checking -->
@@ -147,7 +145,6 @@
                                     Data checking
                                     <!-- <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button> -->
                                 </h5>
-
                             </div>
                             <div>
                                 <div class="card-body p-2 pl-5 pr-5">
@@ -188,10 +185,7 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-ets-do" data-dismiss="modal">Close</button>
@@ -199,14 +193,46 @@
             </div>
         </div>
     </div>
+    <!-- End Model Modal -->
+    <!-- Activity Modal -->
+    <div id="Datachecking_activity" class="modal fade ml-2">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Model:<span class="model_name ml-1">{{ model.name }}</span
+                ><span class="comment ml-1">{{ model.modelID }}</span>
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="accordion mt-3" id="detailsAccordion">
+                        <div class="card">
+                            <div class="card-header" id="headingDetailsZero" data-toggle="collapse" data-target="#collapseDetailsZero" aria-expanded="true" aria-controls="collapseDetailsZero">
+                                <h5 class="mb-0">
+                                    Data checking
+                                    <!-- <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button> -->
+                                </h5>
+                            </div>
+                            <div>
+                                <div class="card-body p-2 pl-5 pr-5">
+                                    <span [ngStyle]="{color: this.datalevel['status'] == 'Failed' ? 'red': 'green'}" *ngFor="let field of datalevel['Information']">{{field.name}} </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ets-do" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Activity Modal -->
     <!-- End Modal 1- Data checking -->
 
-
-
-
-
     <!-- Documentation modals -->
-    <div id="Documentation_fields" class="modal fade ml-2">
+    <!-- fields modal -->
+    <div id="Documentation_fields" class="modal fade">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -221,9 +247,7 @@
                             <div class="card-header" id="headingDetailsZero" data-toggle="collapse" data-target="#collapseDetailsZero" aria-expanded="true" aria-controls="collapseDetailsZero">
                                 <h5 class="mb-0">
                                     Documentation
-                                    <!-- <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button> -->
                                 </h5>
-
                             </div>
                             <div>
                                 <div class="card-body p-2 pl-5 pr-5">
@@ -233,14 +257,69 @@
                                             <span [ngStyle]="{color: this.datalevel['status'] == 'Failed' ? 'red': 'green'}" *ngFor="let field of datalevel['Information']">{{field}}  </span>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
-
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ets-do" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- execSummary modal -->
+    <div id="Documentation_ExecSummary" class="modal fade">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Model:<span class="model_name ml-1">{{ model.name }}</span
+                ><span class="comment ml-1">{{ model.modelID }}</span>
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="accordion mt-3" id="detailsAccordion">
+                        <div class="card">
+                            <div class="card-header" id="headingDetailsZero" data-toggle="collapse" data-target="#collapseDetailsZero" aria-expanded="true" aria-controls="collapseDetailsZero">
+                                <h2 class="mb-0">
+                                    Executive Summary: {{model.name}}
+                                </h2>
+                            </div>
+                            <div>
+                                <div class="card-body p-2 pl-5 pr-5">
+                                    <div id="collapseDetailsZero" class="collapse show" aria-labelledby="headingDetailsZero" data-parent="#detailsAccordion">
+                                        <div class="card-body p-2 pl-5 pr-5" *ngIf="datalevel">
+                                            <table class="table table-fixed">
+                                                <tbody>
+                                                    <tr>
+                                                        <th style="width: 20%;" scope="col"></th>
+                                                        <th style="width: 80%;" scope="col">{{datalevel.Information[0].title}}</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Interpretation</td>
+                                                        <td>{{datalevel.Information[0].Interpretation}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Methodology</td>
+                                                        <td>{{datalevel.Information[0].Methodology}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Training set</td>
+                                                        <td>{{datalevel.Information[0].Training_set}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Val. Internal</td>
+                                                        <td>{{datalevel.Information[0].Val_internal}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-ets-do" data-dismiss="modal">Close</button>
@@ -249,6 +328,7 @@
         </div>
     </div>
 
+    <!-- End documentation modals -->
     <div *ngIf="!this.data">
         <div class="alert alert-warning" role="alert">
             Press verify button to generate the model verification
