@@ -95,7 +95,8 @@ export class QualitConformalComponent implements OnChanges {
             showscale: false,
             cmax: 1.0,
             cmin: 0.0,
-            size: 14,
+            // size: 14,
+            size: 10,
             // line: {
             //   width: 2
             // },
@@ -104,6 +105,25 @@ export class QualitConformalComponent implements OnChanges {
             }
           },
           hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
+        },
+        {
+          x: [],
+          y: [],
+          // name: 'density',
+          // ncontours: 20,
+          // colorscale: 'Greys',
+          // colorscale: 'Hot',
+          // autocolorscales: true, 
+          autocontour: true,
+          // reversescale: true,
+          showscale: false,
+          type: 'histogram2dcontour',
+          hoverinfo: 'skip',
+          contours: { 
+            // coloring: "none", 
+            // showlines: false,
+            coloring: "heatmap" 
+          }
         }
       ],
       layout: { 
@@ -270,6 +290,8 @@ export class QualitConformalComponent implements OnChanges {
       this.modelWarning = '';
       this.plotScores.data[0].x =[];
       this.plotScores.data[0].y =[];
+      this.plotScores.data[1].x =[];
+      this.plotScores.data[1].y =[];
       this.plotScores.data[0].text =[];
       this.plotScores.data[0].marker.color = [];
       this.predictData[0].r = [0, 0, 0, 0];
@@ -348,6 +370,8 @@ export class QualitConformalComponent implements OnChanges {
 
             this.plotScores.data[0].x = info['PC1'];
             this.plotScores.data[0].y = info['PC2'];
+            this.plotScores.data[1].x = info['PC1'];
+            this.plotScores.data[1].y = info['PC2'];            
             this.plotScores.data[0].text = info['obj_nam'];
             this.plotScores.data[0].marker.color = info['ymatrix'];
 
