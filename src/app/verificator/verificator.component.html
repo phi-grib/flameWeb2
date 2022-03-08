@@ -314,6 +314,24 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                            <div class="form-group pt-4">
+                                                <div class="mb-3">
+                                                    <label for="exampleFormControlTextarea1" class="form-label">Comments</label>
+                                                    <textarea class="form-control" id="comment" rows="3"></textarea>
+                                                </div>
+                                                <div class="d-inline-block form-check">
+                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="reviewed">
+                                                    <label class="form-check-label" for="flexRadioDefault1">
+                                                      Reviewed
+                                                    </label>
+                                                </div>
+                                                <div class=" ml-4 d-inline-block form-check">
+                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="notReviewed" checked>
+                                                    <label class="form-check-label" for="flexRadioDefault2">
+                                                      Not Reviewed
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -322,7 +340,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-ets-do" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-ets-do" (click)="execSummary()">Save Changes</button>
+                    <button type="button" class="btn btn-ets-delete" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

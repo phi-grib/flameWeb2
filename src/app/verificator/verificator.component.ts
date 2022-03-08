@@ -117,6 +117,10 @@ export class VerificatorComponent implements OnInit {
   }); 
   }
 
+  execSummary(){
+    
+  }
+
   /**
    * provides extra information to the user if needed
    * @param level
