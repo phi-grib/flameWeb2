@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, Input, OnChanges } from '@angular/core';
+import { Component, ViewChildren, QueryList, ElementRef, Input, OnChanges } from '@angular/core';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonService } from '../common.service';
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
@@ -6,9 +6,10 @@ import { PredictionService } from './prediction.service';
 import { Prediction, CustomHTMLElement, Globals } from '../Globals';
 import 'datatables.net-bs4';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
-import { flatten } from '@angular/compiler';
+// import { flatten } from '@angular/compiler';
+// import { stringify } from 'querystring';
 
 declare var $: any;
 
@@ -19,7 +20,8 @@ declare var $: any;
   encapsulation: ViewEncapsulation.ShadowDom*/
 })
 
-export class PredictionComponent implements AfterViewInit, OnChanges {
+// export class PredictionComponent implements AfterViewInit, OnChanges {
+export class PredictionComponent implements OnChanges {
 
   @Input() predictionName;
   @ViewChildren('cmp') components: QueryList<ElementRef>;
@@ -94,11 +96,18 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       [1.0, 'rgb(160, 160, 160)'],
     ];
   
+    // greencolorscale = [
+    //   [0.0, 'rgb(107, 232, 49)'],
+    //   [0.5, 'rgb(107, 232, 49)'],
+    //   [1.0, 'rgb(107, 232, 49)'],
+    // ];
+
     greencolorscale = [
-      [0.0, 'rgb(107, 232, 49)'],
-      [0.5, 'rgb(107, 232, 49)'],
-      [1.0, 'rgb(107, 232, 49)'],
+      [0.0, 'rgb(107, 107, 107)'],
+      [0.5, 'rgb(107, 107, 107)'],
+      [1.0, 'rgb(107, 107, 107)'],
     ];
+
 
     redcolorscale = [
       [0.0, 'rgb(255, 0, 0)'],
@@ -138,7 +147,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         mode: 'markers+text', 
         textfont : {
           fontStyle: 'Barlow Semi Condensed, sans-serif',
-          color: '#59c427',
+          // color: '#59c427',
+          color: 'grey',
           size: 16
         },
         textposition: 'top right',
@@ -165,7 +175,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
       showlegend: false,
       showtitle: true,
       titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-      title: 'Prediction projected on training series (using model X matrix)',
+      title: 'Prediction projected on training series',
       xaxis: {
         zeroline: true,
         showgrid: true,
@@ -199,7 +209,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         height: 600,
         scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
       },
-      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']
+      // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']
+      modeBarButtonsToRemove: ['autoScale2d','hoverCompareCartesian']
     }
   };
 
@@ -763,7 +774,6 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   }
 
   updatePlotCombo() {
-
     const xi = this.predictionResult.xmatrix[this.molIndex];
     // console.log (xi);
      
@@ -894,6 +904,105 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
     }
   }
 
+  setScoresPlot (result) {
+    const options = {'width': 400, 'height': 250};
+    const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
+
+    // const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
+    // const context_ref = canvas_ref.getContext('2d');
+
+    const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
+    const context = canvas.getContext('2d');
+    
+    PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+    
+    let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
+    
+    // on hover, draw the molecule
+    myPlot.on('plotly_hover', function(eventdata){ 
+      var points = eventdata.points[0];
+      if (points.curveNumber === 1) {
+        SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
+          smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
+          // smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
+        });   
+        // context_ref.font = "30px Barlow Semi Condensed";
+        // context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
+      }
+      else {
+        SmilesDrawer.parse(points.meta, function(tree) {
+          smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
+        });
+      }
+    });
+
+    // on onhover, clear the canvas
+    myPlot.on('plotly_unhover', function(eventdata){
+      var points = eventdata.points[0];
+      if (points.curveNumber === 0) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    });
+
+    // myPlot.on('plotly_click', function(eventdata){
+    //   var points = eventdata.points[0];
+    //   if (points.curveNumber === 1) {
+    //     context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
+    //   }
+    // });
+    
+    const sel_options = {'width': 200, 'height': 125};
+    const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);   
+
+    myPlot.on('plotly_selected', function(eventdata){
+      var tbl = <HTMLTableElement>document.getElementById('tablePredictionSelections');
+      if (eventdata != null && 'points' in eventdata) {
+        var points = eventdata.points;
+        console.log(points);
+        points.forEach(function(pt) {
+          const tr = tbl.insertRow();
+
+          var ismiles = '';
+          var iactiv = ''; 
+          var canvasid = '';
+          if (pt.curveNumber === 0) {
+            ismiles = pt.meta;
+            iactiv = pt["marker.color"];
+            canvasid = 'reference'+pt.pointNumber;
+          }
+          else {
+            tr.setAttribute('style', 'background: #f7f9ea');
+            ismiles = result['SMILES'][pt.pointNumber];
+            iactiv = pt.meta.toFixed(2);
+            canvasid = 'prediction'+pt.pointNumber;
+          }
+          const tdname = tr.insertCell();
+          tdname.appendChild(document.createTextNode(pt.text));
+          tdname.setAttribute('style', 'max-width:100px')
+
+          const tdsmiles = tr.insertCell();
+          tdsmiles.setAttribute('class', 'align-middle text-center' )
+          const icanvas = document.createElement('canvas')
+          icanvas.setAttribute('id', canvasid);
+          tdsmiles.appendChild(icanvas);
+          SmilesDrawer.parse(ismiles, function(tree) {
+            smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
+          });
+
+          const tdactiv = tr.insertCell();
+          tdactiv.setAttribute('class', 'align-right' )
+          tdactiv.appendChild(document.createTextNode(iactiv));
+
+        });
+      }
+      else {
+        for(var i = 1;i<tbl.rows.length;){
+          tbl.deleteRow(i);
+        }
+      }  
+    });
+  }
+
   getPrediction() {
     this.predictionVisible = false;
     this.predictionResult = undefined;
@@ -956,6 +1065,8 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
         
         // use a long timeout because this can take a lot of time
         setTimeout(() => {
+
+          // List Tab
           this.components.forEach((child) => {
             SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
               smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
@@ -964,6 +1075,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               });
           });
           
+          // add buttons to table
           const settingsObj: any = {
             dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
             '<"row"<"col-sm-12"tr>>' +
@@ -975,7 +1087,7 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
               { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
             ],
             rowCallback: (row: Node, data: any[] | Object, index: number) => {
-              const self = this;
+              // const self = this;
               $('td', row).unbind('click');
               $('td', row).bind('click', () => {
                 this.tabClickHandler(data);
@@ -984,11 +1096,10 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             },
             destroy: true,
             deferRender: true,
-            // order: []
           };
-
           $('#prediction').DataTable(settingsObj);
-
+          
+          // Report tab
           const me = this;
           $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             if (e.target.id === 'pills-one-tab') {
@@ -997,58 +1108,16 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
             }
           });
 
+          // Series tab
+          // scores plot requires to define interactive behaviour
           if (this.modelMatch){
-
-            const options = {'width': 300, 'height': 300};
-            const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
-    
-            const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
-            const context_ref = canvas_ref.getContext('2d');
-    
-            const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
-            const context = canvas.getContext('2d');
-            
-            PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
-            
-            let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
-            
-            // on hover, draw the molecule
-            myPlot.on('plotly_hover', function(eventdata){ 
-              var points = eventdata.points[0];
-              // console.log (points)
-              if (points.curveNumber === 1) {
-                SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
-                  smilesDrawerScores.draw(tree, 'scores_canvas_ref', 'light', false);
-                });   
-                context_ref.font = "30px Barlow Semi Condensed";
-                context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
-              }
-              else {
-                SmilesDrawer.parse(points.meta, function(tree) {
-                  smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
-                });
-              }
-            });
-            // on onhover, clear the canvas
-            myPlot.on('plotly_unhover', function(eventdata){
-              var points = eventdata.points[0];
-              if (points.curveNumber === 0) {
-                context.clearRect(0, 0, canvas.width, canvas.height);
-              }
-            });
-            myPlot.on('plotly_click', function(eventdata){
-              var points = eventdata.points[0];
-              if (points.curveNumber === 1) {
-                context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
-              }
-            });
+            this.setScoresPlot(result)
           }
-            
-            
+
           this.predictionVisible = true;
             
           }, 500);
-        }
+      }
     );
   }
 
@@ -1076,86 +1145,103 @@ export class PredictionComponent implements AfterViewInit, OnChanges {
   savePDF() {
 
     const pdf = new jsPDF();
-    pdf.autoTable({
-      head: [this.head],
-      body: this.info,
-      headStyles: {
-        2: { halign: 'center'},
-        3: { halign: 'center'},
-      },
-      columnStyles: {
-        0: {columnWidth: 40},
-        1: {columnWidth: 40},
-        2: {columnWidth: 10, halign: 'center'},
-        3: {columnWidth: 10, halign: 'center'},
-      }
-    });
+
+    // old version of autoTable
+
+    // pdf.autoTable({
+    //   head: [this.head],
+    //   body: this.info,
+    //   headStyles: {
+    //     2: { halign: 'center'},
+    //     3: { halign: 'center'},
+    //   },
+    //   columnStyles: {
+    //     0: {columnWidth: 40},
+    //     1: {columnWidth: 40},
+    //     2: {columnWidth: 10, halign: 'center'},
+    //     3: {columnWidth: 10, halign: 'center'},
+    //   }
+    // });
+
+    // autoTable (pdf,{
+    //   head: [this.head],
+    //   body: this.info,
+    //   columnStyles: {
+    //     0: {cellWidth: 40},
+    //     1: {cellWidth: 40},
+    //     2: {cellWidth: 10},
+    //     3: {cellWidth: 10}
+    //   }
+    // } );
+
+    autoTable (pdf,{html: '#prediction'} );
+
     pdf.save(this.prediction.name + '.pdf');
   }
 
-  ngAfterViewInit() {
-    // pdf.autoTable({html: '#info'});
-    this.info = [];
-    this.head = ['Name', 'Mol'];
+//   ngAfterViewInit() {
+//     // pdf.autoTable({html: '#info'});
+//     this.info = [];
+//     this.head = ['Name', 'Mol'];
 
-    if (this.predictionResult !== undefined) {
-      if (this.predictionResult.ymatrix) {
-        this.head.push('Value');
-      }
-      if ( this.predictionResult.values) {
-        this.head.push('Prediction');
-      }
-      if ( this.predictionResult.upper_limit) {
-        this.head.push('Upper limit');
-      }
-      if ( this.predictionResult.lower_limit) {
-        this.head.push('Lower limit');
-      }
-      if ( this.predictionResult.c0) {
-        this.head.push('Inactive');
-      }
-      if ( this.predictionResult.c1) {
-        this.head.push('Active');
-      }
-      if ( this.predictionResult.ensemble_c0) {
-        this.head.push('Ensemble Class 0');
-      }
-      if ( this.predictionResult.ensemble_c1) {
-        this.head.push('Ensemble Class 1');
-      }
+//     if (this.predictionResult !== undefined) {
+//       if (this.predictionResult.ymatrix) {
+//         this.head.push('Value');
+//       }
+//       if ( this.predictionResult.values) {
+//         this.head.push('Prediction');
+//       }
+//       if ( this.predictionResult.upper_limit) {
+//         this.head.push('Upper limit');
+//       }
+//       if ( this.predictionResult.lower_limit) {
+//         this.head.push('Lower limit');
+//       }
+//       if ( this.predictionResult.c0) {
+//         this.head.push('Inactive');
+//       }
+//       if ( this.predictionResult.c1) {
+//         this.head.push('Active');
+//       }
+//       if ( this.predictionResult.ensemble_c0) {
+//         this.head.push('Ensemble Class 0');
+//       }
+//       if ( this.predictionResult.ensemble_c1) {
+//         this.head.push('Ensemble Class 1');
+//       }
 
-      let prediction = [];
-      for (let i = 0; i < this.predictionResult.SMILES.length;) {
-        prediction = [];
-        prediction = [this.predictionResult.obj_nam[i], this.predictionResult.SMILES[i]];
+//       let prediction = [];
+//       for (let i = 0; i < this.predictionResult.SMILES.length;) {
+//         prediction = [];
+//         prediction = [this.predictionResult.obj_nam[i], this.predictionResult.SMILES[i]];
 
-        if (this.predictionResult.ymatrix) {
-          prediction.push(this.predictionResult.ymatrix[i].toFixed(3));
-        }
-        if (this.predictionResult.values) {
-          prediction.push(this.predictionResult.values[i].toFixed(3));
-        }
-        if (this.predictionResult.upper_limit) {
-          prediction.push(this.predictionResult.upper_limit[i].toFixed(3));
-        }
-        if (this.predictionResult.lower_limit) {
-          prediction.push(this.predictionResult.lower_limit[i].toFixed(3));
-        }
-        if (this.predictionResult.c0) {
-          prediction.push(this.predictionResult.c0[i]);
-        }
-        if (this.predictionResult.c1) {
-          prediction.push(this.predictionResult.c1[i]);
-        }
-        if ( this.predictionResult.ensemble_c0) {
-          this.head.push(this.predictionResult.ensemble_c0[i].toFixed(3));
-        }
-        if ( this.predictionResult.ensemble_c1) {
-          this.head.push(this.predictionResult.ensemble_c1[i].toFixed(3));
-        }
-        this.info.push(prediction);
-        i = i + 1;
-      }
-    }
-  }
+//         if (this.predictionResult.ymatrix) {
+//           prediction.push(this.predictionResult.ymatrix[i].toFixed(3));
+//         }
+//         if (this.predictionResult.values) {
+//           prediction.push(this.predictionResult.values[i].toFixed(3));
+//         }
+//         if (this.predictionResult.upper_limit) {
+//           prediction.push(this.predictionResult.upper_limit[i].toFixed(3));
+//         }
+//         if (this.predictionResult.lower_limit) {
+//           prediction.push(this.predictionResult.lower_limit[i].toFixed(3));
+//         }
+//         if (this.predictionResult.c0) {
+//           prediction.push(this.predictionResult.c0[i]);
+//         }
+//         if (this.predictionResult.c1) {
+//           prediction.push(this.predictionResult.c1[i]);
+//         }
+//         if ( this.predictionResult.ensemble_c0) {
+//           this.head.push(this.predictionResult.ensemble_c0[i].toFixed(3));
+//         }
+//         if ( this.predictionResult.ensemble_c1) {
+//           this.head.push(this.predictionResult.ensemble_c1[i].toFixed(3));
+//         }
+//         this.info.push(prediction);
+//         i = i + 1;
+//       }
+//     }
+//   }
 }

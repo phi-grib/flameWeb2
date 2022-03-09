@@ -103,3 +103,30 @@ ul li.nav-item a.active{
   color: #ffffff;
 }
 
+.fixed_canvas {
+  width: 400px;
+  height: 250px;
+  border: 1px solid #B8DCED;
+}
+
+.minitable {
+  background-color: white;
+  background: white;
+  color: #22577A;
+  /* table-layout: fixed; */
+  /* width: 100%; */
+  width: 400px;
+}
+.minitable th{
+  padding-left: 1px;
+  padding-right: 1px;
+  border-bottom: 1px solid #B8DCED;
+  color:#0076a3;
+}
+.minitable td{
+  /* padding: 5px; */
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 12px;
+  border-bottom: 1px solid #B8DCED;
+  vertical-align: middle;
+}

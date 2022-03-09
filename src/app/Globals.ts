@@ -14,6 +14,8 @@ export class Model {
   file_fields = undefined;
   quantitative: boolean = undefined;
   conformal: boolean = undefined;
+  confidential: boolean = undefined;
+  secret: boolean = undefined;
   ensemble: boolean = undefined;
   incremental = false;
   error: string = undefined;

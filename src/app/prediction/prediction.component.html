@@ -38,18 +38,10 @@
     </div>
   </div>
 
-
-  <div class="row" *ngIf="this.predictionResult != undefined && this.predictionError == ''">
-    <!-- <div class="col scrollable" style="padding-left:0px;"> -->
+  <div class="col" *ngIf="this.predictionResult != undefined && this.predictionError == ''">
 
       <div class="card w-100">
-        <!-- <div id="overlay" *ngIf="!this.predictionVisible">
-          <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </div> -->
 
-        <!-- <div id="overlay" *ngIf="!this.predictionVisible && this.globals.mainTabActive=='#predict'"> -->
         <div id="overlay" *ngIf="!this.predictionVisible">
           <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
             <span class="sr-only">Loading...</span>
@@ -65,7 +57,7 @@
           <li class="nav-item">
             <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false">Report</a>
           </li>
-          <li class="nav-item" *ngIf="this.modelMatch && this.modelPresent">
+          <li class="nav-item" *ngIf="this.modelMatch && this.modelPresent && this.predictionResult.PC1proj">
             <a class="nav-link" id="pills-two-tab" data-toggle="tab" href="#pills-two" role="tab" aria-controls="pills-two" aria-selected="false">Projection</a>
           </li>
         </ul>
@@ -76,36 +68,32 @@
           <!--ALL PREDICTIONS-->
           <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
             
-            <div class="row" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']">
-              <div class="card w-100" style="width: 18rem;">
-                <div class="card-body" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']"> 
-                  <div id="container">
-                    <div class="col-3">
-                      <table class="table table-sm">
-                        <tbody>
-                          <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
-                            <td *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key.split('_').join(' ')}}</strong></td>
-                            <td *ngIf="!this.q_measures.includes(key)" class="text-right text-capitalize">{{modelValidationInfo[key][1]}}</td>
-                          </tr>
-                        </tbody>
-                      </table> 
-                    </div>
-                    <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
-                      <app-confusion-matrix 
-                      [TP] = "this.modelValidationInfo['TP'][1]"
-                      [FP] = "this.modelValidationInfo['FP'][1]"
-                      [FN] = "this.modelValidationInfo['FN'][1]"
-                      [TN] = "this.modelValidationInfo['TN'][1]"
-                      ></app-confusion-matrix>                 
-                    </div>
-                    <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
-                      <plotly-plot 
-                      [data]="predictData" 
-                      [layout]="plotCommon.layout"
-                      [config]="plotCommon.config">
-                      </plotly-plot> 
-                    </div>
-                  </div>
+            <div class="card-body" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']"> 
+                <div id="container">
+                <div class="col-3">
+                  <table class="table table-sm">
+                    <tbody>
+                      <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
+                        <td *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key.split('_').join(' ')}}</strong></td>
+                        <td *ngIf="!this.q_measures.includes(key)" class="text-right text-capitalize">{{modelValidationInfo[key][1]}}</td>
+                      </tr>
+                    </tbody>
+                  </table> 
+                </div>
+                <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
+                  <app-confusion-matrix 
+                  [TP] = "this.modelValidationInfo['TP'][1]"
+                  [FP] = "this.modelValidationInfo['FP'][1]"
+                  [FN] = "this.modelValidationInfo['FN'][1]"
+                  [TN] = "this.modelValidationInfo['TN'][1]"
+                  ></app-confusion-matrix>                 
+                </div>
+                <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
+                  <plotly-plot 
+                  [data]="predictData" 
+                  [layout]="plotCommon.layout"
+                  [config]="plotCommon.config">
+                  </plotly-plot> 
                 </div>
               </div>
             </div>
@@ -133,6 +121,8 @@
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.c1">Active</th>-->
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">Ensemble Class 0</th>-->
                     <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">Ensemble Class 1</th>-->
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.p0">Prob. Class 0</th>
+                    <th class="align-middle text-center" *ngIf="this.predictionResult.p1">Prob. Class 1</th>
       
                   </tr>
                 </thead>
@@ -153,6 +143,9 @@
                     <td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">
                       {{this.predictionResult.lower_limit[i].toFixed(3)}} to {{this.predictionResult.upper_limit[i].toFixed(3)}}
                     </td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.p0">{{this.predictionResult.p0[i].toFixed(3)}}</td>
+                    <td class="align-middle text-center" *ngIf="this.predictionResult.p1">{{this.predictionResult.p1[i].toFixed(3)}}</td>
+
                     <!-- <td class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">{{this.predictionResult.lower_limit[i].toFixed(3)}}</td> -->
                     <!--<td class="align-middle text-center" *ngIf="this.predictionResult.c0">{{this.predictionResult.c0[i]}}</td>-->
                     <!--<td class="align-middle text-center" *ngIf="this.predictionResult.c1">{{this.predictionResult.c1[i]}}</td>-->
@@ -273,6 +266,9 @@
                         {{this.predictionResult.lower_limit[molIndex].toFixed(3)}} 
                      to {{this.predictionResult.upper_limit[molIndex].toFixed(3)}}</span>
                   <span *ngIf="this.modelBuildInfo['conformal'] && !this.modelBuildInfo['quantitative']">{{(this.modelBuildInfo['conformal_confidence'])*100}}% confidence</span>
+                  
+                  <span *ngIf="this.predictionResult.p0"><br>Prob. Class 0: {{(this.predictionResult.p0[molIndex].toFixed(3))}} </span>
+                  <span *ngIf="this.predictionResult.p1"><br>Prob. Class 1: {{(this.predictionResult.p1[molIndex].toFixed(3))}} </span>
 
                 </div>
               </div>
@@ -477,33 +473,60 @@
           <!--REPORT PREDICTIONS END-->
 
           <!--PROJECT PREDICTIONS-->
-          <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab" *ngIf="this.predictionResult != undefined">
+          <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab" *ngIf="this.predictionResult != undefined"> 
             <div class="card-body">
               <div class="row justify-content-between">
+
+
+
                 <div class="col">
-                  <canvas id="scores_canvas_ref"></canvas>
-                  <canvas id="scores_canvas_pre"></canvas>
-                </div>
-                <div class="col">
-                  <div>
-                    <label>Predicted compounds shown as: 
-                    <select id="projectStyle" (change)="changeProjectStyle($event.target.value)">
-                      <option value='names'>circles & names (colored by Activity)</option>
-                      <option value='points'>dots (red)</option>
-                      <option *ngIf="this.dmodx==true" value='dmodx'>dots (colored by DModX)</option>
-                    </select>
-                  </label>
-                  </div>
-                  <div id="scoresPreDIV"></div>
+
+                    <div id="scoresPreDIV"></div>
+
+                    <label class="pt-2">Prediction marks: 
+                      <select id="projectStyle" (change)="changeProjectStyle($event.target.value)">
+                        <option value='names'>circles and names (colored by Activity)</option>
+                        <option value='points'>dots (red)</option>
+                        <option *ngIf="this.dmodx==true" value='dmodx'>dots (colored by DModX)</option>
+                      </select>
+                    </label>
+                    
                 </div>
 
-              </div>
+                <!-- <div >
+                  <canvas id="scores_canvas_ref"></canvas>
+                </div> -->
+                
+                <div class="col">
+  
+                  <canvas class="fixed_canvas" id="scores_canvas_pre"></canvas>
+                  
+                  <table id ="tablePredictionSelections" class="minitable compact">
+                    <thead>
+                      <tr>
+                        <th style="width: 20%">Name</th>
+                        <th class="align-middle text-center" style="width: 70%">Structure</th>
+                        <th class="align-right" style="width: 10%">Activity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+
+                </div>
+
+              </div>  <!-- row -->
+
+
+
+
+
             </div>
           </div>
-          <!--PROJECT PREDICTIONS END-->
+        </div>
+        <!--PROJECT PREDICTIONS END-->
 
-        </div><!--END TABS -->
+  </div><!--END TABS -->
 
-      </div>
-  </div>
+</div>
 

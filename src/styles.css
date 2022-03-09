@@ -1,17 +1,14 @@
 body {
     font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
     font-size: 18px;
+    /* font-size: 14px; */
 }
-
-/* .dropdown {
-  font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
-  font-size: 18px;
-} */
 
 .model_selector {
   font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
   max-width: 100px;
   font-size: 16px;
+  /* font-size: 12px; */
   background-color:#ebebeb;
   border: 1px solid #ebebeb;
 }
@@ -19,6 +16,7 @@ body {
 .method_description {
     font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
     font-size: 18px;
+    /* font-size: 14px; */
     color:#22577a ;
   }
 
@@ -64,13 +62,6 @@ btn.bmd-btn-fab.btn-etransafe,
     color:#0076a3;
     font-weight:bold;
 }
-
-/* .modalClass .modal-dialog {
-    min-width: 90vw;
-    max-width: 90vw;
-    min-height: 90vh;
-    max-height: 90vh;
-} */
 
 .modalClass .modal-dialog {
     min-width: 60vw;

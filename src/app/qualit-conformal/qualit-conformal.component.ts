@@ -95,7 +95,8 @@ export class QualitConformalComponent implements OnChanges {
             showscale: false,
             cmax: 1.0,
             cmin: 0.0,
-            size: 14,
+            // size: 14,
+            size: 10,
             // line: {
             //   width: 2
             // },
@@ -104,6 +105,25 @@ export class QualitConformalComponent implements OnChanges {
             }
           },
           hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
+        },
+        {
+          x: [],
+          y: [],
+          // name: 'density',
+          // ncontours: 20,
+          // colorscale: 'Greys',
+          // colorscale: 'Hot',
+          // autocolorscales: true, 
+          autocontour: true,
+          // reversescale: true,
+          showscale: false,
+          type: 'histogram2dcontour',
+          hoverinfo: 'skip',
+          contours: { 
+            // coloring: "none", 
+            // showlines: false,
+            coloring: "heatmap" 
+          }
         }
       ],
       layout: { 
@@ -149,7 +169,8 @@ export class QualitConformalComponent implements OnChanges {
               height: 500,
               scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
             },
-            modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+            // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+            modeBarButtonsToRemove: ['autoScale2d', 'hoverCompareCartesian']    
       }
     };
 
@@ -259,14 +280,18 @@ export class QualitConformalComponent implements OnChanges {
       }
     }
    
-          
     ngOnChanges(): void {
       this.modelVisible = false;
+      this.modelTypeInfo = {};
+      this.modelValidationInfo = {};
+      this.modelBuildInfo = {};
       this.features = false;
       this.features_method = '';
       this.modelWarning = '';
       this.plotScores.data[0].x =[];
       this.plotScores.data[0].y =[];
+      this.plotScores.data[1].x =[];
+      this.plotScores.data[1].y =[];
       this.plotScores.data[0].text =[];
       this.plotScores.data[0].marker.color = [];
       this.predictData[0].r = [0, 0, 0, 0];
@@ -279,7 +304,6 @@ export class QualitConformalComponent implements OnChanges {
       this.featuresTSV = '';
 
       this.getValidation();
-      // this.modelVisible = true;
     }
     
     isObject(val) {
@@ -305,11 +329,27 @@ export class QualitConformalComponent implements OnChanges {
           const info = result;
           
           this.model.input_type = info.meta.input_type;
-          // console.log(this.model.input_type);
 
           // process warnings
           if (info.warning){
             this.modelWarning = info.warning;
+          }
+
+          for (const modelInfo of info['model_valid_info']) {
+            if (typeof modelInfo[2] === 'number') {
+              modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
+            }
+            if (typeof modelInfo[2] !== 'object') {
+              this.modelValidationInfo[modelInfo[0]] = [modelInfo[1], modelInfo[2]];
+            }
+          }
+          
+          for (let ielement of info['model_build_info']) {
+            this.modelBuildInfo[ielement[0]]=[ielement[1], ielement[2]]
+          }
+          
+          for (let ielement of info['model_type_info']) {
+            this.modelTypeInfo[ielement[0]]=[ielement[1], ielement[2]]
           }
 
           // PCA scores plot
@@ -330,6 +370,8 @@ export class QualitConformalComponent implements OnChanges {
 
             this.plotScores.data[0].x = info['PC1'];
             this.plotScores.data[0].y = info['PC2'];
+            this.plotScores.data[1].x = info['PC1'];
+            this.plotScores.data[1].y = info['PC2'];            
             this.plotScores.data[0].text = info['obj_nam'];
             this.plotScores.data[0].marker.color = info['ymatrix'];
 
@@ -346,27 +388,9 @@ export class QualitConformalComponent implements OnChanges {
             }
           }
 
-          // INFO ABOUT VALIDATION
-          this.modelValidationInfo = {};
-          for (const modelInfo of info['model_valid_info']) {
-            if (typeof modelInfo[2] === 'number') {
-              modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
-            }
-            if (typeof modelInfo[2] !== 'object') {
-              this.modelValidationInfo[modelInfo[0]] = [modelInfo[1], modelInfo[2]];
-            }
-          }
-
-          for (let ielement of info['model_build_info']) {
-            this.modelBuildInfo[ielement[0]]=[ielement[1], ielement[2]]
-          }
-
-          for (let ielement of info['model_type_info']) {
-            this.modelTypeInfo[ielement[0]]=[ielement[1], ielement[2]]
-          }
 
           if ('feature_importances' in info && info['feature_importances']!= null) {
-
+            
             const fval = info['feature_importances'];
             const fnam = info['var_nam'];
 
@@ -435,32 +459,81 @@ export class QualitConformalComponent implements OnChanges {
             const me = this;
             
             // common to all plots in this component
-            const options = {'width': 300, 'height': 250};
+            const options = {'width': 400, 'height': 250};
             const smilesDrawer = new SmilesDrawer.Drawer(options);
 
             // scores plot                 
             const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
             const context = canvas.getContext('2d');
 
-            PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
-            
-            let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
-            
-            // on hover, draw the molecule
-            myPlot.on('plotly_hover', function(eventdata){ 
-              var points = eventdata.points[0];
-              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
+            if (!this.model.secret) {
+              PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+              
+              let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
+              
+              // on hover, draw the molecule
+              myPlot.on('plotly_hover', function(eventdata){ 
+                var points = eventdata.points[0];
+                SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                  smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
+                });
               });
-            });
-            // on onhover, clear the canvas
-            myPlot.on('plotly_unhover', function(data){
-              context.clearRect(0, 0, canvas.width, canvas.height);
-            });
 
-            myPlot.on ('plotly_afterplot', function(data){
-              me.modelVisible = true;
-            });
+              // on onhover, clear the canvas
+              myPlot.on('plotly_unhover', function(data){
+                context.clearRect(0, 0, canvas.width, canvas.height);
+              });
+
+              const sel_options = {'width': 200, 'height': 125};
+              const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);  
+
+              myPlot.on('plotly_selected', function(eventdata){
+                var tbl = <HTMLTableElement>document.getElementById('tableSelections');
+                if (eventdata != null && 'points' in eventdata) {
+                  var points = eventdata.points;
+                  console.log(points);
+                  points.forEach(function(pt) {
+                    const tr = tbl.insertRow();
+          
+                    var ismiles = info['SMILES'][pt.pointNumber];
+                    var iactiv = pt["marker.color"];
+                    var canvasid = 'qlseries'+pt.pointNumber;
+
+                    // iactiv = pt.meta.toFixed(2);
+
+                    const tdname = tr.insertCell();
+                    tdname.appendChild(document.createTextNode(pt.text));
+                    tdname.setAttribute('style', 'max-width:100px')
+          
+                    const tdsmiles = tr.insertCell();
+                    tdsmiles.setAttribute('class', 'align-middle text-center' )
+                    const icanvas = document.createElement('canvas')
+                    icanvas.setAttribute('id', canvasid);
+                    tdsmiles.appendChild(icanvas);
+                    SmilesDrawer.parse(ismiles, function(tree) {
+                      smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
+                    });
+          
+                    const tdactiv = tr.insertCell();
+                    tdactiv.setAttribute('class', 'align-right' )
+                    tdactiv.appendChild(document.createTextNode(iactiv));
+          
+                  });
+                }
+                else {
+                  for(var i = 1;i<tbl.rows.length;){
+                    tbl.deleteRow(i);
+                  }
+                }  
+              });
+              
+              myPlot.on ('plotly_afterplot', function(data){
+                me.modelVisible = true;
+              });
+            }
+            else {
+              this.modelVisible = true;
+            }
 
           }, 100);
         },

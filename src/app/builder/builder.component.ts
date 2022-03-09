@@ -27,7 +27,6 @@ export class BuilderComponent implements OnInit {
     public func: CommonFunctions) { }
 
 
-
   //code to execute when the page is loaded
   ngOnInit() {
     this.getParameters();

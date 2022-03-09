@@ -27,8 +27,8 @@
             <i class = "fas" 
               [ngClass]="{
               'fa-grip-lines': info[3] != 'descriptors',
-              'fa-circle':     info[3] == 'descriptors',
-              'fa-times':      info[3] == 'unk',
+              'fa-circle': info[3] == 'descriptors',
+              'fa-times-circle': info[3] == 'unk',
               'faa-flash animated': this.isBuilding(info[0],info[1]) }"
               [ngStyle]="{'color': (this.isBuilding(info[0],info[1])) ? '#E69400' : (info[3] != 'unk' ? '#51cf66' : 'red') }" 
             aria-hidden="true"></i> 

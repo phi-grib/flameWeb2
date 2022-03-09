@@ -80,6 +80,18 @@ table td {
     border-width: 0px;
 }
 
+label.disabled {
+    cursor: not-allowed;
+    pointer-events: none !important;
+}
+
+.btn.disabled, .btn:disabled {
+    background-color:#bdbdbd ;
+    color: #ffffff;
+    cursor: not-allowed;
+    pointer-events: none !important;
+}
+
 .btn-ets-up {
     background: #0076a3;
     color: #ffffff;

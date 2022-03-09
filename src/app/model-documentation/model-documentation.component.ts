@@ -3,7 +3,7 @@ import { Model, Globals } from '../Globals';
 import { CommonService } from '../common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModelDocumentationService } from './model-documentation.service';
-import { environment } from '../../environments/environment';
+// import { environment } from '../../environments/environment';
 
 // import { MatIconModule } from '@angular/material/icon';
 // import * as FileSaver from 'file-saver';
@@ -80,12 +80,44 @@ export class ModelDocumentationComponent implements OnChanges {
     this.modelDocumentation = JSON.parse(JSON.stringify(this.modelDocumentationBackup));
   }
 
+  array_to_string (inerval: any) {
+    var sval : string = '[';
+    for (let ielement of inerval) {
+      sval += ielement.toString();
+      sval += ', ';
+    }
+    sval = sval.slice(0, -2);
+    sval +=']';
+    return sval;
+  }
+
   //requests documentation from the API through ManageDocumentation get method params(modelName, modelVersion, 'JSON')
   getDocumentation(): void {
     this.documentationVisible = false;
     this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
       result => {
         this.modelDocumentation = result;
+
+        // convert arrays to strings
+        for (const key in this.modelDocumentation){
+          if (typeof this.modelDocumentation[key].value === 'object' ){
+            for (const key2 in this.modelDocumentation[key].value) {
+              const ineritem = this.modelDocumentation[key].value[key2];
+              if (ineritem == null) continue;
+              if (Array.isArray(ineritem)){
+                this.modelDocumentation[key].value[key2] = this.array_to_string(ineritem);
+              }
+              else {
+                if (typeof ineritem === 'object' && 'value' in ineritem){
+                  const inerval = this.modelDocumentation[key].value[key2].value;
+                  if (Array.isArray(inerval)){
+                      this.modelDocumentation[key].value[key2].value = this.array_to_string(inerval);
+                  }
+                }
+              }
+            }
+          }
+        }
 
         // once Documentation fields are loaded, update the template to load ONLY these fields present in the loaded
         // documentation. 
@@ -106,7 +138,7 @@ export class ModelDocumentationComponent implements OnChanges {
           ];
 
         const eBlocks = [
-          ['ID', 'Version', 'Model_title', 'Model_description', 'Keywords', 'Contact', 'Institution', 'Date', 'Endpoint',
+          ['Model_title', 'Model_description', 'Keywords', 'Contact', 'Institution', 'Date', 'Endpoint',
             'Endpoint_units', 'Interpretation', 'Dependent_variable', 'Species',
             'Limits_applicability', 'Experimental_protocol', 'Model_availability',
             'Data_info'],
@@ -139,34 +171,37 @@ export class ModelDocumentationComponent implements OnChanges {
       },
       error => {
         this.modelDocumentation = undefined;
+        // alert('documentation file not found');
       }
     );
     this.documentationVisible = true;
   }
 
-  //calls exportToFile from model-documentation-service to trigger file download (file format modelName.yaml)
+  // YAML files cannot be downloaded directly, because DJANGO shows them in their internal framework
   downloadFile() {
-      this.service.exportToFile(this.modelName, this.modelVersion, 'YAML').subscribe (
-          result => {
-            let text : string = '';
-            for (const x in result){
-              text = text + result[x] + '\n';
-            }
-            let blob = new Blob ([text],  {type: "text/plain;charset=utf-8"})
-            saveAs(blob, this.modelName + '.yaml');
-          },
-          error => {
-            alert('Error updating documentation');
+    this.service.exportToFile(this.modelName, this.modelVersion, 'YAML').subscribe (
+        result => {
+          let text : string = '';
+          for (const x in result){
+            text += result[x] + '\n';
           }
-      );
+          let blob = new Blob ([text],  {type: "text/plain;charset=utf-8"})
+          saveAs(blob, this.modelName + '.yaml');
+        },
+        error => {
+          alert('Error updating documentation');
+        }
+    );
   }
 
-  //calls exportToFile 
+  // calls exportToFile 
   downloadWord() {
     this.service.exportToFile(this.modelName, this.modelVersion, 'WORD')
   }
+
+  // calls exportToFile
   downloadExcel(){
-    this.service.exportToFile(this.modelName,this.modelVersion,'EXCEL')
+    this.service.exportToFile(this.modelName,this.modelVersion, 'EXCEL')
   }
   
   // compresses the changes in the GUI into a JSON delta file
@@ -198,11 +233,23 @@ export class ModelDocumentationComponent implements OnChanges {
 
   // download the training series of the currently selected model/version
   downloadSeries () {
-    const url: string = environment.baseUrl_manage + 'model/' + this.model.name + '/version/' + this.modelVersion + '/series';
+    this.service.downloadSeries(this.model.name, this.model.version)
+  }
 
-    var a = document.createElement("a");
-    a.href = url;
-    a.click();
+  downloadParameters () {
+    this.service.getYAMLfromParameters(this.model.name, this.model.version).subscribe(
+      result => {
+        let text: string = '';
+        for (const x in result) {
+          text = text + result[x] + '\n';
+        }
+        let blob = new Blob([text], { type: "text/plain;charset=utf-8" })
+        saveAs(blob, this.model.name + '.yaml');
+      },
+      error => {
+        alert('Error downloading parameters');
+      }
+    );
   }
 
   // updates the documentation in the backend using the changes introduced in the GUI
@@ -245,6 +292,5 @@ export class ModelDocumentationComponent implements OnChanges {
       }
     
   }
-
 
 }

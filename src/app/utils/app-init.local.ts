@@ -2,14 +2,14 @@ import {KeycloakConfig, KeycloakEventType, KeycloakService} from 'keycloak-angul
 import {filter} from "rxjs/operators";
 
 // THIS WORKS WITH THE LOCAL INSTANCE OF KEYCLOACK
-// const keycloakConfig: KeycloakConfig = {
-//     url: 'http://localhost:8090/auth',
-//     realm: "KH",
-//     credentials: {
-//         secret: "**********"
-//     },
-//     clientId: "knowledge-hub"
-// };
+const keycloakConfig: KeycloakConfig = {
+    url: 'http://localhost:8090/auth',
+    realm: "KH",
+    credentials: {
+        secret: "**********"
+    },
+    clientId: "knowledge-hub"
+};
 
 
 export function initializer(keycloak: KeycloakService): () => Promise<any> {
@@ -29,9 +29,9 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
         return new Promise(async (resolve, reject) => {
             try {
                 await keycloak.init({
-                    //config: keycloakConfig,
+                    config: keycloakConfig,
 
-                    config: "secrets/keycloak.json",
+                    // config: "secrets/keycloak.json",
                     enableBearerInterceptor: true,
                     bearerPrefix: 'Bearer', // Tima thinks capital might be important here
 
