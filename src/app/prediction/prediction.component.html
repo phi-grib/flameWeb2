@@ -479,18 +479,45 @@
 
 
 
-                <div class="col">
+                <div class="col justify-content-between">
 
                     <div id="scoresPreDIV"></div>
 
-                    <label class="pt-2">Prediction marks: 
+                    <!-- <label class="pt-2">Prediction marks: 
                       <select id="projectStyle" (change)="changeProjectStyle($event.target.value)">
                         <option value='names'>circles and names (colored by Activity)</option>
                         <option value='points'>dots (red)</option>
                         <option *ngIf="this.dmodx==true" value='dmodx'>dots (colored by DModX)</option>
                       </select>
-                    </label>
+                    </label> -->
+
+                    <div class="row justify-content-between">
+                      <label class="pt-2">Training series: 
+                        <select id="projectStyleTraining" (change)="changeProjectStyleTraining($event.target.value)">
+                          <option value='grey'>grey</option>
+                          <option value='activity'>activity</option>
+                        </select>
+                      </label>
+                      
+                      <label class="pt-2">Predictions: 
+                        <select id="projectStylePrediction" (change)="changeProjectStylePrediction($event.target.value)">
+                          <option value='red'>red</option>
+                          <option value='activity'>activity</option>
+                          <option *ngIf="this.dmodx==true" value='dmodx'>DModX</option>
+                        </select>
+                      </label>
+
+                      <label class="pt-2">Marker: 
+                        <select id="projectStyleMarker" (change)="changeProjectStyleMarker($event.target.value)">
+                          <option value='names'>circles and names</option>
+                          <option value='dots'>dots</option>
+                          <option value='crosses'>crosses</option>
+                        </select>
+                      </label>
+                    </div>
                     
+
+
                 </div>
 
                 <!-- <div >

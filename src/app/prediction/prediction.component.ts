@@ -50,6 +50,8 @@ export class PredictionComponent implements OnChanges {
   isQuantitative = false;
   isMajority = false;
   showConcentration = false;
+  activity_val = [];
+  dmodx_val = [];
 
   predictData = [{
     offset: 45, 
@@ -154,15 +156,16 @@ export class PredictionComponent implements OnChanges {
         textposition: 'top right',
         marker: {
           color: [],
-          symbol: 'circle-open',
+          // symbol: 'circle-open',
+          symbol: 'circle',
           colorscale: this.greencolorscale, 
           showscale: false, 
           opacity: 1,
           size: 14,
-          line: {
-            color: '#6be831',
-            width: 3
-          }
+          // line: {
+          //   color: '#6be831',
+          //   width: 3
+          // }
         },
         hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
       },
@@ -241,7 +244,7 @@ export class PredictionComponent implements OnChanges {
         arrayminus: []
       },
       hovertemplate:'<b>%{y}</b>: %{x:.2f}<extra></extra>'
-    },
+      },
       {x: [],
        y: [],
        type: 'scatter',
@@ -360,6 +363,83 @@ export class PredictionComponent implements OnChanges {
   message = '';
   
 
+  public changeProjectStyleTraining (value:string) {
+    var update0 = {};
+    const backup_colors0 = this.plotScores.data[0].marker.color;
+
+    if (value == 'grey') {
+      update0 = {
+        marker: {
+          color: backup_colors0,
+          opacity: 0.6,
+          size: 10,
+          colorscale: this.bwcolorscale, 
+          showscale: false, 
+          cauto: true
+        }
+      }
+    }
+    else {
+      var newcolorscale = 'Bluered';
+      if (this.isQuantitative) newcolorscale = 'RdBu';
+
+      // points colored by activity
+      update0 = {
+        marker: {
+          color: backup_colors0,
+          opacity: 0.6,
+          size: 10,
+          colorscale: newcolorscale,
+          showscale: this.isQuantitative, 
+          cauto: true,
+          colorbar: {
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+          }
+        }
+      }
+    }
+    PlotlyJS.restyle('scoresPreDIV', update0, 0);
+  }
+
+  public changeProjectStylePrediction (value:string) {
+    var update1 = {};
+    if (value == 'red'){
+      update1 =  {
+        'marker.color' : 'red',
+        'marker.showscale': false,
+        // 'marker.cauto': false,
+      };
+    }
+    if (value == 'activity') {
+      var newcolorscale = 'Bluered';
+      if (this.isQuantitative) newcolorscale = 'RdBu';
+      update1 =  {
+        'marker.color': [this.activity_val],
+        'marker.colorscale': newcolorscale,
+        'marker.showscale': true,
+        'marker.colorbar.x': -0.2,
+        // 'marker.cauto': true,
+        // 'colorbar.title': 'Activity',
+      };
+    }
+    if (value == 'dmodx') {
+      update1 =  {
+        'marker.color': [this.dmodx_val],
+        'marker.colorscale': 'RdBu',
+        'marker.showscale': true,
+        'marker.colorbar.x': -0.4,
+
+        // 'marker.cauto': true,
+        // 'colorbar.title': 'DModX',
+        
+      };
+    }
+    PlotlyJS.restyle('scoresPreDIV', update1, [1]);
+    console.log(this.plotScores.data[1].marker.color)
+
+  }
+
+
   public changeProjectStyle (value:string) {
     var update0 = {};
     var update1 = {};
@@ -379,16 +459,9 @@ export class PredictionComponent implements OnChanges {
           showscale: false, 
           cauto: true
         }
-
-        // "marker.color": backup_colors0,
-        // "marker.opacity": 0.6,
-        // "marker.size": 10,
-        // "marker.colorscale": this.bwcolorscale, 
-        // "marker.showscale": false, 
-        // "marker.cauto": true
       }
 
-      // red points if not DModX or colored points otherwyse
+      // DModX 
       if (this.dmodx && value=='dmodx') {
         update1 =  {
           mode: 'markers', 
@@ -408,6 +481,7 @@ export class PredictionComponent implements OnChanges {
           }
         };
       }
+      // red points
       else {
         update1 =  {
           mode: 'markers', 
@@ -418,10 +492,6 @@ export class PredictionComponent implements OnChanges {
             size: 14,
             colorscale: this.redcolorscale,
             showscale: false,
-            // cauto: true,
-            // colorbar: {
-            //   tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
-            // }
           }
         };
       }
@@ -431,6 +501,7 @@ export class PredictionComponent implements OnChanges {
       var newcolorscale = 'Bluered';
       if (this.isQuantitative) newcolorscale = 'RdBu';
 
+      // points colored by activity
       update0 = {
         marker: {
           color: backup_colors0,
@@ -445,6 +516,7 @@ export class PredictionComponent implements OnChanges {
         }
       }
 
+      // markers + text
       update1 = {
         mode: 'markers+text', 
         marker: {
@@ -567,16 +639,18 @@ export class PredictionComponent implements OnChanges {
     this.plotScores.data[1].y = [];
     this.plotScores.data[1].text = [];
     this.plotScores.data[1].meta = [];
+    this.activity_val = [];
+    this.dmodx_val = [];
     this.plotScores.data[1].mode = 'markers+text';
-    this.plotScores.data[1].marker = {
-            color: [],
-            colorscale: this.greencolorscale, 
-            showscale: false, 
-            symbol: 'circle-open',
-            opacity: 1,
-            size: 14,
-            line: {color: '#6be831', width: 3 }
-          };
+    // this.plotScores.data[1].marker = {
+    //         color: [],
+    //         colorscale: this.greencolorscale, 
+    //         showscale: false, 
+    //         symbol: 'circle-open',
+    //         opacity: 1,
+    //         size: 14,
+    //         line: {color: '#6be831', width: 3 }
+    //       };
 
     this.getInfo();
     this.getDocumentation();  
@@ -1022,16 +1096,19 @@ export class PredictionComponent implements OnChanges {
             this.plotScores.data[1].x = result['PC1proj'];
             this.plotScores.data[1].y = result['PC2proj'];
             this.plotScores.data[1].text = result['obj_nam'];
+            this.activity_val = result['values']
             this.plotScores.data[1].meta = result['values'];
             if ('PCDMODX' in result) {
-              this.plotScores.data[1].marker.color = result['PCDMODX'];
               this.dmodx = true;
+              this.plotScores.data[1].marker.color = result['PCDMODX'];
+              this.dmodx_val = result['PCDMODX'];
             }
             else {
+              this.dmodx = false;
               for (var i=0; i<result['obj_nam'].length; i++) {
                 this.plotScores.data[1].marker.color[i] = 0.0;
+                this.dmodx_val[i] = 0.0;
               }
-              this.dmodx = false;
             }
 
           };
