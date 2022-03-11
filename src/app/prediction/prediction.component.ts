@@ -50,6 +50,8 @@ export class PredictionComponent implements OnChanges {
   isQuantitative = false;
   isMajority = false;
   showConcentration = false;
+  activity_val = [];
+  dmodx_val = [];
 
   predictData = [{
     offset: 45, 
@@ -96,18 +98,11 @@ export class PredictionComponent implements OnChanges {
       [1.0, 'rgb(160, 160, 160)'],
     ];
   
-    // greencolorscale = [
-    //   [0.0, 'rgb(107, 232, 49)'],
-    //   [0.5, 'rgb(107, 232, 49)'],
-    //   [1.0, 'rgb(107, 232, 49)'],
-    // ];
-
     greencolorscale = [
-      [0.0, 'rgb(107, 107, 107)'],
-      [0.5, 'rgb(107, 107, 107)'],
-      [1.0, 'rgb(107, 107, 107)'],
+      [0.0, 'rgb(0, 107, 107)'],
+      [0.5, 'rgb(0, 107, 107)'],
+      [1.0, 'rgb(0, 107, 107)'],
     ];
-
 
     redcolorscale = [
       [0.0, 'rgb(255, 0, 0)'],
@@ -117,55 +112,72 @@ export class PredictionComponent implements OnChanges {
 
     // [0.1, '#6be831'],
 
+  scores0defaults = {
+    x: [], 
+    y: [], 
+    text: [],
+    meta: [],
+    type: 'scatter', 
+    mode: 'markers', 
+    visible: true, 
+    marker: {
+      color: [],
+      opacity: 0.6,
+      size: 10,
+      colorscale: this.bwcolorscale,
+      showscale: false, 
+      cauto: true,
+      colorbar: {
+        x: -0.25,
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+      }
+    },
+    hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
+  };
+
+  scores1defaults = { x: [], 
+    y: [], 
+    text: [],
+    meta: [],
+    type: 'scatter', 
+    mode: 'markers', 
+    textfont : {
+      color : 'red',
+      size: 16
+    },
+    textposition: 'top right',
+    marker: {
+      color: [],
+      symbol: 'circle',
+      colorscale: this.redcolorscale, 
+      showscale: false, 
+      opacity: 1,
+      size: 14,
+      line: {},
+      colorbar: {
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+      }
+    },
+    hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
+  };
+
+  scores2defaults = {
+    x: [],
+    y: [],
+    autocontour: 20,
+    showscale: false,
+    visible: false, 
+    colorscale: 'Greys',
+    reversescale: true,
+    type: 'histogram2dcontour',
+    hoverinfo: 'skip',
+  };
 
   plotScores = {
     data: [
-      { x: [], 
-        y: [], 
-        text: [],
-        meta: [],
-        type: 'scatter', 
-        mode: 'markers', 
-        marker: {
-          color: [],
-          opacity: 0.6,
-          size: 10,
-          colorscale: 'RdBu', 
-          showscale: true, 
-          cauto: true,
-          colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
-          }
-        },
-        hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
-      },
-      { x: [], 
-        y: [], 
-        text: [],
-        meta: [],
-        type: 'scatter', 
-        mode: 'markers+text', 
-        textfont : {
-          fontStyle: 'Barlow Semi Condensed, sans-serif',
-          // color: '#59c427',
-          color: 'grey',
-          size: 16
-        },
-        textposition: 'top right',
-        marker: {
-          color: [],
-          symbol: 'circle-open',
-          colorscale: this.greencolorscale, 
-          showscale: false, 
-          opacity: 1,
-          size: 14,
-          line: {
-            color: '#6be831',
-            width: 3
-          }
-        },
-        hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
-      },
+      JSON.parse(JSON.stringify(this.scores0defaults)),
+      JSON.parse(JSON.stringify(this.scores1defaults)),
+      JSON.parse(JSON.stringify(this.scores2defaults))
     ],
     layout: { 
       width: 800,
@@ -200,7 +212,7 @@ export class PredictionComponent implements OnChanges {
       },
     },
     config: {
-      // responsive: true,
+      responsive: true,
       displaylogo: false,
       toImageButtonOptions: {
         format: 'svg', // one of png, svg, jpeg, webp
@@ -209,7 +221,6 @@ export class PredictionComponent implements OnChanges {
         height: 600,
         scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
       },
-      // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']
       modeBarButtonsToRemove: ['autoScale2d','hoverCompareCartesian']
     }
   };
@@ -241,7 +252,7 @@ export class PredictionComponent implements OnChanges {
         arrayminus: []
       },
       hovertemplate:'<b>%{y}</b>: %{x:.2f}<extra></extra>'
-    },
+      },
       {x: [],
        y: [],
        type: 'scatter',
@@ -360,6 +371,114 @@ export class PredictionComponent implements OnChanges {
   message = '';
   
 
+
+  public changeProjectStyleTrainingMark (value:string) {
+    var update0 = {};
+    var update2 = {};
+    if (value == 'dots') {
+      update0 = {'visible': true};
+      update2 = {'visible': false};
+    }
+    if (value == 'density') {
+      update0 = {'visible': false};
+      update2 = {'visible': true};
+    }
+    if (value == 'both') {
+      update0 = {'visible': true};
+      update2 = {'visible': true};
+    }
+    
+    PlotlyJS.restyle('scoresPreDIV', update0, [0]);
+    PlotlyJS.restyle('scoresPreDIV', update2, [2]);
+  }
+  
+  public changeProjectStylePredictionMark (value:string) {
+    var update1 = {};
+    if (value == 'dots'){
+      update1 = {
+        "mode": "markers",
+        "marker.symbol": 'circle',
+        "marker.line.width": 0
+      }
+    }
+    if (value == 'crosses'){
+      update1 = {
+        "mode": "markers",
+        "marker.symbol": 'cross',
+      }
+    }
+    if (value == 'names') {
+      update1 = {
+        "mode": "markers+text",
+        "marker.symbol": 'circle-open',
+        "marker.line.width":3
+      }
+    }
+    PlotlyJS.restyle('scoresPreDIV', update1, [1]);
+  }
+
+  public changeProjectStyleTrainingColor (value:string) {
+    var update0 = {};
+
+    if (value == 'grey') {
+      update0 = {
+       'marker.colorscale': [this.bwcolorscale],
+       'marker.opacity': 0.6,
+       'marker.showscale': false,
+      }
+    }
+    if (value == 'green') {
+      update0 = {
+       'marker.colorscale': [this.greencolorscale],
+       'marker.opacity': 0.2,
+       'marker.showscale': false,
+      }
+    }
+    if (value == 'activity') {
+      var newcolorscale = 'Bluered';
+      if (this.isQuantitative) newcolorscale = 'RdBu';
+
+      // points colored by activity
+      update0 = {
+        'marker.colorscale': newcolorscale,
+        'marker.opacity': 0.6,
+        'marker.showscale': this.isQuantitative,
+      }
+    }
+    PlotlyJS.restyle('scoresPreDIV', update0, [0]);
+  }
+
+  public changeProjectStylePredictionColor (value:string) {
+    var update1 = {};
+    if (value == 'red'){
+      update1 =  {
+        "marker.color": 'red',
+        "textfont.color": 'red',
+        'marker.showscale': false,
+      };
+    }
+    if (value == 'activity') {
+      var newcolorscale = 'Bluered';
+      if (this.isQuantitative) newcolorscale = 'RdBu';
+      update1 =  {
+        'marker.color': [this.activity_val],
+        "textfont.color": 'black',
+        'marker.colorscale': newcolorscale,
+        'marker.showscale': this.isQuantitative,
+      };
+    }
+    if (value == 'dmodx') {
+      update1 =  {
+        'marker.color': [this.dmodx_val],
+        "textfont.color": 'black',
+        'marker.colorscale': 'RdBu',
+        'marker.showscale': true,
+      };
+    }
+    PlotlyJS.restyle('scoresPreDIV', update1, [1]);
+  }
+
+
   public changeProjectStyle (value:string) {
     var update0 = {};
     var update1 = {};
@@ -379,16 +498,9 @@ export class PredictionComponent implements OnChanges {
           showscale: false, 
           cauto: true
         }
-
-        // "marker.color": backup_colors0,
-        // "marker.opacity": 0.6,
-        // "marker.size": 10,
-        // "marker.colorscale": this.bwcolorscale, 
-        // "marker.showscale": false, 
-        // "marker.cauto": true
       }
 
-      // red points if not DModX or colored points otherwyse
+      // DModX 
       if (this.dmodx && value=='dmodx') {
         update1 =  {
           mode: 'markers', 
@@ -408,6 +520,7 @@ export class PredictionComponent implements OnChanges {
           }
         };
       }
+      // red points
       else {
         update1 =  {
           mode: 'markers', 
@@ -418,10 +531,6 @@ export class PredictionComponent implements OnChanges {
             size: 14,
             colorscale: this.redcolorscale,
             showscale: false,
-            // cauto: true,
-            // colorbar: {
-            //   tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 }
-            // }
           }
         };
       }
@@ -431,6 +540,7 @@ export class PredictionComponent implements OnChanges {
       var newcolorscale = 'Bluered';
       if (this.isQuantitative) newcolorscale = 'RdBu';
 
+      // points colored by activity
       update0 = {
         marker: {
           color: backup_colors0,
@@ -445,6 +555,7 @@ export class PredictionComponent implements OnChanges {
         }
       }
 
+      // markers + text
       update1 = {
         mode: 'markers+text', 
         marker: {
@@ -547,36 +658,13 @@ export class PredictionComponent implements OnChanges {
     this.predictData[0].r = [0, 0, 0, 0];
     this.predictionError = '';
 
-    this.plotScores.data[0].x = [];
-    this.plotScores.data[0].y = [];
-    this.plotScores.data[0].text = [];
-    this.plotScores.data[0].meta = [];
-    this.plotScores.data[0].marker = {
-            color: [],
-            opacity: 0.6,
-            size: 10,
-            colorscale: 'RdBu', 
-            showscale: true, 
-            cauto: true,
-            colorbar: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
-            }
-          };
-
-    this.plotScores.data[1].x = [];
-    this.plotScores.data[1].y = [];
-    this.plotScores.data[1].text = [];
-    this.plotScores.data[1].meta = [];
-    this.plotScores.data[1].mode = 'markers+text';
-    this.plotScores.data[1].marker = {
-            color: [],
-            colorscale: this.greencolorscale, 
-            showscale: false, 
-            symbol: 'circle-open',
-            opacity: 1,
-            size: 14,
-            line: {color: '#6be831', width: 3 }
-          };
+    this.activity_val = [];
+    this.dmodx_val = [];
+    this.plotScores.data = [
+      JSON.parse(JSON.stringify(this.scores0defaults)),
+      JSON.parse(JSON.stringify(this.scores1defaults)),
+      JSON.parse(JSON.stringify(this.scores2defaults))
+    ];
 
     this.getInfo();
     this.getDocumentation();  
@@ -641,16 +729,12 @@ export class PredictionComponent implements OnChanges {
           setTimeout(() => {
             this.plotScores.data[0].x = info['PC1'];
             this.plotScores.data[0].y = info['PC2'];
+            this.plotScores.data[2].x = info['PC1'];
+            this.plotScores.data[2].y = info['PC2'];
             this.plotScores.data[0].text = info['obj_nam'];
             this.plotScores.data[0].meta = info['SMILES'];
             this.plotScores.data[0].marker.color = info['ymatrix'];
-            this.plotScores.data[0].marker.showscale = this.isQuantitative;
-            if (this.isQuantitative) {
-              this.plotScores.data[0].marker.colorscale= 'RdBu';
-            }
-            else {
-              this.plotScores.data[0].marker.colorscale= 'Bluered';
-            }; 
+
             if ('SSX' in info) {
               this.plotScores.layout.xaxis.title = labelX + ' ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
               this.plotScores.layout.yaxis.title = labelY + ' ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
@@ -1022,16 +1106,19 @@ export class PredictionComponent implements OnChanges {
             this.plotScores.data[1].x = result['PC1proj'];
             this.plotScores.data[1].y = result['PC2proj'];
             this.plotScores.data[1].text = result['obj_nam'];
+            this.activity_val = result['values']
             this.plotScores.data[1].meta = result['values'];
             if ('PCDMODX' in result) {
-              this.plotScores.data[1].marker.color = result['PCDMODX'];
               this.dmodx = true;
+              this.plotScores.data[1].marker.color = result['PCDMODX'];
+              this.dmodx_val = result['PCDMODX'];
             }
             else {
+              this.dmodx = false;
               for (var i=0; i<result['obj_nam'].length; i++) {
                 this.plotScores.data[1].marker.color[i] = 0.0;
+                this.dmodx_val[i] = 0.0;
               }
-              this.dmodx = false;
             }
 
           };

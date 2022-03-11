@@ -10,15 +10,6 @@ import {filter} from "rxjs/operators";
 //     clientId: "knowledge-hub"
 // };
 
-// const keycloakConfig: KeycloakConfig = {
-//     url: 'https://fc3ab282-kh-keycloak-d80a-832678220.eu-west-1.elb.amazonaws.com/auth/',
-//     realm: "KH",
-//     credentials: {
-//         secret: "*****************************,
-//     },
-//     clientId: "knowledge-hub"
-// };
-
 export function initializer(keycloak: KeycloakService): () => Promise<any> {
     return (): Promise<any> => {
 
@@ -28,6 +19,7 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
         // therefore we have a
         // await keycloak.updateToken(100) before most of the http calls in our apps
         // I would have expected that this is something that angular-keycloak does automatically, but it doesn't seem to be the case
+
         keycloak.keycloakEvents$.pipe(filter(keycloak_event => keycloak_event.type === KeycloakEventType.OnTokenExpired)).subscribe(() => {
             console.log("Updating token");
             keycloak.updateToken(200);
