@@ -98,18 +98,11 @@ export class PredictionComponent implements OnChanges {
       [1.0, 'rgb(160, 160, 160)'],
     ];
   
-    // greencolorscale = [
-    //   [0.0, 'rgb(107, 232, 49)'],
-    //   [0.5, 'rgb(107, 232, 49)'],
-    //   [1.0, 'rgb(107, 232, 49)'],
-    // ];
-
     greencolorscale = [
       [0.0, 'rgb(107, 107, 107)'],
       [0.5, 'rgb(107, 107, 107)'],
       [1.0, 'rgb(107, 107, 107)'],
     ];
-
 
     redcolorscale = [
       [0.0, 'rgb(255, 0, 0)'],
@@ -119,56 +112,58 @@ export class PredictionComponent implements OnChanges {
 
     // [0.1, '#6be831'],
 
+  scores0defaults = {
+    x: [], 
+    y: [], 
+    text: [],
+    meta: [],
+    type: 'scatter', 
+    mode: 'markers', 
+    marker: {
+      color: [],
+      opacity: 0.6,
+      size: 10,
+      colorscale: this.bwcolorscale,
+      showscale: false, 
+      cauto: true,
+      colorbar: {
+        x: -0.25,
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+      }
+    },
+    hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
+  };
+
+  scores1defaults = { x: [], 
+    y: [], 
+    text: [],
+    meta: [],
+    type: 'scatter', 
+    mode: 'markers', 
+    textfont : {
+      color : 'red',
+      size: 16
+    },
+    textposition: 'top right',
+    marker: {
+      color: [],
+      symbol: 'circle',
+      colorscale: this.redcolorscale, 
+      showscale: false, 
+      opacity: 1,
+      size: 14,
+      line: {},
+      colorbar: {
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+      }
+    },
+    hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
+  };
 
   plotScores = {
     data: [
-      { x: [], 
-        y: [], 
-        text: [],
-        meta: [],
-        type: 'scatter', 
-        mode: 'markers', 
-        marker: {
-          color: [],
-          opacity: 0.6,
-          size: 10,
-          colorscale: 'RdBu', 
-          showscale: true, 
-          cauto: true,
-          colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
-          }
-        },
-        hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
-      },
-      { x: [], 
-        y: [], 
-        text: [],
-        meta: [],
-        type: 'scatter', 
-        mode: 'markers+text', 
-        textfont : {
-          fontStyle: 'Barlow Semi Condensed, sans-serif',
-          // color: '#59c427',
-          color: 'grey',
-          size: 16
-        },
-        textposition: 'top right',
-        marker: {
-          color: [],
-          // symbol: 'circle-open',
-          symbol: 'circle',
-          colorscale: this.greencolorscale, 
-          showscale: false, 
-          opacity: 1,
-          size: 14,
-          // line: {
-          //   color: '#6be831',
-          //   width: 3
-          // }
-        },
-        hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
-      },
+      JSON.parse(JSON.stringify(this.scores0defaults)),
+      JSON.parse(JSON.stringify(this.scores1defaults))
     ],
     layout: { 
       width: 800,
@@ -203,7 +198,7 @@ export class PredictionComponent implements OnChanges {
       },
     },
     config: {
-      // responsive: true,
+      responsive: true,
       displaylogo: false,
       toImageButtonOptions: {
         format: 'svg', // one of png, svg, jpeg, webp
@@ -212,7 +207,6 @@ export class PredictionComponent implements OnChanges {
         height: 600,
         scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
       },
-      // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']
       modeBarButtonsToRemove: ['autoScale2d','hoverCompareCartesian']
     }
   };
@@ -363,21 +357,48 @@ export class PredictionComponent implements OnChanges {
   message = '';
   
 
-  public changeProjectStyleTraining (value:string) {
+
+  public changeProjectStyleTrainingMark (value:string) {
     var update0 = {};
-    const backup_colors0 = this.plotScores.data[0].marker.color;
+    
+    PlotlyJS.restyle('scoresPreDIV', update0, [0]);
+  }
+  
+  public changeProjectStylePredictionMark (value:string) {
+    var update1 = {};
+    if (value == 'dots'){
+      update1 = {
+        "mode": "markers",
+        "marker.symbol": 'circle',
+        "marker.line.width": 0
+      }
+    }
+    if (value == 'crosses'){
+      update1 = {
+        "mode": "markers",
+        "marker.symbol": 'cross',
+
+      }
+    }
+    if (value == 'names') {
+      update1 = {
+        "mode": "markers+text",
+        "marker.symbol": 'circle-open',
+        "marker.line.width":3
+      }
+    }
+    PlotlyJS.restyle('scoresPreDIV', update1, [1]);
+  }
+
+  public changeProjectStyleTrainingColor (value:string) {
+    var update0 = {};
 
     if (value == 'grey') {
       update0 = {
-        marker: {
-          color: backup_colors0,
-          opacity: 0.6,
-          size: 10,
-          colorscale: this.bwcolorscale, 
-          showscale: false, 
-          cauto: true
-        }
+       'marker.colorscale': [this.bwcolorscale],
+       'marker.showscale': false,
       }
+
     }
     else {
       var newcolorscale = 'Bluered';
@@ -385,29 +406,20 @@ export class PredictionComponent implements OnChanges {
 
       // points colored by activity
       update0 = {
-        marker: {
-          color: backup_colors0,
-          opacity: 0.6,
-          size: 10,
-          colorscale: newcolorscale,
-          showscale: this.isQuantitative, 
-          cauto: true,
-          colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
-          }
-        }
+        'marker.colorscale': newcolorscale,
+        'marker.showscale': this.isQuantitative,
       }
     }
-    PlotlyJS.restyle('scoresPreDIV', update0, 0);
+    PlotlyJS.restyle('scoresPreDIV', update0, [0]);
   }
 
-  public changeProjectStylePrediction (value:string) {
+  public changeProjectStylePredictionColor (value:string) {
     var update1 = {};
     if (value == 'red'){
       update1 =  {
-        'marker.color' : 'red',
+        "marker.color": 'red',
+        "textfont.color": 'red',
         'marker.showscale': false,
-        // 'marker.cauto': false,
       };
     }
     if (value == 'activity') {
@@ -415,28 +427,20 @@ export class PredictionComponent implements OnChanges {
       if (this.isQuantitative) newcolorscale = 'RdBu';
       update1 =  {
         'marker.color': [this.activity_val],
+        "textfont.color": 'black',
         'marker.colorscale': newcolorscale,
-        'marker.showscale': true,
-        'marker.colorbar.x': -0.2,
-        // 'marker.cauto': true,
-        // 'colorbar.title': 'Activity',
+        'marker.showscale': this.isQuantitative,
       };
     }
     if (value == 'dmodx') {
       update1 =  {
         'marker.color': [this.dmodx_val],
+        "textfont.color": 'black',
         'marker.colorscale': 'RdBu',
         'marker.showscale': true,
-        'marker.colorbar.x': -0.4,
-
-        // 'marker.cauto': true,
-        // 'colorbar.title': 'DModX',
-        
       };
     }
     PlotlyJS.restyle('scoresPreDIV', update1, [1]);
-    console.log(this.plotScores.data[1].marker.color)
-
   }
 
 
@@ -619,38 +623,20 @@ export class PredictionComponent implements OnChanges {
     this.predictData[0].r = [0, 0, 0, 0];
     this.predictionError = '';
 
-    this.plotScores.data[0].x = [];
-    this.plotScores.data[0].y = [];
-    this.plotScores.data[0].text = [];
-    this.plotScores.data[0].meta = [];
-    this.plotScores.data[0].marker = {
-            color: [],
-            opacity: 0.6,
-            size: 10,
-            colorscale: 'RdBu', 
-            showscale: true, 
-            cauto: true,
-            colorbar: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
-            }
-          };
-
-    this.plotScores.data[1].x = [];
-    this.plotScores.data[1].y = [];
-    this.plotScores.data[1].text = [];
-    this.plotScores.data[1].meta = [];
+    // this.plotScores.data[0].x = [];
+    // this.plotScores.data[0].y = [];
+    // this.plotScores.data[0].text = [];
+    // this.plotScores.data[0].meta = [];
+    // this.plotScores.data[1].x = [];
+    // this.plotScores.data[1].y = [];
+    // this.plotScores.data[1].text = [];
+    // this.plotScores.data[1].meta = [];
     this.activity_val = [];
     this.dmodx_val = [];
-    this.plotScores.data[1].mode = 'markers+text';
-    // this.plotScores.data[1].marker = {
-    //         color: [],
-    //         colorscale: this.greencolorscale, 
-    //         showscale: false, 
-    //         symbol: 'circle-open',
-    //         opacity: 1,
-    //         size: 14,
-    //         line: {color: '#6be831', width: 3 }
-    //       };
+    this.plotScores.data = [
+      JSON.parse(JSON.stringify(this.scores0defaults)),
+      JSON.parse(JSON.stringify(this.scores1defaults))
+    ];
 
     this.getInfo();
     this.getDocumentation();  
@@ -718,13 +704,13 @@ export class PredictionComponent implements OnChanges {
             this.plotScores.data[0].text = info['obj_nam'];
             this.plotScores.data[0].meta = info['SMILES'];
             this.plotScores.data[0].marker.color = info['ymatrix'];
-            this.plotScores.data[0].marker.showscale = this.isQuantitative;
-            if (this.isQuantitative) {
-              this.plotScores.data[0].marker.colorscale= 'RdBu';
-            }
-            else {
-              this.plotScores.data[0].marker.colorscale= 'Bluered';
-            }; 
+            // this.plotScores.data[0].marker.showscale = this.isQuantitative;
+            // if (this.isQuantitative) {
+            //   this.plotScores.data[0].marker.colorscale= 'RdBu';
+            // }
+            // else {
+            //   this.plotScores.data[0].marker.colorscale= 'Bluered';
+            // }; 
             if ('SSX' in info) {
               this.plotScores.layout.xaxis.title = labelX + ' ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
               this.plotScores.layout.yaxis.title = labelY + ' ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
