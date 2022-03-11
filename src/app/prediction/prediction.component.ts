@@ -458,14 +458,27 @@ export class PredictionComponent implements OnChanges {
       };
     }
     if (value == 'activity') {
-      var newcolorscale = 'Bluered';
-      if (this.isQuantitative) newcolorscale = 'RdBu';
-      update1 =  {
-        'marker.color': [this.activity_val],
-        "textfont.color": 'black',
-        'marker.colorscale': newcolorscale,
-        'marker.showscale': this.isQuantitative,
-      };
+      if (this.isQuantitative) {
+        update1 =  {
+          'marker.color': [this.activity_val],
+          "textfont.color": 'black',
+          'marker.colorscale': 'RdBu',
+          'marker.showscale': true,
+          'marker.cauto': true
+        };
+      }
+      else {
+        update1 =  {
+          'marker.color': [this.activity_val],
+          "textfont.color": 'black',
+          'marker.colorscale': 'Bluered',
+          'marker.showscale': false,
+          'marker.cauto': false,
+          'marker.cmin': 0.0,
+          'marker.cmax': 1.0
+        };
+      }
+
     }
     if (value == 'dmodx') {
       update1 =  {
@@ -1107,7 +1120,16 @@ export class PredictionComponent implements OnChanges {
             this.plotScores.data[1].y = result['PC2proj'];
             this.plotScores.data[1].text = result['obj_nam'];
             this.activity_val = result['values']
-            this.plotScores.data[1].meta = result['values'];
+
+            if (!this.isQuantitative){
+              for (var i=0; i<this.activity_val.length; i++){
+                if (this.activity_val[i]<0.0) {
+                  this.activity_val[i]=0.5;
+                }
+              }
+            }
+            // this.plotScores.data[1].meta = result['values'];
+            this.plotScores.data[1].meta = this.activity_val;
             if ('PCDMODX' in result) {
               this.dmodx = true;
               this.plotScores.data[1].marker.color = result['PCDMODX'];
