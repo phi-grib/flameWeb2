@@ -99,9 +99,9 @@ export class PredictionComponent implements OnChanges {
     ];
   
     greencolorscale = [
-      [0.0, 'rgb(107, 107, 107)'],
-      [0.5, 'rgb(107, 107, 107)'],
-      [1.0, 'rgb(107, 107, 107)'],
+      [0.0, 'rgb(0, 107, 107)'],
+      [0.5, 'rgb(0, 107, 107)'],
+      [1.0, 'rgb(0, 107, 107)'],
     ];
 
     redcolorscale = [
@@ -119,6 +119,7 @@ export class PredictionComponent implements OnChanges {
     meta: [],
     type: 'scatter', 
     mode: 'markers', 
+    visible: true, 
     marker: {
       color: [],
       opacity: 0.6,
@@ -160,10 +161,23 @@ export class PredictionComponent implements OnChanges {
     hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
   };
 
+  scores2defaults = {
+    x: [],
+    y: [],
+    autocontour: 20,
+    showscale: false,
+    visible: false, 
+    colorscale: 'Greys',
+    reversescale: true,
+    type: 'histogram2dcontour',
+    hoverinfo: 'skip',
+  };
+
   plotScores = {
     data: [
       JSON.parse(JSON.stringify(this.scores0defaults)),
-      JSON.parse(JSON.stringify(this.scores1defaults))
+      JSON.parse(JSON.stringify(this.scores1defaults)),
+      JSON.parse(JSON.stringify(this.scores2defaults))
     ],
     layout: { 
       width: 800,
@@ -360,8 +374,22 @@ export class PredictionComponent implements OnChanges {
 
   public changeProjectStyleTrainingMark (value:string) {
     var update0 = {};
+    var update2 = {};
+    if (value == 'dots') {
+      update0 = {'visible': true};
+      update2 = {'visible': false};
+    }
+    if (value == 'density') {
+      update0 = {'visible': false};
+      update2 = {'visible': true};
+    }
+    if (value == 'both') {
+      update0 = {'visible': true};
+      update2 = {'visible': true};
+    }
     
     PlotlyJS.restyle('scoresPreDIV', update0, [0]);
+    PlotlyJS.restyle('scoresPreDIV', update2, [2]);
   }
   
   public changeProjectStylePredictionMark (value:string) {
@@ -377,7 +405,6 @@ export class PredictionComponent implements OnChanges {
       update1 = {
         "mode": "markers",
         "marker.symbol": 'cross',
-
       }
     }
     if (value == 'names') {
@@ -396,17 +423,25 @@ export class PredictionComponent implements OnChanges {
     if (value == 'grey') {
       update0 = {
        'marker.colorscale': [this.bwcolorscale],
+       'marker.opacity': 0.6,
        'marker.showscale': false,
       }
-
     }
-    else {
+    if (value == 'green') {
+      update0 = {
+       'marker.colorscale': [this.greencolorscale],
+       'marker.opacity': 0.2,
+       'marker.showscale': false,
+      }
+    }
+    if (value == 'activity') {
       var newcolorscale = 'Bluered';
       if (this.isQuantitative) newcolorscale = 'RdBu';
 
       // points colored by activity
       update0 = {
         'marker.colorscale': newcolorscale,
+        'marker.opacity': 0.6,
         'marker.showscale': this.isQuantitative,
       }
     }
@@ -623,19 +658,12 @@ export class PredictionComponent implements OnChanges {
     this.predictData[0].r = [0, 0, 0, 0];
     this.predictionError = '';
 
-    // this.plotScores.data[0].x = [];
-    // this.plotScores.data[0].y = [];
-    // this.plotScores.data[0].text = [];
-    // this.plotScores.data[0].meta = [];
-    // this.plotScores.data[1].x = [];
-    // this.plotScores.data[1].y = [];
-    // this.plotScores.data[1].text = [];
-    // this.plotScores.data[1].meta = [];
     this.activity_val = [];
     this.dmodx_val = [];
     this.plotScores.data = [
       JSON.parse(JSON.stringify(this.scores0defaults)),
-      JSON.parse(JSON.stringify(this.scores1defaults))
+      JSON.parse(JSON.stringify(this.scores1defaults)),
+      JSON.parse(JSON.stringify(this.scores2defaults))
     ];
 
     this.getInfo();
@@ -701,16 +729,12 @@ export class PredictionComponent implements OnChanges {
           setTimeout(() => {
             this.plotScores.data[0].x = info['PC1'];
             this.plotScores.data[0].y = info['PC2'];
+            this.plotScores.data[2].x = info['PC1'];
+            this.plotScores.data[2].y = info['PC2'];
             this.plotScores.data[0].text = info['obj_nam'];
             this.plotScores.data[0].meta = info['SMILES'];
             this.plotScores.data[0].marker.color = info['ymatrix'];
-            // this.plotScores.data[0].marker.showscale = this.isQuantitative;
-            // if (this.isQuantitative) {
-            //   this.plotScores.data[0].marker.colorscale= 'RdBu';
-            // }
-            // else {
-            //   this.plotScores.data[0].marker.colorscale= 'Bluered';
-            // }; 
+
             if ('SSX' in info) {
               this.plotScores.layout.xaxis.title = labelX + ' ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
               this.plotScores.layout.yaxis.title = labelY + ' ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
