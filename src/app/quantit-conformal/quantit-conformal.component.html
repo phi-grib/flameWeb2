@@ -199,7 +199,17 @@
                 
                 <div class="card-body"  *ngIf="!this.model.secret">
                     <div class="row justify-content-between">
-                        <div id="scoresDIV"></div>
+                        <div class="col">
+                            <div id="scoresDIV"></div>
+                            <div class="form-group col-md-8">
+                                <label class="bmd-label-static pr-2">Training series: show as</label>
+                                <select class="form-select" id="projectStyleTrainingMarker" (change)="changeProjectStyleMark($event.target.value)">
+                                    <option value='dots'>dots</option>
+                                    <option value='density'>density</option>
+                                    <option value='both'>both</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="col">
                             <canvas class="fixed_canvas"  id="scores_canvas"></canvas>
 

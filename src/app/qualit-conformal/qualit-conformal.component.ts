@@ -109,22 +109,20 @@ export class QualitConformalComponent implements OnChanges {
         {
           x: [],
           y: [],
-          // name: 'density',
-          // ncontours: 20,
-          // colorscale: 'Greys',
-          // colorscale: 'Hot',
-          // autocolorscales: true, 
+          colorscale: 'Greys',
           autocontour: true,
-          // reversescale: true,
+          reversescale: true,
           showscale: false,
+          visible: false, 
           type: 'histogram2dcontour',
           hoverinfo: 'skip',
-          contours: { 
-            // coloring: "none", 
-            // showlines: false,
-            coloring: "heatmap" 
-          }
+          // contours: { 
+          //   // coloring: "none", 
+          //   showlines: false,
+          //   coloring: 'heatmap' 
+          // }
         }
+
       ],
       layout: { 
         width: 700,
@@ -278,6 +276,17 @@ export class QualitConformalComponent implements OnChanges {
         displayModeBar: false
         // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
       }
+    }
+
+    public changeProjectStyleMark (value:string) {
+      var update = {'visible':[true, false]}
+      if (value == 'density') {
+        update = {'visible':[false, true]}
+      }
+      if (value == 'both') {
+        update = {'visible':[true, true]}
+      }
+      PlotlyJS.restyle('scoresDIV', update);
     }
    
     ngOnChanges(): void {
