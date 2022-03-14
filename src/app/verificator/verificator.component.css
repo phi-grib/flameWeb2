@@ -52,3 +52,17 @@
     background-color: #b41147;
     color: #ffffff;
 }
+
+.mr-6 {
+    margin-right: 6.44rem !important;
+}
+
+.progress-bar-similarity {
+    min-width: 27%;
+    background: #0076a3;
+    font-size: .90rem !important;
+}
+
+.text-etransafe {
+    color: #e59300;
+}

@@ -6,20 +6,17 @@
         <button type="button" class="btn btn-ets-do" [ngClass]="{'disabled': model.name === undefined}" (click)="cloneModel()">Publish</button>
     </div>
     <div *ngIf="this.globals.read_only == false" class="btn-group mr-2" role="group" aria-label="second group">
-        <button type="button" class="btn btn-ets-ext" (click)="exportModel(model.name, model.version)" 
-            [ngClass]="{'disabled': model.name === undefined || model.secret}">Export</button>
+        <button type="button" class="btn btn-ets-ext" (click)="exportModel(model.name, model.version)" [ngClass]="{'disabled': model.name === undefined || model.secret}">Export</button>
         <label class="btn btn-ets-ext mb-0" for="manager">
             <input id="manager" type="file" style="display:none;" (change)="importModel($event.target.files)">Import
         </label>
         <button id="btnGroupDrop1" type="button" class="btn btn-ets-ext dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Other
           </button>
-          <div class="dropdown-menu column" aria-labelledby="btnGroupDrop1">
-            <button type="button" class="dropdown-item btn btn-ets-ext" data-toggle="modal" data-target="#refresh" 
-                [ngClass]="{'disabled': model.name === undefined || model.secret}">Refresh</button>
-            <button type="button" class="dropdown-item btn btn-ets-ext" data-toggle="modal" (click)="validateModel(model.name,model.modelID)" 
-                [ngClass]="{'disabled': model.name === undefined}">Verify</button>
-          </div> 
+        <div class="dropdown-menu column" aria-labelledby="btnGroupDrop1">
+            <button type="button" class="dropdown-item btn btn-ets-ext" data-toggle="modal" data-target="#refresh" [ngClass]="{'disabled': model.name === undefined || model.secret}">Refresh</button>
+            <button type="button" class="dropdown-item btn btn-ets-ext" data-toggle="modal" (click)="verifyModel(model.name,model.modelID)" [ngClass]="{'disabled': model.name === undefined}">Verify</button>
+        </div>
 
     </div>
 

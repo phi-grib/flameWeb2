@@ -111,6 +111,16 @@ export class Similarity {
     smileSrc = undefined;
 }
 
+// a class would be needed to store the model testing object
+// @Injectable()
+// export class ModelTesting{
+    //drugname = string = undefined;
+    //input_smile = string = undefined;
+    //toxhub_smile = string = undefined;
+    //similarity = number = undefined;
+
+// }
+
 @Injectable()
 export class CustomHTMLElement extends HTMLElement {
     constructor() {

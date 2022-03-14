@@ -4,6 +4,7 @@ import { LabelerService } from "../labeler/labeler.service";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { CommonService } from "../common.service";
+import * as SmilesDrawer from 'smiles-drawer';
 import { VerificatorService } from "./verificator.service";
 @Component({
   selector: "app-verificator",
@@ -21,17 +22,21 @@ export class VerificatorComponent implements OnInit {
 
   ) {}
   objectKeys = Object.keys;
-  data: any = "";
+  data: any = '';
   verificatorname: string;
-  datachekinglevel = "";
-  key = '';
+  datalevel = "";
   detailMessage = '';
+  key = '';
+  verificationVisible = true;
+  error: boolean = false;
 
-  detailsInfo = {'documentation':{'Passed':'TO DO','Failed':'The following fields must be filled in:'},'data':{'Passed':'','Failed':''},'prediction':{'Passed':'','Failed':''} }
+  // more information to user in GUI when failed a step
+  detailsInfo = {'fields':'The following fields must be filled in:'}
 
   getVerification(): void {
     this.commonService.getVerification(this.model.name,this.model.version).subscribe(
       (result) => {
+        
         this.data = result;
       },
       (error) => {
@@ -79,9 +84,11 @@ export class VerificatorComponent implements OnInit {
   }
 
   verifyModel(modelname : string, version: number): void {
-
+    
+  this.verificationVisible = false; 
   this.verificatorService.generateVerification(modelname,version).subscribe(
     result => {
+      if(result[0]){
       this.toastr.success(
         "Model " + this.model.name,
         "VERIFICATED SUCCESSFULLY",
@@ -90,19 +97,51 @@ export class VerificatorComponent implements OnInit {
           positionClass: "toast-top-right",
           progressBar: true,
     });
-    this.data = result;
+
+  }else{
+    this.error = true;
+    this.cancelInput()
+    this.toastr.error('Model \"' + this.model.name + '\" Verification process has been aborted. Check the browser console for more information', 
+    'Aborted', { timeOut: 10000, positionClass: 'toast-top-right'});
     
+    for (const [key, value] of Object.entries(result[1])) {
+      if (value['status'] == 'Aborted') console.log(key+':'+value['comments']);
+    }
+  
+  }
+    this.data = result;
+    this.verificationVisible = true;
   },
   error => {
-    console.log(error)
-  });   
+    console.log(error);
+  }); 
   }
 
-  details(key: string): void {
+  execSummary(){
     
-    this.datachekinglevel = this.data[1][key];
-    // information to user 
-    this.detailMessage = this.detailsInfo[key][this.datachekinglevel['status']]
-    
+  }
+
+  /**
+   * provides extra information to the user if needed
+   * @param level
+   * @param key 
+   */
+  details(level:string,key: string): void {
+    this.key = key
+    this.datalevel = this.data[1][level][key]
+  }
+
+  /**
+   * Receives the SMILES and converts it to 2d structure
+   * @param smiles 
+   * @param canvasID 
+   */
+  draw2dStructure(smiles,canvasID){
+    const options = {'width': 340, 'height': 175};
+    const smilesDrawer = new SmilesDrawer.Drawer(options);
+    SmilesDrawer.parse(smiles, function(tree) {
+
+      smilesDrawer.draw(tree,canvasID, 'light', false);
+  });
   }
 }
