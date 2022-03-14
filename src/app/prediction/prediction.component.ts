@@ -370,26 +370,15 @@ export class PredictionComponent implements OnChanges {
   
   message = '';
   
-
-
   public changeProjectStyleTrainingMark (value:string) {
-    var update0 = {};
-    var update2 = {};
-    if (value == 'dots') {
-      update0 = {'visible': true};
-      update2 = {'visible': false};
-    }
+    var update = {'visible':[true, true, false]}
     if (value == 'density') {
-      update0 = {'visible': false};
-      update2 = {'visible': true};
+      update = {'visible':[false, true, true]}
     }
     if (value == 'both') {
-      update0 = {'visible': true};
-      update2 = {'visible': true};
+      update = {'visible':[true, true, true]}
     }
-    
-    PlotlyJS.restyle('scoresPreDIV', update0, [0]);
-    PlotlyJS.restyle('scoresPreDIV', update2, [2]);
+    PlotlyJS.restyle('scoresPreDIV', update);
   }
   
   public changeProjectStylePredictionMark (value:string) {
