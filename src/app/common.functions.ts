@@ -238,7 +238,7 @@ export class CommonFunctions {
                     this.api().columns().every( function () {
                         var column = this;
                         // example on how you can remove col 0 (quali/cuanti)
-                        if (icol>0) {
+                        if (icol!=0 && icol!=3) {
                           // class "model_selector" was used to customize font size
                           var select = $('<select class="model_selector" ><option value=""></option></select>')
                               .appendTo( $(column.footer()).empty() )

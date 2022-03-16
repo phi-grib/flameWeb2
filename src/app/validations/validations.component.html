@@ -5,7 +5,7 @@
     <app-quantit-conformal *ngIf="this.model.quantitative"
                             [modelName]="this.model.name" [modelVersion]= "this.model.version" [modelID]="this.model.modelID"></app-quantit-conformal>
 
-    <app-model-documentation [modelName]="this.model.name" [modelVersion]="this.model.version" [modelID]="this.model.modelID"></app-model-documentation>
+    <!-- <app-model-documentation [modelName]="this.model.name" [modelVersion]="this.model.version" [modelID]="this.model.modelID"></app-model-documentation> -->
 </div> 
 
 <div class="m-3" *ngIf="this.model.name !=undefined && this.model.error!=undefined  && !this.model.trained">
