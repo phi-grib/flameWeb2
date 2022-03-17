@@ -3,8 +3,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LabelerService } from './labeler.service';
 import { CommonFunctions } from '../common.functions';
-import { Model, Globals } from '../Globals';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { Model} from '../Globals';
+// import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 declare var $: any;
 
 @Component({
@@ -27,7 +27,8 @@ export class LabelerComponent implements OnInit {
 
   labelChange() {
     const imodel = this.model.listModels[this.model.name+'-'+String(this.model.version)];
-    const clabels = ['bio_type', 'bio_subtype', 'bio_endpoint', 'bio_species'];
+    // const clabels = ['bio_type', 'bio_subtype', 'bio_endpoint', 'bio_species'];
+    const clabels = ['bio_type', 'bio_endpoint', 'bio_species'];
     this.isvalid = true;
     for (let i=0; i<clabels.length; i++) {
       if ((imodel[clabels[i]].length > 15) || (imodel[clabels[i]].length <2)) {
@@ -64,7 +65,7 @@ export class LabelerComponent implements OnInit {
     let labelDelta = {
       maturity : imodel.maturity,
       type : imodel.bio_type,
-      subtype : imodel.bio_subtype,
+      // subtype : imodel.bio_subtype,
       endpoint : imodel.bio_endpoint,
       species : imodel.bio_species
     };
