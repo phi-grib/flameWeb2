@@ -36,12 +36,7 @@ export class ModelDocumentationService {
 
   downloadSeries(modelName: string, modelVersion: string) {
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/series';
-    const a = document.createElement("a");
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.href = url;
-    a.click();
-    document.body.removeChild(a);
+    return this.http.get(url);
   }
 
   getYAMLfromParameters(modelName: string, modelVersion: string){

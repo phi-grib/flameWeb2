@@ -233,7 +233,20 @@ export class ModelDocumentationComponent implements OnChanges {
 
   // download the training series of the currently selected model/version
   downloadSeries () {
-    this.service.downloadSeries(this.model.name, this.model.version)
+    this.service.downloadSeries(this.model.name, this.model.version).subscribe(
+      result => {
+        console.log(result);
+        let text: string = '';
+        for (const x in result) {
+          text = text + result[x];
+        }
+        let blob = new Blob([text], { type: "text/plain;charset=utf-8" })
+        saveAs(blob, 'training_series.sdf');
+      },
+      error => {
+        alert('Error downloading series');
+      }
+    );
   }
 
   downloadParameters () {
