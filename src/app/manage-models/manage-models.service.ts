@@ -55,12 +55,14 @@ export class ManageModelService {
 
   exportTestDownload(model: string, version: string, temp_dir: string) {
     const url: string = environment.baseUrl_manage + 'model/' + model + '/version/' + version + '/temp_dir/' + temp_dir + '/export_download';
-    const a = document.createElement("a");
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.href = url;
-    a.click();
-    document.body.removeChild(a);
+    return this.http.get(url, {responseType: 'arraybuffer'});
+
+    // const a = document.createElement("a");
+    // a.style.display = 'none';
+    // document.body.appendChild(a);
+    // a.href = url;
+    // a.click();
+    // document.body.removeChild(a);
   }
 
   refreshModel(model: string) {

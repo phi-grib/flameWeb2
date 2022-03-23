@@ -9,6 +9,7 @@ import { PredictorComponent} from '../predictor/predictor.component';
 import { CommonFunctions } from '../common.functions';
 import { VerificatorComponent } from '../verificator/verificator.component';
 import { stringify } from 'querystring';
+import {saveAs} from 'file-saver';
 declare var $: any;
 
 @Component({
@@ -192,7 +193,17 @@ export class ManageModelsComponent {
         if (result ['ready']) {
           this.toastr.clear(inserted.toastId);
           clearInterval(intervalId);
-          this.service.exportTestDownload(modelname, version, temp_dir)
+
+          this.service.exportTestDownload(modelname, version, temp_dir).subscribe (
+            result => {
+              let blob = new Blob([ result ],{ type: 'application/gzip' });
+              saveAs(blob, modelname + '.tgz');
+            },
+            error => {
+              alert('Error downloading model');
+            }
+          );
+
         }
       }
     );

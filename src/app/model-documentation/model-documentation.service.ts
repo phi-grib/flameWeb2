@@ -21,20 +21,24 @@ export class ModelDocumentationService {
   //obtains a copy of the model documentation formated to export (usualy YAML)
   exportToFile(modelName: string, modelVersion: string, modelFormat: string): Observable<any> {
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/oformat/' + modelFormat + '/documentation';
-    if (modelFormat == 'WORD' || modelFormat == "EXCEL") {
-      var a = document.createElement("a");
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.href = url;
-      a.click();
-      document.body.removeChild(a);
+    // if (modelFormat == 'WORD' || modelFormat == "EXCEL") {
+    // if (modelFormat == "EXCEL") {
+    //   var a = document.createElement("a");
+    //   a.style.display = 'none';
+    //   document.body.appendChild(a);
+    //   a.href = url;
+    //   a.click();
+    //   document.body.removeChild(a);
+    // }
+    if (modelFormat == "WORD" || modelFormat == "EXCEL") {
+      return this.http.get(url, {responseType: 'arraybuffer'});
     }
     else {
-      return this.http.get(url)
+      return this.http.get(url);
     }
   }
 
-  downloadSeries(modelName: string, modelVersion: string) {
+  downloadSeries(modelName: string, modelVersion: string): Observable<any> {
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/series';
     return this.http.get(url);
   }
@@ -42,7 +46,6 @@ export class ModelDocumentationService {
   getYAMLfromParameters(modelName: string, modelVersion: string){
     // delta is a TS object and must be passed as JSON, so it can be interpreted by the Python backend 
     const formdata = new FormData();
-    // formdata.append('parameters', JSON.stringify('*'))
     formdata.append('parameters', '*')
     const url: string = environment.baseUrl_manage + 'model/' + modelName + '/version/' + modelVersion + '/parameters2yaml';
     return this.http.post(url, formdata);

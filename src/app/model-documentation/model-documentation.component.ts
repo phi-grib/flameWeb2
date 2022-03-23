@@ -181,27 +181,40 @@ export class ModelDocumentationComponent implements OnChanges {
   downloadFile() {
     this.service.exportToFile(this.modelName, this.modelVersion, 'YAML').subscribe (
         result => {
-          let text : string = '';
-          for (const x in result){
-            text += result[x] + '\n';
-          }
-          let blob = new Blob ([text],  {type: "text/plain;charset=utf-8"})
+          let blob = new Blob ([result],  {type: "text/plain;charset=utf-8"})
           saveAs(blob, this.modelName + '.yaml');
         },
         error => {
-          alert('Error updating documentation');
+          alert('Error downloading documentation in YAML format');
         }
     );
   }
 
   // calls exportToFile 
   downloadWord() {
-    this.service.exportToFile(this.modelName, this.modelVersion, 'WORD')
+    this.service.exportToFile(this.modelName, this.modelVersion, 'WORD').subscribe (
+      result => {
+        let blob = new Blob([ result ],{ type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        saveAs(blob, this.modelName + '.docx');
+      },
+      error => {
+        alert('Error downloading documentation in WORD format');
+      }
+    );
   }
 
   // calls exportToFile
   downloadExcel(){
-    this.service.exportToFile(this.modelName,this.modelVersion, 'EXCEL')
+    // this.service.exportToFile(this.modelName,this.modelVersion, 'EXCEL')
+    this.service.exportToFile(this.modelName, this.modelVersion, 'EXCEL').subscribe (
+      result => {
+        let blob = new Blob([ result ],{ type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        saveAs(blob, this.modelName + '.xlsx');
+      },
+      error => {
+        alert('Error downloading documentation in EXCEL format');
+      }
+    );
   }
   
   // compresses the changes in the GUI into a JSON delta file
@@ -235,12 +248,7 @@ export class ModelDocumentationComponent implements OnChanges {
   downloadSeries () {
     this.service.downloadSeries(this.model.name, this.model.version).subscribe(
       result => {
-        console.log(result);
-        let text: string = '';
-        for (const x in result) {
-          text = text + result[x];
-        }
-        let blob = new Blob([text], { type: "text/plain;charset=utf-8" })
+        let blob = new Blob([ result ], { type: "text/plain;charset=utf-8" })
         saveAs(blob, 'training_series.sdf');
       },
       error => {
