@@ -197,7 +197,15 @@ export class ManageModelsComponent {
           this.service.exportTestDownload(modelname, version, temp_dir).subscribe (
             result => {
               let blob = new Blob([ result ],{ type: 'application/gzip' });
-              saveAs(blob, modelname + '.tgz');
+              let filename = modelname;
+              if (version===0){
+                filename+='.tgz';
+              }
+              else {
+                filename+='_v'+version.toString().padStart(6, '0')+'.tgz';
+              }
+              
+              saveAs(blob, filename);
             },
             error => {
               alert('Error downloading model');
