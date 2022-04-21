@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChildren, QueryList, ElementRef, OnInit } from '@angular/core';
+import * as SmilesDrawer from 'smiles-drawer';
 import { Prediction, Model, Globals } from '../Globals';
 import { CommonService } from '../common.service';
 import { PredictorService } from './predictor.service';
@@ -6,9 +7,7 @@ import { CommonFunctions } from '../common.functions';
 import { ToastrService } from 'ngx-toastr';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Renderer2 } from '@angular/core';
-// import 'jquery';
 declare var $: any;
-
 
 @Component({
   selector: 'app-predictor',
@@ -16,6 +15,8 @@ declare var $: any;
   styleUrls: ['./predictor.component.css']
 })
 export class PredictorComponent implements OnInit {
+
+  @ViewChildren('cmp') components: QueryList<ElementRef>;
 
   objectKeys = Object.keys;
   models: {};
@@ -36,6 +37,9 @@ export class PredictorComponent implements OnInit {
               public model: Model,
               public globals: Globals,
               private toastr: ToastrService) { }
+
+  basket_list = [];
+  basket_selected = undefined;
 
   ngOnInit() {
 
@@ -69,6 +73,9 @@ export class PredictorComponent implements OnInit {
       }
       i=i+1;
     }
+
+    this.refresh_list();
+
   }
 
   public change(fileList: FileList): void {
@@ -229,4 +236,62 @@ export class PredictorComponent implements OnInit {
       }
     );
   }
+
+  show_basket (item) {
+    this.service.getBasket(item).subscribe (
+      result => {
+        var tbl = <HTMLTableElement>document.getElementById('tableInputList');
+        const sel_options = {'width': 200, 'height': 125};
+        const smilesDrawerInputList = new SmilesDrawer.Drawer(sel_options);   
+        
+        const compound_list = result['compounds'];
+        compound_list.forEach(function(compound) {
+            const tr = tbl.insertRow();
+      
+            var ismiles = '';
+            var canvasid = '';
+            tr.setAttribute('style', 'background: #f7f9ea');
+            ismiles = compound.smiles;
+            canvasid = 'input_list'+compound.name;
+
+            const tdname = tr.insertCell();
+            tdname.appendChild(document.createTextNode(compound.name));
+            tdname.setAttribute('style', 'max-width:100px')
+      
+            const tdsmiles = tr.insertCell();
+            tdsmiles.setAttribute('class', 'align-middle text-center' )
+            const icanvas = document.createElement('canvas')
+            icanvas.setAttribute('id', canvasid);
+            tdsmiles.appendChild(icanvas);
+            SmilesDrawer.parse(ismiles, function(tree) {
+              smilesDrawerInputList.draw(tree, canvasid, 'light', false);
+            });
+        });
+      
+        console.log (result);
+
+      }
+    );
+  }
+
+  refresh_list () {
+    console.log ('refresh list');
+    this.service.getBasketList().subscribe (
+        result => {
+            const basket_list = result['basket_list'];
+            const newest = result['newest'];
+            for (const line of basket_list) {
+               const linestr = line[0] + ' ' + line[1];
+               this.basket_list.push(linestr);
+            }
+            this.basket_selected = this.basket_list[newest]; 
+            this.show_basket(newest);
+        },
+        error => {
+            alert ('unable to get input lists!')
+        }
+    );
+
+  }
+
 }

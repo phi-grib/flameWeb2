@@ -29,4 +29,14 @@ export class PredictorService {
 
   }
 
+  getBasketList(): Observable<any> {
+    const url: string = environment.baseUrl_manage + 'baskets';
+    return this.http.get(url);
+  }
+
+  getBasket(item: any): Observable<any> {
+    const url: string = environment.baseUrl_manage + 'basket/' + item;
+    return this.http.get(url);
+  }
+
 }

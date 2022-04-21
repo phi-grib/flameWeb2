@@ -91,6 +91,54 @@
         </div>
         <!-- END CARD SKETCH-->
 
+        <!--START CARD INPUT LIST -->
+        <div *ngIf='this.model.input_type != "data"' class="card">
+          <div class="card-header collapsed" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              <h5 class="mb-0">
+                  Input List
+                  <button class="btn btn-link pt-0 pb-0 float-right" type="button"> </button>
+              </h5>
+          </div>
+
+          <div #trainigseries id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#buildingAccordion">
+              <div class="card-body p-2 pl-5 pr-5">
+
+                <div class="form-group col-md-4">
+                  <label class="bmd-label-static" for="key">Recent selections</label>
+                  <select id="basket-list" class="form-control" [(ngModel)]=this.basket_selected>
+                    <option *ngFor="let value of this.basket_list" [value]='value'>
+                      <div *ngIf="value!=null">
+                        {{value}}
+                      </div>   
+                    </option>
+                  </select> 
+                </div>
+
+                <table id ="tableInputList" class="minitable compact">
+                  <thead>
+                    <tr>
+                      <th style="width: 20%">Name</th>
+                      <th class="align-middle text-center" style="width: 80%">Structure</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+
+                <div class="row">
+                  <div class="col-2">
+                    <button type="button" class="btn btn-primary float-left" (click)="refresh_list()" >Refresh</button>
+                  </div>
+                  <div class="col-2 align-self-end">
+                    <button type="button" class="btn btn-primary float-right" (click)="predict_list()" >Predict</button>
+                  </div>
+                </div>
+
+
+              </div>
+          </div>
+       </div>
+       <!-- END CARD INPUT LIST-->
   </div>
 
 
