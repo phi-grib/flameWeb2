@@ -28,18 +28,10 @@ a.disabled{
     background-color: white;
     background: white;
     color: #22577A;
-    /* table-layout: fixed; */
-    /* width: 100%; */
     width: 400px;
-  }
-  .minitable th{
-    padding-left: 1px;
-    padding-right: 1px;
-    border-bottom: 1px solid #B8DCED;
-    color:#0076a3;
+    /* border: 1px solid #999999; */
   }
   .minitable td{
-    /* padding: 5px; */
     font-family: 'Barlow Semi Condensed', sans-serif;
     font-size: 12px;
     border-bottom: 1px solid #B8DCED;

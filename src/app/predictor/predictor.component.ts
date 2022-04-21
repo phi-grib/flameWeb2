@@ -16,7 +16,7 @@ declare var $: any;
 })
 export class PredictorComponent implements OnInit {
 
-  @ViewChildren('cmp') components: QueryList<ElementRef>;
+  // @ViewChildren('cmp') components: QueryList<ElementRef>;
 
   objectKeys = Object.keys;
   models: {};
@@ -24,9 +24,11 @@ export class PredictorComponent implements OnInit {
   version = '0';
   predictName = '';
   sketchName = 'sketched_mol';
+  inputListName = 'input_list';
   file = undefined;
   isvalid = false;
   isvalidSketch = true;
+  isvalidSeries = true;
   predictionsNames = {};
   constructor(public service: PredictorService,
               private commonService: CommonService,
@@ -39,7 +41,9 @@ export class PredictorComponent implements OnInit {
               private toastr: ToastrService) { }
 
   basket_list = [];
+  basket_newest = undefined;
   basket_selected = undefined;
+  compound_list = [];
 
   ngOnInit() {
 
@@ -76,6 +80,8 @@ export class PredictorComponent implements OnInit {
 
     this.refresh_list();
 
+
+
   }
 
   public change(fileList: FileList): void {
@@ -94,8 +100,16 @@ export class PredictorComponent implements OnInit {
   sketchNameChange() {
     this.isvalidSketch = true;
     const letters = /^[A-Za-z0-9_]+$/;
-    if (!(this.predictName.match(letters)) || this.sketchName=='') {
+    if (!(this.sketchName.match(letters)) || this.sketchName=='') {
       this.isvalidSketch = false;
+    }
+  }
+
+  seriesNameChange() {
+    this.isvalidSeries = true;
+    const letters = /^[A-Za-z0-9_]+$/;
+    if (!(this.inputListName.match(letters)) || this.inputListName=='') {
+      this.isvalidSeries = false;
     }
   }
 
@@ -237,55 +251,76 @@ export class PredictorComponent implements OnInit {
     );
   }
 
-  show_basket (item) {
+  show_basket () {
+    const item = parseInt(this.basket_selected.substring(0,1))
+
     this.service.getBasket(item).subscribe (
       result => {
         var tbl = <HTMLTableElement>document.getElementById('tableInputList');
+        
+        for(var i = 0;i<tbl.rows.length;){
+          tbl.deleteRow(i);
+        }
+
+        this.compound_list = result.compounds;
         const sel_options = {'width': 200, 'height': 125};
         const smilesDrawerInputList = new SmilesDrawer.Drawer(sel_options);   
         
-        const compound_list = result['compounds'];
-        compound_list.forEach(function(compound) {
-            const tr = tbl.insertRow();
-      
-            var ismiles = '';
-            var canvasid = '';
-            tr.setAttribute('style', 'background: #f7f9ea');
+        var ismiles = '';
+        var canvasid = '';
+        var seq = 1;
+        this.compound_list.forEach(function(compound) {
             ismiles = compound.smiles;
-            canvasid = 'input_list'+compound.name;
+            canvasid = 'inputlist'+seq;
+          
+            const tr = tbl.insertRow(); 
 
             const tdname = tr.insertCell();
             tdname.appendChild(document.createTextNode(compound.name));
-            tdname.setAttribute('style', 'max-width:100px')
-      
+            tdname.setAttribute('style', 'align-left')
+            
             const tdsmiles = tr.insertCell();
-            tdsmiles.setAttribute('class', 'align-middle text-center' )
-            const icanvas = document.createElement('canvas')
-            icanvas.setAttribute('id', canvasid);
+            tdsmiles.setAttribute('class', 'align-middle text-center' );
+            const icanvas = document.createElement('canvas');
+
             tdsmiles.appendChild(icanvas);
-            SmilesDrawer.parse(ismiles, function(tree) {
-              smilesDrawerInputList.draw(tree, canvasid, 'light', false);
-            });
+            icanvas.setAttribute('id', canvasid);
+            
+            SmilesDrawer.parse(ismiles, 
+              function(tree) {
+                smilesDrawerInputList.draw(tree, canvasid, 'light', false);
+              }, 
+              function (err) {
+                console.log(err);
+              }
+            );
+            seq+=1;
+
         });
       
-        console.log (result);
-
       }
     );
   }
 
   refresh_list () {
-    console.log ('refresh list');
     this.service.getBasketList().subscribe (
         result => {
-            const basket_list = result['basket_list'];
-            const newest = result['newest'];
-            for (const line of basket_list) {
-               const linestr = line[0] + ' ' + line[1];
+            const raw_list = result['basket_list'];
+            this.basket_newest = result['newest'];
+            this.basket_list = [];
+            for (const line of raw_list) {
+               const linestr = line[0] + ' | ' + line[1]; 
                this.basket_list.push(linestr);
             }
-            this.basket_selected = this.basket_list[newest]; 
-            this.show_basket(newest);
+            this.basket_selected = this.basket_list[this.basket_newest]; 
+
+            const here = this;
+            $('#collapseTwo').on('shown.bs.collapse', function () {
+              here.show_basket();
+            });
+            $('#basket-list').on('change', function () {
+              here.show_basket();
+            });
         },
         error => {
             alert ('unable to get input lists!')
@@ -294,4 +329,56 @@ export class PredictorComponent implements OnInit {
 
   }
 
-}
+  predict_list() {
+    this.activeModal.close('Close click');
+
+    if (this.compound_list.length==0) {
+      const item = parseInt(this.basket_selected.substring(0,1))
+      this.service.getBasket(item).subscribe (
+        result => {
+          this.compound_list = result.compounds;
+        }
+      );
+    }
+
+    if (this.modelName != '') {
+      const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictName , {
+        disableTimeOut: true, positionClass: 'toast-top-right'});
+      
+      this.prediction.predicting[this.predictName] = [this.modelName, this.version, this.inputListName];
+
+      this.service.predict_smiles_list(this.modelName, this.version, this.compound_list, this.predictName, this.inputListName).subscribe(
+        result => {
+          let iter = 0;
+          const intervalId = setInterval(() => {
+            if (iter < 500) {
+              this.checkPrediction(this.predictName, inserted, intervalId);
+            } else {
+              clearInterval(intervalId);
+              this.toastr.clear(inserted.toastId);
+              this.toastr.warning( 'Prediction ' + this.predictName + ' \n Time Out' , 'Warning', {
+                                    timeOut: 10000, positionClass: 'toast-top-right'});
+              delete this.prediction.predicting[this.predictName];
+              $('#dataTablePredictions').DataTable().destroy();
+              this.func.getPredictionList();
+            }
+            iter += 1;
+          }, 2000);
+        },
+        error => {
+          this.toastr.clear(inserted.toastId);
+          delete this.prediction.predicting[this.predictName];
+          $('#dataTablePredictions').DataTable().destroy();
+          this.func.getPredictionList();
+          alert('Error processing input molecule: '+error.error.error);
+        }
+      );
+    }
+    else {
+      alert('Model name undefined!')
+    }
+
+  }
+
+
+  }
