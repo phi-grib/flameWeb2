@@ -165,6 +165,55 @@ export class PredictorComponent implements OnInit {
 
   }
 
+  predict_list() {
+    this.activeModal.close('Close click');
+
+    if (this.compound_list.length==0) {
+      const item = parseInt(this.basket_selected.substring(0,1))
+      this.service.getBasket(item).subscribe (
+        result => {
+          this.compound_list = result.compounds;
+        }
+      );
+    }
+
+    if (this.modelName == '') {
+      alert('Model name undefined!');
+      return;
+    }
+    const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictName , {
+      disableTimeOut: true, positionClass: 'toast-top-right'});
+    
+    this.prediction.predicting[this.predictName] = [this.modelName, this.version, this.inputListName];
+
+    this.service.predict_smiles_list(this.modelName, this.version, this.compound_list, this.predictName, this.inputListName).subscribe(
+      result => {
+        let iter = 0;
+        const intervalId = setInterval(() => {
+          if (iter < 500) {
+            this.checkPrediction(this.predictName, inserted, intervalId);
+          } else {
+            clearInterval(intervalId);
+            this.toastr.clear(inserted.toastId);
+            this.toastr.warning( 'Prediction ' + this.predictName + ' \n Time Out' , 'Warning', {
+                                  timeOut: 10000, positionClass: 'toast-top-right'});
+            delete this.prediction.predicting[this.predictName];
+            $('#dataTablePredictions').DataTable().destroy();
+            this.func.getPredictionList();
+          }
+          iter += 1;
+        }, 2000);
+      },
+      error => {
+        this.toastr.clear(inserted.toastId);
+        delete this.prediction.predicting[this.predictName];
+        $('#dataTablePredictions').DataTable().destroy();
+        this.func.getPredictionList();
+        alert('Error processing input molecule: '+error.error.error);
+      }
+    );
+  }
+
   predict() {
     this.activeModal.close('Close click');
     if (this.modelName != '') {
@@ -326,59 +375,8 @@ export class PredictorComponent implements OnInit {
             alert ('unable to get input lists!')
         }
     );
-
-  }
-
-  predict_list() {
-    this.activeModal.close('Close click');
-
-    if (this.compound_list.length==0) {
-      const item = parseInt(this.basket_selected.substring(0,1))
-      this.service.getBasket(item).subscribe (
-        result => {
-          this.compound_list = result.compounds;
-        }
-      );
-    }
-
-    if (this.modelName != '') {
-      const inserted = this.toastr.info('Running!', 'Prediction ' + this.predictName , {
-        disableTimeOut: true, positionClass: 'toast-top-right'});
-      
-      this.prediction.predicting[this.predictName] = [this.modelName, this.version, this.inputListName];
-
-      this.service.predict_smiles_list(this.modelName, this.version, this.compound_list, this.predictName, this.inputListName).subscribe(
-        result => {
-          let iter = 0;
-          const intervalId = setInterval(() => {
-            if (iter < 500) {
-              this.checkPrediction(this.predictName, inserted, intervalId);
-            } else {
-              clearInterval(intervalId);
-              this.toastr.clear(inserted.toastId);
-              this.toastr.warning( 'Prediction ' + this.predictName + ' \n Time Out' , 'Warning', {
-                                    timeOut: 10000, positionClass: 'toast-top-right'});
-              delete this.prediction.predicting[this.predictName];
-              $('#dataTablePredictions').DataTable().destroy();
-              this.func.getPredictionList();
-            }
-            iter += 1;
-          }, 2000);
-        },
-        error => {
-          this.toastr.clear(inserted.toastId);
-          delete this.prediction.predicting[this.predictName];
-          $('#dataTablePredictions').DataTable().destroy();
-          this.func.getPredictionList();
-          alert('Error processing input molecule: '+error.error.error);
-        }
-      );
-    }
-    else {
-      alert('Model name undefined!')
-    }
-
   }
 
 
-  }
+
+} 

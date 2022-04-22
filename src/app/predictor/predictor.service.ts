@@ -32,14 +32,12 @@ export class PredictorService {
   predict_smiles_list(modelName: string, version: string, smiles_list: any, predictionName: string, sketchName: string): Observable<any> {
     
     const formData = new FormData();
-
     formData.append('smiles_list', JSON.stringify(smiles_list));
     formData.append('name', sketchName);
     const url: string = environment.baseUrl_predict + 'model/' + modelName + '/version/' + version + '/predictionName/' + predictionName + '/smiles_list';
     return this.http.put(url, formData);
 
   }
-
 
   getBasketList(): Observable<any> {
     const url: string = environment.baseUrl_manage + 'baskets';
