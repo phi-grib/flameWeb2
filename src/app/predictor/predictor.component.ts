@@ -80,6 +80,13 @@ export class PredictorComponent implements OnInit {
 
     this.refresh_list();
 
+    const here = this;
+    $('#collapseTwo').on('shown.bs.collapse', function () {
+      here.show_basket();
+    });
+    $('#basket-list').on('change', function () {
+      here.show_basket();
+    });
 
 
   }
@@ -301,6 +308,12 @@ export class PredictorComponent implements OnInit {
   }
 
   show_basket () {
+
+    // if no basket is present
+    if (this.basket_selected == undefined) {
+      return;
+    }
+
     const item = parseInt(this.basket_selected.substring(0,1))
 
     this.service.getBasket(item).subscribe (
@@ -326,7 +339,7 @@ export class PredictorComponent implements OnInit {
 
             const tdname = tr.insertCell();
             tdname.appendChild(document.createTextNode(compound.name));
-            tdname.setAttribute('style', 'align-left')
+            tdname.setAttribute('class', 'align-middle text-center')
             
             const tdsmiles = tr.insertCell();
             tdsmiles.setAttribute('class', 'align-middle text-center' );
@@ -358,18 +371,10 @@ export class PredictorComponent implements OnInit {
             this.basket_newest = result['newest'];
             this.basket_list = [];
             for (const line of raw_list) {
-               const linestr = line[0] + ' | ' + line[1]; 
+               const linestr = line[0] + '\xa0\xa0\xa0\xa0\xa0\xa0date:' + line[1] + '\xa0\xa0\xa0\xa0\xa0\xa0compounds:' + line[2] + '\xa0\xa0\xa0\xa0\xa0\xa0user:' + line[3]; 
                this.basket_list.push(linestr);
             }
             this.basket_selected = this.basket_list[this.basket_newest]; 
-
-            const here = this;
-            $('#collapseTwo').on('shown.bs.collapse', function () {
-              here.show_basket();
-            });
-            $('#basket-list').on('change', function () {
-              here.show_basket();
-            });
         },
         error => {
             alert ('unable to get input lists!')
