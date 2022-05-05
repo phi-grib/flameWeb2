@@ -1044,7 +1044,7 @@ export class PredictionComponent implements OnChanges {
       var tbl = <HTMLTableElement>document.getElementById('tablePredictionSelections');
       if (eventdata != null && 'points' in eventdata) {
         var points = eventdata.points;
-        console.log(points);
+        // console.log(points);
         points.forEach(function(pt) {
           const tr = tbl.insertRow();
 
