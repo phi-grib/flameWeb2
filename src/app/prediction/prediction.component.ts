@@ -1103,7 +1103,7 @@ export class PredictionComponent implements OnChanges {
           this.predictionError = result['error']; 
         }
 
-        setTimeout(() => {
+        // setTimeout(() => {
           if ('PC1proj' in result) {
             this.plotScores.data[1].x = result['PC1proj'];
             this.plotScores.data[1].y = result['PC2proj'];
@@ -1134,7 +1134,7 @@ export class PredictionComponent implements OnChanges {
 
           };
           
-        }, 100);
+        // }, 100);
 
         this.predictionResult = result;
 
@@ -1214,7 +1214,7 @@ export class PredictionComponent implements OnChanges {
 
           this.predictionVisible = true;
             
-          }, 500);
+          }, 1000);
       }
     );
   }
