@@ -110,7 +110,7 @@
                 <label for="dist_cutoff">Distance cutoff</label>
                 <input [disabled]="(this.spaceType=='substructure' || this.isSMARTS)" type="number" id="dist_cutoff" class="form-control" [(ngModel)]="this.dist_cutoff" aria-describedby="dist_cutoff" min="0" max="10" step=".01">
                 <small id="dist_cutoff" class="text-muted">
-                  (0-10)
+                  (0.0-1.0)
                 </small>
               </div>
 

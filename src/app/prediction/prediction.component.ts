@@ -855,7 +855,7 @@ export class PredictionComponent implements OnChanges {
     return (Math.pow(10,6-value).toFixed(4))
   }
 
-  isInteger(value) {
+  isInteger(value: any) {
     return value % 1 == 0;
   }
 

@@ -241,7 +241,7 @@
                 </div>
                 <div class="col-9 border">
                   <span *ngIf="this.predictionResult.values" class="prediction_text">{{castValue(this.predictionResult.values[molIndex])}}</span>
-                  <span *ngIf="this.modelDocumentation != undefined && this.modelDocumentation['Endpoint_units']"> {{this.modelDocumentation['Endpoint_units'].value}}</span>
+                  <span *ngIf= "this.modelBuildInfo['quantitative'] && this.modelDocumentation != undefined && this.modelDocumentation['Endpoint_units']"> {{this.modelDocumentation['Endpoint_units'].value}}</span>
                 </div>
               </div>
 
