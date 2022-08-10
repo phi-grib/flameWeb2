@@ -54,6 +54,7 @@
         "ngx-toastr": "^11.3.2",
         "pdfmake": "^0.1.64",
         "plotly.js": "^1.53.0",
+        "plotly.js-dist-min": "^2.13.3",
         "popper": "^1.0.1",
         "popper.js": "^1.16.0",
         "rxjs": "~6.5.4",
