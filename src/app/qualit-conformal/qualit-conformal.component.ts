@@ -1,7 +1,8 @@
 import { Component, Input, OnChanges} from '@angular/core';
 import { CommonService } from '../common.service';
 import * as SmilesDrawer from 'smiles-drawer';
-import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+// import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+import * as PlotlyJS from 'plotly.js-dist-min';
 import { Model, CustomHTMLElement } from '../Globals';
 
 @Component({

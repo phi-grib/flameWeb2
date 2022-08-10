@@ -1,7 +1,8 @@
 import { Component, ViewChildren, QueryList, ElementRef, Input, OnChanges } from '@angular/core';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonService } from '../common.service';
-import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+// import * as PlotlyJS from 'plotly.js/dist/plotly.js';
+import * as PlotlyJS from 'plotly.js-dist-min';
 import { PredictionService } from './prediction.service';
 import { Prediction, CustomHTMLElement, Globals } from '../Globals';
 import 'datatables.net-bs4';
