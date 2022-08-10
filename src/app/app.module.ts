@@ -22,13 +22,11 @@ import { BuilderComponent } from './builder/builder.component';
 import { PredictorComponent } from './predictor/predictor.component';
 import { PredictionComponent } from './prediction/prediction.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-// import { SimilarityComponent } from './similarity/similarity.component';
 import { PredictionListComponent } from './prediction-list/prediction-list.component';
 import { ManageModelsComponent } from './manage-models/manage-models.component';
 import { ManagePredictionsComponent } from './manage-predictions/manage-predictions.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfusionMatrixComponent } from './confusion-matrix/confusion-matrix.component';
-// import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
 import { ModelDocumentationComponent } from './model-documentation/model-documentation.component';
@@ -45,16 +43,13 @@ import { ConfigStrainingComponent } from './config-straining/config-straining.co
 import { TrainingSseriesComponent } from './training-sseries/training-sseries.component';
 import { ConfigSpreferencesComponent } from './config-spreferences/config-spreferences.component';
 import { VerificatorComponent } from './verificator/verificator.component';
+import { AngularSplitModule } from 'angular-split';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
 // import * as XLSX from 'xlsx';
 
-// import { PlotlyViaCDNModule } from 'angular-plotly.js';
-
 PlotlyModule.plotlyjs = PlotlyJS;
-// PlotlyViaCDNModule.plotlyVersion = '1.49.4';
-
 
 @NgModule({
   declarations: [
@@ -100,8 +95,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ChecklistModule,
     NgbModule,
     KeycloakAngularModule,
-    // PlotlyViaCDNModule,
-    PlotlyModule
+    PlotlyModule, 
+    AngularSplitModule
   ],
   providers: [Model, Prediction, Globals, Manager, Similarity, Space, Search,
   {

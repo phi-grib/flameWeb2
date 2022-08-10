@@ -34,7 +34,8 @@
         <div class="tab-pane fade show active" id="build" role="tabpanel" aria-labelledby="build-tab">
             <!-- <div class="col p-0"> -->
             <!-- <div class="col-7 info scrollable v-100"> -->
-            <div class="row">
+
+            <!-- <div class="row">
                 <div class="col-4 p-0">
                     <app-model-list></app-model-list>
                 </div>
@@ -44,21 +45,22 @@
                         <app-validations [name] = this.model.name [version] = this.model.version></app-validations>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <!-- <div class="row">
+            <div class="row">
                 <as-split direction="horizontal">
                   <as-split-area [size]="40">
                     <app-model-list></app-model-list>
-
                   </as-split-area>
+
                   <as-split-area [size]="60">
                     <div *ngIf="(this.model.name != undefined)">
                         <app-validations [name] = this.model.name [version] = this.model.version></app-validations>
                     </div>
                   </as-split-area>
+
                 </as-split>
-              </div> -->
+            </div>
 
 
 
