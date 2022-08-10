@@ -241,7 +241,7 @@
                 </div>
                 <div class="col-9 border">
                   <span *ngIf="this.predictionResult.values" class="prediction_text">{{castValue(this.predictionResult.values[molIndex])}}</span>
-                  <span *ngIf="this.modelDocumentation != undefined && this.modelDocumentation['Endpoint_units']"> {{this.modelDocumentation['Endpoint_units'].value}}</span>
+                  <span *ngIf= "this.modelBuildInfo['quantitative'] && this.modelDocumentation != undefined && this.modelDocumentation['Endpoint_units']"> {{this.modelDocumentation['Endpoint_units'].value}}</span>
                 </div>
               </div>
 
@@ -338,7 +338,7 @@
                   <table class="table ml-0">
                     <thead>
                       <tr>
-                        <th class="pl-0 pb-2 pt-2 pr-2 text-left" scope="col">Distance</th>
+                        <th class="pl-0 pb-2 pt-2 pr-2 text-left" scope="col">Similarity</th>
                         <th class="pl-0 pb-2 pt-2 pr-2 text-center" scope="col">Structure</th>
                         <th class="pr-0 pl-2 pb-2 pt-2 text-left" scope="col">Name</th>
                         <th class="pr-0 pl-2 pb-2 pt-2 text-right" scope="col">Activity</th>

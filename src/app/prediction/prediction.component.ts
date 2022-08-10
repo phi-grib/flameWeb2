@@ -856,7 +856,7 @@ export class PredictionComponent implements OnChanges {
     return (Math.pow(10,6-value).toFixed(4))
   }
 
-  isInteger(value) {
+  isInteger(value: any) {
     return value % 1 == 0;
   }
 
@@ -1104,7 +1104,7 @@ export class PredictionComponent implements OnChanges {
           this.predictionError = result['error']; 
         }
 
-        setTimeout(() => {
+        // setTimeout(() => {
           if ('PC1proj' in result) {
             this.plotScores.data[1].x = result['PC1proj'];
             this.plotScores.data[1].y = result['PC2proj'];
@@ -1135,7 +1135,7 @@ export class PredictionComponent implements OnChanges {
 
           };
           
-        }, 100);
+        // }, 100);
 
         this.predictionResult = result;
 
@@ -1215,7 +1215,7 @@ export class PredictionComponent implements OnChanges {
 
           this.predictionVisible = true;
             
-          }, 500);
+          }, 1000);
       }
     );
   }
