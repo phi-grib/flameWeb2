@@ -1,32 +1,27 @@
 
-<!-- <div class="row"> -->
-<div style="width:2000px;height:1000px">
-
-    <as-split direction="horizontal">
-		<as-split-area [size]="40">
-
-            <div class="row align-items-center mt-3">
-                <div class="col">   
-                    <label class="bmd-label-floating" style="min-width: 20vw;"  >Model root directory
-                        <input class="form-control" [(ngModel)]="this.modelRoot" id="modroot" type='text' placeholder="this.modelRoot">
-                    </label>
-                    <button type="button" class="btn btn-primary ml-3"  [ngClass]="{'disabled': this.modelRoot === undefined }" (click) = "applyChanges()" >Apply changes</button>
-                </div>
+<div class="row">
+    <div class="col ml-3">
+        <div class="row align-items-center mt-3">
+            <div class="col">   
+                <label class="bmd-label-floating" style="min-width: 20vw;"  >Model root directory
+                    <input class="form-control" [(ngModel)]="this.modelRoot" id="modroot" type='text' placeholder="this.modelRoot">
+                </label>
+                <button type="button" class="btn btn-primary ml-3"  [ngClass]="{'disabled': this.modelRoot === undefined }" (click) = "applyChanges()" >Apply changes</button>
             </div>
-            <div class="row align-items-center mt-3">
-                <div class="form-group pl-3">
-                    <label >User profile
-                        <select id="changeMode" (change)="changeUserProfile($event.target.value)">
-                            <option value='basic' [selected]="this.globals.read_only==true">end user</option>
-                            <option value='expert' [selected]="this.globals.read_only==false">model builder</option>
-                        </select>
-                    </label>
-                </div>
+        </div>
+        <div class="row align-items-center mt-3">
+            <div class="form-group pl-3">
+                <label >User profile
+                    <select id="changeMode" (change)="changeUserProfile($event.target.value)">
+                        <option value='basic' [selected]="this.globals.read_only==true">end user</option>
+                        <option value='expert' [selected]="this.globals.read_only==false">model builder</option>
+                    </select>
+                </label>
             </div>
-        </as-split-area>
+        </div>
+    </div>
 
-		<as-split-area [size]="40">
-
+    <div class="col-7" >
         <div class="col mt-3">   
             <h3>Flame version 1.0.0-rc6</h3>
             <p>Manuel Pastor, José Carlos Gómez Tamayo, Ignacio Pasamontes</p>
@@ -38,10 +33,8 @@
             <small>28-04-2022</small>
             <br>
         </div>
-    </as-split-area>
-
-    </as-split>
     </div>
+</div>
 
 
 <!-- 

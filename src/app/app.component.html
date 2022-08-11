@@ -48,7 +48,10 @@
             </div> -->
 
             <!-- <div class="row"> -->
-            <div style="width:2000px; height:1000px">                <as-split direction="horizontal">
+            <!-- <div style="width:2000px; height:1000px">                 -->
+
+            <div style="width:99vw; height:95vh">                
+               <as-split direction="horizontal">
                   <as-split-area [size]="40">
                     <app-model-list></app-model-list>
                   </as-split-area>
@@ -67,53 +70,68 @@
         </div>
 
         <div class="tab-pane fade" id="predict" role="tabpanel" aria-labelledby="predict-tab" >
-            <div class="row">
+
+            <div style="width:99vw; height:95vh">                
+                <as-split direction="horizontal">
+                   <as-split-area [size]="40">
+                    <app-prediction-list></app-prediction-list>
+                   </as-split-area>
+ 
+                   <as-split-area [size]="60">
+                      <div class="col p-0 info scrollable" >
+                        <div *ngIf="(this.prediction.name != undefined) && (this.globals.mainTabActive=='#predict')">
+                            <app-prediction [predictionName]=this.prediction.name></app-prediction>
+                        </div>
+                      </div>
+                   </as-split-area>
+                 </as-split>
+            </div>
+
+            <!-- <div class="row">
                 <div class="col-4 p-0">
                     <app-prediction-list></app-prediction-list>
                 </div>
-
                 <div class="col p-0 info scrollable" >
                     <div *ngIf="(this.prediction.name != undefined) && (this.globals.mainTabActive=='#predict')">
                         <app-prediction [predictionName]=this.prediction.name></app-prediction>
                     </div>
                 </div>
-
-            </div>
-
-
-
-
-
+            </div> -->
 
         </div>
         
         
         <div class="tab-pane fade" id="similarity" role="tabpanel" aria-labelledby="similarity-tab" >
-            <div class="row">
-
+            <!-- <div class="row">
                 <div class="col-4 p-0">
                     <app-space-list></app-space-list>
                 </div>
-
                 <div class="col p-0 info scrollable v-100" >
                     <div *ngIf="(this.space.spaceName != undefined) && (this.globals.mainTabActive=='#similarity')">
                         <app-search [spaceName] = this.space.spaceName [spaceVersion] = this.space.spaceVersion ></app-search>
                     </div>
                 </div>
+            </div> -->
 
+            <div style="width:99vw; height:95vh">                
+                <as-split direction="horizontal">
+                   <as-split-area [size]="40">
+                    <app-space-list></app-space-list>
+                   </as-split-area>
+ 
+                   <as-split-area [size]="60">
+                      <div class="col p-0 info scrollable" >
+                        <div *ngIf="(this.space.spaceName != undefined) && (this.globals.mainTabActive=='#similarity')">
+                            <app-search [spaceName] = this.space.spaceName [spaceVersion] = this.space.spaceVersion ></app-search>
+                        </div>
+                      </div>
+                   </as-split-area>
+                 </as-split>
             </div>
         </div>
 
-        <!-- <div class="tab-pane fade " id="similarity" role="tabpanel" aria-labelledby="similarity-tab" >
-            <div class="col p-0">
-                <app-similarity></app-similarity>
-            </div>
-        </div> -->
-
         <div class="tab-pane fade " id="configuration" role="tabpanel" aria-labelledby="configuration-tab" >
-            <!-- <div class="col p-0"> -->
-                <app-configuration></app-configuration>
-            <!-- </div> -->
+            <app-configuration></app-configuration>
         </div>
 
     </div>
