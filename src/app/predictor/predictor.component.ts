@@ -67,6 +67,7 @@ export class PredictorComponent implements OnInit {
       this.predictionsNames[name[0]] = true;
     }
 
+    //TODO: change algorithm to avoid selecting allways Predict_1
     let i=1;
     let nameFound = false;
     while (!nameFound) {
@@ -230,10 +231,15 @@ export class PredictorComponent implements OnInit {
 
       this.service.predict(this.modelName, this.version, this.file, this.predictName).subscribe(
         result => {
+
+          // return as result the predictionID which will be used in checkPrediction, instead of the predictName
+          console.log(result);
+
           let iter = 0;
           const intervalId = setInterval(() => {
             if (iter < 500) {
-              this.checkPrediction(this.predictName, inserted, intervalId);
+              // this.checkPrediction(this.predictName, inserted, intervalId);
+              this.checkPrediction(result, inserted, intervalId);
             } else {
               clearInterval(intervalId);
               this.toastr.clear(inserted.toastId);
