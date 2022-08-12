@@ -1,11 +1,11 @@
 
 <div class="row mt-5" *ngIf="this.search.searchName != undefined" >
 
-  <div id="overlay" *ngIf="this.search.result == undefined">
+  <!-- <div id="overlay" *ngIf="this.search.result == undefined">
     <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
       <span class="sr-only">Loading...</span>
     </div>
-  </div>
+  </div> -->
 
   <div class="col-12" *ngIf = "this.search.result != undefined">
     <div class="model_name"> Results in: {{this.search.spaceName}} v.{{this.search.spaceVersion}} using metric: {{this.search.metric}} </div>

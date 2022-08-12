@@ -22,6 +22,15 @@ export class AppComponent implements OnInit {
 
     toxhub: any;
     
+    modelleft = 40;
+    modelright = 60;
+
+    predictleft = 40;
+    predictright = 60;
+
+    spaceleft = 40;
+    spaceright = 60;
+    
     ngOnInit() {
       const me = this;
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -43,5 +52,34 @@ export class AppComponent implements OnInit {
       // }
       // console.log(this.toxhub);
     }
+
+    gutterClickModels() {
+      if (this.modelleft > 0) {
+        this.modelleft = 0;
+        this.modelright = 100;
+      } else {
+        this.modelleft = 40
+        this.modelright = 60
+      }
+    }
+    gutterClickPredictions() {
+      if (this.predictleft > 0) {
+        this.predictleft = 0;
+        this.predictright = 100;
+      } else {
+        this.predictleft = 40
+        this.predictright = 60
+      }
+    }
+    gutterClickSpaces() {
+      if (this.spaceleft > 0) {
+        this.spaceleft = 0;
+        this.spaceright = 100;
+      } else {
+        this.spaceleft = 40
+        this.spaceright = 60
+      }
+    }
+
 
 }
