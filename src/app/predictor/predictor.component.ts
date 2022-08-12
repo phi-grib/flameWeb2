@@ -67,11 +67,21 @@ export class PredictorComponent implements OnInit {
       this.predictionsNames[name[0]] = true;
     }
 
+
     let i=1;
     let nameFound = false;
     while (!nameFound) {
-      this.predictName = 'Prediction_' + i;
-      if (!this.objectKeys(this.predictionsNames).includes(this.predictName)) {
+      let istr = i.toString().padStart(4,'0');
+      this.predictName = 'Prediction_' + istr;
+
+      let keyFound = false;
+      for (const ikey of this.objectKeys(this.predictionsNames)) {
+        if (ikey.startsWith(this.predictName)) {
+          keyFound=true;
+        }
+      }
+
+      if (!keyFound){
         nameFound = true;
         this.isvalid = true;
       }
@@ -101,6 +111,11 @@ export class PredictorComponent implements OnInit {
     const letters = /^[A-Za-z0-9_]+$/;
     if (!(this.predictName.match(letters)) || this.predictName in this.predictionsNames || this.predictName.startsWith('ensemble')) {
       this.isvalid = false;
+    }
+    for (const ikey of this.objectKeys(this.predictionsNames)) {
+      if (ikey.startsWith(this.predictName)) {
+        this.isvalid = false;
+      }
     }
   }
 
@@ -144,7 +159,8 @@ export class PredictorComponent implements OnInit {
           let iter = 0;
           const intervalId = setInterval(() => {
             if (iter < 500) {
-              this.checkPrediction(this.predictName, inserted, intervalId);
+              // this.checkPrediction(this.predictName, inserted, intervalId);
+              this.checkPrediction(result, inserted, intervalId);
             } else {
               clearInterval(intervalId);
               this.toastr.clear(inserted.toastId);
@@ -198,7 +214,8 @@ export class PredictorComponent implements OnInit {
         let iter = 0;
         const intervalId = setInterval(() => {
           if (iter < 500) {
-            this.checkPrediction(this.predictName, inserted, intervalId);
+            // this.checkPrediction(this.predictName, inserted, intervalId);
+            this.checkPrediction(result, inserted, intervalId);
           } else {
             clearInterval(intervalId);
             this.toastr.clear(inserted.toastId);
@@ -230,10 +247,15 @@ export class PredictorComponent implements OnInit {
 
       this.service.predict(this.modelName, this.version, this.file, this.predictName).subscribe(
         result => {
+
+          // return as result the predictionID which will be used in checkPrediction, instead of the predictName
+          console.log(result);
+
           let iter = 0;
           const intervalId = setInterval(() => {
             if (iter < 500) {
-              this.checkPrediction(this.predictName, inserted, intervalId);
+              // this.checkPrediction(this.predictName, inserted, intervalId);
+              this.checkPrediction(result, inserted, intervalId);
             } else {
               clearInterval(intervalId);
               this.toastr.clear(inserted.toastId);
