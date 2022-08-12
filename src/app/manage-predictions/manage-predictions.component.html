@@ -1,6 +1,6 @@
 <div class="btn-toolbar mt-3 mb-3 ml-4">
   <!-- <button type="button" class="btn btn-outline-primary btn-lg mr-2" (click)="newPrediction()">New</button> -->
-  <button type="button" class="btn btn-ets-delete" data-toggle="modal" data-target="#deletePrediction">Delete Prediction</button>
+  <button type="button" class="btn btn-ets-delete" [ngClass]="{'disabled': this.prediction.name == undefined}" data-toggle="modal" data-target="#deletePrediction">Delete Prediction</button>
 </div>
 <!-- Delete Prediction-->
 <div class="modal fade" id="deletePrediction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

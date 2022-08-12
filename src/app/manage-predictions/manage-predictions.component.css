@@ -13,4 +13,10 @@
     background-color:#b41147 ;
     color: #ffffff;
 }
+.btn-ets-delete.disabled {
+    background-color:#bdbdbd ;
+    color: #ffffff;
+    cursor: not-allowed;
+    pointer-events: none !important;
+}
 

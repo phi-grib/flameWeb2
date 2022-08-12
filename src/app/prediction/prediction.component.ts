@@ -669,9 +669,9 @@ export class PredictionComponent implements OnChanges {
       JSON.parse(JSON.stringify(this.scores2defaults))
     ];
 
+    this.getPrediction();
     this.getInfo();
     this.getDocumentation();  
-    this.getPrediction();
     this.getValidation();
   }
 
@@ -771,7 +771,7 @@ export class PredictionComponent implements OnChanges {
 
         this.modelPresent = true;
 
-        this.modelMatch = (this.modelBuildInfo['modelID'] === this.prediction.modelID);
+        this.modelMatch = (this.modelBuildInfo['modelID'] == this.prediction.modelID);
 
         this.isQuantitative = this.modelBuildInfo['quantitative'];
         this.isMajority = this.modelBuildInfo['model'] == 'combination:majority voting' || 
@@ -1103,7 +1103,7 @@ export class PredictionComponent implements OnChanges {
         if (result['error']) {
           this.predictionError = result['error']; 
         }
-
+        
         // setTimeout(() => {
           if ('PC1proj' in result) {
             this.plotScores.data[1].x = result['PC1proj'];
