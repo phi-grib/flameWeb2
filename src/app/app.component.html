@@ -50,8 +50,9 @@
             <!-- <div class="row"> -->
             <!-- <div style="width:2000px; height:1000px">                 -->
 
-            <div style="width:99vw; height:95vh">                
-               <as-split direction="horizontal" (gutterClick)="this.gutterClickModels()">
+            <!-- <div style="width:99vw; height:95vh">                 -->
+            <div style="height:95vh">                
+               <as-split direction="horizontal" (gutterClick)="this.gutterClickModels()" class="app-base">
                   <as-split-area [size]="this.modelleft">
                     <app-model-list></app-model-list>
                   </as-split-area>
@@ -71,7 +72,7 @@
 
         <div class="tab-pane fade" id="predict" role="tabpanel" aria-labelledby="predict-tab" >
 
-            <div style="width:99vw; height:95vh">                
+            <div style="height:95vh">                
                 <as-split direction="horizontal" (gutterClick)="this.gutterClickPredictions()">
                    <as-split-area [size]="this.predictleft">
                     <app-prediction-list></app-prediction-list>
@@ -113,7 +114,7 @@
                 </div>
             </div> -->
 
-            <div style="width:99vw; height:95vh">                
+            <div style="height:95vh">                
                 <as-split direction="horizontal" (gutterClick)="this.gutterClickSpaces()">
                    <as-split-area [size]="this.spaceleft">
                     <app-space-list></app-space-list>

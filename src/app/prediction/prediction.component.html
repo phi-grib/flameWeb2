@@ -48,7 +48,7 @@
           </div>
         </div>
         
-      <!--NAVS tables-->
+        <!--NAVS tables-->
         <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" *ngIf="this.globals.mainTabActive=='#predict'"> -->
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <li class="nav-item">
@@ -474,67 +474,64 @@
 
           <!--PROJECT PREDICTIONS-->
           <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab" *ngIf="this.predictionResult != undefined"> 
+           
             <div class="card-body">
               <div class="row justify-content-between">
-
                 <div class="col">
-
                     <div id="scoresPreDIV"></div>
 
-                    <div class="form-row pt-4">
-                      <div class="form-group col-md-2">
-                        <label class="bmd-label-static pr-2">Training series</label>
-                      </div>
-
-                      <div class="form-group col-md-4">
-                        <label class="bmd-label-static pr-2">show as</label>
-                        <select class="form-select" id="projectStyleTrainingMarker" (change)="changeProjectStyleTrainingMark($event.target.value)">
-                          <option value='dots'>dots</option>
-                          <option value='density'>density</option>
-                          <option value='both'>both</option>
-                        </select>
-                      </div>
-                      
-                      <div class="form-group col-md-4">
-                        <label class="bmd-label-static pr-2">color</label>
-                        <select class="form-select" id="projectStyleTrainingColor" (change)="changeProjectStyleTrainingColor($event.target.value)">
-                          <option value='grey'>grey</option>
-                          <option value='green'>green</option>
-                          <option value='activity'>activity</option>
-                        </select>
-                      </div>
-                    </div>
-                    
-                    <div class="form-row">
-                      <div class="form-group col-md-2">
-                        <label class="bmd-label-static pr-2">Predictions</label>
+                      <div class="form-row pt-4">
+                        <div class="form-group col-md-2">
+                          <label class="bmd-label-static pr-2">Training series</label>
+                        </div>
+  
+                        <div class="form-group col-md-4">
+                          <label class="bmd-label-static pr-2">show as</label>
+                          <select class="form-select" id="projectStyleTrainingMarker" (change)="changeProjectStyleTrainingMark($event.target.value)">
+                            <option value='dots'>dots</option>
+                            <option value='density'>density</option>
+                            <option value='both'>both</option>
+                          </select>
+                        </div>
+                        
+                        <div class="form-group col-md-4">
+                          <label class="bmd-label-static pr-2">color</label>
+                          <select class="form-select" id="projectStyleTrainingColor" (change)="changeProjectStyleTrainingColor($event.target.value)">
+                            <option value='grey'>grey</option>
+                            <option value='green'>green</option>
+                            <option value='activity'>activity</option>
+                          </select>
+                        </div>
                       </div>
                       
-                      <div class="form-group col-md-4">
-                        <label class="bmd-label-static pr-2">show as</label>
-                        <select class="form-select" id="projectStylePredictionMarker" (change)="changeProjectStylePredictionMark($event.target.value)">
-                          <option value='dots'>dots</option>
-                          <option value='crosses'>crosses</option>
-                          <option value='names'>names</option>
-                          <!-- <option value='crosses'>crosses</option> -->
-                        </select>
+                      <div class="form-row">
+                        <div class="form-group col-md-2">
+                          <label class="bmd-label-static pr-2">Predictions</label>
+                        </div>
+                        
+                        <div class="form-group col-md-4">
+                          <label class="bmd-label-static pr-2">show as</label>
+                          <select class="form-select" id="projectStylePredictionMarker" (change)="changeProjectStylePredictionMark($event.target.value)">
+                            <option value='dots'>dots</option>
+                            <option value='crosses'>crosses</option>
+                            <option value='names'>names</option>
+                          </select>
+                        </div>
+  
+                        <div class="form-group col-md-4">
+                          <label class="bmd-label-static pr-2">color</label>
+                          <select class="form-select" id="projectStylePredictionColor" (change)="changeProjectStylePredictionColor($event.target.value)">
+                            <option value='red'>red</option>
+                            <option value='activity'>activity</option>
+                            <option *ngIf="this.dmodx==true" value='dmodx'>DModX</option>
+                          </select>
+                        </div>
+  
                       </div>
-
-                      <div class="form-group col-md-4">
-                        <label class="bmd-label-static pr-2">color</label>
-                        <select class="form-select" id="projectStylePredictionColor" (change)="changeProjectStylePredictionColor($event.target.value)">
-                          <option value='red'>red</option>
-                          <option value='activity'>activity</option>
-                          <option *ngIf="this.dmodx==true" value='dmodx'>DModX</option>
-                        </select>
-                      </div>
-
-                    </div>
 
                 </div>
                 
                 <div class="col">
-  
                   <canvas class="fixed_canvas" id="scores_canvas_pre"></canvas>
                   
                   <table id ="tablePredictionSelections" class="minitable compact">
@@ -551,7 +548,7 @@
 
                 </div>
 
-              </div>  <!-- row -->
+              </div>
 
 
             </div>

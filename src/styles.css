@@ -1,29 +1,30 @@
 body {
     font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
-    font-size: 18px;
-    /* font-size: 14px; */
+    /* font-size: 18px; */
+    font-size: 14px;
 }
 
 .model_selector {
   font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
   max-width: 100px;
-  font-size: 16px;
-  /* font-size: 12px; */
+  /* font-size: 16px; */
+  font-size: 12px;
   background-color:#ebebeb;
   border: 1px solid #ebebeb;
 }
 
 .method_description {
     font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
-    font-size: 18px;
-    /* font-size: 14px; */
+    /* font-size: 18px; */
+    font-size: 14px;
     color:#22577a ;
-  }
+}
 
 .model_name {
     color:#e59300;
     font-weight: bold;
-    font-size: 1.2rem;
+    /* font-size: 1.2rem; */
+    font-size: 1rem;
     padding-top: 10px;
     padding-bottom: 10px;
 }
@@ -34,7 +35,9 @@ body {
 
 .btn{
     white-space:normal !important;
+    font-size: 0.9rem;
 }
+
 
 btn.bmd-btn-fab.btn-etransafe,
 .bmd-btn-fab.btn-etransafe.custom-file-control::before, 

@@ -58,8 +58,8 @@ export class QualitConformalComponent implements OnChanges {
 
     plotCommon = {
       layout :{
-        width: 350,
-        // height: 300,
+        width: 300,
+        height: 300,
         // margin: {r: 10, t: 30, b:30, pad: 0 },
         polar: {
           bargap: 0,
@@ -77,7 +77,6 @@ export class QualitConformalComponent implements OnChanges {
         }
       },
       config: {
-        // responsive: true,
         displayModeBar: false
       }
     };  
@@ -102,7 +101,7 @@ export class QualitConformalComponent implements OnChanges {
             //   width: 2
             // },
             colorbar: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 }
             }
           },
           hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
@@ -129,7 +128,7 @@ export class QualitConformalComponent implements OnChanges {
         width: 700,
         height: 500,
         showtitle: true,
-        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
         title: 'Training series (using model X matrix)', 
         hovermode: 'closest',
             margin: {r: 10, t: 30, pad: 0 },
@@ -143,8 +142,8 @@ export class QualitConformalComponent implements OnChanges {
               linecolor: 'rgb(200,200,200)',
               linewidth: 2,
               title: 'PCA PC1',
-              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             },
             yaxis: {
               hoverformat: '.2f',
@@ -155,8 +154,8 @@ export class QualitConformalComponent implements OnChanges {
               linecolor: 'rgb(200,200,200)',
               linewidth: 2,
               title: 'PCA PC2',
-              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             },
       },
       config: {
@@ -182,10 +181,11 @@ export class QualitConformalComponent implements OnChanges {
             type: 'pie'
       }],
       layout: {
-            width: 300,
+            width: 150,
             height: 200,
             showlegend: false,
-            margin: { r: 30, t: 30, b: 10, l: 30, pad: 0 },
+            // margin: { r: 30, t: 30, b: 10, l: 30, pad: 0 },
+            margin: { r: 0, t: 30, b: 0, l: 0, pad: 0 },
       },
       config: {
         displaylogo: false,
@@ -242,7 +242,7 @@ export class QualitConformalComponent implements OnChanges {
             type: 'bar',
             texttemplate: "%{y:.2f}",
             textposition: 'auto',
-            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             marker: {
               color: 'rgba(70,143,184,0.8)',
             }
@@ -253,7 +253,7 @@ export class QualitConformalComponent implements OnChanges {
             type: 'bar',
             texttemplate: "%{y:.2f}",
             textposition: 'auto',
-            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             marker: {
               color: 'rgba(156,198,221,0.8)',
             }
@@ -262,13 +262,14 @@ export class QualitConformalComponent implements OnChanges {
             yaxis: {
               range: [0.0,1.0],
               // titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 24 },
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             },
             xaxis: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             },
-            width: 600,
-            height: 400,
+            width: 500,
+            height: 300,
+            margin: {r: 5, t: 20, b: 20, l:30},
             showlegend: true,
             barmode: 'group'
       },

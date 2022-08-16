@@ -19,7 +19,7 @@
     max-height: 5vh; 
 }
 
-ul {
+/* ul {
     background: #0076a3;
 }
 
@@ -34,7 +34,24 @@ ul li a.active{
     color: white;
     border-bottom: 3px solid #e59300;
     border-radius: 0;
-}
+} */
+
+
+ul li a {
+    background:white;
+    color: #0076a3;
+    font-size: 1.2rem;
+  }
+  
+  ul li a.active{
+    background:white;
+    color:#22577A;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-bottom: 4px solid #e59300;
+    border-radius: 0;
+  }
+
 
 .logo-container {
     float: right;
@@ -49,4 +66,8 @@ ul li a.active{
 .logo-right {
     max-height: 40px;
     padding-top: 5px;
+}
+
+::ng-deep .as-split-gutter-icon:hover {
+    background-color: #0076a3;
 }

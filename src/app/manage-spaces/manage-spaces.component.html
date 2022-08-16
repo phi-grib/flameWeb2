@@ -1,4 +1,4 @@
-<div class="btn-toolbar mt-3 mb-3 ml-4" role="toolbar" aria-label="Toolbar with button groups">
+<div class="btn-toolbar mt-3 mb-3 ml-3" role="toolbar" aria-label="Toolbar with button groups">
     <div *ngIf="this.globals.read_only == false" class="btn-group mr-2" role="group" aria-label="space create">
       <button type="button" class="btn btn-ets-do" data-toggle="modal" data-target="#newSpace">New</button>
       <button type="button" class="btn btn-ets-do" [ngClass]="{'disabled': space.spaceName === undefined || space.spaceVersion != '0'}" (click)="buildSpace(space.spaceName, space.spaceVersion)">Build</button>

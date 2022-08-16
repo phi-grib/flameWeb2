@@ -110,7 +110,6 @@ export class QuantitConformalComponent implements OnChanges {
         margin: { r: 10, t: 30, pad: 10 },
         showlegend: false,
         showtitle: false,
-        
 
         xaxis: {
           range: [],
@@ -121,8 +120,8 @@ export class QuantitConformalComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'Experimental',
-          titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-          tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+          titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+          tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         },
         yaxis: {
           range: [],
@@ -134,8 +133,8 @@ export class QuantitConformalComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'Model',
-          titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+          titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         },
       },
       config: {
@@ -167,8 +166,8 @@ export class QuantitConformalComponent implements OnChanges {
             cauto: true,
             size: 10,
             colorbar: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
               titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
               title: 'Activity'
             }
           },
@@ -198,7 +197,7 @@ export class QuantitConformalComponent implements OnChanges {
         margin: { r: 10, t: 30, pad: 0  },
         showlegend: false,
         showtitle: true,
-        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
         title: 'Training series (using model X matrix)', 
         xaxis: {
           zeroline: true,
@@ -208,8 +207,8 @@ export class QuantitConformalComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'PCA PC1',
-          titlefont: {family: 'Barlow Semi Condensed, sans-serif',size: 18},
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif',size: 16},
+          titlefont: {family: 'Barlow Semi Condensed, sans-serif',size: 16},
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif',size: 14},
         },
         yaxis: {
           zeroline: true,
@@ -219,8 +218,8 @@ export class QuantitConformalComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'PCA PC2',
-          titlefont: {family: 'Barlow Semi Condensed, sans-serif',size: 18},
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif',size: 16},
+          titlefont: {family: 'Barlow Semi Condensed, sans-serif',size: 16},
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif',size: 14},
         },
       },
       config: {
@@ -257,13 +256,16 @@ export class QuantitConformalComponent implements OnChanges {
         name: 'Activity'
       }],
       layout : {
-        width: 300,
-        height: 250,
+        // width: 300,
+        // height: 250,
+        width: 200,
+        height: 200,
         hovermode: 'closest',
-        margin: {r: 10, t: 30, b: 0, l:10, pad: 0},
+        // margin: {r: 10, t: 30, b: 0, l:10, pad: 0},
+        margin: {r: 10, t: 50, b: 0, l:10, pad: 0},
         xaxis: {
           zeroline: false,
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif' },
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size:14 },
         }
       },
       config: {
@@ -271,8 +273,8 @@ export class QuantitConformalComponent implements OnChanges {
         toImageButtonOptions: {
           format: 'svg', // one of png, svg, jpeg, webp
           filename: 'flame_violin',
-          width: 600,
-          height: 500,
+          width: 500,
+          height: 400,
           scale: 2 // Multiply title/legend/axis/canvas sizes by this factor
         },
         modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
@@ -329,7 +331,7 @@ export class QuantitConformalComponent implements OnChanges {
             type: 'bar',
             texttemplate: "%{y:.2f}",
             textposition: 'auto',
-            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             marker: {
               color: 'rgba(70,143,184,0.8)',
             }
@@ -340,7 +342,7 @@ export class QuantitConformalComponent implements OnChanges {
             type: 'bar',
             texttemplate: "%{y:.2f}",
             textposition: 'auto',
-            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             marker: {
               color: 'rgba(156,198,221,0.8)',
             }
@@ -348,13 +350,16 @@ export class QuantitConformalComponent implements OnChanges {
       layout: {
             yaxis: {
               range: [0.0,1.0],
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             },
             xaxis: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             },
-            width: 600,
-            height: 400,
+            // width: 600,
+            // height: 400,
+            width: 400,
+            height: 300,
+            margin: {r: 5, t: 20, b: 20, l:30},
             showlegend: true,
             barmode: 'group'
       },

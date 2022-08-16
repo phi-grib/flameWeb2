@@ -130,7 +130,7 @@ export class PredictionComponent implements OnChanges {
       cauto: true,
       colorbar: {
         x: -0.25,
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 }
       }
     },
     hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
@@ -156,7 +156,7 @@ export class PredictionComponent implements OnChanges {
       size: 14,
       line: {},
       colorbar: {
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 }
       }
     },
     hovertemplate:'<b>%{text}</b><br>%{meta:.2f}<extra></extra>',
@@ -181,13 +181,13 @@ export class PredictionComponent implements OnChanges {
       JSON.parse(JSON.stringify(this.scores2defaults))
     ],
     layout: { 
-      width: 800,
-      height: 600,
+      width: 700,
+      height: 500,
       hovermode: 'closest',
       margin: {r: 10, t: 30, pad: 0 },
       showlegend: false,
       showtitle: true,
-      titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+      titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
       title: 'Prediction projected on training series',
       xaxis: {
         zeroline: true,
@@ -197,8 +197,8 @@ export class PredictionComponent implements OnChanges {
         linecolor: 'rgb(200,200,200)',
         linewidth: 2,
         title: 'PCA PC1',
-        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 },
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18},
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14},
       },
       yaxis: {
         zeroline: true,
@@ -208,8 +208,8 @@ export class PredictionComponent implements OnChanges {
         linecolor: 'rgb(200,200,200)',
         linewidth: 2,
         title: 'PCA PC2',
-        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 20 },
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18},
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14},
       },
     },
     config: {
@@ -218,8 +218,8 @@ export class PredictionComponent implements OnChanges {
       toImageButtonOptions: {
         format: 'svg', // one of png, svg, jpeg, webp
         filename: 'flame_prediction',
-        width: 800,
-        height: 600,
+        width: 600,
+        height: 400,
         scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
       },
       modeBarButtonsToRemove: ['autoScale2d','hoverCompareCartesian']
@@ -274,16 +274,16 @@ export class PredictionComponent implements OnChanges {
       },
     ],
     layout : {
-      width: 800,
-      // height: 600,
+      width: 700,
+      height: 500,
       hovermode: 'x',
-      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 20 } },
+      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 14 } },
       xaxis: {
         zeroline: false,
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
       },
       yaxis: {
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         automargin: true
       },
       showlegend: false
@@ -293,8 +293,8 @@ export class PredictionComponent implements OnChanges {
       toImageButtonOptions: {
         format: 'svg', // one of png, svg, jpeg, webp
         filename: 'flame_combo',
-        width: 800,
-        // height: 600,
+        width: 600,
+        height: 400,
       },
       modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
     }
@@ -323,23 +323,23 @@ export class PredictionComponent implements OnChanges {
       },
     ],
     layout : {
-      width: 800,
-      // height: 600,
+      width: 700,
+      height: 500,
       // margin: {r: 10, t: 30, b:0, pad: 0 },
       barmode: 'relative',
       hovermode: 'closest',
-      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 20 } },
+      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 14 } },
       xaxis: {
         range: [-1.1, 1.1],
         zeroline: true,
         zerolinewidth: 4,
         zerolinecolor: 'black',
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         tickvals: [-1.1, 0, 1.1],
         ticktext: ['negative', 'undefined', 'positive']
       },
       yaxis: {
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         automargin: true
       },
       showlegend: false
@@ -349,8 +349,8 @@ export class PredictionComponent implements OnChanges {
       toImageButtonOptions: {
         format: 'svg', // one of png, svg, jpeg, webp
         filename: 'flame_combo',
-        width: 800,
-        // height: 600,
+        width: 700,
+        height: 500,
       },
       modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
     }
@@ -517,8 +517,8 @@ export class PredictionComponent implements OnChanges {
             cauto: true,
             colorbar: {
               title: 'DModX',
-              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+              titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 }
             }
           }
         };
@@ -581,7 +581,7 @@ export class PredictionComponent implements OnChanges {
   }
 
   drawReportHeader () {
-    const options = {'width': 600, 'height': 300};
+    const options = {'width': 400, 'height': 200};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
     SmilesDrawer.parse(this.predictionResult.SMILES[this.molIndex], function(tree) {
       // Draw to the canvas
@@ -595,7 +595,7 @@ export class PredictionComponent implements OnChanges {
     setTimeout(() => {
       // draw similar compounds (if applicable)
       if (this.predictionResult.hasOwnProperty('search_results')) {
-        const optionsA = {'width': 400, 'height': 150};
+        const optionsA = {'width': 300, 'height': 200};
         const smiles = this.predictionResult.search_results[this.molIndex].SMILES;
         let iteratorCount = 0;
         for (var value of smiles) {
@@ -741,13 +741,13 @@ export class PredictionComponent implements OnChanges {
             if ('SSX' in info) {
               this.plotScores.layout.xaxis.title = labelX + ' ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
               this.plotScores.layout.yaxis.title = labelY + ' ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
-              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
-              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 16}
+              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 16}
             } else {
               this.plotScores.layout.xaxis.title = labelX
               this.plotScores.layout.yaxis.title = labelY
-              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
-              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 16}
+              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 16}
             }
             
           }, 100);
@@ -1159,7 +1159,7 @@ export class PredictionComponent implements OnChanges {
         }
         
         
-        const options_list = {'width': 300, 'height': 150};
+        const options_list = {'width': 200, 'height': 125};
         const smilesDrawer = new SmilesDrawer.Drawer(options_list);
         
         // use a long timeout because this can take a lot of time

@@ -1,7 +1,7 @@
 ::ng-deep .card-header[data-toggle="collapse"] button:after {
     display: inline-block;
     font: normal normal normal 10px/1 FontAwesome;
-    font-size: 25px;
+    font-size: 18px;
     text-rendering: auto;
     content: "\f056";
     align-content: flex-end;
@@ -127,3 +127,7 @@ label.disabled {
 /* .accordion>.card>.card-header {
     margin-bottom: -2px;
 } */
+
+h5{
+    font-size: 1rem;
+}
