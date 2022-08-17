@@ -11,7 +11,7 @@
 }
 .app-base {
     padding-left: 0px;
-    padding-right: 30px; /* prevents horizontal scrollbar*/
+    padding-right: 0px; /* prevents horizontal scrollbar*/
 }
 
 .top-bar{
