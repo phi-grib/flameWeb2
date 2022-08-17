@@ -30,11 +30,10 @@ a.disabled{
     color: #22577A;
     width: 400px;
     /* border: 1px solid #999999; */
-  }
-  .minitable td{
+}
+.minitable td{
     font-family: 'Barlow Semi Condensed', sans-serif;
     font-size: 12px;
     border-bottom: 1px solid #B8DCED;
     vertical-align: middle;
-  }
-
+}

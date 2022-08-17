@@ -1,5 +1,4 @@
 .info {
-    /* background-color: #FAFAFA; */
     background-color: white;
     /* min-height: 100vh;    */
 }
@@ -71,3 +70,5 @@ ul li a {
 ::ng-deep .as-split-gutter-icon:hover {
     background-color: #0076a3;
 }
+
+

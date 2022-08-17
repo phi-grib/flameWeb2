@@ -123,11 +123,3 @@ label.disabled {
     background: #e59300;
     color: #ffffff;
 }
-
-/* .accordion>.card>.card-header {
-    margin-bottom: -2px;
-} */
-
-h5{
-    font-size: 1rem;
-}
