@@ -67,6 +67,13 @@ export class ConfigModelComponent implements AfterContentChecked {
     return true;
   }
   
+  check_key(parameterslist, key) {
+    if (key in parameterslist) {
+      return true;
+    }
+    return false;
+  }
+
   validConformalKey (key) {
     // if (key=='aggregated') {
     //   return true;
