@@ -48,7 +48,7 @@ text-align: center;
   align-items: center;
 }
 
-ul li.nav-item a {
+/* ul li.nav-item a {
   background:white;
   color: #0076a3;
   font-size: 1.2rem;
@@ -61,7 +61,23 @@ ul li.nav-item a.active{
   font-size: 1.2rem;
   border-bottom: 4px solid #e59300;
   border-radius: 0;
+} */
+
+.nav-link {
+  background:white;
+  color: #0076a3;
+  font-size: 1.2rem;
 }
+
+.nav-link.active {
+  background:white;
+  color:#22577A;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border-bottom: 4px solid #e59300;
+  border-radius: 0;
+}
+
 
 .text-etransafe {
   color:#e59300;
