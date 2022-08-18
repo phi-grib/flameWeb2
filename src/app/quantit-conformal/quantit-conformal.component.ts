@@ -305,7 +305,7 @@ export class QuantitConformalComponent implements OnChanges {
           tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
         },
         yaxis: {
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         },
       },
       config: {
