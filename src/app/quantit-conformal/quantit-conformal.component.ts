@@ -700,6 +700,8 @@ export class QuantitConformalComponent implements OnChanges {
                   this.plotOptimization.data[0].marker.color[i] = "#e59300";
                 }
               }
+              this.plotOptimization.layout.title= info['optimization_results']['scorer'];
+
               this.optimization = true;
             }
             
