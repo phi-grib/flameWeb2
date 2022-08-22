@@ -269,7 +269,15 @@
                         </div>
                     </div>
 
-                    <div class="card-body" *ngIf="!this.features"> 
+                    <div class="col" *ngIf="this.optimization">
+                        <plotly-plot 
+                            [data]="plotOptimization.data" 
+                            [layout]="plotOptimization.layout" 
+                            [config]="plotOptimization.config">
+                        </plotly-plot>  
+                    </div>
+
+                    <div class="card-body" *ngIf="!this.features && !this.optimization"> 
                         <div class="alert alert-info text-center" role="alert">
                             No additional model information
                         </div>

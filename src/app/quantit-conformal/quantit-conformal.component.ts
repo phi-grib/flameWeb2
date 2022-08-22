@@ -4,6 +4,7 @@ import * as SmilesDrawer from 'smiles-drawer';
 // import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { Model, CustomHTMLElement } from '../Globals';
+import { allowedNodeEnvironmentFlags } from 'process';
 
 @Component({
   selector: 'app-quantit-conformal',
@@ -27,6 +28,7 @@ export class QuantitConformalComponent implements OnChanges {
     modelWarning = '';
     modelVisible = false;
     features = false;
+    optimization = false;
     features_method = '';
     featuresTSV = '';
 
@@ -256,12 +258,9 @@ export class QuantitConformalComponent implements OnChanges {
         name: 'Activity'
       }],
       layout : {
-        // width: 300,
-        // height: 250,
         width: 200,
         height: 200,
         hovermode: 'closest',
-        // margin: {r: 10, t: 30, b: 0, l:10, pad: 0},
         margin: {r: 10, t: 50, b: 0, l:10, pad: 0},
         xaxis: {
           zeroline: false,
@@ -282,6 +281,53 @@ export class QuantitConformalComponent implements OnChanges {
       
     }
     
+    plotOptimization= {
+      data : [{
+        type: 'bar',
+        x: [],
+        y: [],
+        error_y: {
+          type: 'data',
+          array: []
+        },
+        marker: {
+          color: []
+        },
+        hoverlabel: { bgcolor: "#22577"},
+        hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>'
+      }],
+      layout : {
+        title: 'Optimization results (scorer mean +/- sd)',
+        font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        width: 900,
+        height: 800,
+        barmode: 'overlay',
+        hovermode: 'closest',
+        margin: {b:300, t:50, pad: 10},
+        xaxis: {
+          tickangle: -90,
+          ticklabeloverflow: 'allow',
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
+        },
+        yaxis: {
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
+        },
+      },
+      config: {
+        displaylogo: false,
+        showtitle: true, 
+        showlegend: false, 
+        toImageButtonOptions: {
+          format: 'svg', // one of png, svg, jpeg, webp
+          filename: 'optimization_results',
+          width: 900,
+          height: 800,
+          scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+        },
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+      }
+    }
+
     plotFeatures= {
       data : [{
         type: 'bar',
@@ -355,8 +401,6 @@ export class QuantitConformalComponent implements OnChanges {
             xaxis: {
               tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             },
-            // width: 600,
-            // height: 400,
             width: 400,
             height: 300,
             margin: {r: 5, t: 20, b: 20, l:30},
@@ -387,6 +431,7 @@ export class QuantitConformalComponent implements OnChanges {
       this.modelValidationInfo = {};
       this.modelBuildInfo = {};
       this.features = false;
+      this.optimization = false;
       this.features_method = '';
       this.modelWarning = '';
       this.plotFitted.data[0].x = [];
@@ -412,6 +457,10 @@ export class QuantitConformalComponent implements OnChanges {
       this.plotViolin.data[0].text =[];
       this.plotFeatures.data[0].y =[];
       this.plotFeatures.data[0].x =[];
+      this.plotOptimization.data[0].y =[];
+      this.plotOptimization.data[0].x =[];
+      this.plotOptimization.data[0].error_y.array =[];
+      this.plotOptimization.data[0].marker.color =[];
       this.plotSummary.data[0].y = [];
       this.plotSummary.data[1].y = [];
       this.featuresTSV = '';
@@ -638,6 +687,21 @@ export class QuantitConformalComponent implements OnChanges {
               this.features = true;
             }
             this.features_method = info['feature_importances_method'];
+
+            if ('optimization_results' in info && info['optimization_results']!= null) {
+              this.plotOptimization.data[0].y = info['optimization_results']['means'];
+              this.plotOptimization.data[0].x = info['optimization_results']['labels'];
+              this.plotOptimization.data[0].error_y.array = info['optimization_results']['stds'];
+              for (let i = 0; i<info['optimization_results']['labels'].length; i++){
+                if (info['optimization_results']['labels'][i]!= info['optimization_results']['best']) {
+                  this.plotOptimization.data[0].marker.color[i] = "#0076a3";
+                }
+                else {
+                  this.plotOptimization.data[0].marker.color[i] = "#e59300";
+                }
+              }
+              this.optimization = true;
+            }
             
             if (this.modelValidationInfo['Conformal_accuracy'] && this.modelValidationInfo['Conformal_accuracy_f']) {
               this.plotSummary.data[1].y = [
