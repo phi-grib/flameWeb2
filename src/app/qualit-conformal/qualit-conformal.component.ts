@@ -344,6 +344,7 @@ export class QualitConformalComponent implements OnChanges {
       this.modelValidationInfo = {};
       this.modelBuildInfo = {};
       this.features = false;
+      this.optimization = false;
       this.features_method = '';
       this.modelWarning = '';
       this.plotScores.data[0].x =[];
@@ -475,18 +476,20 @@ export class QualitConformalComponent implements OnChanges {
           }
           this.features_method = info['feature_importances_method'];
 
-          if ('optimization_results' in info && info['optimization_results']!= null) {
-            this.plotOptimization.data[0].y = info['optimization_results']['means'];
-            this.plotOptimization.data[0].x = info['optimization_results']['labels'];
-            this.plotOptimization.data[0].error_y.array = info['optimization_results']['stds'];
-            for (let i = 0; i<info['optimization_results']['labels'].length; i++){
-              if (info['optimization_results']['labels'][i]!= info['optimization_results']['best']) {
-                this.plotOptimization.data[0].marker.color[i] = "#0076a3";
+          if ('optimization_results' in info && 
+            info['optimization_results']['means']!= null &&
+            info['optimization_results']['labels']!= null) {
+              this.plotOptimization.data[0].y = info['optimization_results']['means'];
+              this.plotOptimization.data[0].x = info['optimization_results']['labels'];
+              this.plotOptimization.data[0].error_y.array = info['optimization_results']['stds'];
+              for (let i = 0; i<info['optimization_results']['labels'].length; i++){
+                if (info['optimization_results']['labels'][i]!= info['optimization_results']['best']) {
+                  this.plotOptimization.data[0].marker.color[i] = "#0076a3";
+                }
+                else {
+                  this.plotOptimization.data[0].marker.color[i] = "#e59300";
+                }
               }
-              else {
-                this.plotOptimization.data[0].marker.color[i] = "#e59300";
-              }
-            }
             this.plotOptimization.layout.title= info['optimization_results']['scorer'];
 
             this.optimization = true;
