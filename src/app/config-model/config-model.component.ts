@@ -103,11 +103,11 @@ export class ConfigModelComponent implements AfterContentChecked {
     }
     if (this.model.parameters['model'].value === 'majority') {
       this.model.parameters['quantitative'].value = false;
-      // this.model.parameters['conformal'].value = false;
+      this.model.parameters['conformal'].value = false;
     }
     if (this.model.parameters['model'].value === 'logicalOR') {
       this.model.parameters['quantitative'].value = false;
-      // this.model.parameters['conformal'].value = false;
+      this.model.parameters['conformal'].value = false;
     }
     // console.log(this.model.parameters['conformal_settings'].value)
   }
