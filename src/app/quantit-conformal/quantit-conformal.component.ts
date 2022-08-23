@@ -249,7 +249,7 @@ export class QuantitConformalComponent implements OnChanges {
         hoveron: "violins+points",
         box: { visible: true },
         boxpoints: true,
-        hoverlabel: { bgcolor: "#22577"},
+        // hoverlabel: { bgcolor: "#22577"},
         line: {color: '#22577'},
         hovertemplate: '<b>%{text}</b><br>%{y:.2f}<extra></extra>',
         fillcolor: "#B8DCED",
@@ -286,6 +286,7 @@ export class QuantitConformalComponent implements OnChanges {
         type: 'bar',
         x: [],
         y: [],
+        // orientation: 'h', 
         error_y: {
           type: 'data',
           array: []
@@ -293,21 +294,19 @@ export class QuantitConformalComponent implements OnChanges {
         marker: {
           color: []
         },
-        hoverlabel: { bgcolor: "#22577"},
         hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>'
       }],
       layout : {
         title: 'Optimization results (scorer mean +/- sd)',
         font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
         width: 900,
-        height: 800,
-        barmode: 'overlay',
+        height: 600,
         hovermode: 'closest',
-        margin: {b:300, t:50, pad: 10},
+        margin: {b:10, t:50, pad: 10},
         xaxis: {
-          tickangle: -90,
-          ticklabeloverflow: 'allow',
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
+          showticklabels: false, 
+          // ticklabeloverflow: 'allow',
+          // tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
         },
         yaxis: {
           tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
@@ -321,7 +320,7 @@ export class QuantitConformalComponent implements OnChanges {
           format: 'svg', // one of png, svg, jpeg, webp
           filename: 'optimization_results',
           width: 900,
-          height: 800,
+          height: 600,
           scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
         },
         modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
@@ -333,9 +332,11 @@ export class QuantitConformalComponent implements OnChanges {
         type: 'bar',
         y: [],
         x: [],
-        hoverlabel: { bgcolor: "#22577"},
+        hoverlabel: { bgcolor: "#0076a3"},
         hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>',
-        fillcolor: "#B8DCED",
+        marker: {
+          color: "#0076a3"
+        }
       }],
       layout : {
         title: 'Feature importances (top 50)',
@@ -379,7 +380,7 @@ export class QuantitConformalComponent implements OnChanges {
             textposition: 'auto',
             textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             marker: {
-              color: 'rgba(70,143,184,0.8)',
+              color: 'rgba(70,143,184,0.8)', 
             }
           },{
             x: ['R2/Q2', 'Conformal accuracy'],

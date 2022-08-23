@@ -27,6 +27,7 @@ export class QualitConformalComponent implements OnChanges {
     modelWarning = '';
     modelVisible = false;
     features = false;
+    optimization = false;
     features_method = '';
     featuresTSV = '';
     
@@ -193,6 +194,52 @@ export class QualitConformalComponent implements OnChanges {
       }
     }
 
+    plotOptimization= {
+      data : [{
+        type: 'bar',
+        x: [],
+        y: [],
+        // orientation: 'h', 
+        error_y: {
+          type: 'data',
+          array: []
+        },
+        marker: {
+          color: []
+        },
+        hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>'
+      }],
+      layout : {
+        title: 'Optimization results (scorer mean +/- sd)',
+        font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        width: 900,
+        height: 600,
+        hovermode: 'closest',
+        margin: {b:10, t:50, pad: 10},
+        xaxis: {
+          showticklabels: false, 
+          // ticklabeloverflow: 'allow',
+          // tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
+        },
+        yaxis: {
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
+        },
+      },
+      config: {
+        displaylogo: false,
+        showtitle: true, 
+        showlegend: false, 
+        toImageButtonOptions: {
+          format: 'svg', // one of png, svg, jpeg, webp
+          filename: 'optimization_results',
+          width: 900,
+          height: 600,
+          scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+        },
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+      }
+    }
+
     plotFeatures= {
       data : [{
         type: 'bar',
@@ -310,6 +357,10 @@ export class QualitConformalComponent implements OnChanges {
       this.plotPie.data[0].values = [];
       this.plotFeatures.data[0].y =[];
       this.plotFeatures.data[0].x =[];
+      this.plotOptimization.data[0].y =[];
+      this.plotOptimization.data[0].x =[];
+      this.plotOptimization.data[0].error_y.array =[];
+      this.plotOptimization.data[0].marker.color =[];
       this.plotSummary.data[0].y = [];
       this.plotSummary.data[1].y = [];
       this.featuresTSV = '';
@@ -424,6 +475,23 @@ export class QualitConformalComponent implements OnChanges {
           }
           this.features_method = info['feature_importances_method'];
 
+          if ('optimization_results' in info && info['optimization_results']!= null) {
+            this.plotOptimization.data[0].y = info['optimization_results']['means'];
+            this.plotOptimization.data[0].x = info['optimization_results']['labels'];
+            this.plotOptimization.data[0].error_y.array = info['optimization_results']['stds'];
+            for (let i = 0; i<info['optimization_results']['labels'].length; i++){
+              if (info['optimization_results']['labels'][i]!= info['optimization_results']['best']) {
+                this.plotOptimization.data[0].marker.color[i] = "#0076a3";
+              }
+              else {
+                this.plotOptimization.data[0].marker.color[i] = "#e59300";
+              }
+            }
+            this.plotOptimization.layout.title= info['optimization_results']['scorer'];
+
+            this.optimization = true;
+          }
+          
           setTimeout(() => {
             if (this.modelValidationInfo['TP']) {
               this.predictData[0].r = [this.modelValidationInfo['TP'][1], 
