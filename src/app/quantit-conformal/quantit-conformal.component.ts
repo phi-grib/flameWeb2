@@ -689,7 +689,9 @@ export class QuantitConformalComponent implements OnChanges {
             }
             this.features_method = info['feature_importances_method'];
 
-            if ('optimization_results' in info && info['optimization_results']!= null) {
+            if ('optimization_results' in info && 
+              info['optimization_results']['means']!= null &&
+              info['optimization_results']['labels']!= null) {
               this.plotOptimization.data[0].y = info['optimization_results']['means'];
               this.plotOptimization.data[0].x = info['optimization_results']['labels'];
               this.plotOptimization.data[0].error_y.array = info['optimization_results']['stds'];

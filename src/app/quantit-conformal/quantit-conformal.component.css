@@ -63,7 +63,8 @@ table td {
   position: absolute; 
   display: block;
   right: 45%; 
-  top: 35%; 
+  /* top: 35%;  */
+  top: 200%; 
   z-index: 1031;
 }
 
@@ -93,6 +94,7 @@ table td {
   /* width: 100%; */
   width: 400px;
 }
+
 .minitable th{
   padding-left: 1px;
   padding-right: 1px;

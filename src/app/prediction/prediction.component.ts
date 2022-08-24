@@ -69,9 +69,9 @@ export class PredictionComponent implements OnChanges {
 
   plotCommon = {
     layout :{
-      width: 350,
-      height: 350,
-      // margin: {r: 10, t: 30, b:0, pad: 0 },
+      width: 300,
+      height: 300,
+      // margin: {r: 10, t: 10, b:0, pad: 0 },
       polar: {
         bargap: 0,
         gridcolor: "grey",
@@ -1166,12 +1166,17 @@ export class PredictionComponent implements OnChanges {
         setTimeout(() => {
 
           // List Tab
+          let istructure = 0;
+
           this.components.forEach((child) => {
-            SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
-              smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-              }, function (err) {
-                console.log(err);
-              });
+            if (istructure < 100) {
+              SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
+                smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
+                }, function (err) {
+                  console.log(err);
+                });
+              istructure++;
+            };
           });
           
           // add buttons to table
@@ -1196,6 +1201,7 @@ export class PredictionComponent implements OnChanges {
             destroy: true,
             deferRender: true,
           };
+
           $('#prediction').DataTable(settingsObj);
           
           // Report tab

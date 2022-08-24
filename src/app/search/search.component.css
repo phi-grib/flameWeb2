@@ -104,3 +104,8 @@ ul li.nav-item a.active{
 .hideText{
 max-width:200px;
 }
+
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}

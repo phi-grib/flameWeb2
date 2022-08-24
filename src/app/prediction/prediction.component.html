@@ -1,3 +1,10 @@
+<div id="overlay" *ngIf="!this.predictionVisible">
+  <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+  
+  
   <div class="row" *ngIf="this.predictionResult != undefined && this.predictionResult.warning">
     <div class="card w-100">
       <div class="card-body"> 
@@ -40,13 +47,13 @@
 
   <div class="col" *ngIf="this.predictionResult != undefined && this.predictionError == ''">
 
-      <div class="card w-100">
+      <div class="card w-100" >
 
-        <div id="overlay" *ngIf="!this.predictionVisible">
+        <!-- <div id="overlay" *ngIf="!this.predictionVisible">
           <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
             <span class="sr-only">Loading...</span>
           </div>
-        </div>
+        </div> -->
         
         <!--NAVS tables-->
         <!-- <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" *ngIf="this.globals.mainTabActive=='#predict'"> -->
@@ -162,7 +169,7 @@
           <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab" *ngIf="this.predictionResult != undefined ">
             <div class="card-body">
               <!--PAGINATION-->
-              <div class="row  align-items-center">
+              <div class="row align-items-center">
                 <div class="col-2 offset-5">
                   <span><strong>{{this.molIndex +1}} of {{this.predictionResult.SMILES.length}}</strong></span>
                 </div>

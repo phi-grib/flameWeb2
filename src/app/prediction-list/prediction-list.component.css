@@ -65,10 +65,10 @@ tr.selected {
     right: 0;
     bottom: 0;
     background-color: #FAFAFA;
-    opacity: 0.7;
+    opacity: 0.6;
     z-index: 2;
     cursor: pointer;
-  }
+}
 
 .iffyTip {
   overflow:hidden;
