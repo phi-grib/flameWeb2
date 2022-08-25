@@ -27,17 +27,17 @@ tr.selected {
     background: #f7f9ea;
 }
   
-.scrollable{
+/* .scrollable{
   overflow: auto;
 }
-  
+   */
 .border {
     border-width: 1px;
 }
   
 .card-body {
     overflow: auto;
-    max-width: 60vw;
+    /* max-width: 60vw; */
     border-width: 0px;
     padding-top: 0px;
     padding-bottom: 5px;
@@ -45,11 +45,11 @@ tr.selected {
   
 .card {
     overflow: auto;
-    max-width: 60vw;
+    /* max-width: 60vw; */
     border-width: 0px;
 }
   
-ul li.nav-item a {
+/* ul li.nav-item a {
     background:white;
     color: #0076a3;
     font-size: 1.2rem;
@@ -62,7 +62,7 @@ ul li.nav-item a.active{
     font-size: 1.2rem;
     border-bottom: 4px solid #e59300;
     border-radius: 0;
-}
+} */
   
 .text-etransafe {
     color:#e59300;
@@ -93,16 +93,16 @@ ul li.nav-item a.active{
     height: 400px;  
 }
 
-.iffyTip {
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
+/* .iffyTip {
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
 }
 .hideText{
-max-width:200px;
-}
+    max-width:200px;
+} */
 
-.row {
-    margin-left: 0px;
-    margin-right: 0px;
-}
+/* .row {
+    margin-left: 10px;
+    margin-right: 10px;
+} */

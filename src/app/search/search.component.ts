@@ -60,7 +60,8 @@ export class SearchComponent implements AfterViewInit {
             { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' , title: ''},
             { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
           ],
-          deferRender: true
+          deferRender: true,
+          // autoWidth: true
         };
         
         $('#similarityTable').DataTable(settingsObj);
