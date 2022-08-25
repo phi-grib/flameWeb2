@@ -249,7 +249,7 @@ export class PredictorComponent implements OnInit {
         result => {
 
           // return as result the predictionID which will be used in checkPrediction, instead of the predictName
-          console.log(result);
+          // console.log(result);
 
           let iter = 0;
           const intervalId = setInterval(() => {
