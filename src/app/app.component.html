@@ -122,7 +122,8 @@
  
                    <as-split-area [size]="this.spaceright">
                       <div class="col p-0 info scrollable" >
-                        <div *ngIf="(this.space.spaceName != undefined) && (this.globals.mainTabActive=='#similarity')">
+                        <!-- <div *ngIf="(this.space.spaceName != undefined) && (this.globals.mainTabActive=='#similarity')"> -->
+                        <div *ngIf="(this.globals.mainTabActive=='#similarity')">
                             <app-search [spaceName] = this.space.spaceName [spaceVersion] = this.space.spaceVersion ></app-search>
                         </div>
                       </div>

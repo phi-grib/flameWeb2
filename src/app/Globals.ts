@@ -67,8 +67,6 @@ export class Prediction {
     modelID = undefined;
 }
 
-
-
 @Injectable()
 export class Search {
     searchName: string = undefined;

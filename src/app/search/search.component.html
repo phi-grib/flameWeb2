@@ -1,44 +1,42 @@
 
-<div class="row mt-5" *ngIf="this.search.searchName != undefined" >
-
-  <!-- <div id="overlay" *ngIf="this.search.result == undefined">
-    <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
-      <span class="sr-only">Loading...</span>
+<div class="col" *ngIf="this.search.searchName != undefined" >
+  
+    <div id="overlay" *ngIf="this.search.result == undefined">
+      <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
-  </div> -->
+    <!-- this is only to show the spinner   -->
+    <div id="container" *ngIf="this.search.result == undefined">
+    </div>
 
-  <div class="col-12" *ngIf = "this.search.result != undefined">
-    <div class="model_name"> Results in: {{this.search.spaceName}} v.{{this.search.spaceVersion}} using metric: {{this.search.metric}} </div>
-    <table id="similarityTable" class="table table-fixed table-bordered">
-      <thead>
-        <tr>
-          <th>Index</th>
-          <th s>Query name</th>
-          <th data-toggle="tooltip" data-placement="top" data-html="true" title="Query molecule from query test set">Query molecule</th>
-          <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column ID from Reference training set">Reference ID</th>
-          <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column name from Reference training set">Reference name</th>
-          <th data-toggle="tooltip" data-placement="top" data-html="true"  title="Reference molecule column from Reference training set">Reference molecule</th>
-          <th *ngIf="this.search.metric!='substructural' && this.search.metric!='smarts' " data-toggle="tooltip" data-placement="top" data-html="true"  title="Similarity distance score: Tanimoto for binary descriptors and Euclidean for continues ones">Similarity</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let src of this.search.nameSrc;let i=index">
-          <tr *ngFor="let pred of this.search.result[i].obj_nam;let j=index">
-            <td class="align-middle" width="">{{i}} - {{j}}</td>
-            <td class="align-middle" >{{this.search.nameSrc[i]}}</td>
-            <td class="align-middle"><canvas #cmp id="{{'query_' + i + '_' + j}}" width="300" height="150">{{this.search.smileSrc[i]}}</canvas></td>
-            <td class="align-middle">{{this.objID(i,j)}}</td>
-            <td class="align-middle">{{this.search.result[i].obj_nam[j]}}</td>
-            <td class="align-middle"><canvas #cmp id="{{'ref_' + i + '_' + j}}" width="300" height="150">{{this.search.result[i].SMILES[j]}}</canvas></td>
-            <td *ngIf="this.search.metric!='substructural' && this.search.metric!='smarts' " class="align-middle">{{this.search.result[i].distances[j].toFixed(3)}}</td>
+    <div *ngIf="this.search.result != undefined">
+      <div class="model_name"> Results in: {{this.search.spaceName}} v.{{this.search.spaceVersion}} using metric: {{this.search.metric}} </div>
+      <table id="similarityTable" class="table table-fixed table-bordered">
+        <thead>
+          <tr>
+            <th>Index</th>
+            <th s>Query name</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true" title="Query molecule from query test set">Query molecule</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column ID from Reference training set">Reference ID</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true" title="Reference column name from Reference training set">Reference name</th>
+            <th data-toggle="tooltip" data-placement="top" data-html="true"  title="Reference molecule column from Reference training set">Reference molecule</th>
+            <th *ngIf="this.search.metric!='substructural' && this.search.metric!='smarts' " data-toggle="tooltip" data-placement="top" data-html="true"  title="Similarity distance score: Tanimoto for binary descriptors and Euclidean for continues ones">Similarity</th>
           </tr>
-        </ng-container>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- <div class="row">
-    <div class="loader" id="processing" hidden="true"></div>
-  </div> -->
-
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let src of this.search.nameSrc;let i=index">
+            <tr *ngFor="let pred of this.search.result[i].obj_nam;let j=index">
+              <td class="align-middle" width="">{{i}} - {{j}}</td>
+              <td class="align-middle" >{{this.search.nameSrc[i]}}</td>
+              <td class="align-middle"><canvas #cmp id="{{'query_' + i + '_' + j}}" width="300" height="150">{{this.search.smileSrc[i]}}</canvas></td>
+              <td class="align-middle">{{this.objID(i,j)}}</td>
+              <td class="align-middle">{{this.search.result[i].obj_nam[j]}}</td>
+              <td class="align-middle"><canvas #cmp id="{{'ref_' + i + '_' + j}}" width="300" height="150">{{this.search.result[i].SMILES[j]}}</canvas></td>
+              <td *ngIf="this.search.metric!='substructural' && this.search.metric!='smarts' " class="align-middle">{{this.search.result[i].distances[j].toFixed(3)}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
 </div>  

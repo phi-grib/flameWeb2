@@ -2,7 +2,6 @@
     background-color: white;
     background: white;
     color: #22577A;
-    /* table-layout: fixed; */
     width: 100%;
  }
 .table th{
@@ -10,7 +9,7 @@
     padding-right: 1px;
     border-bottom: 1px solid #B8DCED;
     color:#0076a3;
-  }
+}
 .table td{
     padding: 5px;
     font-family: 'Barlow Semi Condensed', sans-serif;
@@ -29,11 +28,7 @@ tr.selected {
 }
   
 .scrollable{
-    /* max-height: 90vh; */
   overflow: auto;
-  
-    /* padding-left: 0px;
-  padding-right: 10px; */
 }
   
 .border {
@@ -57,7 +52,6 @@ tr.selected {
 ul li.nav-item a {
     background:white;
     color: #0076a3;
-    /* font-size: 1.5rem; */
     font-size: 1.2rem;
 }
   
@@ -65,7 +59,6 @@ ul li.nav-item a.active{
     background:white;
     color:#22577A;
     font-weight: bold;
-    /* font-size: 1.5rem; */
     font-size: 1.2rem;
     border-bottom: 4px solid #e59300;
     border-radius: 0;
@@ -90,11 +83,15 @@ ul li.nav-item a.active{
     right: 0;
     bottom: 0;
     background-color: #FAFAFA;
-    opacity: 0.7;
+    opacity: 0.6;
     z-index: 2;
     cursor: pointer;
-  }
+}
 
+#container {
+    display: flex;
+    height: 400px;  
+}
 
 .iffyTip {
   overflow:hidden;

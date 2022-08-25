@@ -39,9 +39,9 @@ export class SearchComponent implements AfterViewInit {
         $('#similarityTable').DataTable().destroy();
 
         if (this.components !== undefined) {
+          const options = {'width': 300, 'height': 150};
+          const smilesDrawer = new SmilesDrawer.Drawer(options);
           this.components.forEach((child) => {
-            const options = {'width': 300, 'height': 150};
-            const smilesDrawer = new SmilesDrawer.Drawer(options);
             SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
               smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
               }, function (err) {
