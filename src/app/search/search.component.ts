@@ -59,11 +59,11 @@ export class SearchComponent implements AfterViewInit {
             { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary' , title: ''},
             { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' , title: ''},
             { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
-          ]
+          ],
+          deferRender: true
         };
         
         $('#similarityTable').DataTable(settingsObj);
-
     });
 
   }

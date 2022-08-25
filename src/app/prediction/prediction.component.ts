@@ -1,11 +1,10 @@
 import { Component, ViewChildren, QueryList, ElementRef, Input, OnChanges } from '@angular/core';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonService } from '../common.service';
-// import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PredictionService } from './prediction.service';
 import { Prediction, CustomHTMLElement, Globals } from '../Globals';
-import 'datatables.net-bs4';
+// import 'datatables.net-bs4';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
@@ -1011,7 +1010,6 @@ export class PredictionComponent implements OnChanges {
       if (points.curveNumber === 1) {
         SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
           smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
-          // smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
         });   
         // context_ref.font = "30px Barlow Semi Condensed";
         // context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
@@ -1094,7 +1092,6 @@ export class PredictionComponent implements OnChanges {
     this.predictionVisible = false;
     this.predictionResult = undefined;
     $('#prediction').DataTable().destroy();
-    // $('#predictionOne').DataTable().destroy();
 
     this.modelValidationInfo = {};
 
@@ -1158,7 +1155,6 @@ export class PredictionComponent implements OnChanges {
           this.modelValidationInfo['FP'][1]];
         }
         
-        
         const options_list = {'width': 200, 'height': 125};
         const smilesDrawer = new SmilesDrawer.Drawer(options_list);
         
@@ -1167,20 +1163,29 @@ export class PredictionComponent implements OnChanges {
 
           // List Tab
           let istructure = 0;
+          let alerted = false;
 
           this.components.forEach((child) => {
-            if (istructure < 100) {
+            if (istructure < 200) {
               SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
                 smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-                }, function (err) {
-                  console.log(err);
-                });
+              }, function (err) {
+                console.log(err);
+              });
               istructure++;
-            };
+            } else {
+              if (!alerted) {
+                alert ('Too many structures.\nOnly the first 200 molecules will be rendered');
+                alerted = true;
+              }
+            }
           });
-          
+
           // add buttons to table
           const settingsObj: any = {
+            deferRender: true,
+            autoWidth: false, 
+            destroy: true,
             dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
             '<"row"<"col-sm-12"tr>>' +
             '<"row"<"col-sm-5"i><"col-sm-7"p>>',
@@ -1198,8 +1203,6 @@ export class PredictionComponent implements OnChanges {
               });
               return row;
             },
-            destroy: true,
-            deferRender: true,
           };
 
           $('#prediction').DataTable(settingsObj);
@@ -1221,7 +1224,7 @@ export class PredictionComponent implements OnChanges {
 
           this.predictionVisible = true;
             
-          }, 1000);
+          }, 1000); // timeout
       }
     );
   }

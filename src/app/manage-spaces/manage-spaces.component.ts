@@ -48,6 +48,7 @@ export class ManageSpacesComponent {
         });
         this.space.spaces = [];
         $('#dataTableSpaces').DataTable().destroy();
+        this.space.spaceVersion = 0;
         this.func.getSpaceList();
       },
       error => {

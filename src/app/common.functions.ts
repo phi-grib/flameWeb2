@@ -383,6 +383,7 @@ export class CommonFunctions {
           
           setTimeout(() => {
             const table = $('#dataTableSpaces').DataTable({
+              autoWidth: false,
               ordering: true,
               pageLength: 10,
               destroy: true

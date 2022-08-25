@@ -38,7 +38,7 @@ export class Model {
 export class Space {
     file: any = undefined;  // Name of file uploaded in the second step
     spaceName: string = undefined;
-    spaceVersion: string = undefined;
+    spaceVersion: any = undefined;
     spaceType: string = undefined;
     building_spaces = [];
     file_info = undefined; // Info file ej. num mols, variables
