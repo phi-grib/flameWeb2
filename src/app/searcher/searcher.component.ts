@@ -179,6 +179,18 @@ export class SearcherComponent implements OnInit {
   checkSearch(searchName, inserted, intervalId) {
     this.commonService.getSearch(searchName).subscribe(
       result => {
+
+        if (result['aborted']) {
+          this.toastr.clear(inserted.toastId);
+          this.toastr.error("Search task has not completed. Check the browser console for more information", 
+            'Aborted', {timeOut: 10000, positionClass: 'toast-top-right'});
+          console.log('ERROR report produced by searching task');
+          console.log(result['aborted']);
+          this.search.searchName = undefined;
+          clearInterval(intervalId);
+          return;
+        }
+
         if (!result['waiting']){
           this.search.result = result.search_results;
           this.search.nameSrc = result.obj_nam;
@@ -194,11 +206,9 @@ export class SearcherComponent implements OnInit {
         
       },
       error => {
-        // if (error.error.code !== 0) {
-          this.toastr.clear(inserted.toastId);
-          clearInterval(intervalId);
-          alert('Error search: '+error.error.error);
-        // }
+        this.toastr.clear(inserted.toastId);
+        clearInterval(intervalId);
+        alert('Error search: '+error.error.error);
       }
     );
   }
