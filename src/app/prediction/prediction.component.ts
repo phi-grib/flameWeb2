@@ -2,6 +2,7 @@ import { Component, ViewChildren, QueryList, ElementRef, Input, OnChanges } from
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonService } from '../common.service';
 import * as PlotlyJS from 'plotly.js-dist-min';
+import { ToastrService } from 'ngx-toastr';
 import { PredictionService } from './prediction.service';
 import { Prediction, CustomHTMLElement, Globals } from '../Globals';
 // import 'datatables.net-bs4';
@@ -366,6 +367,7 @@ export class PredictionComponent implements OnChanges {
   constructor(public prediction: Prediction,
     public service: PredictionService,
     private commonService: CommonService,
+    private toastr: ToastrService,
     public globals: Globals) { }
   
   message = '';
@@ -1175,7 +1177,8 @@ export class PredictionComponent implements OnChanges {
               istructure++;
             } else {
               if (!alerted) {
-                alert ('Too many structures.\nOnly the first 200 molecules will be rendered');
+                this.toastr.warning( 'Too many structures, only the first 200 will be rendered' , 'Warning', {
+                  timeOut: 3000, positionClass: 'toast-top-right'});
                 alerted = true;
               }
             }
