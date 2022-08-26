@@ -180,12 +180,10 @@ export class SearcherComponent implements OnInit {
     this.commonService.getSearch(searchName).subscribe(
       result => {
         if (!result['waiting']){
-          // console.log(result)
           this.search.result = result.search_results;
           this.search.nameSrc = result.obj_nam;
           this.search.smileSrc = result.SMILES;
           this.search.metric = result.metric;
-          // console.log(result.metric)
           this.search.spaceName = this.spaceName;
           this.search.spaceVersion = this.spaceVersion;
           clearInterval(intervalId);

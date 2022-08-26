@@ -1,7 +1,7 @@
 import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, Input } from '@angular/core';
 import * as SmilesDrawer from 'smiles-drawer';
 import { Search, Globals, Space } from '../Globals';
-import 'datatables.net-bs4';
+// import 'datatables.net-bs4';
 declare var $: any;
 
 @Component({
@@ -34,8 +34,7 @@ export class SearchComponent implements AfterViewInit {
 
   ngAfterViewInit() {
 
-    this.components.changes.subscribe(
-      () => {
+    this.components.changes.subscribe(() => {
         $('#similarityTable').DataTable().destroy();
 
         if (this.components !== undefined) {

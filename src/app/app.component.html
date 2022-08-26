@@ -32,21 +32,6 @@
     <div class="tab-content">
 
         <div class="tab-pane fade show active" id="build" role="tabpanel" aria-labelledby="build-tab">
-            <!-- <div class="col p-0"> -->
-            <!-- <div class="col-7 info scrollable v-100"> -->
-
-            <!-- <div class="row">
-                <div class="col-4 p-0">
-                    <app-model-list></app-model-list>
-                </div>
-                
-                <div class="col p-0 info scrollable">
-                    <div *ngIf="(this.model.name != undefined)">
-                        <app-validations [name] = this.model.name [version] = this.model.version></app-validations>
-                    </div>
-                </div>
-            </div> -->
-
             <div style="height:90vh">                
                <as-split direction="horizontal" (gutterClick)="this.gutterClickModels()" class="app-base">
                   <as-split-area [size]="this.modelleft">
@@ -61,13 +46,9 @@
 
                 </as-split>
             </div>
-
-
-
         </div>
 
         <div class="tab-pane fade" id="predict" role="tabpanel" aria-labelledby="predict-tab" >
-
             <div style="height:90vh">                
                 <as-split direction="horizontal" (gutterClick)="this.gutterClickPredictions()">
                    <as-split-area [size]="this.predictleft">
@@ -83,33 +64,10 @@
                    </as-split-area>
                  </as-split>
             </div>
-
-            <!-- <div class="row">
-                <div class="col-4 p-0">
-                    <app-prediction-list></app-prediction-list>
-                </div>
-                <div class="col p-0 info scrollable" >
-                    <div *ngIf="(this.prediction.name != undefined) && (this.globals.mainTabActive=='#predict')">
-                        <app-prediction [predictionName]=this.prediction.name></app-prediction>
-                    </div>
-                </div>
-            </div> -->
-
         </div>
         
         
         <div class="tab-pane fade" id="similarity" role="tabpanel" aria-labelledby="similarity-tab" >
-            <!-- <div class="row">
-                <div class="col-4 p-0">
-                    <app-space-list></app-space-list>
-                </div>
-                <div class="col p-0 info scrollable v-100" >
-                    <div *ngIf="(this.space.spaceName != undefined) && (this.globals.mainTabActive=='#similarity')">
-                        <app-search [spaceName] = this.space.spaceName [spaceVersion] = this.space.spaceVersion ></app-search>
-                    </div>
-                </div>
-            </div> -->
-
             <div style="height:90vh">                
                 <as-split direction="horizontal" (gutterClick)="this.gutterClickSpaces()">
                    <as-split-area [size]="this.spaceleft">
@@ -118,8 +76,7 @@
  
                    <as-split-area [size]="this.spaceright">
                       <div class="col p-0 info scrollable" >
-                        <!-- <div *ngIf="(this.space.spaceName != undefined) && (this.globals.mainTabActive=='#similarity')"> -->
-                        <div *ngIf="(this.globals.mainTabActive=='#similarity')">
+                        <div *ngIf="(this.space.spaceName != undefined) && (this.globals.mainTabActive=='#similarity')">
                             <app-search [spaceName] = this.space.spaceName [spaceVersion] = this.space.spaceVersion ></app-search>
                         </div>
                       </div>
