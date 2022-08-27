@@ -100,13 +100,13 @@
               <th style="width: 5%" data-toggle="tooltip" data-placement="top" data-html="true" title="Mol index">#</th>
               <th style="width: 20%" data-toggle="tooltip" data-placement="top" data-html="true" title="Name of the molecule, as present in the input file">Name</th>
               <th class="align-middle text-center" data-toggle="tooltip" data-placement="top" data-html="true" title="Structure of the molecule in SMILES format">Mol</th>
-              <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ymatrix">Value</th>-->
+              <th class="align-middle text-center" *ngIf="this.predictionResult.ymatrix">Exp. Value</th>
               <th class="align-middle text-center" *ngIf="this.predictionResult.values && this.showConcentration" 
                 data-toggle="tooltip" data-placement="top" data-html="true" title="Concentration">
                 Predict.(&mu;M) 
               </th>
               <th class="align-middle text-center" *ngIf="this.predictionResult.values" data-toggle="tooltip" data-placement="top" data-html="true" title="Results of the prediction">
-                Predict. 
+                Pred. Value 
                 <span *ngIf ="this.modelDocumentation?.Endpoint_units.value != null">({{this.modelDocumentation?.Endpoint_units.value}})</span>
               </th>
               <th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">CI</th>
@@ -128,7 +128,7 @@
               <td class="align-middle text-center">
                 <canvas #cmp id="{{i}}">{{this.predictionResult.SMILES[i]}}</canvas>
               </td>
-              <!--<td class="align-middle text-center" *ngIf="this.predictionResult.ymatrix" >{{this.predictionResult.ymatrix[i].toFixed(3)}}</td>-->
+              <td class="align-middle text-center" *ngIf="this.predictionResult.ymatrix" >{{castValue(this.predictionResult.ymatrix[i])}}</td>
               <td class="align-middle text-center" *ngIf="this.predictionResult.values && this.showConcentration">
                 <span class="concentration_text">{{backConc(this.predictionResult.values[i])}}</span>
               </td>

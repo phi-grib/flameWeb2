@@ -1177,7 +1177,7 @@ export class PredictionComponent implements OnChanges {
               istructure++;
             } else {
               if (!alerted) {
-                this.toastr.info( 'Too many structures, only the first 200 will be rendered' , 'Information', {
+                this.toastr.info( 'Too many structures, only the first 200 were rendered' , 'Information', {
                   timeOut: 3000, positionClass: 'toast-top-right'});
                 alerted = true;
               }
