@@ -27,6 +27,7 @@ export class QualitConformalComponent implements OnChanges {
     modelWarning = '';
     modelVisible = false;
     features = false;
+    PCA = false;
     optimization = false;
     features_method = '';
     featuresTSV = '';
@@ -122,6 +123,18 @@ export class QualitConformalComponent implements OnChanges {
           //   showlines: false,
           //   coloring: 'heatmap' 
           // }
+        },
+        {
+          x: [],
+          y: [],
+          text: [],
+          type: 'scatter', 
+          mode: 'markers', 
+          marker: {
+            color: 'black',
+            opacity: 1.0,
+            size: 14,
+          }
         }
 
       ],
@@ -344,6 +357,7 @@ export class QualitConformalComponent implements OnChanges {
       this.modelValidationInfo = {};
       this.modelBuildInfo = {};
       this.features = false;
+      this.PCA = false;
       this.optimization = false;
       this.features_method = '';
       this.modelWarning = '';
@@ -418,6 +432,8 @@ export class QualitConformalComponent implements OnChanges {
           // PCA scores plot
           if ('PC1' in info) {
 
+            this.PCA = true;
+
             // define appropriate labels extracting from manifest
             const manifest = info['manifest'];
             var labelX = 'PCA PC1';
@@ -451,6 +467,46 @@ export class QualitConformalComponent implements OnChanges {
             }
           }
 
+          // Inner PCA scores plot
+          if ('InnerPCASet' in info) {
+
+            this.PCA = true;
+
+            var innerPCA = info['InnerPCASet'][0]
+
+            // define appropriate labels extracting from manifest
+            const manifest = info['manifest'];
+            var labelX = 'PCA PC1';
+            var labelY = 'PCA PC2';
+            for (var iman in manifest) {
+              if (manifest[iman]['key'] == 'PC1') {
+                labelX = manifest[iman]['label'];
+              }
+              if (manifest[iman]['key'] == 'PC2') {
+                labelY = manifest[iman]['label'];
+              }
+            }
+
+            this.plotScores.data[0].x = innerPCA['PCA1'];
+            this.plotScores.data[0].y = innerPCA['PCA2'];
+            this.plotScores.data[2].x = innerPCA['centroid'][0];
+            this.plotScores.data[2].y = innerPCA['centroid'][1];            
+            this.plotScores.data[0].text = info['obj_nam'];
+            this.plotScores.data[0].marker.color = info['ymatrix'];
+
+            // if ('SSX' in info) {
+            //   this.plotScores.layout.xaxis.title = labelX + ' ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
+            //   this.plotScores.layout.yaxis.title = labelY + ' ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
+            //   this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+            //   this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+            // } else {
+            //   this.plotScores.layout.xaxis.title = labelX;
+            //   this.plotScores.layout.yaxis.title = labelY;
+            //   this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+            //   this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+            // }
+          }
+          
 
           if ('feature_importances' in info && info['feature_importances']!= null) {
             
@@ -548,7 +604,8 @@ export class QualitConformalComponent implements OnChanges {
             const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
             const context = canvas.getContext('2d');
 
-            if (!this.model.secret) {
+            // if (!this.model.secret) {
+            if (this.PCA) {
               PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
               
               let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
