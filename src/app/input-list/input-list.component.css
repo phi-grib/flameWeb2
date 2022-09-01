@@ -1,0 +1,27 @@
+.minitable {
+    background-color: white;
+    background: white;
+    color: #22577A;
+    width: 400px;
+    
+}
+.minitable td {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-size: 12px;
+    border-bottom: 1px solid #B8DCED;
+    vertical-align: middle;
+}
+.box select {
+    background-color: #22577A;
+    color: white;
+    margin: 0px;
+    border-radius: 0px;
+}
+button {
+    background-color: #22577A;
+    color: white;
+}
+button:hover {
+    color: white;
+    background-color: #16394e;
+}

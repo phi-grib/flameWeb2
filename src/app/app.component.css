@@ -11,6 +11,12 @@
 .top-bar{
     max-height: 5vh; 
 }
+.scrollable {
+    /* right column will have a max of 95%
+       and a scroll bar will appear only when it is bigger */
+    max-height: 95vh;
+    overflow: auto;
+}
 
 /* ul {
     background: #0076a3;

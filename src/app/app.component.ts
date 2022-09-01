@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Model, Prediction, Search, Space, Globals } from './Globals';
 import { environment } from '../environments/environment';
+import { CommonService } from './common.service';
+import { SplitComponent } from 'angular-split';
 declare var $: any;
 
 @Component({
@@ -17,7 +19,8 @@ export class AppComponent implements OnInit {
     public search: Search,
     public space: Space,
     public model: Model,
-    public globals: Globals
+    public globals: Globals,
+    private commonService: CommonService
     ) {}
 
     toxhub: any;
@@ -51,7 +54,36 @@ export class AppComponent implements OnInit {
       //   this.toxhub = (http_page.slice(0,n));        
       // }
       // console.log(this.toxhub);
+      this.commonService.statusModelTab$.subscribe(status => {
+        if(status){
+          this.size1 = 30;
+          this.size2 = 70;
+        }else{
+          this.size1 = 100;
+          this.size2 = 0;
+        }
+      })
     }
+    @ViewChild('mySplit') mySplitEl: SplitComponent
+    // area size
+    _size1=100;
+    _size2=0;
+  get size1() {
+    return this._size1;
+  }
+  
+  set size1(value) {
+      this._size1 = value;
+  }
+  get size2() {
+    return this._size2;
+  }
+  
+  set size2(value) {
+      this._size2 = value;
+  }
+
+
 
     gutterClickModels() {
       if (this.modelleft > 0) {

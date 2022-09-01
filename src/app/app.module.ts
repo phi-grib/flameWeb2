@@ -10,7 +10,7 @@ import { TrainingSeriesComponent } from './training-series/training-series.compo
 // import { SidebarComponent } from './sidebar/sidebar.component';
 import { ValidationsComponent } from './validations/validations.component';
 import { ToastrModule } from 'ngx-toastr';
-import { Model, Prediction, Globals, Manager, Similarity, Space, Search } from './Globals';
+import { Model, Prediction, Globals, Manager, Similarity, Space, Search, Compound } from './Globals';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfigTrainingComponent } from './config-training/config-training.component';
 import { ConfigModelComponent } from './config-model/config-model.component';
@@ -44,6 +44,16 @@ import { TrainingSseriesComponent } from './training-sseries/training-sseries.co
 import { ConfigSpreferencesComponent } from './config-spreferences/config-spreferences.component';
 import { VerificatorComponent } from './verificator/verificator.component';
 import { AngularSplitModule } from 'angular-split';
+import { CompoundsComponent } from './compounds/compounds.component';
+import { CurrentSelectionComponent } from './current-selection/current-selection.component';
+import { InputFileComponent } from './input-file/input-file.component';
+import { InputListComponent } from './input-list/input-list.component';
+import { ModelListMultipleComponent } from './model-list-multiple/model-list-multiple.component';
+import { PredictButtonComponent } from './predict-button/predict-button.component';
+import { PredictionMultipleComponent } from './prediction-multiple/prediction-multiple.component';
+import { ProfileSummaryComponent } from './profile-summary/profile-summary.component';
+import { SelectorComponent } from './selector/selector.component';
+import { SketchStructureComponent } from './sketch-structure/sketch-structure.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -82,7 +92,17 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ConfigStrainingComponent,
     TrainingSseriesComponent,
     ConfigSpreferencesComponent,
-    VerificatorComponent
+    VerificatorComponent,
+    CompoundsComponent,
+    CurrentSelectionComponent,
+    InputFileComponent,
+    InputListComponent,
+    ModelListMultipleComponent,
+    PredictButtonComponent,
+    PredictionMultipleComponent,
+    ProfileSummaryComponent,
+    SelectorComponent,
+    SketchStructureComponent
   ],
   imports: [
     BrowserModule,
@@ -98,7 +118,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     PlotlyModule, 
     AngularSplitModule
   ],
-  providers: [Model, Prediction, Globals, Manager, Similarity, Space, Search,
+  providers: [Model, Prediction, Globals, Manager, Similarity, Space, Search,Compound,
   {
     provide: APP_INITIALIZER,
     useFactory: initializer,

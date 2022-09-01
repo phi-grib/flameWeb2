@@ -5,13 +5,33 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from "@angular/common/http";
-import { Observable } from "rxjs";
 import { environment } from "../environments/environment";
-
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 @Injectable({
   providedIn: "root",
 })
 export class CommonService {
+    //observables to communicate to components without parent-child or sibling relationship, on current values
+    private currentCompoundTab = new Subject<string>();
+    currentCompoundTab$ = this.currentCompoundTab.asObservable();
+    private currentSelection = new Subject<{}>();
+    currentSelection$ = this.currentSelection.asObservable();
+    //communicates to the component in charge of displaying the prediction, which molecule should present and which model 
+    private idxmodelmol = new Subject<any>();
+    idxmodelmol$ = this.idxmodelmol.asObservable();
+    // check if the selected compound is valid
+    private isValidCompound = new BehaviorSubject<boolean>(false);
+    isValidCompound$ = this.isValidCompound.asObservable();
+    //reports that a prediction has been launched
+    private predictionExec = new Subject<boolean>();
+    predictionExec$ = this.predictionExec.asObservable();
+    //checks if the modal where the component list is displayed or hidden
+    private statusModelTab = new BehaviorSubject<boolean>(false);
+    statusModelTab$ = this.statusModelTab.asObservable();
+    // communicates to the component containing the list of models, which models should be selected
+    private loadCollection = new Subject<{}>();
+    loadCollection$ = this.loadCollection.asObservable();
+  
   constructor(private http: HttpClient) {}
 
   /**
@@ -117,5 +137,27 @@ export class CommonService {
       version +
       "/parameters";
     return this.http.get(url);
+  }
+  setCurrentCompoundTab(compoundTab: string) {
+    this.currentCompoundTab.next(compoundTab);
+  }
+  setCurrentSelection(selection: {}) {
+    this.currentSelection.next(selection);
+  }
+
+  setMolAndModelIndex(molidx:number,modelidx:number) {
+    this.idxmodelmol.next([molidx,modelidx]);
+  }
+  setIsvalidCompound(valid: boolean) {
+    this.isValidCompound.next(valid);
+  }
+  setPredictionExec(pred: boolean){
+    this.predictionExec.next(pred)
+  }
+  setStatusModelTab(status: boolean){
+    this.statusModelTab.next(status)
+  }
+  setCollection(collection: object){
+    this.loadCollection.next(collection);
   }
 }

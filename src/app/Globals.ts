@@ -32,6 +32,16 @@ export class Model {
   selectedItems = [];
   page = 0;
   pagelen = 10;
+  listModelsSelected = [];
+}
+@Injectable()
+export class Compound{
+  file_info = undefined; // Info file ej. num mols, variables
+  file_fields = undefined;
+  sketchstructure: {} = undefined;
+  input_list: {} = undefined;
+  input_file = undefined;
+  listCompoundsSelected = [];
 }
 
 @Injectable()
@@ -53,18 +63,23 @@ export class Space {
 
 @Injectable()
 export class Prediction {
+    profileName: string = undefined;  
     name: string = undefined;   // Name of the model selected in the first step
     modelName: string = undefined;
     modelVersion: string = undefined;
     modelParameters: any;
     modelDocumentation: any = undefined;
     predictions = [];
+    profileSummary: any = undefined;
     predicting = {};
     conformal = false;
     file: any = undefined;  // Name of file uploaded in the second step
     result = undefined;
     date = undefined;
     modelID = undefined;
+    profileItem = undefined;
+    molSelected = undefined;
+    profileList: any  = [];
 }
 
 @Injectable()
@@ -93,6 +108,7 @@ export class Globals {
     tableSpaceVisible = false;
     mainTabActive: string = undefined;
     read_only = environment.read_only;
+    compoundTabActive: string = undefined;
 }
 
 @Injectable()

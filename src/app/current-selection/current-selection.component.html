@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row">
+        <div class="col-4 mr-4 ml-4">
+            <div class="model_name">Selected compounds</div>
+            <table class="table table-sm">
+                <tbody>
+                    <tr *ngFor="let compound of this.compound.listCompoundsSelected">
+                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left"><strong>{{compound}}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-4">
+            <div class="model_name">Selected models</div>
+            <table class="table table-sm">
+                <tbody>
+                    <tr *ngFor="let model of this.model.listModelsSelected">
+                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left"><strong>{{model.name}} v.{{model.version}}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

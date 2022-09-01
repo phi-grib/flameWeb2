@@ -1,0 +1,20 @@
+
+
+<div class="row">
+    <div class="col-10">
+        <label for="profileName">Profile name</label>
+        <input type="text" class="form-control is-valid d-inline" [class.is-valid]="isvalidProfile" [class.is-invalid]="!isvalidProfile" id="profileName" [(ngModel)]="this.profileName" (ngModelChange)="profileNameChange()" required>
+        <div class="valid-feedback">
+            Valid Name!
+        </div>
+        <div class="invalid-feedback">
+            The name of the profile is invalid or already exist!
+        </div>
+    </div>  
+    <div class="col-2 d-inline">
+        <button data-toggle="popover" data-trigger="hover" [disabled]="!this.isValidCompound || this.model.listModelsSelected.length < 2 || !isvalidProfile" (click)="select_prediction()" style="margin-top: 2.23rem;"  class="btn btn-ets-do">Predict</button>
+        </div>
+</div>
+
+
+

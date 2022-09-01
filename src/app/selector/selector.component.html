@@ -1,0 +1,33 @@
+<div class="accordion mt-3 ml-3" id="buildingAccordion">
+    <div class="card">
+        <div #compoundtb (click)="modelTab(compoundtb)" class="card-header" id="headingCompound" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+            <h5 class="mb-0">
+                Add compound
+                <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+            </h5>
+        </div>
+        <div id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#buildingAccordion">
+            <div class="card-body p-2 pr-5">
+                <app-compounds></app-compounds>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div #modeltb (click)="modelTab(modeltb)" class="card-header collapsed" id="headingModels" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <h5 class="mb-0">
+                Add model
+                <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+            </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#buildingAccordion">
+            <div class="card-body">
+               <app-model-list-multiple></app-model-list-multiple>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body p-2 pr-5">
+           <app-predict-button></app-predict-button>
+        </div>
+    </div>
+</div>
