@@ -1,4 +1,4 @@
-<div id="container-dt" *ngIf="this.prediction.profileList.length" class="col mt-3">
+<div id="container-dt" *ngIf="this.profile.profileList.length" class="col mt-3">
     <div class="accordion mt-3" id="buildingAccordion">
         <div class="card">
             <div   class="card-header" id="headingCompound" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-body p-2 pr-5">
                         <div class="btn-toolbar m-2" role="toolbar" aria-label="Toolbar with button groups">
-                            <button (click)="deleteProfile()" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#delete" [ngClass]="{'disabled': this.prediction.profileName === undefined}">Delete</button>
+                            <button (click)="deleteProfile()" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#delete" [ngClass]="{'disabled': this.profile.name === undefined}">Delete</button>
                         </div> 
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr #tr (click)="this.getProfileSummary(profile,tr)"  *ngFor="let profile of this.prediction.profileList[1]">
+                        <tr #tr (click)="this.getProfileSummary(profile,tr)"  *ngFor="let profile of this.profile.profileList[1]">
                             <td>{{profile[0]}}</td>
                             <td>{{profile[3]}}</td>
                         </tr>
@@ -38,23 +38,23 @@
 
       
      
-            <table *ngIf="this.prediction.profileSummary" id="dataTablePrediction" style="width:100%;">
+            <table *ngIf="this.profile.summary" id="dataTablePrediction" style="width:100%;">
                 <thead>
                     <tr>
                         <th></th>
                         <th></th>
-                        <th class="text-center border" *ngFor="let model of this.prediction.profileSummary['endpoint']; let x = index"> {{model}} <span class="text-muted">v.{{this.prediction.profileSummary['version'][x]}}</span></th>
+                        <th class="text-center border" *ngFor="let model of this.profile.summary['endpoint']; let x = index"> {{model}} <span class="text-muted">v.{{this.profile.summary['version'][x]}}</span></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let compound of this.prediction.profileSummary['obj_nam'];let i = index">
+                    <tr *ngFor="let compound of this.profile.summary['obj_nam'];let i = index">
                         <td #td class="border text-center font-weight-bold">{{compound}}</td>
                         <td id="canvas{{i}}" class="border text-center"></td>
-                        <ng-container *ngFor="let value of this.prediction.profileSummary['values'][i]; let pos = index">
-                            <td data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="hover" data-content="" *ngIf="!this.prediction.profileSummary.quantitative[pos]" id="values" class="text-center result border" (click)="showPrediction($event,i,td)" (mouseover)="generateTooltip($event,compound,value)"
+                        <ng-container *ngFor="let value of this.profile.summary['values'][i]; let pos = index">
+                            <td data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="hover" data-content="" *ngIf="!this.profile.summary.quantitative[pos]" id="values" class="text-center result border" (click)="showPrediction($event,i,td)" (mouseover)="generateTooltip($event,compound,value)"
                                 [ngStyle]="{background: value == 1 ? 'rgb(255,0,0)': value == -1 ? '#95a5a6': 'rgb(0,0,255)'}"></td>
-                            <td data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="hover" data-content="" *ngIf="this.prediction.profileSummary.quantitative[pos]" id="values" (click)="showPrediction($event,i,td)" (mouseover)="generateTooltip($event,compound,value)"
-                                class="text-center text-dark result border" [ngStyle]="{background: value > 0 ? 'rgb('+this.prediction.profileSummary.escaleColor[i][pos][0]+','+this.prediction.profileSummary.escaleColor[i][pos][1]+','+this.prediction.profileSummary.escaleColor[i][pos][2]+')' : '#95a5a6'}">
+                            <td data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="hover" data-content="" *ngIf="this.profile.summary.quantitative[pos]" id="values" (click)="showPrediction($event,i,td)" (mouseover)="generateTooltip($event,compound,value)"
+                                class="text-center text-dark result border" [ngStyle]="{background: value > 0 ? 'rgb('+this.profile.summary.escaleColor[i][pos][0]+','+this.profile.summary.escaleColor[i][pos][1]+','+this.profile.summary.escaleColor[i][pos][2]+')' : '#95a5a6'}">
                                 {{value | number: '1.0-1'}}
                             </td>
                         </ng-container>

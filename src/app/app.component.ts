@@ -33,6 +33,12 @@ export class AppComponent implements OnInit {
 
     spaceleft = 40;
     spaceright = 60;
+
+    profileLeft = 40;
+    profileRight=60;
+
+    selectorLeft = 40;
+    selectorRight=60;
     
     ngOnInit() {
       const me = this;
@@ -110,6 +116,24 @@ export class AppComponent implements OnInit {
       } else {
         this.spaceleft = 40
         this.spaceright = 60
+      }
+    }
+    gutterClickProfile() {
+      if (this.profileLeft > 0) {
+        this.profileLeft = 0;
+        this.profileRight = 100;
+      } else {
+        this.profileLeft = 40
+        this.profileRight = 60
+      }
+    }
+    gutterClickSelector() {
+      if (this.selectorLeft > 0) {
+        this.selectorLeft = 0;
+        this.selectorRight = 100;
+      } else {
+        this.selectorLeft = 40
+        this.selectorRight = 60
       }
     }
 

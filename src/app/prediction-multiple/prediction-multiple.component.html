@@ -1,10 +1,10 @@
-<div id="container-pred" style="width:99%;height:99%" *ngIf="this.prediction.profileItem">
+<div id="container-pred" style="width:99%;height:99%" *ngIf="this.profile.item">
     <as-split #mySplit direction="vertical" (gutterClick)="gutterClick($event)" [gutterSize]="10" [useTransition]="true" [gutterDblClickDuration]="0">
         <as-split-area [order]="1" [size]="size1">
             <div class="card-body">
                 <div class="row">
                     <div class="col-3 border">
-                        <strong> {{this.prediction.profileName}}</strong>
+                        <strong> {{this.profile.name}}</strong>
                     </div>
                     <div class="col-6 border">
                         <strong> Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} (ID:{{this.prediction.modelID}})</strong>
@@ -30,12 +30,12 @@
                         <canvas id="one_canvas"></canvas>
                     </div>
                 </div>
-                <div *ngIf="this.prediction.profileItem.values && this.showConcentration" class="row">
+                <div *ngIf="this.profile.item.values && this.showConcentration" class="row">
                     <div class="col-3 border">
                         <strong>Prediction (as conc.)</strong>
                     </div>
                     <div class="col-9 border">
-                        <span class="concentration_text"> {{backConc(this.prediction.profileItem.values[this.molIndex])}} &mu;M</span>
+                        <span class="concentration_text"> {{backConc(this.profile.item.values[this.molIndex])}} &mu;M</span>
                     </div>
                 </div>
                 <div class="row">
@@ -43,17 +43,17 @@
                         <strong>Prediction</strong>
                     </div>
                     <div class="col-9 border">
-                        <span *ngIf="this.prediction.profileItem.values" class="prediction_text"> {{this.castValue(this.prediction.profileItem.values[this.molIndex])}} </span>
+                        <span *ngIf="this.profile.item.values" class="prediction_text"> {{this.castValue(this.profile.item.values[this.molIndex])}} </span>
                         <span *ngIf="this.prediction.modelDocumentation != undefined && this.prediction.modelDocumentation['Endpoint_units']"> {{this.prediction.modelDocumentation['Endpoint_units'].value}}</span>
                     </div>
                 </div>
 
-                <div class="row" *ngIf="this.prediction.profileItem.ymatrix">
+                <div class="row" *ngIf="this.profile.item.ymatrix">
                     <div class="col-3 border">
                         <strong>Experimental activity</strong>
                     </div>
                     <div class="col-9 border">
-                        <span *ngIf="this.prediction.profileItem">{{this.castValue(prediction.profileItem.ymatrix[molIndex])}}</span>
+                        <span *ngIf="this.profile.item">{{this.castValue(profile.item.ymatrix[molIndex])}}</span>
                     </div>
                 </div>
                 <div class="row" *ngIf="this.modelBuildInfo['conformal']">
@@ -63,13 +63,13 @@
                     <div class="col-9 border">
                         <!-- <span *ngIf="!this.modelBuildInfo['conformal']">-</span> -->
                         <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">{{(this.modelBuildInfo['conformal_confidence'])*100}}%CI: </span>
-                        <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative'] && this.prediction.profileItem.hasOwnProperty('lower_limit')">
-                                {{this.prediction.profileItem.lower_limit[molIndex].toFixed(3)}}
-                                 to {{this.prediction.profileItem.upper_limit[molIndex].toFixed(3)}}
+                        <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative'] && this.profile.item.hasOwnProperty('lower_limit')">
+                                {{this.profile.item.lower_limit[molIndex].toFixed(3)}}
+                                 to {{this.profile.item.upper_limit[molIndex].toFixed(3)}}
                                 </span>
                         <span *ngIf="this.modelBuildInfo['conformal'] && !this.modelBuildInfo['quantitative']">{{(this.modelBuildInfo['conformal_confidence'])*100}}% confidence</span>
-                        <span *ngIf="this.prediction.profileItem.p0"><br>Prob. Class 0: {{(this.prediction.profileItem.p0[molIndex].toFixed(3))}} </span>
-                        <span *ngIf="this.prediction.profileItem.p1"><br>Prob. Class 1: {{(this.prediction.profileItem.p1[molIndex].toFixed(3))}} </span>
+                        <span *ngIf="this.profile.item.p0"><br>Prob. Class 0: {{(this.profile.item.p0[molIndex].toFixed(3))}} </span>
+                        <span *ngIf="this.profile.item.p1"><br>Prob. Class 1: {{(this.profile.item.p1[molIndex].toFixed(3))}} </span>
                     </div>
                 </div>
                 <div class="row " *ngIf="this.modelBuildInfo['ensemble']">
@@ -98,10 +98,10 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let model of this.prediction.profileItem.var_nam; let j = index">
+                      <tr *ngFor="let model of this.profile.item.var_nam; let j = index">
                         <td class="p-0 text-left">{{model.split(":")[1]}}</td>
                         <td class="p-0 text-center">{{model.split(":")[2]}}</td>
-                        <td class="p-0 text-right">{{castValue(this.prediction.profileItem.xmatrix[this.molIndex][j])}}</td>
+                        <td class="p-0 text-right">{{castValue(this.profile.item.xmatrix[this.molIndex][j])}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -115,7 +115,7 @@
 
                     </div>
                 </div>
-                <div class="row " *ngIf="this.prediction.profileItem['search_results']">
+                <div class="row " *ngIf="this.profile.item['search_results']">
                     <div class="col-3 border">
                         <strong>Similars</strong>
                     </div>
@@ -133,11 +133,11 @@
                             </thead>
                             <tbody>
 
-                                <tr *ngFor="let dist of this.prediction.profileItem.search_results[this.molIndex].distances; let j = index">
+                                <tr *ngFor="let dist of this.profile.item.search_results[this.molIndex].distances; let j = index">
                                     <td class="p-0 text-left">{{dist.toFixed(2)}}</td>
                                     <td class="p-0 text-center"><canvas id="{{'one_canvas'+j}}"></canvas></td>
-                                    <td class="p-0 text-left">{{this.prediction.profileItem.search_results[this.molIndex].obj_nam[j]}}</td>
-                                    <td class="p-0 text-right">{{this.castValue(this.prediction.profileItem.search_results[this.molIndex].ymatrix[j])}}</td>
+                                    <td class="p-0 text-left">{{this.profile.item.search_results[this.molIndex].obj_nam[j]}}</td>
+                                    <td class="p-0 text-right">{{this.castValue(this.profile.item.search_results[this.molIndex].ymatrix[j])}}</td>
                                 </tr>
 
                             </tbody>

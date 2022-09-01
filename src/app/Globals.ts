@@ -60,26 +60,29 @@ export class Space {
     // spaceID: string = undefined;
     spaces = [];
 }
+@Injectable()
+export class Profile {
+    name: string = undefined;
+    summary: any = undefined;
+    item = undefined;
+    profileList: any  = []; 
+}
 
 @Injectable()
 export class Prediction {
-    profileName: string = undefined;  
     name: string = undefined;   // Name of the model selected in the first step
     modelName: string = undefined;
     modelVersion: string = undefined;
     modelParameters: any;
     modelDocumentation: any = undefined;
     predictions = [];
-    profileSummary: any = undefined;
     predicting = {};
     conformal = false;
     file: any = undefined;  // Name of file uploaded in the second step
     result = undefined;
     date = undefined;
     modelID = undefined;
-    profileItem = undefined;
     molSelected = undefined;
-    profileList: any  = [];
 }
 
 @Injectable()

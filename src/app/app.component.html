@@ -37,11 +37,12 @@
     <div class="tab-content">
 
       <div class="tab-pane fade show" id="selector" role="tabpanel" aria-labelledby="selector-tab">
-        <div class="row">
-            <div class="col-5 p-0">
+        <div style="height:90vh">
+          <as-split direction="horizontal" (gutterClick)="this.gutterClickProfile()" class="app-base">
+            <as-split-area [size]="this.selectorLeft"> 
                 <app-selector></app-selector>
-            </div>
-            <div style="margin-top: 1.4rem;" class="col p-0 info scrollable">
+              </as-split-area>
+              <as-split-area [size]="this.selectorRight">
                 <as-split #mySplit direction="vertical" [gutterSize]="10" [useTransition]="true" [gutterDblClickDuration]="0">
                     <as-split-area [order]="1" [size]="size1">
                         <app-current-selection>
@@ -53,19 +54,26 @@
                         </div>
                     </as-split-area>
                 </as-split>
-            </div>
+              </as-split-area>
+           </as-split>
         </div>
     </div>
 
     <div class="tab-pane fade" id="profiles" role="tabpanel" aria-labelledby="profiles-tab">
-      <div class="row">
-          <div class="col-5 ml-2 p-0 scrollable">
+      <div style="height:90vh">
+        <as-split direction="horizontal" (gutterClick)="this.gutterClickProfile()" class="app-base"> 
+          <!-- <div class="col-5 ml-2 p-0 scrollable"> -->
+            <as-split-area [size]="this.profileLeft">
               <app-profile-summary> </app-profile-summary>
-          </div>
-          <div class="col p-0 info scrollable">
+            </as-split-area>
+          <!-- </div> -->
+          <!-- <div class="col p-0 info scrollable"> -->
+            <as-split-area [size]="this.profileRight">
               <app-prediction-multiple></app-prediction-multiple>
-          </div>
-      </div>
+            </as-split-area>
+          <!-- </div> -->
+        </as-split>
+        </div>
   </div>
 
         <div class="tab-pane fade show active" id="build" role="tabpanel" aria-labelledby="build-tab">
