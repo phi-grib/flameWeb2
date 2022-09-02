@@ -131,20 +131,28 @@ export class QualitConformalComponent implements OnChanges {
         {
           x: [],
           y: [],
-          text: [],
+          // text: [],
           type: 'scatter', 
           mode: 'markers', 
           marker: {
-            symbol: 'diamond-dot',
-            color: '#42DE2F',
-            opacity: 1.0,
-            size: 16,
-            line: {
-              color: 'black',
-              width: 3
-            }
+            // symbol: 'diamond-dot',
+            // color: '#42DE2F',
+            // opacity: 1.0,
+            // size: 10,
+            symbol: 'circle',
+            // color: 'grey',
+            color: '#009999',
+            opacity: 0.5,
+            size: 20,
+
+            // line: {
+            //   color: 'black',
+            //   width: 1
+            // }
           },
-          hovertemplate:'<b>%{text}</b><br>%{x:.2f}, %{y:.2f}<extra></extra>',
+          hoverinfo: 'skip',
+
+          // hovertemplate:'<b>%{text}</b><br>%{x:.2f}, %{y:.2f}<extra></extra>',
         }
 
       ],
@@ -376,7 +384,7 @@ export class QualitConformalComponent implements OnChanges {
       this.plotScores.data[0].y = innerPCA['PCA2'];
       this.plotScores.data[2].x = innerPCA['pointsx'];
       this.plotScores.data[2].y = innerPCA['pointsy'];            
-      this.plotScores.data[2].text = [innerPCA['label']];     
+      // this.plotScores.data[2].text = [innerPCA['label']];     
       if ('explvar' in innerPCA) {
         this.plotScores.layout.xaxis.title = this.scoresLabelX + ' ('+(100.0*(innerPCA['explvar'][0])).toFixed(1)+'% SSX)';
         this.plotScores.layout.yaxis.title = this.scoresLabelY + ' ('+(100.0*(innerPCA['explvar'][1])).toFixed(1)+'% SSX)';
