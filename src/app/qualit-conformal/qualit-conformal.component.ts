@@ -135,23 +135,20 @@ export class QualitConformalComponent implements OnChanges {
           type: 'scatter', 
           mode: 'markers', 
           marker: {
+            symbol: 'circle',
+            color: '#009999',
+            opacity: 0.5,
+            size: 20,
             // symbol: 'diamond-dot',
             // color: '#42DE2F',
             // opacity: 1.0,
             // size: 10,
-            symbol: 'circle',
-            // color: 'grey',
-            color: '#009999',
-            opacity: 0.5,
-            size: 20,
-
             // line: {
             //   color: 'black',
             //   width: 1
             // }
           },
           hoverinfo: 'skip',
-
           // hovertemplate:'<b>%{text}</b><br>%{x:.2f}, %{y:.2f}<extra></extra>',
         }
 
