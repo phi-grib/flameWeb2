@@ -753,6 +753,10 @@ export class PredictionComponent implements OnChanges {
             
           }, 100);
         }
+      },
+      error => {
+        this.modelPresent = false;
+        this.modelMatch = true; // prevent showing also this error!
       }
     )
   }
