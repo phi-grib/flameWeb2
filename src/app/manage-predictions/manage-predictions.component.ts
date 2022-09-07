@@ -45,12 +45,12 @@ export class ManagePredictionsComponent {
         }
         else {
           // select the first item
-          this.prediction.name = table.data()[0][0];
-          // this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
+          // this.prediction.name = table.data()[0][0];
+          this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
 
-          // this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
-          // this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
-          // this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
+          this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
+          this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
+          this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
           
           for (const ipred of this.prediction.predictions) {
             if (ipred[0] == this.prediction.name) {
