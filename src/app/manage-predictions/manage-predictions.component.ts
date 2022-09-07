@@ -33,8 +33,7 @@ export class ManagePredictionsComponent {
       result => {
         
         this.toastr.success( 'Prediction "' + this.prediction.name + '" deleted', 'DELETED' , {
-          timeOut: 4000, positionClass: 'toast-top-right', progressBar: true
-        });
+          timeOut: 500, positionClass: 'toast-top-right', progressBar: false});
         
         const table = $('#dataTablePredictions').DataTable();
         table.row('.selected').remove().draw(false);
