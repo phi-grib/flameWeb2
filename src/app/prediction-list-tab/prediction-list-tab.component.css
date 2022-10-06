@@ -147,6 +147,26 @@ tr.selected {
   color:#e59300;
 }
 
+.spinner-border {
+  display: block;
+  position: absolute; 
+  right: 78%; 
+  top: 40%; 
+  z-index: 1031;
+}
+
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #FAFAFA;
+  opacity: 0.7;
+  z-index: 2;
+  cursor: pointer;
+}
+
 .page-link:focus {
   box-shadow: none !important;
 }
@@ -156,5 +176,3 @@ tr.selected {
   margin-left: 0px;
 }
 
-
-/*END LOADING*/

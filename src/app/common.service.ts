@@ -13,8 +13,9 @@ import { environment } from "../environments/environment";
 })
 export class CommonService {
   constructor(private http: HttpClient) {}
-
-
+  // communicate to distant component that makes a call to getPrediction
+  private predictionActive = new Subject<string>();
+  predictionActive$ = this.predictionActive.asObservable();
   //checks if the modal where the component list is displayed or hidden
   private statusModelTab = new BehaviorSubject<boolean>(false);
   statusModelTab$ = this.statusModelTab.asObservable();
@@ -32,6 +33,9 @@ export class CommonService {
   //reports that a prediction has been launched
   private predictionExec = new Subject<boolean>();
   predictionExec$ = this.predictionExec.asObservable();
+  //communicates to the component in charge of displaying the prediction, which molecule should present and which model 
+  private idxmodelmol = new Subject<any>();
+  idxmodelmol$ = this.idxmodelmol.asObservable();
   
   /**
    * Retrives the list of all models form the server
@@ -155,6 +159,12 @@ export class CommonService {
   }
   setCollection(collection: object){
     this.loadCollection.next(collection);
+  }
+  setMolAndModelIndex(molidx:number,modelidx:number) {
+    this.idxmodelmol.next([molidx,modelidx]);
+  }
+  setPredictName(predictName: any){
+    this.predictionActive.next(predictName)
   }
 
 }

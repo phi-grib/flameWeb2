@@ -76,14 +76,13 @@
             <div style="height:90vh">                
                 <as-split direction="horizontal" (gutterClick)="this.gutterClickPredictions()">
                    <as-split-area [size]="this.predictleft">
-                    <app-prediction-list></app-prediction-list>
+                    <app-manage-pred-prof></app-manage-pred-prof>
                    </as-split-area>
- 
                    <as-split-area [size]="this.predictright">
                       <div class="col p-0 info scrollable" >
-                        <div *ngIf="(this.prediction.name != undefined) && (this.globals.mainTabActive=='#predict')">
-                            <app-prediction [predictionName]=this.prediction.name></app-prediction>
-                        </div>
+                          <!-- change name app-prediction to app-profile-item -->
+                            <app-prediction *ngIf="!this.globals.tablePredictionVisible"></app-prediction>
+                            <app-prediction-details *ngIf="this.globals.tablePredictionVisible"></app-prediction-details>
                       </div>
                    </as-split-area>
                  </as-split>

@@ -1,0 +1,25 @@
+
+
+<div id="container-dt" *ngIf="this.profile?.profileList[1]?.length  else elseBlock" class="col mt-3">
+ 
+    <table class="table display compact" id="dataTableProfiles" style="width:100%;">
+     <thead>
+         <tr>
+             <th>Name</th>
+             <th>Date</th>
+         </tr>
+     </thead>
+     <tbody>
+         <tr #tr (click)="this.selectProfile(profile,tr)" *ngFor="let profile of this.profile.profileList[1]">
+             <td>{{profile[0]}}</td>
+             <td>{{profile[3]}}</td>
+         </tr>
+     </tbody>
+ </table>
+ </div>
+ 
+ <ng-template #elseBlock>
+   <div style="width: 99%;" class="alert alert-warning text-center mt-3">
+       No profiles
+   </div>
+ </ng-template>

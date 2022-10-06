@@ -1,0 +1,42 @@
+.btn-ets-delete {
+    background-color: #fa1750;
+    color: #ffffff;
+    border-width: 0;
+    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+    letter-spacing: 0.05em;
+    border-radius: 0;
+}
+
+.btn-ets-delete:hover,
+.btn-ets-delete:focus,
+.btn-ets-delete.active {
+    background-color:#b41147 ;
+    color: #ffffff;
+}
+
+.result {
+    transition: transform .2s;
+}
+.result:hover{
+    border: 1.5px solid black !important;
+    transform: scale(1.025);
+}
+.pselected {
+    transform: scale(1.025);
+    border: 2px solid black !important;
+}
+.box select {
+    background-color: #22577A;
+    color: white;
+    margin: 0px;
+    border-radius: 0px;
+}
+.positive-icon{
+    color: rgb(255,0,0)
+}
+.negative-icon {
+    color: rgb(0,0,255)
+}
+.uncertain-icon {
+    color: #95a5a6;
+}

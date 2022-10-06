@@ -343,29 +343,6 @@ export class CommonFunctions {
                 order: [[4, 'desc']],
                 destroy: true
               });
-
-              if (this.prediction.predictions.length > 0) {
-                this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
-                for (var i=0; i < this.prediction.predictions.length; i++ ) {
-                    const ipred = this.prediction.predictions[i];
-                    if (ipred[0] === this.prediction.name) {
-                      this.prediction.modelName = ipred[1];
-                      this.prediction.modelVersion = ipred[2];
-                      this.prediction.date = ipred[3];
-                      this.prediction.modelID = ipred[5];
-                      // console.log ('found: ', this.prediction)
-                    }
-                }
-                // this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
-                // this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
-                // this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
-              }
-              // $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
-              //   $('tr').removeClass('selected'); // removes all highlights from tr's
-              //   $(this).addClass('selected'); // adds the highlight to this row
-              // });
-
-              this.globals.tablePredictionVisible = true;
             }, 10);
           } 
           else {
