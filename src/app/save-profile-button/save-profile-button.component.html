@@ -1,0 +1,29 @@
+<button [disabled]="this.model.listModelsSelected.length < 2 " class="btn btn-ets-do float-left mt-1" data-toggle="modal" data-target="#saveModal">Save collection</button>
+<div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="saveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="saveModalLabel">Save collection</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="nameCollection"> Introduce a name for the collection</label>
+                <input type="text" class="form-control" [class.is-valid]="isvalidName" [class.is-invalid]="!isvalidName" [(ngModel)]="name" id="nameCollection" aria-describedby="emailHelp" placeholder="Enter Name" (ngModelChange)="collectionNameChange()" required>
+                <div class="valid-feedback">
+                    Valid Name!
+                </div>
+                <div class="invalid-feedback">
+                    The name of the collection is invalid!
+                </div>
+              </div>
+        </div>
+        <div class="modal-footer">
+        <button [disabled]="!this.isvalidName"  (click)="saveCollection()" type="button" class="btn btn-ets-do">Save confirm</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

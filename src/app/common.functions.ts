@@ -227,6 +227,43 @@ export class CommonFunctions {
 
                 // console.log('refresh')
                 let me = this;
+                const tableSelector = $('#dataTableModelsSelector').DataTable({
+                  autoWidth: false,
+                  destroy: true,
+                  pageLength: this.model.pagelen,
+
+                  // this code adds selectors to all columns
+                  initComplete: function () {
+                    var icol = 0;
+                    this.api().columns().every( function () {
+                        var column = this;
+                        // example on how you can remove col 0 (quali/cuanti)
+                        if (icol!=0 && icol!=3) {
+                          // class "model_selector" was used to customize font size
+                          var select = $('<select class="model_selector" ><option value=""></option></select>')
+                              .appendTo( $(column.footer()).empty() )
+                              .on( 'change', function () {
+                                  var val = $.fn.dataTable.util.escapeRegex(
+                                      $(this).val()
+                                  );
+                                  column
+                                      .search( val ? '^'+val+'$' : '', true, false )
+                                      .draw();
+                              } );
+                          column.data().unique().sort().each( function ( d, j ) {
+                              select.append( '<option value="'+d+'">'+d+'</option>' )
+                          } );
+                        }
+                        icol++;
+                    });
+                  }
+                })
+                .on( 'length.dt', function () {
+                  me.model.pagelen =tableSelector.page.len()
+                });
+                if (currentPage != 0) {
+                  tableSelector.page(currentPage).draw('page');
+                }
                 const table = $('#dataTableModels').DataTable({
                   autoWidth: false,
                   destroy: true,

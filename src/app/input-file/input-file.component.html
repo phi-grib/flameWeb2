@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col">
+        <div class="input-file">
+            <div class="form-group mt-2">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" onchange="this.nextElementSibling.innerText = this.files[0].name" (change)="change($event)">
+                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                    <small *ngIf='this.model.input_type != "data"' class="text-muted">Enter a SDFile format input file.</small>
+                    <small *ngIf='this.model.input_type == "data"' class="text-muted">Enter a TSV format input file.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
