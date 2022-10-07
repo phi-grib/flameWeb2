@@ -1,4 +1,6 @@
-<table class="table" id="dataTablePredictions">
+
+<div id="container-dt" *ngIf="this.prediction?.predictions?.length  else elseBlock" class="col mt-3">
+<table class="table display compact" id="dataTablePredictions">
   <thead>
     <tr>
       <th style="width: 40%">Name</th>
@@ -25,3 +27,10 @@
     </tr>
   </tbody>
 </table>
+</div>
+
+<ng-template #elseBlock>
+  <div style="width: 99%;" class="alert alert-warning text-center mt-3">
+      No predictions
+  </div>
+</ng-template>
