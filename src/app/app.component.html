@@ -81,11 +81,9 @@
                     <app-manage-pred-prof></app-manage-pred-prof>
                    </as-split-area>
                    <as-split-area [size]="this.predictright">
-                      <div class="col p-0 info scrollable" >
                           <!-- change name app-prediction to app-profile-item -->
                             <app-prediction *ngIf="!this.globals.tablePredictionVisible"></app-prediction>
                             <app-prediction-details *ngIf="this.globals.tablePredictionVisible"></app-prediction-details>
-                      </div>
                    </as-split-area>
                  </as-split>
             </div>
