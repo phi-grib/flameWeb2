@@ -6,7 +6,7 @@
     // this is an horrible hack, we must use es6 in Angular >8 !!!
     // required to allow compilation of plotly.js
     // https://github.com/plotly/plotly.js/issues/3518
-    "target": "es5" 
+    "target": "es6" 
   },
   "files": [
     "main.ts",

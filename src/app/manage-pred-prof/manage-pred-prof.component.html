@@ -1,0 +1,35 @@
+<div class="accordion mt-3" id="buildingAccordion">
+    <div class="card">
+        <div class="card-header collapsed" id="headingProfiles" data-toggle="collapse" data-target="#collapseZero"
+            aria-expanded="true" aria-controls="collapseZero">
+            <h5 class="mb-0">
+                Select Profile
+                <button id="profilebtn" class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+            </h5>
+        </div>
+        <div id="collapseZero" class="collapse" aria-labelledby="headingZero" data-parent="#buildingAccordion">
+            <div class="card-body p-2 pr-5">
+                <app-profile-list> </app-profile-list>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header collapsed" id="headingPrediction" data-toggle="collapse" data-target="#collapseOne"
+            aria-expanded="false" aria-controls="collapseOne">
+            <h5 class="mb-0">
+                Select Prediction
+                <button id="profilebtn" class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+            </h5>
+        </div>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#buildingAccordion">
+            <div class="card-body p-2 pr-5">
+                <app-prediction-list></app-prediction-list>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- componentes debajo de cada datatable tanto de predicciones como de perfiles -->
+  <app-profile-summary></app-profile-summary>
+  <div *ngIf="this.prediction.name != undefined">
+      <app-prediction-list-tab [predictionName]=this.prediction.name></app-prediction-list-tab>
+  </div>

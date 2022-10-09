@@ -1,6 +1,10 @@
 import { Component, OnInit} from '@angular/core';
 import { CommonFunctions } from '../common.functions';
+<<<<<<< HEAD
 import { Model, Prediction, Profile } from '../Globals';
+=======
+import { Model, Prediction, Globals, Profile } from '../Globals';
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
 import 'datatables.net-bs4';
 import { CommonService } from '../common.service';
 declare var $: any;
@@ -18,8 +22,12 @@ export class PredictionListComponent implements OnInit {
               public prediction: Prediction,
               private model: Model,
               private profile: Profile,
+<<<<<<< HEAD
               private service: CommonService,)
               {}
+=======
+              private service: CommonService) {}
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
 
   ngOnInit() {
     this.prediction.name = undefined;

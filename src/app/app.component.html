@@ -51,12 +51,21 @@
             </div>
         </div>
         <div class="tab-pane fade" id="selector" role="tabpanel" aria-labelledby="selector-tab">
+<<<<<<< HEAD
           <div style="height:90vh">
             <as-split direction="horizontal" (gutterClick)="this.gutterClickSelector()">
               <as-split-area  [size]="this.selectorleft">
                   <app-selector></app-selector>
                 </as-split-area>
                 <as-split-area  [size]="this.selectorright">
+=======
+          <div style="height:90vh">  
+          <as-split direction="horizontal" (gutterClick)="this.gutterClickSelector()">
+            <as-split-area [size]="this.selectorleft">
+                  <app-selector></app-selector>
+            </as-split-area>
+            <as-split-area [size]="this.selectorright">
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
                   <as-split #mySplit direction="vertical" [gutterSize]="10" [useTransition]="true" [gutterDblClickDuration]="0">
                       <as-split-area [order]="1" [size]="size1">
                           <app-current-selection>
@@ -68,25 +77,29 @@
                             <app-validations-selector [name]=this.model.name [version]=this.model.version></app-validations-selector> 
                           </div>
                       </as-split-area>
+<<<<<<< HEAD
                   </as-split>
                 </as-split-area>
                 </as-split>
           </div>
+=======
+                  </as-split> 
+                </as-split-area>
+                </as-split> 
+              </div>  
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
       </div>
 
         <div class="tab-pane fade" id="predict" role="tabpanel" aria-labelledby="predict-tab" >
             <div style="height:90vh">                
                 <as-split direction="horizontal" (gutterClick)="this.gutterClickPredictions()">
                    <as-split-area [size]="this.predictleft">
-                    <app-prediction-list></app-prediction-list>
+                    <app-manage-pred-prof></app-manage-pred-prof>
                    </as-split-area>
- 
                    <as-split-area [size]="this.predictright">
-                      <div class="col p-0 info scrollable" >
-                        <div *ngIf="(this.prediction.name != undefined) && (this.globals.mainTabActive=='#predict')">
-                            <app-prediction [predictionName]=this.prediction.name></app-prediction>
-                        </div>
-                      </div>
+                          <!-- change name app-prediction to app-profile-item -->
+                            <app-prediction *ngIf="!this.globals.tablePredictionVisible"></app-prediction>
+                            <app-prediction-details *ngIf="this.globals.tablePredictionVisible"></app-prediction-details>
                    </as-split-area>
                  </as-split>
             </div>

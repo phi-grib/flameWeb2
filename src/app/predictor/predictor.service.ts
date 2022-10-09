@@ -14,6 +14,10 @@ export class PredictorService {
     const url: string = environment.baseUrl_manage + 'prediction/' + predictionName;
     return this.http.get(url);
   }
+<<<<<<< HEAD
+=======
+  
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
   getPredictionList(): Observable<any> {
     const url: string = environment.baseUrl_manage + 'predictions';
     return this.http.get(url);

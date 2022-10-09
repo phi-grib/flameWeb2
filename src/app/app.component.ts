@@ -33,6 +33,10 @@ export class AppComponent implements OnInit {
 
     spaceleft = 40;
     spaceright = 60;
+<<<<<<< HEAD
+=======
+
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
     selectorleft = 40;
     selectorright = 60;
     
@@ -111,6 +115,18 @@ set size2(value) {
         this.spaceleft = 40
         this.spaceright = 60
       }
+    }
+
+    gutterClickSelector(){
+      if (this.selectorleft > 0) {
+        this.selectorleft = 0;
+        this.selectorright = 100;
+      } else {
+        this.selectorleft = 40
+        this.selectorright = 60
+      }
+
+
     }
 
 

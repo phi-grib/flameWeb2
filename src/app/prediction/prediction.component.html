@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="row" *ngIf="this.prediction.result != undefined && this.prediction.result.warning">
   <div class="card w-100">
     <div class="card-body"> 
@@ -191,6 +192,105 @@
               </div>   
 
               <!-- <div class="row" *ngIf="this.prediction.modelBuildInfo['quantitative'] == false" >
+=======
+<div id="container-pred" style="width:99%;height:99%" *ngIf="this.profile.item">
+  <as-split #mySplit direction="vertical" (gutterClick)="gutterClick($event)" [gutterSize]="10" [useTransition]="true" [gutterDblClickDuration]="0">
+      <as-split-area [order]="1" [size]="size1">
+          <div *ngIf="this.isConfidential" class="alert alert-info text-center" role="alert">
+              Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} is a confidential model. Not all information will be displayed
+          </div>
+          <div *ngIf="!this.modelPresent" class="alert alert-danger text-center" role="alert">
+              Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} not found. Model info not shown 
+          </div>
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-3 border">
+                      <strong> {{this.profile.name}}</strong>
+                  </div>
+                  <div class="col-6 border">
+                      <strong> Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} (ID:{{this.prediction.modelID}})</strong>
+                  </div>
+                  <div class="col-3 border">
+                      <!--fake date -->
+                      <strong> Date {{this.prediction.date}}</strong>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-3 border">
+                      <strong>Name</strong>
+                  </div>
+                  <div class="col-9 border">
+                      {{this.prediction.molSelected}}
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-3 border">
+                      <strong>Structure</strong>
+                  </div>
+                  <div class="col-9 border">
+                      <canvas id="one_canvas"></canvas>
+                  </div>
+              </div>
+              <div *ngIf="this.profile.item.values && this.showConcentration" class="row">
+                  <div class="col-3 border">
+                      <strong>Prediction (as conc.)</strong>
+                  </div>
+                  <div class="col-9 border">
+                      <span class="concentration_text"> {{backConc(this.profile.item.values[this.molIndex])}} &mu;M</span>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-3 border">
+                      <strong>Prediction</strong>
+                  </div>
+                  <div class="col-9 border">
+                      <span *ngIf="this.profile.item.values" class="prediction_text"> {{this.castValue(this.profile.item.values[this.molIndex])}} </span>
+                      <span *ngIf="this.prediction.modelDocumentation != undefined && this.prediction.modelDocumentation['Endpoint_units']"> {{this.prediction.modelDocumentation['Endpoint_units'].value}}</span>
+                  </div>
+              </div>
+
+              <div class="row" *ngIf="this.profile.item.ymatrix">
+                  <div class="col-3 border">
+                      <strong>Experimental activity</strong>
+                  </div>
+                  <div class="col-9 border">
+                      <span *ngIf="this.profile.item">{{this.castValue(profile.item.ymatrix[molIndex])}}</span>
+                  </div>
+              </div>
+              <div class="row" *ngIf="this.modelBuildInfo['conformal']">
+                  <div class="col-3 border">
+                      <strong>Reliability</strong>
+                  </div>
+                  <div class="col-9 border">
+                      <!-- <span *ngIf="!this.modelBuildInfo['conformal']">-</span> -->
+                      <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">{{(this.modelBuildInfo['conformal_confidence'])*100}}%CI: </span>
+                      <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative'] && this.profile.item.hasOwnProperty('lower_limit')">
+                              {{this.profile.item.lower_limit[molIndex].toFixed(3)}}
+                               to {{this.profile.item.upper_limit[molIndex].toFixed(3)}}
+                              </span>
+                      <span *ngIf="this.modelBuildInfo['conformal'] && !this.modelBuildInfo['quantitative']">{{(this.modelBuildInfo['conformal_confidence'])*100}}% confidence</span>
+                      <span *ngIf="this.profile.item.p0"><br>Prob. Class 0: {{(this.profile.item.p0[molIndex].toFixed(3))}} </span>
+                      <span *ngIf="this.profile.item.p1"><br>Prob. Class 1: {{(this.profile.item.p1[molIndex].toFixed(3))}} </span>
+                  </div>
+              </div>
+              <div class="row " *ngIf="this.modelBuildInfo['ensemble']">
+                  <div class="col-3 border">
+                      <strong>Combined Model </strong>
+                  </div>
+                  <div class="col-9 border">
+                      <span class="text-capitalize">{{this.modelBuildInfo['model'].replace('combination:','')}}</span><span> using {{this.modelBuildInfo['nvarx']}} models</span>
+                      <br><br>
+                      <!--SUBMODEL RESULTS-->
+                      <div class="row" *ngIf="this.isMajority == false">
+                          <plotly-plot [data]="this.plotComboQ.data" [layout]="this.plotComboQ.layout" [config]="this.plotComboQ.config">
+                          </plotly-plot>
+                      </div>
+                      <div class="row" *ngIf="this.isMajority">
+                          <plotly-plot [data]="this.plotComboC.data" [layout]="this.plotComboC.layout" [config]="this.plotComboC.config">
+                          </plotly-plot>
+                      </div>
+                      <!-- <div class="row" *ngIf="this.modelBuildInfo['quantitative'] == false" >
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
                 <table class="table table-striped w-auto">
                   <thead>
                     <tr>
@@ -200,16 +300,24 @@
                     </tr>
                   </thead>
                   <tbody>
+<<<<<<< HEAD
                     <tr *ngFor="let model of this.prediction.result.var_nam; let j = index">
                       <td class="p-0 text-left">{{model.split(":")[1]}}</td>
                       <td class="p-0 text-center">{{model.split(":")[2]}}</td>
                       <td class="p-0 text-right">{{castValue(this.prediction.result.xmatrix[this.this.compound.molidx][j])}}</td>
+=======
+                    <tr *ngFor="let model of this.profile.item.var_nam; let j = index">
+                      <td class="p-0 text-left">{{model.split(":")[1]}}</td>
+                      <td class="p-0 text-center">{{model.split(":")[2]}}</td>
+                      <td class="p-0 text-right">{{castValue(this.profile.item.xmatrix[this.molIndex][j])}}</td>
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
                     </tr>
                   </tbody>
                 </table>
               </div>                    -->
 
 
+<<<<<<< HEAD
             <!--END SUBMODEL RESULTS-->
               
             <br>
@@ -304,38 +412,67 @@
               
           </div>
 
+=======
+                      <!--END SUBMODEL RESULTS-->
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
 
-        </div>
+                      <br>
+                      <!-- <a href="javascript:void(0);">QMRF report</a> -->
 
+<<<<<<< HEAD
         <div class="row " *ngIf="this.prediction.modelBuildInfo['ensemble'] && this.submodels.length > 0">
           <div class="col-3 border">
             <div class="row justify-content-between">
               <div class="col">
                 <strong class="align-middle" >Model {{this.submodelsIndex+1}}/{{this.submodels.length}} </strong>
+=======
+                  </div>
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
               </div>
-              <div class="col-3 p-0">
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination">
-                    <li class="page-item" [ngClass]="{'disabled': this.noPreviousModel}">
-                      <a class="page-link" href="javascript:void(0)" aria-label="Previous" (click) = "PreviousModel()">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                      </a>
-                    </li>
-                    <li class="page-item" [ngClass]="{'disabled': this.noNextModel}">
-                      <a class="page-link" href="javascript:void(0)" aria-label="Next" (click) = "NextModel()">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
+              <div class="row " *ngIf="this.profile.item['search_results']">
+                  <div class="col-3 border">
+                      <strong>Similars</strong>
+                  </div>
+
+                  <div class="col-9 border">
+                      <!-- <div class="row pl-3"> -->
+                      <table class="table ml-0">
+                          <thead>
+                              <tr>
+                                  <th class="pl-0 pb-2 pt-2 pr-2 text-left" scope="col">Distance</th>
+                                  <th class="pl-0 pb-2 pt-2 pr-2 text-center" scope="col">Structure</th>
+                                  <th class="pr-0 pl-2 pb-2 pt-2 text-left" scope="col">Name</th>
+                                  <th class="pr-0 pl-2 pb-2 pt-2 text-right" scope="col">Activity</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+
+                              <tr *ngFor="let dist of this.profile.item.search_results[this.molIndex].distances; let j = index">
+                                  <td class="p-0 text-left">{{dist.toFixed(2)}}</td>
+                                  <td class="p-0 text-center"><canvas id="{{'one_canvas'+j}}"></canvas></td>
+                                  <td class="p-0 text-left">{{this.profile.item.search_results[this.molIndex].obj_nam[j]}}</td>
+                                  <td class="p-0 text-right">{{this.castValue(this.profile.item.search_results[this.molIndex].ymatrix[j])}}</td>
+                              </tr>
+
+                          </tbody>
+                      </table>
+                  </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <strong><h4>{{this.submodels[this.submodelsIndex]['name']}} v.{{this.submodels[this.submodelsIndex]['version']}}</h4></strong>
+              <div class="row " *ngIf="this.modelMatch && this.modelPresent">
+                  <div class="col-3 border">
+                      <strong>Interpretation</strong>
+                  </div>
+                  <div class="col-9 border" *ngIf="this.prediction.modelDocumentation === undefined">
+                      <span>No documentation</span>
+                  </div>
+                  <div class="col-9 border" *ngIf="this.prediction.modelDocumentation != undefined">
+                      <p *ngIf="this.prediction.modelDocumentation['Endpoint'].value != undefined">{{this.prediction.modelDocumentation['Endpoint'].value}}</p>
+                      <p *ngIf="this.objectKeys(this.prediction.modelDocumentation).includes('Interpretation') && this.prediction.modelDocumentation['Interpretation'].value != undefined">
+                          <br>{{this.prediction.modelDocumentation?.Interpretation.value}}</p>
+                      <p *ngIf="this.prediction.modelDocumentation['Species'].value != undefined"> <br>{{this.prediction.modelDocumentation['Species'].value}}</p>
+                  </div>
               </div>
+<<<<<<< HEAD
             </div>
           </div>
           <div class="col-9 border">
@@ -371,11 +508,14 @@
         <div class="row justify-content-between">
           <div class="col">
               <div id="scoresPreDIV"></div>
+=======
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
 
-                <div class="form-row pt-4">
-                  <div class="form-group col-md-2">
-                    <label class="bmd-label-static pr-2">Training series</label>
+              <div class="row " *ngIf="this.modelMatch && this.modelPresent">
+                  <div class="col-3 border">
+                      <strong>Model description</strong>
                   </div>
+<<<<<<< HEAD
 
                   <div class="form-group col-md-4">
                     <label class="bmd-label-static pr-2">show as</label>
@@ -393,13 +533,21 @@
                       <option value='green'>green</option>
                       <option value='activity'>activity</option>
                     </select>
+=======
+                  <div class="col-9 border" *ngIf="this.prediction.modelDocumentation === undefined">
+                      <span>No documentation</span>
                   </div>
-                </div>
-                
-                <div class="form-row">
-                  <div class="form-group col-md-2">
-                    <label class="bmd-label-static pr-2">Predictions</label>
+                  <div class="col-9 border" *ngIf="this.prediction.modelDocumentation != undefined">
+                      <p *ngIf="this.objectKeys(this.prediction.modelDocumentation).includes('Model_description') && this.prediction.modelDocumentation['Model_description'].value != undefined">
+                          {{this.prediction.modelDocumentation?.Model_description.value}}</p>
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
                   </div>
+              </div>
+              <div class="row " *ngIf="!this.modelBuildInfo['ensemble'] && this.modelMatch && this.modelPresent">
+                  <div class="col-3 border">
+                      <strong>Model</strong>
+                  </div>
+<<<<<<< HEAD
                   
                   <div class="form-group col-md-4">
                     <label class="bmd-label-static pr-2">show as</label>
@@ -417,34 +565,109 @@
                       <option value='activity'>activity</option>
                       <option *ngIf="this.dmodx==true" value='dmodx'>DModX</option>
                     </select>
+=======
+                  <div class="col-9 border">
+                      <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}} vars </span>
+                      <br>
+                      <span>Training series {{this.modelBuildInfo['nobj']}} compounds. </span>
+                      <span *ngIf="this.modelBuildInfo['R2']">R2: {{this.modelBuildInfo['R2'].toFixed(2)}}, </span>
+                      <span *ngIf="this.modelBuildInfo['SDEC']">SDEC: {{this.modelBuildInfo['SDEC'].toFixed(2)}}, </span>
+                      <span *ngIf="this.modelBuildInfo['Q2']">Q2: {{this.modelBuildInfo['Q2'].toFixed(2)}}, </span>
+                      <span *ngIf="this.modelBuildInfo['SDEP']">SDEP: {{this.modelBuildInfo['SDEP'].toFixed(2)}}, </span>
+                      <span *ngIf="this.modelBuildInfo['Sensitivity']">Sensitivity: {{this.modelBuildInfo['Sensitivity'].toFixed(2)}}, </span>
+                      <span *ngIf="this.modelBuildInfo['Specificity']">Specificity: {{this.modelBuildInfo['Specificity'].toFixed(2)}}, </span>
+                      <span *ngIf="this.modelBuildInfo['MCC']">MCC: {{this.modelBuildInfo['MCC'].toFixed(2)}}, </span>
+                      <span *ngIf="this.modelBuildInfo['SensitivityPed']">Sensitivity (predicted): {{this.modelBuildInfo['SensitivityPed'].toFixed(2)}}, </span>
+                      <span *ngIf="this.modelBuildInfo['SpecificityPred']">Specificity (predicted): {{this.modelBuildInfo['SpecificityPred'].toFixed(2)}}, </span>
+                      <span *ngIf="this.modelBuildInfo['MCCpred']">MCC (predicted): {{this.modelBuildInfo['MCCpred'].toFixed(2)}}, </span>
+                      <span *ngIf="this.modelBuildInfo['Conformal_mean_interval']">Conformal mean interval: {{this.modelBuildInfo['Conformal_mean_interval'].toFixed(2)}}, </span>
+                      <span *ngIf="this.modelBuildInfo['Conformal_coverage']">Conformal coverage: {{this.modelBuildInfo['Conformal_coverage'].toFixed(2)}}, </span>
+                      <span *ngIf="this.modelBuildInfo['Conformal_accuracy']">Conformal accuracy: {{this.modelBuildInfo['Conformal_accuracy'].toFixed(2)}} </span>
+                      <br>
+                      <!-- <a href="javascript:void(0);">QMRF report</a> -->
                   </div>
-
-                </div>
-
+              </div>
+              <!--REPORT PREDICTIONS END-->
           </div>
-          
-          <div class="col">
-            <canvas class="fixed_canvas" id="scores_canvas_pre"></canvas>
-            
-            <table id ="tablePredictionSelections" class="minitable compact">
-              <thead>
-                <tr>
-                  <th style="width: 20%">Name</th>
-                  <th class="align-middle text-center" style="width: 70%">Structure</th>
-                  <th class="align-right" style="width: 10%">Activity</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+      </as-split-area>
+      <!--PROJECT PREDICTIONS-->
+      <as-split-area *ngIf="this.modelPresent" [order]="2" [size]="size2">
+          <div *ngIf="!this.isConfidential">
+              <div class="card-body">
+                  <div class="row justify-content-between">
+                      <div class="col">
+                          <div id="scoresPreDIV"></div>
+                          <div class="form-row pt-4">
+                              <div class="form-group col-md-2">
+                                  <label class="bmd-label-static pr-2">Training series</label>
+                              </div>
 
+                              <div class="form-group col-md-4">
+                                  <label class="bmd-label-static pr-2">show as</label>
+                                  <select class="form-select" id="projectStyleTrainingMarker" (change)="changeProjectStyleTrainingMark($event)">
+                <option value='dots'>dots</option>
+                <option value='density'>density</option>
+                <option value='both'>both</option>
+              </select>
+                              </div>
+
+                              <div class="form-group col-md-4">
+                                  <label class="bmd-label-static pr-2">color</label>
+                                  <select class="form-select" id="projectStyleTrainingColor" (change)="changeProjectStyleTrainingColor($event)">
+                <option value='grey'>grey</option>
+                <option value='green'>green</option>
+                <option value='activity'>activity</option>
+              </select>
+                              </div>
+                          </div>
+
+                          <div class="form-row">
+                              <div class="form-group col-md-2">
+                                  <label class="bmd-label-static pr-2">Predictions</label>
+                              </div>
+
+                              <div class="form-group col-md-4">
+                                  <label class="bmd-label-static pr-2">show as</label>
+                                  <select class="form-select" id="projectStylePredictionMarker" (change)="changeProjectStylePredictionMark($event)">
+                <option value='dots'>dots</option>
+                <option value='crosses'>crosses</option>
+                <option value='names'>names</option>
+                <!-- <option value='crosses'>crosses</option> -->
+              </select>
+                              </div>
+
+                              <div class="form-group col-md-4">
+                                  <label class="bmd-label-static pr-2">color</label>
+                                  <select class="form-select" id="projectStylePredictionColor" (change)="changeProjectStylePredictionColor($event)">
+                <option value='red'>red</option>
+                <option value='activity'>activity</option>
+                <option *ngIf="this.dmodx==true" value='dmodx'>DModX</option>
+              </select>
+                              </div>
+
+                          </div>
+                      </div>
+                      <div class="col">
+
+                          <canvas class="fixed_canvas" id="scores_canvas_pre"></canvas>
+
+                          <table id="tablePredictionSelections" class="minitable compact">
+                              <thead>
+                                  <tr>
+                                      <th style="width: 20%">Name</th>
+                                      <th class="align-middle text-center" style="width: 70%">Structure</th>
+                                      <th class="align-right" style="width: 10%">Activity</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                              </tbody>
+                          </table>
+                      </div>
+>>>>>>> ffc7105335b942b735ec448bc71d63d518853878
+                  </div>
+              </div>
           </div>
-
-        </div>
-
-
-      </div>
-    </div>
-  </div>
+      </as-split-area>
+  </as-split>
+  <!--PROJECT PREDICTIONS END-->
 </div>
-

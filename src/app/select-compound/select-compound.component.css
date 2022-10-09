@@ -1,14 +1,14 @@
 ul li.nav-item a {
     background: white;
     color: #0076a3;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 ul li.nav-item a.active {
     background: white;
     color: #22577A;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1rem;
     border-bottom: 4px solid #e59300;
     border-radius: 0;
 
