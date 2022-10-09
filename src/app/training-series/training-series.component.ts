@@ -19,6 +19,7 @@ export class TrainingSeriesComponent implements OnInit {
    * Checks if the first step is completed and initites the upload method observable
    */
   ngOnInit(): void {
+    this.model.file = undefined;
     this.model.file_info = undefined;
     this.model.file_fields = undefined;
   }
