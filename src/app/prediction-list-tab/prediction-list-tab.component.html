@@ -1,0 +1,145 @@
+<div id="overlay" *ngIf="!this.predictionVisible">
+    <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+   
+  <div class="row" *ngIf="this.prediction.result != undefined && this.prediction.result.warning">
+    <div class="card w-100">
+      <div class="card-body"> 
+        <div class="alert alert-danger text-center" role="alert">
+          {{this.prediction.result.warning}}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" *ngIf="this.predictionError">
+    <div class="card w-100">
+      <div class="card-body"> 
+        <div class="alert alert-danger text-center" role="alert">
+          {{this.predictionError}}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" *ngIf="!this.modelMatch">
+    <div class="card w-100">
+      <div class="card-body"> 
+        <div class="alert alert-danger text-center" role="alert">
+          Model ID mismatch (predicted with model ID '{{this.prediction.modelID}}' but local model ID is '{{this.prediction.modelBuildInfo['modelID']}}'). Model info not shown
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" *ngIf="!this.modelPresent">
+    <div class="card w-100">
+      <div class="card-body"> 
+        <div class="alert alert-danger text-center" role="alert">
+          Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} not found. Model info not shown 
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col" *ngIf="this.prediction.result != undefined && this.predictionError == ''">
+    <!-- <div class="tab-content" id="pills-tabContent" [hidden]="!this.predictionVisible"> -->
+    <div class="tab-content" id="pills-tabContent">
+  
+      <!--ALL PREDICTIONS-->
+      <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
+        
+        <div class="card-body" *ngIf="this.prediction.result != undefined  && this.prediction.result['external-validation']"> 
+            <div id="container">
+            <div class="col-3">
+              <table class="table table-sm">
+                <tbody>
+                  <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
+                    <td *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key.split('_').join(' ')}}</strong></td>
+                    <td *ngIf="!this.q_measures.includes(key)" class="text-right text-capitalize">{{modelValidationInfo[key][1]}}</td>
+                  </tr>
+                </tbody>
+              </table> 
+            </div>
+            <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
+              <app-confusion-matrix 
+              [TP] = "this.modelValidationInfo['TP'][1]"
+              [FP] = "this.modelValidationInfo['FP'][1]"
+              [FN] = "this.modelValidationInfo['FN'][1]"
+              [TN] = "this.modelValidationInfo['TN'][1]"
+              ></app-confusion-matrix>                 
+            </div>
+            <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
+              <plotly-plot 
+              [data]="predictData" 
+              [layout]="plotCommon.layout"
+              [config]="plotCommon.config">
+              </plotly-plot> 
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-body" >
+          <table id="prediction" class="table m-0">
+            <thead>
+              <tr>
+                <th style="width: 5%" data-toggle="tooltip" data-placement="top" data-html="true" title="Mol index">#</th>
+                <th style="width: 20%" data-toggle="tooltip" data-placement="top" data-html="true" title="Name of the molecule, as present in the input file">Name</th>
+                <th class="align-middle text-center" data-toggle="tooltip" data-placement="top" data-html="true" title="Structure of the molecule in SMILES format">Mol</th>
+                <th class="align-middle text-center" *ngIf="this.prediction.result.ymatrix">Exp. Value</th>
+                <th class="align-middle text-center" *ngIf="this.prediction.result.values && this.showConcentration" 
+                  data-toggle="tooltip" data-placement="top" data-html="true" title="Concentration">
+                  Predict.(&mu;M) 
+                </th>
+                <th class="align-middle text-center" *ngIf="this.prediction.result.values" data-toggle="tooltip" data-placement="top" data-html="true" title="Results of the prediction">
+                  Pred. Value 
+                  <span *ngIf ="this.model.documentation?.Endpoint_units.value != null">({{this.model.documentation?.Endpoint_units.value}})</span>
+                </th>
+                <th class="align-middle text-center" *ngIf="this.prediction.result.upper_limit">CI</th>
+  
+                <!-- <th class="align-middle text-center" *ngIf="this.prediction.result.lower_limit">Lower limit</th> -->
+                <!--<th class="align-middle text-center" *ngIf="this.prediction.result.c0">Inactive</th>-->
+                <!--<th class="align-middle text-center" *ngIf="this.prediction.result.c1">Active</th>-->
+                <!--<th class="align-middle text-center" *ngIf="this.prediction.result.ensemble_c0">Ensemble Class 0</th>-->
+                <!--<th class="align-middle text-center" *ngIf="this.prediction.result.ensemble_c1">Ensemble Class 1</th>-->
+                <th class="align-middle text-center" *ngIf="this.prediction.result.p0">Prob. Class 0</th>
+                <th class="align-middle text-center" *ngIf="this.prediction.result.p1">Prob. Class 1</th>
+  
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let res of this.prediction.result.SMILES; let i=index">
+                <td class="align-middle">{{i+1}}</td>
+                <td class="align-middle">{{this.prediction.result.obj_nam[i]}}</td>
+                <td class="align-middle text-center">
+                  <canvas #cmp id="{{i}}">{{this.prediction.result.SMILES[i]}}</canvas>
+                </td>
+                <td class="align-middle text-center" *ngIf="this.prediction.result.ymatrix" >{{castValue(this.prediction.result.ymatrix[i])}}</td>
+                <td class="align-middle text-center" *ngIf="this.prediction.result.values && this.showConcentration">
+                  <span class="concentration_text">{{backConc(this.prediction.result.values[i])}}</span>
+                </td>
+                <td class="align-middle text-center" *ngIf="this.prediction.result.values">
+                  <span class="prediction_text">{{castValue(this.prediction.result.values[i])}}</span>
+                </td>
+                <td class="align-middle text-center" *ngIf="this.prediction.result.upper_limit">
+                  {{this.prediction.result.lower_limit[i].toFixed(3)}} to {{this.prediction.result.upper_limit[i].toFixed(3)}}
+                </td>
+                <td class="align-middle text-center" *ngIf="this.prediction.result.p0">{{this.prediction.result.p0[i].toFixed(3)}}</td>
+                <td class="align-middle text-center" *ngIf="this.prediction.result.p1">{{this.prediction.result.p1[i].toFixed(3)}}</td>
+  
+                <!-- <td class="align-middle text-center" *ngIf="this.prediction.result.lower_limit">{{this.prediction.result.lower_limit[i].toFixed(3)}}</td> -->
+                <!--<td class="align-middle text-center" *ngIf="this.prediction.result.c0">{{this.prediction.result.c0[i]}}</td>-->
+                <!--<td class="align-middle text-center" *ngIf="this.prediction.result.c1">{{this.prediction.result.c1[i]}}</td>-->
+                <!--<td class="align-middle text-center" *ngIf="this.prediction.result.ensemble_c0">{{this.prediction.result.ensemble_c0[i].toFixed(3)}}</td>-->
+                <!--<td class="align-middle text-center" *ngIf="this.prediction.result.ensemble_c1">{{this.prediction.result.ensemble_c1[i].toFixed(3)}}</td>-->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

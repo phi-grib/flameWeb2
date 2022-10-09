@@ -1,0 +1,131 @@
+
+.TP {
+    background-color: rgba(0, 255, 0, 0.3);
+}
+
+.FP {
+    background-color: rgba(235, 143, 3, 0.3);
+}
+
+.TN {
+    background-color: rgba(3, 49, 155, 0.3);
+}
+
+.FN {
+    background-color: rgba(255, 0, 0, 0.3);
+}
+.card-header {
+    background: #B8DCED;
+    background-color: #B8DCED;
+}
+
+.card {
+    border-width: 0px;
+}
+
+.card-body {
+    border-width: 0px;
+    padding-top: 0px;
+    padding-bottom: 5px;
+}
+.table {
+    background-color: white;
+    background: white;
+    color: #22577A;
+}
+table td {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+#matrix * {
+    padding: 0px;
+    text-align: center;
+}
+
+#container {
+    display: flex;
+    height: 500px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+ul li.nav-item a {
+    background: white;
+    color: #0076a3;
+    font-size: 1.2rem;
+
+}
+
+ul li.nav-item a.active {
+    background: white;
+    color: #22577A;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-bottom: 4px solid #e59300;
+    border-radius: 0;
+}
+
+.text-etransafe {
+    color: #e59300;
+}
+.spinner-border {
+    position: absolute;
+    display: block;
+    right: 45%;
+    top: 35%;
+    z-index: 1031;
+}
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #FAFAFA;
+    opacity: 0.6;
+    z-index: 2;
+    cursor: pointer;
+}
+.btn-ets-ext {
+    background: #e9a933;
+    color: #ffffff;
+    border-width: 0;
+    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+    letter-spacing: 0.05em;
+    border-radius: 0;
+    max-height: 36px;
+}
+.btn-ets-ext:hover,
+.btn-ets-ext:focus,
+.btn-ets-ext.active {
+    background: #e59300 ;
+    color: #ffffff;
+}
+.fixed_canvas {
+    width: 400px;
+    height: 250px;
+    border: 1px solid #B8DCED;
+}
+
+.minitable {
+    background-color: white;
+    background: white;
+    color: #22577A;
+    /* table-layout: fixed; */
+    /* width: 100%; */
+    width: 400px;
+}
+.minitable th {
+    padding-left: 1px;
+    padding-right: 1px;
+    border-bottom: 1px solid #B8DCED;
+    color: #0076a3;
+
+}
+.minitable td {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-size: 12px;
+    border-bottom: 1px solid #B8DCED;
+    vertical-align: middle;
+}

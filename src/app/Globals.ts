@@ -19,6 +19,8 @@ export class Model {
   ensemble: boolean = undefined;
   incremental = false;
   error: string = undefined;
+  listModelsSelected = [];
+  documentation: any = undefined;
   /*
   Delta parameters, empty by default, fills on clicking the parameters tab.
   When you change anything on the formulary, automatically changes the value for that key
@@ -34,6 +36,24 @@ export class Model {
   pagelen = 10;
 }
 
+@Injectable()
+export class Compound {
+    file_info = undefined; // Info file ej. num mols, variables
+    file_fields = undefined;
+    sketchstructure: {} = undefined;
+    input_list: {} = undefined;
+    input_file = undefined;
+    listCompoundsSelected = [];
+    molidx:number = 0;
+}
+
+@Injectable()
+export class Profile {
+      name: string = undefined;
+      summary: any = undefined;
+      item = undefined;
+      profileList: any  = []; 
+  }
 @Injectable()
 export class Space {
     file: any = undefined;  // Name of file uploaded in the second step
@@ -65,6 +85,7 @@ export class Prediction {
     result = undefined;
     date = undefined;
     modelID = undefined;
+    modelBuildInfo = {}
 }
 
 @Injectable()

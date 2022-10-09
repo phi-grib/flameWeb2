@@ -10,7 +10,7 @@ import { TrainingSeriesComponent } from './training-series/training-series.compo
 // import { SidebarComponent } from './sidebar/sidebar.component';
 import { ValidationsComponent } from './validations/validations.component';
 import { ToastrModule } from 'ngx-toastr';
-import { Model, Prediction, Globals, Manager, Similarity, Space, Search } from './Globals';
+import { Model, Prediction, Globals, Manager, Similarity, Space, Search, Compound, Profile } from './Globals';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfigTrainingComponent } from './config-training/config-training.component';
 import { ConfigModelComponent } from './config-model/config-model.component';
@@ -44,6 +44,22 @@ import { TrainingSseriesComponent } from './training-sseries/training-sseries.co
 import { ConfigSpreferencesComponent } from './config-spreferences/config-spreferences.component';
 import { VerificatorComponent } from './verificator/verificator.component';
 import { AngularSplitModule } from 'angular-split';
+import { PredictionListTabComponent } from './prediction-list-tab/prediction-list-tab.component';
+import { SelectorComponent } from './selector/selector.component';
+import { SelectCompoundComponent } from './select-compound/select-compound.component';
+import { InputFileComponent } from './input-file/input-file.component';
+import { SketchStructureComponent } from './sketch-structure/sketch-structure.component';
+import { InputListComponent } from './input-list/input-list.component';
+import { ModelListSelectorComponent } from './model-list-selector/model-list-selector.component';
+import { SaveProfileButtonComponent } from './save-profile-button/save-profile-button.component';
+import { LoadProfileButtonComponent } from './load-profile-button/load-profile-button.component';
+import { ManageActionsComponent } from './manage-actions/manage-actions.component';
+import { PredictButtonComponent } from './predict-button/predict-button.component';
+import { ProfilingButtonComponent } from './profiling-button/profiling-button.component';
+import { CurrentSelectionComponent } from './current-selection/current-selection.component';
+import { ValidationsSelectorComponent } from './validations-selector/validations-selector.component';
+import { QualitConformalSelectorComponent } from './qualit-conformal-selector/qualit-conformal-selector.component';
+import { QuantitConformalSelectorComponent } from './quantit-conformal-selector/quantit-conformal-selector.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -82,7 +98,23 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ConfigStrainingComponent,
     TrainingSseriesComponent,
     ConfigSpreferencesComponent,
-    VerificatorComponent
+    VerificatorComponent,
+    PredictionListTabComponent,
+    SelectorComponent,
+    SelectCompoundComponent,
+    InputFileComponent,
+    SketchStructureComponent,
+    InputListComponent,
+    ModelListSelectorComponent,
+    SaveProfileButtonComponent,
+    LoadProfileButtonComponent,
+    ManageActionsComponent,
+    PredictButtonComponent,
+    ProfilingButtonComponent,
+    CurrentSelectionComponent,
+    ValidationsSelectorComponent,
+    QualitConformalSelectorComponent,
+    QuantitConformalSelectorComponent
   ],
   imports: [
     BrowserModule,
@@ -98,7 +130,7 @@ PlotlyModule.plotlyjs = PlotlyJS;
     PlotlyModule, 
     AngularSplitModule
   ],
-  providers: [Model, Prediction, Globals, Manager, Similarity, Space, Search,
+  providers: [Model, Prediction, Globals, Manager, Similarity, Space, Search,Compound,Profile,
   {
     provide: APP_INITIALIZER,
     useFactory: initializer,
