@@ -14,7 +14,9 @@ import { environment } from "../environments/environment";
 export class CommonService {
   constructor(private http: HttpClient) {}
 
-
+   // communicate to distant component that makes a call to getPrediction
+   private predictionActive = new Subject<string>();
+   predictionActive$ = this.predictionActive.asObservable();
   //checks if the modal where the component list is displayed or hidden
   private statusModelTab = new BehaviorSubject<boolean>(false);
   statusModelTab$ = this.statusModelTab.asObservable();
@@ -38,11 +40,6 @@ export class CommonService {
    */
   getModelList(): Observable<any> {
     const url: string = environment.baseUrl_manage + "models";
-    return this.http.get(url);
-  }
-
-  getPredictionList(): Observable<any> {
-    const url: string = environment.baseUrl_manage + "predictions";
     return this.http.get(url);
   }
   getVerification(model: string, version: number): Observable<any> {
@@ -136,6 +133,9 @@ export class CommonService {
       version +
       "/parameters";
     return this.http.get(url);
+  }
+  setPredictName(predictName: any){
+    this.predictionActive.next(predictName)
   }
   setPredictionExec(pred: boolean){
     this.predictionExec.next(pred)

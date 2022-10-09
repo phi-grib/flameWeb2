@@ -59,6 +59,8 @@ import { ProfilingButtonComponent } from './profiling-button/profiling-button.co
 import { ValidationsSelectorComponent } from './validations-selector/validations-selector.component';
 import { QualitConformalProfileComponent } from './qualit-conformal-profile/qualit-conformal-profile.component';
 import { QuantitConformalProfileComponent } from './quantit-conformal-profile/quantit-conformal-profile.component';
+import { PredictionListTabComponent } from './prediction-list-tab/prediction-list-tab.component';
+import { PredictionDetailsComponent } from './prediction-details/prediction-details.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -113,6 +115,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ValidationsSelectorComponent,
     QualitConformalProfileComponent,
     QuantitConformalProfileComponent,
+    PredictionListTabComponent,
+    PredictionDetailsComponent,
   ],
   imports: [
     BrowserModule,

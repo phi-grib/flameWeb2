@@ -20,6 +20,7 @@ export class Model {
   incremental = false;
   error: string = undefined;
   listModelsSelected = [];
+  documentation: any = undefined;
   /*
   Delta parameters, empty by default, fills on clicking the parameters tab.
   When you change anything on the formulary, automatically changes the value for that key
@@ -84,6 +85,7 @@ export class Prediction {
     result = undefined;
     date = undefined;
     modelID = undefined;
+    modelBuildInfo = {}
 }
 
 @Injectable()

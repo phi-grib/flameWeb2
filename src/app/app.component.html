@@ -51,11 +51,12 @@
             </div>
         </div>
         <div class="tab-pane fade" id="selector" role="tabpanel" aria-labelledby="selector-tab">
-          <div class="row">
-              <div class="col-5 p-0">
+          <div style="height:90vh">
+            <as-split direction="horizontal" (gutterClick)="this.gutterClickSelector()">
+              <as-split-area  [size]="this.selectorleft">
                   <app-selector></app-selector>
-              </div>
-              <div style="margin-top: 1.4rem;" class="col p-0 info scrollable">
+                </as-split-area>
+                <as-split-area  [size]="this.selectorright">
                   <as-split #mySplit direction="vertical" [gutterSize]="10" [useTransition]="true" [gutterDblClickDuration]="0">
                       <as-split-area [order]="1" [size]="size1">
                           <app-current-selection>
@@ -68,7 +69,8 @@
                           </div>
                       </as-split-area>
                   </as-split>
-              </div>
+                </as-split-area>
+                </as-split>
           </div>
       </div>
 

@@ -33,6 +33,8 @@ export class AppComponent implements OnInit {
 
     spaceleft = 40;
     spaceright = 60;
+    selectorleft = 40;
+    selectorright = 60;
     
     ngOnInit() {
       this.commonService.statusModelTab$.subscribe(status => {
@@ -108,6 +110,17 @@ set size2(value) {
       } else {
         this.spaceleft = 40
         this.spaceright = 60
+      }
+    }
+
+
+    gutterClickSelector() {
+      if (this.selectorleft > 0) {
+        this.selectorleft = 0;
+        this.selectorright = 100;
+      } else {
+        this.selectorleft = 40
+        this.selectorright = 60
       }
     }
 

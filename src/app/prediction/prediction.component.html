@@ -1,14 +1,8 @@
-<div id="overlay" *ngIf="!this.predictionVisible">
-  <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-</div>
-  
-<div class="row" *ngIf="this.predictionResult != undefined && this.predictionResult.warning">
+<div class="row" *ngIf="this.prediction.result != undefined && this.prediction.result.warning">
   <div class="card w-100">
     <div class="card-body"> 
       <div class="alert alert-danger text-center" role="alert">
-        {{this.predictionResult.warning}}
+        {{this.prediction.result.warning}}
       </div>
     </div>
   </div>
@@ -28,7 +22,7 @@
   <div class="card w-100">
     <div class="card-body"> 
       <div class="alert alert-danger text-center" role="alert">
-        Model ID mismatch (predicted with model ID '{{this.prediction.modelID}}' but local model ID is '{{this.modelBuildInfo['modelID']}}'). Model info not shown
+        Model ID mismatch (predicted with model ID '{{this.prediction.modelID}}' but local model ID is '{{this.prediction.modelBuildInfo['modelID']}}'). Model info not shown
       </div>
     </div>
   </div>
@@ -44,122 +38,25 @@
   </div>
 </div>
 
-<div class="col" *ngIf="this.predictionResult != undefined && this.predictionError == ''">
+<div class="col" *ngIf="this.prediction.result">
   <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" id="pills-all-tab" data-toggle="tab" href="#pills-all" role="tab" aria-controls="pills-home" aria-selected="true">List</a>
-    </li>
     <li class="nav-item">
       <a class="nav-link" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="false">Report</a>
     </li>
-    <li class="nav-item" *ngIf="this.modelMatch && this.modelPresent && this.predictionResult.PC1proj">
+    <li class="nav-item" *ngIf="this.modelMatch && this.modelPresent && this.prediction.result.PC1proj">
       <a class="nav-link" id="pills-two-tab" data-toggle="tab" href="#pills-two" role="tab" aria-controls="pills-two" aria-selected="false">Projection</a>
     </li>
   </ul>
 
   <!-- <div class="tab-content" id="pills-tabContent" [hidden]="!this.predictionVisible"> -->
-  <div class="tab-content" id="pills-tabContent" *ngIf="this.globals.mainTabActive=='#predict'">
-
-    <!--ALL PREDICTIONS-->
-    <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
-      
-      <div class="card-body" *ngIf="this.predictionResult != undefined  && this.predictionResult['external-validation']"> 
-          <div id="container">
-          <div class="col-3">
-            <table class="table table-sm">
-              <tbody>
-                <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
-                  <td *ngIf="!this.q_measures.includes(key)" class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo[key][0]}}"><strong>{{key.split('_').join(' ')}}</strong></td>
-                  <td *ngIf="!this.q_measures.includes(key)" class="text-right text-capitalize">{{modelValidationInfo[key][1]}}</td>
-                </tr>
-              </tbody>
-            </table> 
-          </div>
-          <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
-            <app-confusion-matrix 
-            [TP] = "this.modelValidationInfo['TP'][1]"
-            [FP] = "this.modelValidationInfo['FP'][1]"
-            [FN] = "this.modelValidationInfo['FN'][1]"
-            [TN] = "this.modelValidationInfo['TN'][1]"
-            ></app-confusion-matrix>                 
-          </div>
-          <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
-            <plotly-plot 
-            [data]="predictData" 
-            [layout]="plotCommon.layout"
-            [config]="plotCommon.config">
-            </plotly-plot> 
-          </div>
-        </div>
-      </div>
-      
-      <div class="card-body" >
-        <table id="prediction" class="table m-0">
-          <thead>
-            <tr>
-              <th style="width: 5%" data-toggle="tooltip" data-placement="top" data-html="true" title="Mol index">#</th>
-              <th style="width: 20%" data-toggle="tooltip" data-placement="top" data-html="true" title="Name of the molecule, as present in the input file">Name</th>
-              <th class="align-middle text-center" data-toggle="tooltip" data-placement="top" data-html="true" title="Structure of the molecule in SMILES format">Mol</th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.ymatrix">Exp. Value</th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.values && this.showConcentration" 
-                data-toggle="tooltip" data-placement="top" data-html="true" title="Concentration">
-                Predict.(&mu;M) 
-              </th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.values" data-toggle="tooltip" data-placement="top" data-html="true" title="Results of the prediction">
-                Pred. Value 
-                <span *ngIf ="this.modelDocumentation?.Endpoint_units.value != null">({{this.modelDocumentation?.Endpoint_units.value}})</span>
-              </th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">CI</th>
-
-              <!-- <th class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">Lower limit</th> -->
-              <!--<th class="align-middle text-center" *ngIf="this.predictionResult.c0">Inactive</th>-->
-              <!--<th class="align-middle text-center" *ngIf="this.predictionResult.c1">Active</th>-->
-              <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">Ensemble Class 0</th>-->
-              <!--<th class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">Ensemble Class 1</th>-->
-              <th class="align-middle text-center" *ngIf="this.predictionResult.p0">Prob. Class 0</th>
-              <th class="align-middle text-center" *ngIf="this.predictionResult.p1">Prob. Class 1</th>
-
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let res of this.predictionResult.SMILES; let i=index">
-              <td class="align-middle">{{i+1}}</td>
-              <td class="align-middle">{{this.predictionResult.obj_nam[i]}}</td>
-              <td class="align-middle text-center">
-                <canvas #cmp id="{{i}}">{{this.predictionResult.SMILES[i]}}</canvas>
-              </td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.ymatrix" >{{castValue(this.predictionResult.ymatrix[i])}}</td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.values && this.showConcentration">
-                <span class="concentration_text">{{backConc(this.predictionResult.values[i])}}</span>
-              </td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.values">
-                <span class="prediction_text">{{castValue(this.predictionResult.values[i])}}</span>
-              </td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.upper_limit">
-                {{this.predictionResult.lower_limit[i].toFixed(3)}} to {{this.predictionResult.upper_limit[i].toFixed(3)}}
-              </td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.p0">{{this.predictionResult.p0[i].toFixed(3)}}</td>
-              <td class="align-middle text-center" *ngIf="this.predictionResult.p1">{{this.predictionResult.p1[i].toFixed(3)}}</td>
-
-              <!-- <td class="align-middle text-center" *ngIf="this.predictionResult.lower_limit">{{this.predictionResult.lower_limit[i].toFixed(3)}}</td> -->
-              <!--<td class="align-middle text-center" *ngIf="this.predictionResult.c0">{{this.predictionResult.c0[i]}}</td>-->
-              <!--<td class="align-middle text-center" *ngIf="this.predictionResult.c1">{{this.predictionResult.c1[i]}}</td>-->
-              <!--<td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c0">{{this.predictionResult.ensemble_c0[i].toFixed(3)}}</td>-->
-              <!--<td class="align-middle text-center" *ngIf="this.predictionResult.ensemble_c1">{{this.predictionResult.ensemble_c1[i].toFixed(3)}}</td>-->
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <!--ALL PREDICTIONS END-->
-
+  <div class="tab-content" id="pills-tabContent">
     <!--REPORT PREDICTIONS-->
-    <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab" *ngIf="this.predictionResult != undefined ">
+    <div class="tab-pane fade" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab" *ngIf="this.prediction.result != undefined ">
       <div class="card-body">
         <!--PAGINATION-->
         <div class="row align-items-center">
           <div class="col-2 offset-5">
-            <span><strong>{{this.molIndex +1}} of {{this.predictionResult.SMILES.length}}</strong></span>
+            <span><strong>{{this.compound.molidx +1}} of {{this.prediction.result.SMILES.length}}</strong></span>
           </div>
           <div class="col-1  p-0 offset-4">
             <nav aria-label="Page navigation example">
@@ -201,15 +98,15 @@
             <strong>Name</strong>
           </div>
           <div class="col-9 border">
-            {{this.predictionResult.obj_nam[molIndex]}}
+            {{this.prediction.result.obj_nam[this.compound.molidx]}}
           </div>
         </div>
-        <div class="row" *ngIf="this.predictionResult.obj_id && this.predictionResult.obj_id[molIndex]!=''">
+        <div class="row" *ngIf="this.prediction.result.obj_id && this.prediction.result.obj_id[this.compound.molidx]!=''">
           <div class="col-3 border">
             <strong>ID</strong>
           </div>
           <div class="col-9 border">
-            {{this.predictionResult.obj_id[molIndex]}}
+            {{this.prediction.result.obj_id[this.compound.molidx]}}
           </div>
         </div>
         <div class="row">
@@ -221,12 +118,12 @@
           </div>
         </div>
 
-        <div *ngIf="this.predictionResult.values && this.showConcentration" class="row">
+        <div *ngIf="this.prediction.result.values && this.showConcentration" class="row">
           <div class="col-3 border">
             <strong>Prediction (as conc.)</strong>
           </div>
           <div class="col-9 border">
-            <span class="concentration_text"> {{backConc(this.predictionResult.values[molIndex])}} &mu;M</span>
+            <span class="concentration_text"> {{backConc(this.prediction.result.values[this.compound.molidx])}} &mu;M</span>
           </div>
         </div>
 
@@ -235,45 +132,45 @@
             <strong>Prediction</strong>
           </div>
           <div class="col-9 border">
-            <span *ngIf="this.predictionResult.values" class="prediction_text">{{castValue(this.predictionResult.values[molIndex])}}</span>
-            <span *ngIf= "this.modelBuildInfo['quantitative'] && this.modelDocumentation != undefined && this.modelDocumentation['Endpoint_units']"> {{this.modelDocumentation['Endpoint_units'].value}}</span>
+            <span *ngIf="this.prediction.result.values" class="prediction_text">{{castValue(this.prediction.result.values[this.compound.molidx])}}</span>
+            <span *ngIf= "this.prediction.modelBuildInfo['quantitative'] && this.model.documentation != undefined && this.model.documentation['Endpoint_units']"> {{this.model.documentation['Endpoint_units'].value}}</span>
           </div>
         </div>
 
-        <div class="row" *ngIf="this.predictionResult.ymatrix">
+        <div class="row" *ngIf="this.prediction.result.ymatrix">
           <div class="col-3 border">
             <strong>Experimental activity</strong>
           </div>
           <div class="col-9 border">
-            <span *ngIf="this.predictionResult.ymatrix">{{castValue(this.predictionResult.ymatrix[molIndex])}}</span> 
-            <!-- <span *ngIf="!this.predictionResult.ymatrix">-</span>  -->
+            <span *ngIf="this.prediction.result.ymatrix">{{castValue(this.prediction.result.ymatrix[this.compound.molidx])}}</span> 
+            <!-- <span *ngIf="!this.prediction.result.ymatrix">-</span>  -->
           </div>
         </div>
 
-        <div class="row" *ngIf="this.modelBuildInfo['conformal']">
+        <div class="row" *ngIf="this.prediction.modelBuildInfo['conformal']">
           <div class="col-3 border">
             <strong>Reliability</strong>
           </div>
           <div class="col-9 border" >
-            <!-- <span *ngIf="!this.modelBuildInfo['conformal']">-</span> -->
-            <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']" >{{(this.modelBuildInfo['conformal_confidence'])*100}}%CI: </span>
-            <span *ngIf="this.modelBuildInfo['conformal'] && this.modelBuildInfo['quantitative']">
-                  {{this.predictionResult.lower_limit[molIndex].toFixed(3)}} 
-                to {{this.predictionResult.upper_limit[molIndex].toFixed(3)}}</span>
-            <span *ngIf="this.modelBuildInfo['conformal'] && !this.modelBuildInfo['quantitative']">{{(this.modelBuildInfo['conformal_confidence'])*100}}% confidence</span>
+            <!-- <span *ngIf="!this.prediction.modelBuildInfo['conformal']">-</span> -->
+            <span *ngIf="this.prediction.modelBuildInfo['conformal'] && this.prediction.modelBuildInfo['quantitative']" >{{(this.prediction.modelBuildInfo['conformal_confidence'])*100}}%CI: </span>
+            <span *ngIf="this.prediction.modelBuildInfo['conformal'] && this.prediction.modelBuildInfo['quantitative']">
+                  {{this.prediction.result.lower_limit[this.compound.molidx].toFixed(3)}} 
+                to {{this.prediction.result.upper_limit[this.compound.molidx].toFixed(3)}}</span>
+            <span *ngIf="this.prediction.modelBuildInfo['conformal'] && !this.prediction.modelBuildInfo['quantitative']">{{(this.prediction.modelBuildInfo['conformal_confidence'])*100}}% confidence</span>
             
-            <span *ngIf="this.predictionResult.p0"><br>Prob. Class 0: {{(this.predictionResult.p0[molIndex].toFixed(3))}} </span>
-            <span *ngIf="this.predictionResult.p1"><br>Prob. Class 1: {{(this.predictionResult.p1[molIndex].toFixed(3))}} </span>
+            <span *ngIf="this.prediction.result.p0"><br>Prob. Class 0: {{(this.prediction.result.p0[this.compound.molidx].toFixed(3))}} </span>
+            <span *ngIf="this.prediction.result.p1"><br>Prob. Class 1: {{(this.prediction.result.p1[this.compound.molidx].toFixed(3))}} </span>
 
           </div>
         </div>
         
-        <div class="row " *ngIf="this.modelBuildInfo['ensemble']">
+        <div class="row " *ngIf="this.prediction.modelBuildInfo['ensemble']">
           <div class="col-3 border">
             <strong >Combined Model </strong>
           </div>
           <div class="col-9 border">
-            <span class="text-capitalize">{{this.modelBuildInfo['model'].replace('combination:','')}}</span><span> using {{this.modelBuildInfo['nvarx']}} models</span>
+            <span class="text-capitalize">{{this.prediction.modelBuildInfo['model'].replace('combination:','')}}</span><span> using {{this.prediction.modelBuildInfo['nvarx']}} models</span>
             <br><br>
             <!--SUBMODEL RESULTS-->
 
@@ -293,7 +190,7 @@
                 </plotly-plot>
               </div>   
 
-              <!-- <div class="row" *ngIf="this.modelBuildInfo['quantitative'] == false" >
+              <!-- <div class="row" *ngIf="this.prediction.modelBuildInfo['quantitative'] == false" >
                 <table class="table table-striped w-auto">
                   <thead>
                     <tr>
@@ -303,10 +200,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let model of this.predictionResult.var_nam; let j = index">
+                    <tr *ngFor="let model of this.prediction.result.var_nam; let j = index">
                       <td class="p-0 text-left">{{model.split(":")[1]}}</td>
                       <td class="p-0 text-center">{{model.split(":")[2]}}</td>
-                      <td class="p-0 text-right">{{castValue(this.predictionResult.xmatrix[this.molIndex][j])}}</td>
+                      <td class="p-0 text-right">{{castValue(this.prediction.result.xmatrix[this.this.compound.molidx][j])}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -322,7 +219,7 @@
         </div>
 
 
-        <div class="row " *ngIf="this.predictionResult['search_results']">
+        <div class="row " *ngIf="this.prediction.result['search_results']">
           <div class="col-3 border" >
             <strong >Similars</strong>
           </div>
@@ -341,11 +238,11 @@
               </thead>
               <tbody>
 
-                <tr *ngFor="let dist of this.predictionResult.search_results[this.molIndex].distances; let j = index">
+                <tr *ngFor="let dist of this.prediction.result.search_results[this.compound.molidx].distances; let j = index">
                   <td class="p-0 text-left">{{dist.toFixed(2)}}</td>
                   <td class="p-0 text-center"><canvas id="{{'one_canvas'+j}}"></canvas></td>
-                  <td class="p-0 text-left">{{this.predictionResult.search_results[this.molIndex].obj_nam[j]}}</td>
-                  <td class="p-0 text-right">{{castValue(this.predictionResult.search_results[this.molIndex].ymatrix[j])}}</td>
+                  <td class="p-0 text-left">{{this.prediction.result.search_results[this.compound.molidx].obj_nam[j]}}</td>
+                  <td class="p-0 text-right">{{castValue(this.prediction.result.search_results[this.compound.molidx].ymatrix[j])}}</td>
                 </tr>
 
               </tbody>
@@ -357,14 +254,14 @@
           <div class="col-3 border">
             <strong>Interpretation</strong>
           </div>
-          <div class="col-9 border" *ngIf="this.modelDocumentation === undefined">
+          <div class="col-9 border" *ngIf="this.model.documentation === undefined">
             <span>No documentation</span>
           </div>
-          <div class="col-9 border" *ngIf="this.modelDocumentation != undefined">
-            <p *ngIf="this.modelDocumentation['Endpoint'].value != undefined">{{this.modelDocumentation['Endpoint'].value}}</p>
-            <p *ngIf="this.objectKeys(this.modelDocumentation).includes('Interpretation') && this.modelDocumentation['Interpretation'].value != undefined">
-                <br>{{this.modelDocumentation?.Interpretation.value}}</p>
-            <p *ngIf="this.modelDocumentation['Species'].value != undefined"> <br>{{this.modelDocumentation['Species'].value}}</p>
+          <div class="col-9 border" *ngIf="this.model.documentation != undefined">
+            <p *ngIf="this.model.documentation['Endpoint'].value != undefined">{{this.model.documentation['Endpoint'].value}}</p>
+            <p *ngIf="this.objectKeys(this.model.documentation).includes('Interpretation') && this.model.documentation['Interpretation'].value != undefined">
+                <br>{{this.model.documentation?.Interpretation.value}}</p>
+            <p *ngIf="this.model.documentation['Species'].value != undefined"> <br>{{this.model.documentation['Species'].value}}</p>
           </div>
         </div>
 
@@ -372,36 +269,36 @@
           <div class="col-3 border">
             <strong>Model description</strong>
           </div>
-          <div class="col-9 border" *ngIf="this.modelDocumentation === undefined">
+          <div class="col-9 border" *ngIf="this.model.documentation === undefined">
             <span>No documentation</span>
           </div>
-          <div class="col-9 border" *ngIf="this.modelDocumentation != undefined">
-            <p *ngIf="this.objectKeys(this.modelDocumentation).includes('Model_description') && this.modelDocumentation['Model_description'].value != undefined">
-                {{this.modelDocumentation?.Model_description.value}}</p>
+          <div class="col-9 border" *ngIf="this.model.documentation != undefined">
+            <p *ngIf="this.objectKeys(this.model.documentation).includes('Model_description') && this.model.documentation['Model_description'].value != undefined">
+                {{this.model.documentation?.Model_description.value}}</p>
           </div>
         </div>
 
-        <div class="row " *ngIf="!this.modelBuildInfo['ensemble'] && this.modelMatch && this.modelPresent" >
+        <div class="row " *ngIf="!this.prediction.modelBuildInfo['ensemble'] && this.modelMatch && this.modelPresent" >
           <div class="col-3 border">
             <strong >Model</strong>
           </div>
           <div class="col-9 border">
-            <span class="text-capitalize">{{this.modelBuildInfo['model']}}</span><span> using {{this.modelBuildInfo['nvarx']}} vars </span>
+            <span class="text-capitalize">{{this.prediction.modelBuildInfo['model']}}</span><span> using {{this.prediction.modelBuildInfo['nvarx']}} vars </span>
             <br>
-            <span>Training series {{this.modelBuildInfo['nobj']}} compounds. </span>
-              <span *ngIf="this.modelBuildInfo['R2']">R2: {{this.modelBuildInfo['R2'].toFixed(2)}}, </span>
-              <span *ngIf="this.modelBuildInfo['SDEC']">SDEC: {{this.modelBuildInfo['SDEC'].toFixed(2)}}, </span>
-              <span *ngIf="this.modelBuildInfo['Q2']">Q2: {{this.modelBuildInfo['Q2'].toFixed(2)}}, </span>
-              <span *ngIf="this.modelBuildInfo['SDEP']">SDEP: {{this.modelBuildInfo['SDEP'].toFixed(2)}}, </span>
-              <span *ngIf="this.modelBuildInfo['Sensitivity']">Sensitivity: {{this.modelBuildInfo['Sensitivity'].toFixed(2)}}, </span>
-              <span *ngIf="this.modelBuildInfo['Specificity']">Specificity: {{this.modelBuildInfo['Specificity'].toFixed(2)}}, </span>
-              <span *ngIf="this.modelBuildInfo['MCC']">MCC: {{this.modelBuildInfo['MCC'].toFixed(2)}}, </span>
-              <span *ngIf="this.modelBuildInfo['SensitivityPed']">Sensitivity (predicted): {{this.modelBuildInfo['SensitivityPed'].toFixed(2)}}, </span>
-              <span *ngIf="this.modelBuildInfo['SpecificityPred']">Specificity (predicted): {{this.modelBuildInfo['SpecificityPred'].toFixed(2)}}, </span>
-              <span *ngIf="this.modelBuildInfo['MCCpred']">MCC (predicted): {{this.modelBuildInfo['MCCpred'].toFixed(2)}}, </span>
-              <span *ngIf="this.modelBuildInfo['Conformal_mean_interval']">Conformal mean interval: {{this.modelBuildInfo['Conformal_mean_interval'].toFixed(2)}}, </span>
-              <span *ngIf="this.modelBuildInfo['Conformal_coverage']">Conformal coverage: {{this.modelBuildInfo['Conformal_coverage'].toFixed(2)}}, </span>
-              <span *ngIf="this.modelBuildInfo['Conformal_accuracy']">Conformal accuracy: {{this.modelBuildInfo['Conformal_accuracy'].toFixed(2)}} </span>
+            <span>Training series {{this.prediction.modelBuildInfo['nobj']}} compounds. </span>
+              <span *ngIf="this.prediction.modelBuildInfo['R2']">R2: {{this.prediction.modelBuildInfo['R2'].toFixed(2)}}, </span>
+              <span *ngIf="this.prediction.modelBuildInfo['SDEC']">SDEC: {{this.prediction.modelBuildInfo['SDEC'].toFixed(2)}}, </span>
+              <span *ngIf="this.prediction.modelBuildInfo['Q2']">Q2: {{this.prediction.modelBuildInfo['Q2'].toFixed(2)}}, </span>
+              <span *ngIf="this.prediction.modelBuildInfo['SDEP']">SDEP: {{this.prediction.modelBuildInfo['SDEP'].toFixed(2)}}, </span>
+              <span *ngIf="this.prediction.modelBuildInfo['Sensitivity']">Sensitivity: {{this.prediction.modelBuildInfo['Sensitivity'].toFixed(2)}}, </span>
+              <span *ngIf="this.prediction.modelBuildInfo['Specificity']">Specificity: {{this.prediction.modelBuildInfo['Specificity'].toFixed(2)}}, </span>
+              <span *ngIf="this.prediction.modelBuildInfo['MCC']">MCC: {{this.prediction.modelBuildInfo['MCC'].toFixed(2)}}, </span>
+              <span *ngIf="this.prediction.modelBuildInfo['SensitivityPed']">Sensitivity (predicted): {{this.prediction.modelBuildInfo['SensitivityPed'].toFixed(2)}}, </span>
+              <span *ngIf="this.prediction.modelBuildInfo['SpecificityPred']">Specificity (predicted): {{this.prediction.modelBuildInfo['SpecificityPred'].toFixed(2)}}, </span>
+              <span *ngIf="this.prediction.modelBuildInfo['MCCpred']">MCC (predicted): {{this.prediction.modelBuildInfo['MCCpred'].toFixed(2)}}, </span>
+              <span *ngIf="this.prediction.modelBuildInfo['Conformal_mean_interval']">Conformal mean interval: {{this.prediction.modelBuildInfo['Conformal_mean_interval'].toFixed(2)}}, </span>
+              <span *ngIf="this.prediction.modelBuildInfo['Conformal_coverage']">Conformal coverage: {{this.prediction.modelBuildInfo['Conformal_coverage'].toFixed(2)}}, </span>
+              <span *ngIf="this.prediction.modelBuildInfo['Conformal_accuracy']">Conformal accuracy: {{this.prediction.modelBuildInfo['Conformal_accuracy'].toFixed(2)}} </span>
             <br>
               <!-- <a href="javascript:void(0);">QMRF report</a> -->
               
@@ -410,7 +307,7 @@
 
         </div>
 
-        <div class="row " *ngIf="this.modelBuildInfo['ensemble'] && this.submodels.length > 0">
+        <div class="row " *ngIf="this.prediction.modelBuildInfo['ensemble'] && this.submodels.length > 0">
           <div class="col-3 border">
             <div class="row justify-content-between">
               <div class="col">
@@ -468,7 +365,7 @@
     <!--REPORT PREDICTIONS END-->
 
     <!--PROJECT PREDICTIONS-->
-    <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab" *ngIf="this.predictionResult != undefined"> 
+    <div class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab" *ngIf="this.prediction.result != undefined"> 
       
       <div class="card-body">
         <div class="row justify-content-between">
@@ -482,7 +379,7 @@
 
                   <div class="form-group col-md-4">
                     <label class="bmd-label-static pr-2">show as</label>
-                    <select class="form-select" id="projectStyleTrainingMarker" (change)="changeProjectStyleTrainingMark($event.target.value)">
+                    <select class="form-select" id="projectStyleTrainingMarker" (change)="changeProjectStyleTrainingMark($event.target)">
                       <option value='dots'>dots</option>
                       <option value='density'>density</option>
                       <option value='both'>both</option>
@@ -491,7 +388,7 @@
                   
                   <div class="form-group col-md-4">
                     <label class="bmd-label-static pr-2">color</label>
-                    <select class="form-select" id="projectStyleTrainingColor" (change)="changeProjectStyleTrainingColor($event.target.value)">
+                    <select class="form-select" id="projectStyleTrainingColor" (change)="changeProjectStyleTrainingColor($event.target)">
                       <option value='grey'>grey</option>
                       <option value='green'>green</option>
                       <option value='activity'>activity</option>
@@ -506,7 +403,7 @@
                   
                   <div class="form-group col-md-4">
                     <label class="bmd-label-static pr-2">show as</label>
-                    <select class="form-select" id="projectStylePredictionMarker" (change)="changeProjectStylePredictionMark($event.target.value)">
+                    <select class="form-select" id="projectStylePredictionMarker" (change)="changeProjectStylePredictionMark($event.target)">
                       <option value='dots'>dots</option>
                       <option value='crosses'>crosses</option>
                       <option value='names'>names</option>
@@ -515,7 +412,7 @@
 
                   <div class="form-group col-md-4">
                     <label class="bmd-label-static pr-2">color</label>
-                    <select class="form-select" id="projectStylePredictionColor" (change)="changeProjectStylePredictionColor($event.target.value)">
+                    <select class="form-select" id="projectStylePredictionColor" (change)="changeProjectStylePredictionColor($event.target)">
                       <option value='red'>red</option>
                       <option value='activity'>activity</option>
                       <option *ngIf="this.dmodx==true" value='dmodx'>DModX</option>

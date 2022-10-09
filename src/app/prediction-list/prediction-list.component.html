@@ -1,48 +1,52 @@
-<!-- <hr class="my-0"> -->
-
-<app-manage-predictions></app-manage-predictions>
-
-<!-- <div class ="text-center spinner-table" *ngIf = "!this.globals.tablePredictionVisible">
-  <div class="spinner-border text-primary"  style="width: 10rem; height: 10rem;"  role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-</div> -->
-<div id="overlay" *ngIf="!this.globals.tablePredictionVisible">
-  <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
+<div class="accordion mt-3" id="buildingAccordion">
+  <!-- <div id="overlay" *ngIf="!this.globals.tablePredictionVisible">
+    <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div> -->
+  <div class="card">
+    <div class="card-header " id="headingPrediction" data-toggle="collapse" data-target="#collapseOne"
+        aria-expanded="true" aria-controls="collapseOne">
+        <h5 class="mb-0">
+            Select Prediction
+            <button id="profilebtn" class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
+        </h5>
+    </div>
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#buildingAccordion">
+        <div class="card-body p-2 pr-5">
+          <table class="table" id="dataTablePredictions">
+            <thead>
+              <tr>
+                <th style="width: 40%">Name</th>
+                <th style="width: 5%">Model</th>
+                <th style="width: 5%">Ver</th>
+                <th style="width: 20%">Series</th>
+                <th style="width: 30%">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr class="blink" *ngFor="let key of objectKeys(this.prediction.predicting)">
+                    <td>{{key}}</td>
+                    <td>{{this.prediction.predicting[key][0]}}</td>
+                    <td>{{this.prediction.predicting[key][1]}}</td>
+                    <td>{{this.prediction.predicting[key][2].substring(this.prediction.predicting[key][2].lastIndexOf('/') + 1)}}</td>
+                    <td>-</td>         
+                  </tr>
+              <tr *ngFor="let info of this.prediction.predictions" (click)= "selectPrediction(info[0], info[1], info[2], info[3], info[5])" [ngClass]="{'selected': this.prediction.name===info[0]}">
+                <td class="text-truncate iffyTip hideText">{{info[0]}}</td>
+                <td>{{info[1]}}</td>
+                <td>{{info[2]}}</td>
+                <td class="text-truncate iffyTip hideText">{{info[4].substring(info[4].lastIndexOf('/') + 1)}}</td>
+                <td class="text-truncate iffyTip hideText">{{info[3]}}</td>         
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+</div>
 </div>
 
-
-<!-- <div class="ml-3 mr-3" [hidden] = "!this.globals.tablePredictionVisible"> -->
-<div [hidden] = "!this.globals.tablePredictionVisible">
-  <div class="col-12 scrolltable" >
-    <table class="table" id="dataTablePredictions">
-      <thead>
-        <tr>
-          <th style="width: 40%">Name</th>
-          <th style="width: 5%">Model</th>
-          <th style="width: 5%">Ver</th>
-          <th style="width: 20%">Series</th>
-          <th style="width: 30%">Date</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="blink" *ngFor="let key of objectKeys(this.prediction.predicting)">
-              <td>{{key}}</td>
-              <td>{{this.prediction.predicting[key][0]}}</td>
-              <td>{{this.prediction.predicting[key][1]}}</td>
-              <td>{{this.prediction.predicting[key][2].substring(this.prediction.predicting[key][2].lastIndexOf('/') + 1)}}</td>
-              <td>-</td>         
-            </tr>
-        <tr *ngFor="let info of this.prediction.predictions" (click)= "selectPrediction(info[0], info[1], info[2], info[3], info[5])" [ngClass]="{'selected': this.prediction.name===info[0]}">
-          <td class="text-truncate iffyTip hideText">{{info[0]}}</td>
-          <td>{{info[1]}}</td>
-          <td>{{info[2]}}</td>
-          <td class="text-truncate iffyTip hideText">{{info[4].substring(info[4].lastIndexOf('/') + 1)}}</td>
-          <td class="text-truncate iffyTip hideText">{{info[3]}}</td>         
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<div *ngIf="this.prediction.name != undefined">
+<app-manage-predictions></app-manage-predictions> 
+<app-prediction-list-tab [predictionName]=this.prediction.name></app-prediction-list-tab>
 </div>
