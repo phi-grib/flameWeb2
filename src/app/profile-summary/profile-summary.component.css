@@ -15,6 +15,13 @@
     color: #ffffff;
 }
 
+thead tr th { 
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #ffffff;
+}
+
 .result {
     transition: transform .2s;
 }
