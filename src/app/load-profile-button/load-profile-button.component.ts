@@ -43,6 +43,7 @@ export class LoadProfileButtonComponent implements OnInit {
     })
   }
   loadCollection(tr,collection){
+    console.log(collection)
     if(this.prevTR){
       this.prevTR.classList.remove('selected')
       tr.classList.add('selected')

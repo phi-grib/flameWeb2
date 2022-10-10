@@ -1,4 +1,4 @@
-<div class="accordion mt-3 ml-3" id="buildingAccordion">
+<div class="accordion mt-3 ml-3" id="buildingAccordionSelector">
     <div class="card">
         <div #compoundtb (click)="modelTab(compoundtb)" class="card-header" id="headingCompound" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
             <h5 class="mb-0">
@@ -6,20 +6,20 @@
                 <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
             </h5>
         </div>
-        <div id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#buildingAccordion">
+        <div id="collapseZero" class="collapse show" aria-labelledby="headingZero" data-parent="#buildingAccordionSelector">
             <div class="card-body p-2 pr-5">
             <app-select-compound></app-select-compound>
             </div>
         </div>
     </div>
     <div class="card">
-        <div #modeltb (click)="modelTab(modeltb)" class="card-header collapsed" id="headingModels" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        <div #modeltb (click)="modelTab(modeltb)" class="card-header collapsed" id="headingModelsSelector" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
             <h5 class="mb-0">
                 Add model
                 <button class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
             </h5>
         </div>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#buildingAccordion">
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#buildingAccordionSelector">
             <div class="card-body">
                 <app-model-list-selector></app-model-list-selector>
             </div>

@@ -3,14 +3,14 @@
  
     <div class="accordion mt-3 ml-2 mr-2" id="buildingAccordion"  *ngIf="this.profile?.profileList[1]?.length  else elseBlock">
         <div class="card">
-            <div class="card-header " id="headingProfiles" data-toggle="collapse" data-target="#collapseTwo"
-                aria-expanded="true" aria-controls="collapseOne">
+            <div class="card-header " id="headingProfiles" data-toggle="collapse" data-target="#collapseTwoProfile"
+                aria-expanded="true" aria-controls="collapseTwoProfile">
                 <h5 class="mb-0">
                     Select Prediction
                     <button id="profilebtn" class="btn btn-link pt-0 pb-0 float-right" type="button"></button>
                 </h5>
             </div>
-            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#buildingAccordion">
+            <div id="collapseTwoProfile" class="collapse show" aria-labelledby="headingTwo" data-parent="#buildingAccordion">
                 <div class="card-body p-2 pr-5">
                     <table class="table display compact" id="dataTableProfiles" style="width:100%;">
                         <thead>

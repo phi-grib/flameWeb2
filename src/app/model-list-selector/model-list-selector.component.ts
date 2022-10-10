@@ -56,14 +56,14 @@ export class ModelListSelectorComponent implements OnInit {
   loadCollection(collect: Object) {
     this.model.listModelsSelected = []
 
-    $('#dataTableModels').DataTable().rows().every(function (idx, tableLoop, rowLoop) {
+    $('#dataTableModelsSelector').DataTable().rows().every(function (idx, tableLoop, rowLoop) {
       var node = this.node()
       let checkbox = node.childNodes[0].childNodes[0]
       checkbox.checked = false; //first clean all checkboxes
     });
 
     const self = this;
-    $('#dataTableModels').DataTable().rows().every(function (idx, tableLoop, rowLoop) {
+    $('#dataTableModelsSelector').DataTable().rows().every(function (idx, tableLoop, rowLoop) {
       var data = this.data();
       var node = this.node()
       let checkbox = node.childNodes[0].childNodes[0]

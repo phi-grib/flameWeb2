@@ -30,7 +30,7 @@ export class SelectorComponent implements OnInit {
         this.modeltab = false;
       }
     }
-    if(event.id == 'headingModels'){
+    if(event.id == 'headingModelsSelector'){
       if (value == 'false'){
         this.modeltab = true;
       }else{
