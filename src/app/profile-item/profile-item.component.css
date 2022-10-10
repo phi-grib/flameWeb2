@@ -1,0 +1,44 @@
+
+.prediction_text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #e59300;
+}
+
+::ng-deep .as-split-gutter-icon:hover {
+        background-color: #0076a3 !important;
+    
+}
+
+.concentration_text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #22577A;
+}
+
+.table {
+    background-color: white;
+    background: white;
+    color: #22577A;
+    /* table-layout: fixed; */
+    width: 100%;
+}
+.table th {
+    padding-left: 1px;
+    padding-right: 1px;
+    border-bottom: 1px solid #B8DCED;
+    color: #0076a3;
+
+}
+.table td {
+    padding: 5px;
+        font-family: 'Barlow Semi Condensed', sans-serif;
+        border-bottom: 1px solid #B8DCED;
+        vertical-align: middle;
+}
+.table tr {
+    cursor: pointer;
+}
+tbody tr:hover{
+    background: #f7f9ea;
+}

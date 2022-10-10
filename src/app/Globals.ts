@@ -85,7 +85,8 @@ export class Prediction {
     result = undefined;
     date = undefined;
     modelID = undefined;
-    modelBuildInfo = {}
+    modelBuildInfo = {};
+    molSelected = undefined;
 }
 
 @Injectable()

@@ -33,8 +33,11 @@ export class AppComponent implements OnInit {
 
     spaceleft = 40;
     spaceright = 60;
+
     selectorleft = 40;
     selectorright = 60;
+    profilesleft = 40;
+    profilesright = 60;
     
     ngOnInit() {
       this.commonService.statusModelTab$.subscribe(status => {
@@ -122,6 +125,17 @@ set size2(value) {
         this.selectorleft = 40
         this.selectorright = 60
       }
+    }
+
+    gutterClickProfiles(){
+      if (this.profilesleft > 0) {
+        this.profilesleft = 0;
+        this.profilesright = 100;
+      } else {
+        this.profilesleft = 40
+        this.profilesright = 60
+      }
+
     }
 
 

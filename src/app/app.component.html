@@ -14,6 +14,9 @@
             <a class="nav-link" id="predict-tab-line" data-toggle="tab" href="#predict" role="tab" aria-controls="predict-tab" aria-selected="false">Predictions</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" id="profiles-tab-line" data-toggle="tab" href="#profiles" role="tab" aria-controls="profiles-tab" aria-selected="false">Profiles</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" id="similarity-tab-line" data-toggle="tab" href="#similarity" role="tab" aria-controls="similarity-tab" aria-selected="false">Spaces</a>
           </li>
           <li class="nav-item">
@@ -91,6 +94,20 @@
                </as-split>
           </div>
       </div>
+
+      <div class="tab-pane fade" id="profiles" role="tabpanel" aria-labelledby="profiles-tab" >
+        <div style="height:90vh">                
+            <as-split direction="horizontal" (gutterClick)="this.gutterClickProfiles()">
+               <as-split-area [size]="this.predictleft">
+             <app-profile-list></app-profile-list>
+               </as-split-area>
+
+               <as-split-area [size]="this.predictright">
+                <app-profile-item></app-profile-item>
+               </as-split-area>
+             </as-split>
+        </div>
+    </div>
       
       
       <div class="tab-pane fade" id="similarity" role="tabpanel" aria-labelledby="similarity-tab" >

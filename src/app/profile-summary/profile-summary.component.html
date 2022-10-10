@@ -1,0 +1,60 @@
+<div id="container-psummary"  class="col mt-3">    
+    <div *ngIf="this.profile.summary" class="btn-toolbar m-2 mt-1" role="toolbar"
+        aria-label="Toolbar with button groups">
+        <button (click)="deleteProfile()" type="button" class="btn btn-ets-delete" data-toggle="modal"
+            data-target="#delete" [ngClass]="{'disabled': this.profile.name === undefined}">Delete</button>
+    </div>
+    <div *ngIf="this.profile.summary" class="btn-group m-2" role="group" aria-label="Basic example">
+        <button type="button" (click)="copy()" class="btn btn-secondary">Copy</button>
+        <button type="button" (click)="saveEXCEL()" class="btn btn-secondary">Excel</button>
+        <button type="button" (click)="savePDF()" class="btn btn-secondary">Pdf</button>
+        <button type="button" (click)="print()" class="btn btn-secondary">Print</button>
+    </div>
+    <table *ngIf="this.profile.summary" id="dataTablePrediction" style="width:100%;">
+        <thead>
+            <tr>
+                <th class="text-center" #thname (click)="renderSort(thname)">
+                    <i class="fas  text-secondary fa-caret-up fa-xs"></i>
+                    <i class="fas  m-1 fa-xs text-secondary fa-caret-down"></i>
+                </th>
+                <th></th>
+                <th #thmodel (click)="renderSort(thmodel)" class="text-center border"
+                    *ngFor="let model of this.profile.summary['endpoint']; let x = index">
+                    {{model}} <span class="text-muted">v.{{this.profile.summary['version'][x]}}</span><i
+                        class="fas fa-xs d-inline text-secondary fa-caret-up ml-2"></i> <i
+                        class="fas d-inline fa-xs text-secondary fa-caret-down"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let compound of this.profile.summary['obj_nam'];let i = index">
+                <td #td class="border text-center font-weight-bold">{{compound}}</td>
+                <td id="canvas{{i}}" class="border text-center"></td>
+                <ng-container *ngFor="let value of this.profile.summary['values'][i]; let pos = index">
+                    <td *ngIf="!this.profile.summary.quantitative[pos]" id="values" class="text-center result border"
+                        (click)="showPrediction($event,i,td)"
+                        [ngStyle]="{background: value == 1 ? 'rgb(255,0,0)': value == -1 ? '#95a5a6': 'rgb(0,0,255)'}">
+                        <span style="visibility: hidden;">{{value}}</span>
+                    </td>
+                    <td *ngIf="this.profile.summary.quantitative[pos]" id="values" (click)="showPrediction($event,i,td)"
+                        class="text-center text-dark result border"
+                        [ngStyle]="{background: value > 0 ? 'rgb('+this.profile.summary.escaleColor[i][pos][0]+','+this.profile.summary.escaleColor[i][pos][1]+','+this.profile.summary.escaleColor[i][pos][2]+')' : '#95a5a6'}">
+                        {{value | number: '1.0-2'}}
+                    </td>
+                </ng-container>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="this.profile.summary" class="d-flex" id="container-caption">
+        <table style="width: 100%; margin-top: 1px;" id="caption">
+            <tr>
+                <td class="text-center text-white">3</td>
+                <td class="text-center">4</td>
+                <td class="text-center">5</td>
+                <td class="text-center">6</td>
+                <td class="text-center">7</td>
+                <td class="text-center">8</td>
+                <td class="text-center text-white">9</td>
+            </tr>
+        </table>
+    </div>
+</div>

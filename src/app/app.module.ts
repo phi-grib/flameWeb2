@@ -60,6 +60,9 @@ import { CurrentSelectionComponent } from './current-selection/current-selection
 import { ValidationsSelectorComponent } from './validations-selector/validations-selector.component';
 import { QualitConformalSelectorComponent } from './qualit-conformal-selector/qualit-conformal-selector.component';
 import { QuantitConformalSelectorComponent } from './quantit-conformal-selector/quantit-conformal-selector.component';
+import { ProfileListComponent } from './profile-list/profile-list.component';
+import { ProfileSummaryComponent } from './profile-summary/profile-summary.component';
+import { ProfileItemComponent } from './profile-item/profile-item.component';
 // import * as SmilesDrawer from 'smiles-drawer';
 // import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
@@ -114,7 +117,10 @@ PlotlyModule.plotlyjs = PlotlyJS;
     CurrentSelectionComponent,
     ValidationsSelectorComponent,
     QualitConformalSelectorComponent,
-    QuantitConformalSelectorComponent
+    QuantitConformalSelectorComponent,
+    ProfileListComponent,
+    ProfileSummaryComponent,
+    ProfileItemComponent
   ],
   imports: [
     BrowserModule,
