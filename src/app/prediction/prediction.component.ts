@@ -354,7 +354,10 @@ export class PredictionComponent implements OnInit {
   constructor(public prediction: Prediction,public model: Model, public global: Globals,private commonService:CommonService, public compound: Compound) { }
 
   ngOnInit(): void {
-
+    this.commonService.controlPagination$.subscribe(pagination => {
+      this.noPreviousMol = pagination[0]
+      this.noNextMol = pagination[1]
+    })
   }
 
   PreviousModel() {
@@ -365,10 +368,9 @@ export class PredictionComponent implements OnInit {
     }
   }
   PreviousMol() {
-    this.molIndex--;
-    this.compound.molidx = this.molIndex
-    this.noNextMol = false;
+    this.compound.molidx -= 1
 
+    this.noNextMol = false;
     this.noPreviousMol = false;
     this.noNextMol = false;
     if (this.compound.molidx == 0) {
@@ -382,8 +384,8 @@ export class PredictionComponent implements OnInit {
     this.updatePlotCombo();
   }
   NextMol() {
-    this.molIndex++;
-    this.compound.molidx = this.molIndex
+    /*compartir molindex */
+    this.compound.molidx += 1
 
     this.noPreviousMol = false;
     this.noNextMol = false;
@@ -515,7 +517,7 @@ export class PredictionComponent implements OnInit {
   }
 
   updatePlotCombo() {
-    const xi = this.prediction.result.xmatrix[this.molIndex];
+    const xi = this.prediction.result.xmatrix[this.compound.molidx];
     // console.log (xi);S
     // the results are shown using plotComboQ but in the case
     // of majority. only in this case we are using qualitative low level models
@@ -537,19 +539,19 @@ export class PredictionComponent implements OnInit {
 
         if (this.isQuantitative){
           this.plotComboQ.data[1].y[i] = varlist[1]+'.v'+varlist[2];
-          this.plotComboQ.data[1].x[i] = this.prediction.result.values[this.molIndex];
+          this.plotComboQ.data[1].x[i] = this.prediction.result.values[this.compound.molidx];
         }
 
       }
       var drawCI = false;
       if (this.prediction.result['ensemble_ci']){
         drawCI = true
-        var cilist = this.prediction.result.ensemble_ci[this.molIndex];
+        var cilist = this.prediction.result.ensemble_ci[this.compound.molidx];
       }
       else {  // support for legacy models where we used ensemble_confidence
          if (this.prediction.result['ensemble_confidence']){
           drawCI = true
-          var cilist = this.prediction.result.ensemble_confidence[this.molIndex];
+          var cilist = this.prediction.result.ensemble_confidence[this.compound.molidx];
          }
       }
       if (drawCI){
@@ -568,13 +570,13 @@ export class PredictionComponent implements OnInit {
           for (let i=0; i<this.prediction.result.var_nam.length; i++) {
             const varlist=String(this.prediction.result.var_nam[i]).split(':');
             this.plotComboQ.data[2].y[i] = varlist[1]+'.v'+varlist[2];
-            this.plotComboQ.data[2].x[i] = this.prediction.result.upper_limit[this.molIndex];
+            this.plotComboQ.data[2].x[i] = this.prediction.result.upper_limit[this.compound.molidx];
           }
           let j = this.prediction.result.var_nam.length;
           for (let i=this.prediction.result.var_nam.length-1; i>-1; i--) {
             const varlist=String(this.prediction.result.var_nam[i]).split(':');
             this.plotComboQ.data[2].y[j] = varlist[1]+'.v'+varlist[2];
-            this.plotComboQ.data[2].x[j] = this.prediction.result.lower_limit[this.molIndex];
+            this.plotComboQ.data[2].x[j] = this.prediction.result.lower_limit[this.compound.molidx];
             j++;
           }
         }
@@ -592,12 +594,12 @@ export class PredictionComponent implements OnInit {
       var drawCI = false;
       if (this.prediction.result['ensemble_ci']){
         drawCI = true
-        var class_list = this.prediction.result.ensemble_ci[this.molIndex];
+        var class_list = this.prediction.result.ensemble_ci[this.compound.molidx];
       }
       else {  // support for legacy models where we used ensemble_confidence
          if (this.prediction.result['ensemble_confidence']){
           drawCI = true
-          var class_list = this.prediction.result.ensemble_confidence[this.molIndex];
+          var class_list = this.prediction.result.ensemble_confidence[this.compound.molidx];
          }
       }
 
@@ -652,7 +654,7 @@ export class PredictionComponent implements OnInit {
       // draw similar compounds (if applicable)
       if (this.prediction.result.hasOwnProperty('search_results')) {
         const optionsA = {'width': 300, 'height': 200};
-        const smiles = this.prediction.result.search_results[this.molIndex].SMILES;
+        const smiles = this.prediction.result.search_results[this.compound.molidx].SMILES;
         let iteratorCount = 0;
         for (var value of smiles) {
           const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
@@ -688,7 +690,7 @@ export class PredictionComponent implements OnInit {
   drawReportHeader () {
     const options = {'width': 400, 'height': 200};
     const smilesDrawer = new SmilesDrawer.Drawer(options);
-    SmilesDrawer.parse(this.prediction.result.SMILES[this.molIndex], function(tree) {
+    SmilesDrawer.parse(this.prediction.result.SMILES[this.compound.molidx], function(tree) {
       // Draw to the canvas
       smilesDrawer.draw(tree, 'one_canvas', 'light', false);
       }, function (err) {

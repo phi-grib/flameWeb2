@@ -1055,17 +1055,17 @@ export class PredictionListTabComponent implements OnChanges {
   }
 
   tabClickHandler(info: any): void {
-    // sdas = info[1]
     this.compound.molidx=parseInt(info[0])-1;
-    
     this.noPreviousMol = false;
     this.noNextMol = false;
     if (this.compound.molidx == 0) {
-      this.noPreviousMol = true;
+      this.noPreviousMol = true
     }
     if (this.compound.molidx == (this.prediction.result.SMILES.length - 1)) {
       this.noNextMol = true;
     }
+    this.commonService.setPagination(this.noPreviousMol,this.noNextMol)
+
     //marcar la mol seleccionada en amarillito.
 
     // actualizar los datos para el report

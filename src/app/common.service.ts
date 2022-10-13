@@ -37,6 +37,9 @@ export class CommonService {
   //reports that a prediction has been launched
   private predictionExec = new Subject<boolean>();
   predictionExec$ = this.predictionExec.asObservable();
+  //control the pagination
+  private controlPagination = new Subject<boolean[]>();
+  controlPagination$ = this.controlPagination.asObservable();
   
   /**
    * Retrives the list of all models form the server
@@ -162,5 +165,7 @@ export class CommonService {
   setCollection(collection: object){
     this.loadCollection.next(collection);
   }
-
+  setPagination(noPreviousMol:boolean,noNextMol:boolean){
+    this.controlPagination.next([noPreviousMol,noNextMol])
+  }
 }
