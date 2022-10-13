@@ -1070,22 +1070,6 @@ export class PredictionListTabComponent implements OnChanges {
 
     // actualizar los datos para el report
     
-
-    
-    // var b = document.querySelector("#pills-all"); 
-    // b.setAttribute('aria-selected', 'false');
-    // b.setAttribute('tabindex', "-1");
-    
-    // $('a[aria-controls="pills-home"]').removeClass('active');
-    // $('#pills-all').removeClass('active');
-    // $('#pills-all').removeClass('show');
-    
-    // var tab = document.querySelector("#pills-one"); 
-    // tab.setAttribute('aria-selected', 'true');
-    // tab.removeAttribute('tabindex');
-    
-    // $('a[aria-controls="pills-one"]').addClass('active');
-    // $('#pills-one').addClass('active'); 
     // $('#pills-one').addClass('show'); 
     
     this.drawReportHeader();

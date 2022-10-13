@@ -365,11 +365,35 @@ export class PredictionComponent implements OnInit {
     }
   }
   PreviousMol() {
+    this.compound.molidx = this.molIndex
     this.molIndex--;
     this.noNextMol = false;
-    if (this.molIndex === 0) {
+
+    this.noPreviousMol = false;
+    this.noNextMol = false;
+    if (this.compound.molidx == 0) {
       this.noPreviousMol = true;
     }
+    if (this.compound.molidx == (this.prediction.result.SMILES.length - 1)) {
+      this.noNextMol = true;
+    }
+    this.drawReportHeader();
+    this.drawSimilars();
+    this.updatePlotCombo();
+  }
+  NextMol() {
+    this.compound.molidx = this.molIndex
+    this.molIndex++;
+
+    this.noPreviousMol = false;
+    this.noNextMol = false;
+    if (this.compound.molidx == 0) {
+      this.noPreviousMol = true;
+    }
+    if (this.compound.molidx == (this.prediction.result.SMILES.length - 1)) {
+      this.noNextMol = true;
+    }
+    
     this.drawReportHeader();
     this.drawSimilars();
     this.updatePlotCombo();
@@ -619,19 +643,7 @@ export class PredictionComponent implements OnInit {
       }
     }
   }
-  NextMol() {
-    console.log("next mol !!!")
-    console.log("this.molIndex"+this.molIndex)
-    console.log("longitud moleculas presentes"+(this.prediction.result.SMILES.length - 1))
-    this.molIndex++;
-    this.noPreviousMol = false;
-    if ((this.prediction.result.SMILES.length - 1) === this.molIndex) {
-      this.noNextMol = true;
-    }
-    this.drawReportHeader();
-    this.drawSimilars();
-    this.updatePlotCombo();
-  }
+
   isInteger(value: any) {
     return value % 1 == 0;
   }
