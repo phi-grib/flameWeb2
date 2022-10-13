@@ -1,7 +1,7 @@
 <div id="container-psummary"  class="col mt-3">    
     <div *ngIf="this.profile.summary" class="btn-toolbar m-2 mt-1" role="toolbar"
         aria-label="Toolbar with button groups">
-        <button (click)="deleteProfile()" type="button" class="btn btn-ets-delete" data-toggle="modal"
+        <button (click)="deleteProfile()" type="button" class="btn btn-ets-delete" 
             data-target="#delete" [ngClass]="{'disabled': this.profile.name === undefined}">Delete</button>
     </div>
     <div *ngIf="this.profile.summary" class="btn-group m-2" role="group" aria-label="Basic example">
