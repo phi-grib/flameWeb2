@@ -354,9 +354,6 @@ export class PredictionComponent implements OnInit {
   constructor(public prediction: Prediction,public model: Model, public global: Globals,private commonService:CommonService, public compound: Compound) { }
 
   ngOnInit(): void {
-    // this.commonService.idxmodelmol$.subscribe(result => {
-    //   console.log(result);
-    // })
 
   }
 
@@ -494,11 +491,8 @@ export class PredictionComponent implements OnInit {
   }
 
   updatePlotCombo() {
-    console.log("updateplot")
-    console.log(this.molIndex)
     const xi = this.prediction.result.xmatrix[this.molIndex];
-    // console.log (xi);
-     
+    // console.log (xi);S
     // the results are shown using plotComboQ but in the case
     // of majority. only in this case we are using qualitative low level models
     // as qualitative variables
@@ -626,6 +620,9 @@ export class PredictionComponent implements OnInit {
     }
   }
   NextMol() {
+    console.log("next mol !!!")
+    console.log("this.molIndex"+this.molIndex)
+    console.log("longitud moleculas presentes"+(this.prediction.result.SMILES.length - 1))
     this.molIndex++;
     this.noPreviousMol = false;
     if ((this.prediction.result.SMILES.length - 1) === this.molIndex) {
