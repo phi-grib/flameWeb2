@@ -365,8 +365,8 @@ export class PredictionComponent implements OnInit {
     }
   }
   PreviousMol() {
-    this.compound.molidx = this.molIndex
     this.molIndex--;
+    this.compound.molidx = this.molIndex
     this.noNextMol = false;
 
     this.noPreviousMol = false;
@@ -382,8 +382,8 @@ export class PredictionComponent implements OnInit {
     this.updatePlotCombo();
   }
   NextMol() {
-    this.compound.molidx = this.molIndex
     this.molIndex++;
+    this.compound.molidx = this.molIndex
 
     this.noPreviousMol = false;
     this.noNextMol = false;
