@@ -29,9 +29,9 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
         return new Promise(async (resolve, reject) => {
             try {
                 await keycloak.init({
-                    config: keycloakConfig,
+                    // config: keycloakConfig,
 
-                    // config: "secrets/keycloak.json",
+                    config: "secrets/keycloak.json",
                     enableBearerInterceptor: true,
                     bearerPrefix: 'Bearer', // Tima thinks capital might be important here
 
@@ -42,7 +42,7 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
                     }
                     /*bearerExcludedUrls: []*/
                 });
-                resolve();
+                resolve('done');
             } catch (error) {
                 reject(error);
             }
