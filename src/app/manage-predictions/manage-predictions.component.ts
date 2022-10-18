@@ -34,6 +34,7 @@ export class ManagePredictionsComponent {
         
         this.toastr.success( 'Prediction "' + this.prediction.name + '" deleted', 'DELETED' , {
           timeOut: 500, positionClass: 'toast-top-right', progressBar: false});
+
         
         const table = $('#dataTablePredictions').DataTable();
         table.row('.selected').remove().draw(false);
@@ -44,6 +45,7 @@ export class ManagePredictionsComponent {
         }
         else {
           // select the first item
+
           // this.prediction.name = table.data()[0][0];
           this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
 
@@ -60,8 +62,6 @@ export class ManagePredictionsComponent {
             }
           }
         }
-
-
       },
       error => {
           this.toastr.error(error.error.error, 'ERROR', {

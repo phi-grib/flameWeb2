@@ -225,49 +225,92 @@
 
             <!--SERIES TAB-->
             <div class="tab-pane fade" id="pills-series" role="tabpanel" aria-labelledby="pills-series-tab">
-                <div class="card-body" *ngIf="this.model.secret">
+
+                <!-- <div class="card-body" *ngIf="this.model.secret"> -->
+                <div class="card-body" *ngIf="this.scores==''">
                     Nothing to show for secret models
                     <canvas id="scores_canvas"></canvas>
                     <div id="scoresDIV"></div>
                 </div>
 
-                <div class="card-body" *ngIf="!this.model.secret">
-                        <div class="row justify-content-between">
-                            <div class="col">
-                                <div id="scoresDIV"></div>
-                                <div class="form-group col-md-8">
-                                <label class="bmd-label-static pr-2">Training series: show as</label>
-                                <select class="form-select" id="projectStyleTrainingMarker" (change)="changeProjectStyleMark($event.target.value)">
-                                    <option value='dots'>dots</option>
-                                    <option value='density'>density</option>
-                                    <option value='both'>both</option>
-                                </select>
-                                </div>
+                <!-- <div class="card-body" *ngIf="!this.model.secret"> -->
+                <div class="card-body" *ngIf="this.scores=='training'">
+
+                    <div class="row justify-content-between">
+                        <div class="col">
+                            <div id="scoresDIV"></div>
+                            <div class="form-group col-md-8">
+                            <label class="bmd-label-static pr-2">Training series: show as</label>
+                            <select class="form-select" id="projectStyleTrainingMarker" (change)="changeProjectStyleMark($event.target.value)">
+                                <option value='dots'>dots</option>
+                                <option value='density'>density</option>
+                                <option value='both'>both</option>
+                            </select>
                             </div>
-                            <div class="col">
-                                <canvas class= "fixed_canvas" id="scores_canvas"></canvas>
+                        </div>
+                        
+                        <div class="col">
+                            <canvas class= "fixed_canvas" id="scores_canvas"></canvas>
 
-                                <table id ="tableSelections" class="minitable compact">
-                                    <thead>
-                                      <tr>
-                                        <th style="width: 20%">Name</th>
-                                        <th class="align-middle text-center" style="width: 70%">Structure</th>
-                                        <th class="align-right" style="width: 10%">Activity</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                            <table id ="tableSelections" class="minitable compact">
+                                <thead>
+                                    <tr>
+                                    <th style="width: 20%">Name</th>
+                                    <th class="align-middle text-center" style="width: 70%">Structure</th>
+                                    <th class="align-right" style="width: 10%">Activity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
 
-                                <!-- <plotly-plot 
-                                    [data]="plotPie.data" 
-                                    [layout]="plotPie.layout" 
-                                    [config]="plotPie.config">
-                                </plotly-plot>   -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body" *ngIf="this.scores=='ensemble'">
+
+                    <div class="row justify-content-between">
+                        <div class="col">
+                            <div id="scoresDIV"></div>
+                            <div class="form-group col-md-8">
+                            <label class="bmd-label-static pr-2">Ensemble models</label>
+                            <select class="form-select" id="ensembleChanger" (change)="setInnerModel($event.target.value)">
+                                <!-- <option value='0'>AAA</option>
+                                <option value='1'>BBB</option> -->
+
+                                <option *ngFor="let value of this.ensembleNames" [value]='value'>
+                                    {{value}}
+                                </option>
+                            </select>
+
+
 
                             </div>
                         </div>
+                        
+                        <div class="col">
+                            <canvas class= "fixed_canvas" id="scores_canvas"></canvas>
+
+                            <table id ="tableSelections" class="minitable compact">
+                                <thead>
+                                    <tr>
+                                    <th style="width: 20%">Name</th>
+                                    <th class="align-middle text-center" style="width: 70%">Structure</th>
+                                    <th class="align-right" style="width: 10%">Activity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
                 </div>
+
+
+
+
             </div>
             <!--SERIES TAB END-->
 

@@ -27,9 +27,14 @@ export class QualitConformalComponent implements OnChanges {
     modelWarning = '';
     modelVisible = false;
     features = false;
+    scores = '';
+    scoresLabelX:string;
+    scoresLabelY:string;
+    ensembleNames = [];
     optimization = false;
     features_method = '';
     featuresTSV = '';
+    innerPCA = {};
     
     predictData = [{
         offset: 45, 
@@ -122,6 +127,29 @@ export class QualitConformalComponent implements OnChanges {
           //   showlines: false,
           //   coloring: 'heatmap' 
           // }
+        },
+        {
+          x: [],
+          y: [],
+          // text: [],
+          type: 'scatter', 
+          mode: 'markers', 
+          marker: {
+            symbol: 'circle',
+            color: '#009999',
+            opacity: 0.5,
+            size: 20,
+            // symbol: 'diamond-dot',
+            // color: '#42DE2F',
+            // opacity: 1.0,
+            // size: 10,
+            // line: {
+            //   color: 'black',
+            //   width: 1
+            // }
+          },
+          hoverinfo: 'skip',
+          // hovertemplate:'<b>%{text}</b><br>%{x:.2f}, %{y:.2f}<extra></extra>',
         }
 
       ],
@@ -129,8 +157,8 @@ export class QualitConformalComponent implements OnChanges {
         width: 700,
         height: 500,
         showtitle: true,
-        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
         title: 'Training series (using model X matrix)', 
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
         hovermode: 'closest',
             margin: {r: 10, t: 30, pad: 0 },
             showlegend: false,
@@ -338,12 +366,43 @@ export class QualitConformalComponent implements OnChanges {
       PlotlyJS.restyle('scoresDIV', update);
     }
    
+    public setInnerModel (value) {
+
+      var innerPCA = undefined;
+      for (let i in this.ensembleNames) {
+        if (value == this.ensembleNames[i]) {
+          innerPCA = this.innerPCA[i];
+          break;
+        } 
+      }
+      if (innerPCA == undefined) return;
+
+      this.plotScores.data[0].x = innerPCA['PCA1'];
+      this.plotScores.data[0].y = innerPCA['PCA2'];
+      this.plotScores.data[2].x = innerPCA['pointsx'];
+      this.plotScores.data[2].y = innerPCA['pointsy'];            
+      // this.plotScores.data[2].text = [innerPCA['label']];     
+      if ('explvar' in innerPCA) {
+        this.plotScores.layout.xaxis.title = this.scoresLabelX + ' ('+(100.0*(innerPCA['explvar'][0])).toFixed(1)+'% SSX)';
+        this.plotScores.layout.yaxis.title = this.scoresLabelY + ' ('+(100.0*(innerPCA['explvar'][1])).toFixed(1)+'% SSX)';
+      }
+      else {
+        this.plotScores.layout.xaxis.title = this.scoresLabelX;
+        this.plotScores.layout.yaxis.title = this.scoresLabelY;
+      }
+      PlotlyJS.react('scoresDIV',this.plotScores.data, this.plotScores.layout, this.plotScores.config );
+    }
+
     ngOnChanges(): void {
       this.modelVisible = false;
       this.modelTypeInfo = {};
       this.modelValidationInfo = {};
       this.modelBuildInfo = {};
       this.features = false;
+      this.scores = '';
+      this.scoresLabelX = '';
+      this.scoresLabelY = '';
+      this.ensembleNames = [];
       this.optimization = false;
       this.features_method = '';
       this.modelWarning = '';
@@ -351,7 +410,10 @@ export class QualitConformalComponent implements OnChanges {
       this.plotScores.data[0].y =[];
       this.plotScores.data[1].x =[];
       this.plotScores.data[1].y =[];
+      this.plotScores.data[2].x =[];
+      this.plotScores.data[2].y =[];
       this.plotScores.data[0].text =[];
+      this.plotScores.data[2].text =[];
       this.plotScores.data[0].marker.color = [];
       this.predictData[0].r = [0, 0, 0, 0];
       this.fittingData[0].r = [0, 0, 0, 0];
@@ -417,6 +479,7 @@ export class QualitConformalComponent implements OnChanges {
 
           // PCA scores plot
           if ('PC1' in info) {
+            this.scores = 'training';
 
             // define appropriate labels extracting from manifest
             const manifest = info['manifest'];
@@ -438,19 +501,64 @@ export class QualitConformalComponent implements OnChanges {
             this.plotScores.data[0].text = info['obj_nam'];
             this.plotScores.data[0].marker.color = info['ymatrix'];
 
+            // set title
+            this.plotScores.layout.title = 'Training series (using model X matrix)';
+            this.plotScores.layout.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
+
             if ('SSX' in info) {
               this.plotScores.layout.xaxis.title = labelX + ' ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
               this.plotScores.layout.yaxis.title = labelY + ' ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
-              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
-              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
+              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
             } else {
               this.plotScores.layout.xaxis.title = labelX;
               this.plotScores.layout.yaxis.title = labelY;
-              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
-              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
+              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
             }
           }
+          
+          // Inner PCA scores plot
+          if ('InnerPCASet' in info) {
+            this.scores = 'ensemble';
 
+            // store the values for all models
+            this.innerPCA = info['InnerPCASet'];
+
+            // compile ensemble name models to use in the selector
+            this.ensembleNames = [];
+            for (let i in this.innerPCA) {
+              let imodel = this.innerPCA[i];
+              this.ensembleNames.push(imodel['label']);
+            }
+
+            // set fixed features for all models: molecule names and Y values
+            this.plotScores.data[0].text = info['obj_nam'];
+            this.plotScores.data[0].marker.color = info['ymatrix'];
+            
+            // define appropriate labels extracting from manifest
+            const manifest = info['manifest'];
+            this.scoresLabelX = 'PCA PC1';
+            this.scoresLabelY = 'PCA PC2';
+            for (var iman in manifest) {
+              if (manifest[iman]['key'] == 'PC1') {
+                this.scoresLabelX = manifest[iman]['label'];
+              }
+              if (manifest[iman]['key'] == 'PC2') {
+                this.scoresLabelY = manifest[iman]['label'];
+              }
+            }
+
+            // set title
+            this.plotScores.layout.title = 'Reference series (projected on low-level model)';
+            this.plotScores.layout.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
+
+            this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
+            this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
+            
+            this.setInnerModel(this.ensembleNames[0]);
+          }
+          
 
           if ('feature_importances' in info && info['feature_importances']!= null) {
             
@@ -507,14 +615,11 @@ export class QualitConformalComponent implements OnChanges {
                                         this.modelValidationInfo['TN'][1]+
                                         this.modelValidationInfo['FP'][1]];
 
-                                                    // bar plot with feature importances 
-
               this.plotSummary.data[1].y = [
                                         this.modelValidationInfo['Sensitivity'][1],
                                         this.modelValidationInfo['Specificity'][1],
                                         this.modelValidationInfo['MCC'][1]];
               if (this.modelValidationInfo['Conformal_coverage']) {
-                // this.plotSummary.data[1].x.push('Coverage');
                 this.plotSummary.data[1].y.push((this.modelValidationInfo['Conformal_coverage'][1]));
               }
             }
@@ -548,7 +653,8 @@ export class QualitConformalComponent implements OnChanges {
             const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
             const context = canvas.getContext('2d');
 
-            if (!this.model.secret) {
+            // if (!this.model.secret) {
+            if (this.scores != '') {
               PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
               
               let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
@@ -573,7 +679,6 @@ export class QualitConformalComponent implements OnChanges {
                 var tbl = <HTMLTableElement>document.getElementById('tableSelections');
                 if (eventdata != null && 'points' in eventdata) {
                   var points = eventdata.points;
-                  // console.log(points);
                   points.forEach(function(pt) {
                     const tr = tbl.insertRow();
           
