@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Model, Prediction, Search, Space, Globals, Profile } from './Globals';
+import { Model, Prediction, Search, Space, Globals } from './Globals';
 import { environment } from '../environments/environment';
 import { CommonService } from './common.service';
 import { SplitComponent } from 'angular-split';
@@ -20,8 +20,7 @@ export class AppComponent implements OnInit {
     public search: Search,
     public space: Space,
     public model: Model,
-    public globals: Globals,
-    public profile: Profile
+    public globals: Globals
     ) {}
 
     toxhub: any;
