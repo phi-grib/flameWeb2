@@ -54,7 +54,7 @@ export class ProfileSummaryComponent implements OnInit {
     private clipboard: ClipboardService,
   ) { }
   ngOnInit(): void {
-    this.profiling.summaryActive$.subscribe( pname => {
+    this.profiling.summaryActive$.subscribe(pname => {
       this.getProfileSummary(pname)
     })
 
@@ -196,134 +196,154 @@ export class ProfileSummaryComponent implements OnInit {
    *Function that formats the data to generate excel,pdf
    * 
    */
-  formatData():Array<[]>{
+  formatData(pdf: boolean): Array<[]> {
     var data = [];
     for (let i = 0; i < this.profile.summary['obj_nam'].length; i++) {
-     var auxData = []
-     const compound = this.profile.summary['obj_nam'][i];
-     const smiles = this.profile.summary['SMILES'][i];
-     auxData.push(compound,smiles)
-     for (let y = 0; y < this.profile.summary['endpoint'].length; y++) {   
-       var value = this.profile.summary['values'][i][y]
-       if(value > 1 || value < 0) value = value.toFixed(2)
-       auxData.push(value)       
-     }
-     data.push(auxData)
+      var auxData = []
+      const compound = this.profile.summary['obj_nam'][i];
+      const smiles = this.profile.summary['SMILES'][i];
+      auxData.push(compound, smiles)
+      for (let y = 0; y < this.profile.summary['endpoint'].length; y++) {
+
+        var value = this.profile.summary['values'][i][y]
+        if(pdf){
+        if (!this.profile.summary['quantitative'][y]) {
+          switch (value) {
+            case 0:
+              value = "Negative"
+              break;
+            case 1:
+              value = 'Positive'
+              break;
+            default:
+              value = "Uncertain"
+              break;
+          }
+
+        }
+      }
+        else {
+          if (value > 1 || value < 0) value = value.toFixed(2)
+        }
+
+        auxData.push(value)
+      }
+      data.push(auxData)
     }
     return data
   }
   savePDF() {
-     const doc = new jsPDF();
-     var data = this.formatData();
-     autoTable(doc, {
-      head: [['Compound','Structure',...this.profile.summary.endpoint]],
+    const doc = new jsPDF();
+    var data = this.formatData(true);
+    autoTable(doc, {
+      head: [['Compound', 'Structure', ...this.profile.summary.endpoint]],
       body: data,
       columnStyles: {
-        0: {cellWidth: 30},
-        1: {cellWidth: 60},
+        0: { cellWidth: 30 },
+        1: { cellWidth: 60 },
 
       },
       styles: {
         halign: 'center'
-    },
-     })
+      },
+    })
     doc.text(this.profile.name, 15, 10)
     doc.save(this.profile.name + '.pdf');
   }
   saveEXCEL() {
-    var data = this.formatData()
-    const xls  = Object.assign([],data);
-    var head = [['Compound'],['Structure'],...this.profile.summary.endpoint]
+    var data = this.formatData(false)
+    const xls = Object.assign([], data);
+    var head = [['Compound'], ['Structure'], ...this.profile.summary.endpoint]
     xls.splice(0, 0, head);
     /* generate worksheet */
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(xls);
-    ws['!cols'] = [{ width: 15 }, { width:50 }];
+    ws['!cols'] = [{ width: 15 }, { width: 50 }];
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     /* save to file */
-    XLSX.writeFile(wb, this.profile.name  + '.xlsx');
+    XLSX.writeFile(wb, this.profile.name + '.xlsx');
   }
 
-  formatCopyText(){
-    var data = this.formatData();
-    var header = "Compound"+"\t"+"Structure"
+  formatCopyText() {
+    var data = this.formatData(false);
+    var header = "Compound" + "\t" + "Structure"
     this.profile.summary.endpoint.forEach(model => {
-      header = header+"\t"+model
+      header = header + "\t" + model
     });
     var bodyText = ""
     for (let i = 0; i < data.length; i++) {
       // const element = array[i];
       for (let y = 0; y < data[i].length; y++) {
-        bodyText = bodyText+data[i][y]+"\t"
+        bodyText = bodyText + data[i][y] + "\t"
       }
-      bodyText = bodyText+"\n"
+      bodyText = bodyText + "\n"
     }
-    var text  = header+"\n"+bodyText
+    var text = header + "\n" + bodyText
     return text;
   }
-  copy(){
+  copy() {
     var text = this.formatCopyText();
     this.clipboard.copyFromContent(text);
   }
   /**
    * to do 
    */
-  print(){
+  print() {
 
 
   }
-  renderSort(event){   
+  renderSort(event) {
     var pos = event.childNodes.length - 2;
-     if(this.prevTH){
-      var oldPos = this.prevTH.childNodes.length-2
+    if (this.prevTH) {
+      var oldPos = this.prevTH.childNodes.length - 2
       this.prevTH.childNodes[oldPos].classList.remove('text-dark')
-      this.prevTH.childNodes[oldPos+1].classList.remove('text-dark')
+      this.prevTH.childNodes[oldPos + 1].classList.remove('text-dark')
       this.prevTH.childNodes[oldPos].classList.add('text-secondary')
-      this.prevTH.childNodes[oldPos+1].classList.add('text-secondary')
-     }
+      this.prevTH.childNodes[oldPos + 1].classList.add('text-secondary')
+    }
     let status = event.getAttribute('aria-label')
-    if(status.includes('asc')){
+    if (status.includes('asc')) {
       event.childNodes[pos].classList.remove('text-secondary')
       event.childNodes[pos].classList.add('text-dark')
-      event.childNodes[pos+1].classList.remove('text-dark')
-      event.childNodes[pos+1].classList.add('text-secondary')
-    }else {
+      event.childNodes[pos + 1].classList.remove('text-dark')
+      event.childNodes[pos + 1].classList.add('text-secondary')
+    } else {
       event.childNodes[pos].classList.remove('text-dark')
       event.childNodes[pos].classList.add('text-secondary')
 
-      event.childNodes[pos+1].classList.remove('text-secondary')
-      event.childNodes[pos+1].classList.add('text-dark')
+      event.childNodes[pos + 1].classList.remove('text-secondary')
+      event.childNodes[pos + 1].classList.add('text-dark')
     }
     this.prevTH = event
   }
-  setColor(value){
-    var chr = chroma.scale('RdBu').domain([0,6]); // we expect values from 3 to 9
+  setColor(value) {
+    var chr = chroma.scale('RdBu').domain([0, 6]); // we expect values from 3 to 9
     return chr(value)._rgb
   }
-  caption(){
+  caption() {
     var table = $("#caption")[0]
-     for (var i = 0, row; row = table.rows[i]; i++) {
-       for (var j = 0, col; col = row.cells[j]; j++) {
-         var rgb = this.setColor(9-col.innerText)
-         col.style.background = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`
-       }
-   }
-}
+    for (var i = 0, row; row = table.rows[i]; i++) {
+      for (var j = 0, col; col = row.cells[j]; j++) {
+        var rgb = this.setColor(9 - col.innerText)
+        col.style.background = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`
+      }
+    }
+  }
   /**
    * modifies the "profileSummary" array to add a new field 
    * where you set the color that belongs to the field
    */
-  escaleColor(){
+  escaleColor() {
     var globalArr = []
     for (let i = 0; i < this.profile.summary.values.length; i++) {
       var arrValues = []
       for (let y = 0; y < this.profile.summary.endpoint.length; y++) {
-        if(this.profile.summary.quantitative[y]){
+        if (this.profile.summary.quantitative[y]) {
           let val = this.profile.summary.values[i][y];
           // convert 3 to 6 (blue), 9 to 0 (red)
-          arrValues[y] = this.setColor(9-val)
-        }else {
+          arrValues[y] = this.setColor(9 - val)
+        } else {
           arrValues[y] = -1
         }
       }
