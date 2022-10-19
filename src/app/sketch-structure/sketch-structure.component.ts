@@ -33,14 +33,15 @@ export class SketchStructureComponent implements OnInit {
      const jsme_init = this.renderer2.createElement('script');
      jsme_init.type = 'text/javascript';
      // jsme_init.src = 'assets/jsme/init.js';
-     jsme_init.src = 'assets/jsme/initQuery.js';
+    //  jsme_init.src = 'assets/jsme/initQuery.js';
+     jsme_init.src = 'assets/jsme/initSelector.js';
      jsme_init.text = ``;
      this.renderer2.appendChild(document.body, jsme_init);
   }
 
   saveStructure() {
     this.compound.listCompoundsSelected = [];
-    var span = document.getElementById('molclipboard');
+    var span = document.getElementById('molclipboard_selector');
     this.sketchSmiles = span.innerText;
     //check name
     if (this.isvalidSketch && this.sketchSmiles) {
