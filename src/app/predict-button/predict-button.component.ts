@@ -66,8 +66,15 @@ export class PredictButtonComponent implements OnInit {
       let i=1;
       let nameFound = false;
       while (!nameFound) {
-        this.predictName = 'Prediction_' + i;
-        if (!this.objectKeys(this.predictionsNames).includes(this.predictName)) {
+        let istr = i.toString().padStart(4,'0');
+        this.predictName = 'Prediction_' + istr;
+        let keyFound = false;
+        for (const ikey of this.objectKeys(this.predictionsNames)) {
+          if (ikey.startsWith(this.predictName)) {
+            keyFound=true;
+          }
+        }
+        if (!keyFound){
           nameFound = true;
           this.isvalidPrediction = true;
         }
@@ -81,6 +88,11 @@ export class PredictButtonComponent implements OnInit {
     const letters = /^[A-Za-z0-9_]+$/;
     if (!(this.predictName.match(letters)) || this.predictName in this.predictionsNames || this.predictName.startsWith('ensemble')) {
       this.isvalidPrediction = false;
+    }
+    for (const ikey of this.objectKeys(this.predictionsNames)) {
+      if (ikey.startsWith(this.predictName)) {
+        this.isvalidPrediction = false;
+      }
     }
   }
 
