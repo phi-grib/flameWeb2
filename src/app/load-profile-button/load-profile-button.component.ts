@@ -35,7 +35,6 @@ export class LoadProfileButtonComponent implements OnInit {
     $('#dataTableCollections').DataTable().destroy();
     // $('#dataTableCollections').DataTable().clear().draw();
     this.service.getCollections().subscribe(result => {
-      console.log(result)
       this.collections = result
       setTimeout(() => {
         $('#dataTableCollections').DataTable(this.opt)
@@ -43,7 +42,6 @@ export class LoadProfileButtonComponent implements OnInit {
     })
   }
   loadCollection(tr,collection){
-    console.log(collection)
     if(this.prevTR){
       this.prevTR.classList.remove('selected')
       tr.classList.add('selected')
@@ -60,7 +58,6 @@ export class LoadProfileButtonComponent implements OnInit {
 
   deleteCollection(){
     this.service.deleteCollection(this.collectionSelected['name']).subscribe(result => {
-      console.log(result)
       this.openModal();
     },error => {
       console.log(error)
