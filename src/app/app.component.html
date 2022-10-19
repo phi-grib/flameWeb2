@@ -86,9 +86,7 @@
 
                  <as-split-area [size]="this.predictright">
                     <div class="col p-0 info scrollable" >
-                      <div *ngIf="(this.prediction.name != undefined) && (this.globals.mainTabActive=='#predict')">
-                          <app-prediction [predictionName]=this.prediction.name></app-prediction>
-                      </div>
+                          <app-prediction *ngIf="this.prediction.result != undefined"></app-prediction>
                     </div>
                  </as-split-area>
                </as-split>
