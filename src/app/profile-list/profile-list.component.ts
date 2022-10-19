@@ -81,8 +81,8 @@ export class ProfileListComponent implements OnInit {
 
   selectProfile(profile,tr){
     this.prediction.name = undefined;
-
-    this.profile.name = 
+    this.prediction.result = undefined;
+    // this.profile.name = 
     this.prediction.date = profile[3];
     if (this.prevTR) {
       this.prevTR.classList.remove('selected')

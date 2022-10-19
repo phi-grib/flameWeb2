@@ -23,6 +23,7 @@ export class PredictionListComponent implements OnInit {
 
   ngOnInit() {
     this.prediction.name = undefined;
+    this.prediction.result = undefined;
     this.model.name = undefined;
     this.model.version = undefined;
     this.model.trained = false;
@@ -30,6 +31,7 @@ export class PredictionListComponent implements OnInit {
   }
 
   selectPrediction(name: string, modelName: string, modelVersion: string, date: any, modelID: string) {
+    this.prediction.result = undefined;
     this.profile.summary = undefined
     this.profile.item = undefined;
     this.prediction.name = name;
