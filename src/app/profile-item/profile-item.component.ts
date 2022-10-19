@@ -511,9 +511,9 @@ export class ProfileItemComponent implements OnInit {
       setTimeout(() => {
         this.drawReportHeader();
         this.drawSimilars();
-      }, 50);
+      }, 150);
       
-    },20)
+    },50)
   }
 
   drawSimilars () {
