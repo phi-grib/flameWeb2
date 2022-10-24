@@ -81,6 +81,6 @@ i {
 }
 
 .form-check-input {
-    margin-left: 3px;
-    margin-top: 1px;
+    position: relative;
+    margin-left: 3px; 
 }
