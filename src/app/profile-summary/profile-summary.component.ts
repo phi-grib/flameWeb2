@@ -25,7 +25,8 @@ export class ProfileSummaryComponent implements OnInit {
   gamaColor = undefined;
   profileSelected = undefined;
   prevTR = undefined;
-  prevTH = undefined
+  prevTH = undefined;
+  profileVisible = false;
   opt2 = {
     autoWidth: true,
     destroy: true,
@@ -135,7 +136,8 @@ export class ProfileSummaryComponent implements OnInit {
   }
   getProfileSummary(pname) {
     this.profile.summary = undefined;
-    this.profile.name = pname
+    this.profile.name = pname;
+    this.profileVisible = false;
     setTimeout(() => {
       this.profiling.profileSummary(this.profile.name).subscribe(
         (res) => {
@@ -148,6 +150,7 @@ export class ProfileSummaryComponent implements OnInit {
               $('#dataTablePrediction').DataTable(this.opt)
               this.addStructure();
               this.caption();
+              this.profileVisible = true;
             }, 20);
           }
         },

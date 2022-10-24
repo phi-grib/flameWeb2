@@ -1,4 +1,23 @@
-
+.spinner-border {
+    display: block;
+    position: absolute; 
+    right: 77%; 
+    top: 47%; 
+    z-index: 1031;
+    color:#e59300;
+  }
+  
+  #overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #FAFAFA;
+    opacity: 0.7;
+    z-index: 2;
+    cursor: pointer;
+  }
 .btn-ets-delete {
     background-color: #fa1750;
     color: #ffffff;
