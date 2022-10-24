@@ -96,26 +96,11 @@ export class ModelListSelectorComponent implements OnInit {
     }
   }
   selectAll(event) {
-    //pending comment
     const isChecked = event.target.checked;
-    var lastPage = false;
-
-    let ctxPage = document.getElementsByClassName('page-link');
-    let startPage = <HTMLElement>ctxPage[1];
-    startPage.click();
-
-    while (!lastPage) {
-      let checkBoxes = document.querySelectorAll<HTMLElement | any>(
-        '.form-check-input'
-      );
-      checkBoxes.forEach((chckbox) => {
-        if (chckbox.checked != isChecked) chckbox.click();
-      });
-      let nextPage = document.getElementById('dataTableModels_next');
-
-      lastPage = nextPage.className.includes('disabled');
-      nextPage.click();
-    }
+    $('#dataTableModelsSelector').DataTable().rows().every(function (idx, tableLoop, rowLoop) {
+      var node = this.node()
+      let checkbox = node.childNodes[0].childNodes[0]
+      if (checkbox.checked != isChecked) checkbox.click();
+    });
   }
-
 }
