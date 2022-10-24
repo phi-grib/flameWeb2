@@ -39,6 +39,7 @@ export class ConfigurationComponent implements OnInit {
     },10)
  
     this.model.listModels = {};
+    this.model.listModelsSelected = [];
     $('#dataTableModelsSelector').DataTable().destroy();
     this.model.name = undefined;
     this.func.getModelList();
