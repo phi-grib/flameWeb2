@@ -32,7 +32,7 @@ export class ProfilingButtonComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.defaultProfileName();
-    },1000)
+    },500)
     $(function () {
       $('[data-toggle="popover"]').popover();
     });
@@ -192,7 +192,6 @@ export class ProfilingButtonComponent implements OnInit {
              this.commonService.setPredictionExec(true);
          }
          clearInterval(intervalId);
-         $('#dataTablePredictions').DataTable().destroy();
        }
       }
     )}
