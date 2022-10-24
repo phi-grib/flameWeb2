@@ -65,6 +65,7 @@ export class ManageModelsComponent {
             // this.modelName = '';
             this.model.listModels = {};
             $('#dataTableModels').DataTable().destroy();
+            $('#dataTableModelsSelector').DataTable().destroy();
             this.model.name = this.modelName;
             this.model.version = 0;
             this.model.trained = false;
@@ -92,6 +93,7 @@ export class ManageModelsComponent {
         });
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
+        $('#dataTableModelsSelector').DataTable().destroy();
         this.model.name = undefined ;
         this.model.version = undefined;
         this.func.getModelList();
@@ -115,6 +117,7 @@ export class ManageModelsComponent {
         
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
+        $('#dataTableModelsSelector').DataTable().destroy();
         // this.model.name = this.model.name;
         this.model.version = 0;
         this.func.getModelList();
@@ -137,6 +140,7 @@ export class ManageModelsComponent {
         });
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
+        $('#dataTableModelsSelector').DataTable().destroy();
         // this.model.name = this.model.name;
         this.model.version = 0;
         this.func.getModelList();
@@ -253,6 +257,7 @@ export class ManageModelsComponent {
           console.log(result['message']);
           clearInterval(intervalId);
           $('#dataTableModels').DataTable().destroy();
+          $('#dataTableModelsSelector').DataTable().destroy();
           this.func.getModelList();
           return;
         }
@@ -265,6 +270,7 @@ export class ManageModelsComponent {
           });
           this.model.listModels = {};
           $('#dataTableModels').DataTable().destroy();
+          $('#dataTableModelsSelector').DataTable().destroy();
           this.func.getModelList();
         }
         else {
@@ -302,6 +308,7 @@ export class ManageModelsComponent {
         this.manage.file = undefined;
         this.model.listModels = {};
         $('#dataTableModels').DataTable().destroy();
+        $('#dataTableModelsSelector').DataTable().destroy();
         this.func.getModelList();
         // this.model.secret = true;
       },
