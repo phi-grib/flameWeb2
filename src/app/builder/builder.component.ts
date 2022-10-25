@@ -110,7 +110,7 @@ export class BuilderComponent implements OnInit {
         let iter = 0;
         const intervalId = setInterval(() => {
           if (iter < 500) {
-            this.checkModel(name, version, inserted, intervalId);
+            this.checkModel(name, result, inserted, intervalId);
           } else {
             clearInterval(intervalId);
             const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
@@ -145,9 +145,14 @@ export class BuilderComponent implements OnInit {
   }
 
   // Periodic function to check model
-  checkModel(name, version, inserted, intervalId) {
-    this.commonService.getModel(name, version).subscribe(
+  checkModel(name, build_id, inserted, intervalId) {
+
+    // version in building is allways 0
+    let version = 0
+
+    this.commonService.getModelToken(name, build_id).subscribe(
       result => {
+        console.log(result);
 
         if (result['aborted']) {
           $('#dataTableModels').DataTable().destroy();
@@ -160,7 +165,7 @@ export class BuilderComponent implements OnInit {
           this.toastr.clear(inserted.toastId);
           this.toastr.error('Model \"' + name + '\" building task has not completed. Check the browser console for more information', 
             'Aborted', { timeOut: 10000, positionClass: 'toast-top-right'});
-          console.log('ERROR report produced by building task of model ', name, 'version', version);
+          console.log('ERROR report produced by building task of model ', name);
           console.log(result['aborted']);
           clearInterval(intervalId);
           this.func.getModelList();

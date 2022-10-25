@@ -64,6 +64,12 @@ export class CommonService {
     return this.http.get(url);
   }
 
+  getModelToken(model: string, token: string): Observable<any> {
+    const url: string =
+      environment.baseUrl_manage + "model/" + model + "/token/" + token;
+    return this.http.get(url);
+  }
+
   getPrediction(predictionName: string): Observable<any> {
     const url: string =
       environment.baseUrl_manage + "prediction/" + predictionName;
