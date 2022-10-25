@@ -13,12 +13,10 @@ export class ProfileListComponent implements OnInit {
   prevTR = undefined;
   prevTH = undefined;
   opt2 = {
-    autoWidth: true,
-    destroy: true,
+    deferRender: true,
     paging: true,
     ordering: true,
-    searching: true,
-    order: [[1,'desc']],
+    destroy: true,
     info: true,
   }
   constructor(public profile: Profile,
@@ -83,7 +81,6 @@ export class ProfileListComponent implements OnInit {
   selectProfile(profile,tr){
     this.prediction.name = undefined;
     this.prediction.result = undefined;
-    // this.profile.name = 
     this.prediction.date = profile[3];
     if (this.prevTR) {
       this.prevTR.classList.remove('selected')
