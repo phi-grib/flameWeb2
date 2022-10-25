@@ -31,10 +31,19 @@ export class ConfigurationComponent implements OnInit {
 
   changeUserProfile (profile) {
     this.globals.read_only = (profile=='basic');
-
+    //removes the "active" class when models tab reappears
+    setTimeout(() => {
+      if(!this.globals.read_only){
+       $('#build-tab-line').removeClass("active")
+      }    
+    },10)
+ 
     this.model.listModels = {};
+    this.model.listModelsSelected = [];
     $('#dataTableModels').DataTable().destroy();
+    $('#dataTableModelsSelector').DataTable().destroy();
     this.model.name = undefined;
+    this.model.version = undefined;
     this.func.getModelList();
 
     this.space.spaces = [];

@@ -128,6 +128,7 @@ export class BuilderComponent implements OnInit {
       },
       error => {
         $('#dataTableModels').DataTable().destroy();
+        $('#dataTableModelsSelector').DataTable().destroy();
         const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
         if (index > -1) {
           this.model.trainig_models.splice(index, 1);
@@ -155,6 +156,7 @@ export class BuilderComponent implements OnInit {
 
         if (result['aborted']) {
           $('#dataTableModels').DataTable().destroy();
+          $('#dataTableModelsSelector').DataTable().destroy();
           const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
           if (index > -1) {
             this.model.trainig_models.splice(index, 1);
@@ -173,6 +175,7 @@ export class BuilderComponent implements OnInit {
         if (!result ['waiting']) {
 
           $('#dataTableModels').DataTable().destroy();
+          $('#dataTableModelsSelector').DataTable().destroy();
   
           const dict_info = {};
           for (const aux of result) {
@@ -217,6 +220,7 @@ export class BuilderComponent implements OnInit {
       error => { // CHECK what type of error
         // if (error.error.code !== 0) {
           $('#dataTableModels').DataTable().destroy();
+          $('#dataTableModelsSelector').DataTable().destroy();
           const index = this.model.trainig_models.indexOf(name + '-' + version, 0);
           if (index > -1) {
             this.model.trainig_models.splice(index, 1);

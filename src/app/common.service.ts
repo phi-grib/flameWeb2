@@ -5,7 +5,7 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { environment } from "../environments/environment";
 
 @Injectable({
@@ -14,16 +14,38 @@ import { environment } from "../environments/environment";
 export class CommonService {
   constructor(private http: HttpClient) {}
 
+  //communicates to the component in charge of displaying the prediction, which molecule should present and which model 
+  private idxmodelmol = new Subject<any>();
+  idxmodelmol$ = this.idxmodelmol.asObservable();
+  // communicate to distant component that makes a call to getPrediction
+  private predictionActive = new Subject<string>();
+  predictionActive$ = this.predictionActive.asObservable();
+  //checks if the modal where the component list is displayed or hidden
+  private statusModelTab = new BehaviorSubject<boolean>(false);
+  statusModelTab$ = this.statusModelTab.asObservable();
+  //observables to communicate to components without parent-child or sibling relationship, on current values
+  private currentCompoundTab = new Subject<string>();
+  currentCompoundTab$ = this.currentCompoundTab.asObservable();
+  private currentSelection = new Subject<{}>();
+  currentSelection$ = this.currentSelection.asObservable();
+  // check if the selected compound is valid
+  private isValidCompound = new BehaviorSubject<boolean>(false);
+  isValidCompound$ = this.isValidCompound.asObservable();
+  // communicates to the component containing the list of models, which models should be selected
+  private loadCollection = new Subject<{}>();
+  loadCollection$ = this.loadCollection.asObservable();
+  //reports that a prediction has been launched
+  private predictionExec = new Subject<boolean>();
+  predictionExec$ = this.predictionExec.asObservable();
+  //control the pagination
+  private controlPagination = new Subject<boolean[]>();
+  controlPagination$ = this.controlPagination.asObservable();
+  
   /**
    * Retrives the list of all models form the server
    */
   getModelList(): Observable<any> {
     const url: string = environment.baseUrl_manage + "models";
-    return this.http.get(url);
-  }
-
-  getPredictionList(): Observable<any> {
-    const url: string = environment.baseUrl_manage + "predictions";
     return this.http.get(url);
   }
   getVerification(model: string, version: number): Observable<any> {
@@ -123,5 +145,33 @@ export class CommonService {
       version +
       "/parameters";
     return this.http.get(url);
+  }
+  setPredictName(predictName: any){
+    this.predictionActive.next(predictName)
+  }
+  setPredictionExec(pred: boolean){
+    this.predictionExec.next(pred)
+  }
+
+  setStatusModelTab(status: boolean){
+    this.statusModelTab.next(status)
+  }
+  setCurrentCompoundTab(compoundTab: string) {
+    this.currentCompoundTab.next(compoundTab);
+  }
+  setIsvalidCompound(valid: boolean) {
+    this.isValidCompound.next(valid);
+  }
+  setCurrentSelection(selection: {}) {
+    this.currentSelection.next(selection);
+  }
+  setMolAndModelIndex(molidx:number,modelidx:number) {
+    this.idxmodelmol.next([molidx,modelidx]);
+  }
+  setCollection(collection: object){
+    this.loadCollection.next(collection);
+  }
+  setPagination(noPreviousMol:boolean,noNextMol:boolean){
+    this.controlPagination.next([noPreviousMol,noNextMol])
   }
 }

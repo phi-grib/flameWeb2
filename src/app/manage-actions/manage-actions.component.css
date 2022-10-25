@@ -1,0 +1,14 @@
+.btn-ets-do {
+    background: #0076a3;
+    color: #ffffff;
+    border-width: 0;
+    font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+    letter-spacing: 0.05em;
+    border-radius: 0;
+}
+.btn-ets-do:hover,
+.btn-ets-do:focus,
+.btn-ets-do.active {
+    background:#22577a ;
+    color: #ffffff;
+}

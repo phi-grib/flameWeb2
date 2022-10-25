@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="row">
+        <div class="col-4 mr-4 ml-4">
+            <div class="model_name">Selected compounds</div>
+            <table *ngIf="this.compound.listCompoundsSelected.length > 0 else compoundBlock" class="table table-sm">
+                <tbody>
+                    <tr *ngFor="let compound of this.compound.listCompoundsSelected">
+                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left"><strong>{{compound}}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <ng-template #compoundBlock>
+             <span>No compound selected, use Add compound.</span>  
+            </ng-template>
+        </div>
+        <div class="col-4">
+            <div class="model_name">Selected models</div>
+            <table *ngIf="this.model.listModelsSelected.length > 0 else modelBlock" class="table table-sm">
+                <tbody>
+                    <tr *ngFor="let model of this.model.listModelsSelected">
+                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left"><strong>{{model.name}} v.{{model.version}}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <ng-template #modelBlock>
+             <span>No models selected, use Add model.</span>  
+        </ng-template>
+        </div>
+    </div>
+
+</div>

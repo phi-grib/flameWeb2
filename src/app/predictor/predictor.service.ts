@@ -10,6 +10,15 @@ export class PredictorService {
 
   constructor(private http: HttpClient) { }
 
+  getPrediction(predictionName: string): Observable<any> {
+    const url: string = environment.baseUrl_manage + 'prediction/' + predictionName;
+    return this.http.get(url);
+  }
+  getPredictionList(): Observable<any> {
+    const url: string = environment.baseUrl_manage + 'predictions';
+    return this.http.get(url);
+  }
+
   predict(modelName: string, version: string, file: any, predictionName: string): Observable<any> {
 
     const formData = new FormData();
@@ -48,5 +57,23 @@ export class PredictorService {
     const url: string = environment.baseUrl_manage + 'basket/' + item;
     return this.http.get(url);
   }
+  deleteCollection(name: string){
+    const url = environment.baseUrl_manage + "collection/"+name
+    return this.http.delete(url); 
+
+  }
+
+  collection(name:string,endpoints,versions){
+    const url = environment.baseUrl_manage + "collection/"+name
+    const formData = new FormData();
+    formData.append("endpoints",endpoints)
+    formData.append("versions",versions)
+    return this.http.put(url,formData)
+  }
+  getCollections(): Observable<any> {
+    const url = environment.baseUrl_manage + "collections"
+    return this.http.get(url);
+  }
+  
 
 }

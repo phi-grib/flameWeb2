@@ -1,94 +1,135 @@
 <div class="container-fluid app-base">
 
-    <div class="row" id="top-bar">
+  <div class="row" id="top-bar">
 
-        <div class="col-4 p-0">
-          <ul class="nav nav-pills pl-2" id="top-tab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="build-tab-line" data-toggle="tab" href="#build" role="tab" aria-controls="build-tab" aria-selected="true">Models</a>
+      <div class="col-4 p-0">
+        <ul class="nav nav-pills pl-2" id="top-tab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="build-tab-line" *ngIf="!this.globals.read_only" data-toggle="tab" href="#build" role="tab" aria-controls="build-tab" aria-selected="true">Models</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-disabled="true" id="selector-tab-line" data-toggle="tab" href="#selector" role="tab" aria-controls="selector-tab" aria-selected="false">Selector</a>
+        </li>
+          <li class="nav-item">
+            <a class="nav-link" id="predict-tab-line" data-toggle="tab" href="#predict" role="tab" aria-controls="predict-tab" aria-selected="false">Predictions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="profiles-tab-line" data-toggle="tab" href="#profiles" role="tab" aria-controls="profiles-tab" aria-selected="false">Profiles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="similarity-tab-line" data-toggle="tab" href="#similarity" role="tab" aria-controls="similarity-tab" aria-selected="false">Spaces</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" id="configuration-tab-line" data-toggle="tab" href="#configuration" role="tab" aria-controls="configuration-tab" aria-selected="false">Configuration</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" id="predict-tab-line" data-toggle="tab" href="#predict" role="tab" aria-controls="predict-tab" aria-selected="false">Predictions</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="similarity-tab-line" data-toggle="tab" href="#similarity" role="tab" aria-controls="similarity-tab" aria-selected="false">Spaces</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="configuration-tab-line" data-toggle="tab" href="#configuration" role="tab" aria-controls="configuration-tab" aria-selected="false">Configuration</a>
-              </li>
-          </ul>
+        </ul>
+      </div>
+      <div class="col mr-2">
+          <div class="logo-container" >
+            <a *ngIf="this.toxhub==''" href="http://etransafe.eu"  target="_Blank"><img class="logo" src="assets/img/etransafe_logo.svg"></a>
+            <a *ngIf="this.toxhub!=''" href="{{this.toxhub}}" ><img class="logo" src="assets/img/toxhub_logo.svg"></a>
+            <img class="logo" src="assets/img/efpia_logo.svg">
+            <img class="logo" src="assets/img/imi_logo.svg">
+            <img class="logo-right" src="assets/img/eu_logo.svg">
+          </div>
+      </div>
+  </div>
+    
+  <div class="tab-content">
+
+      <div class="tab-pane fade show active" id="build" role="tabpanel" aria-labelledby="build-tab">
+          <div style="height:90vh">                
+             <as-split direction="horizontal" (gutterClick)="this.gutterClickModels()" class="app-base">
+                <as-split-area [size]="this.modelleft">
+                  <app-model-list></app-model-list>
+                </as-split-area>
+
+                <as-split-area [size]="this.modelright">
+                  <div *ngIf="(this.model.name != undefined)">
+                      <app-validations [name] = this.model.name [version] = this.model.version></app-validations>
+                  </div>
+                </as-split-area>
+
+              </as-split>
+          </div>
+      </div>
+      <div class="tab-pane fade" id="selector" role="tabpanel" aria-labelledby="selector-tab">
+        <div style="height:90vh">
+          <as-split direction="horizontal" (gutterClick)="this.gutterClickSelector()">
+            <as-split-area  [size]="this.selectorleft">
+                <app-selector></app-selector>
+              </as-split-area>
+              <as-split-area  [size]="this.selectorright">
+                <as-split #mySplit direction="vertical" [gutterSize]="10" [useTransition]="true" [gutterDblClickDuration]="0">
+                    <as-split-area [order]="1" [size]="size1">
+                        <app-current-selection>
+                        </app-current-selection>
+                    </as-split-area>
+                    <as-split-area [order]="2" [size]="size2">
+                        <div *ngIf="(this.model.name != undefined)">
+                            <!-- <app-validations [name]=this.model.name [version]=this.model.version></app-validations> -->
+                          <app-validations-selector [name]=this.model.name [version]=this.model.version></app-validations-selector> 
+                        </div>
+                    </as-split-area>
+                </as-split>
+              </as-split-area>
+              </as-split>
         </div>
-        <div class="col mr-2">
-            <div class="logo-container" >
-              <a *ngIf="this.toxhub==''" href="http://etransafe.eu"  target="_Blank"><img class="logo" src="assets/img/etransafe_logo.svg"></a>
-              <a *ngIf="this.toxhub!=''" href="{{this.toxhub}}" ><img class="logo" src="assets/img/toxhub_logo.svg"></a>
-              <img class="logo" src="assets/img/efpia_logo.svg">
-              <img class="logo" src="assets/img/imi_logo.svg">
-              <img class="logo-right" src="assets/img/eu_logo.svg">
-            </div>
+    </div>
+
+      <div class="tab-pane fade" id="predict" role="tabpanel" aria-labelledby="predict-tab" >
+          <div style="height:90vh">                
+              <as-split direction="horizontal" (gutterClick)="this.gutterClickPredictions()">
+                 <as-split-area [size]="this.predictleft">
+                  <app-prediction-list></app-prediction-list>
+                 </as-split-area>
+
+                 <as-split-area [size]="this.predictright">
+                    <div class="col p-0 info scrollable" >
+                          <app-prediction *ngIf="this.prediction.result != undefined"></app-prediction>
+                    </div>
+                 </as-split-area>
+               </as-split>
+          </div>
+      </div>
+
+      <div class="tab-pane fade" id="profiles" role="tabpanel" aria-labelledby="profiles-tab" >
+        <div style="height:90vh">                
+            <as-split direction="horizontal" (gutterClick)="this.gutterClickProfiles()">
+               <as-split-area [size]="this.predictleft">
+             <app-profile-list></app-profile-list>
+               </as-split-area>
+
+               <as-split-area [size]="this.predictright">
+                <app-profile-item></app-profile-item>
+               </as-split-area>
+             </as-split>
         </div>
     </div>
       
-    <div class="tab-content">
+      
+      <div class="tab-pane fade" id="similarity" role="tabpanel" aria-labelledby="similarity-tab" >
+          <div style="height:90vh">                
+              <as-split direction="horizontal" (gutterClick)="this.gutterClickSpaces()">
+                 <as-split-area [size]="this.spaceleft">
+                  <app-space-list></app-space-list>
+                 </as-split-area>
 
-        <div class="tab-pane fade show active" id="build" role="tabpanel" aria-labelledby="build-tab">
-            <div style="height:90vh">                
-               <as-split direction="horizontal" (gutterClick)="this.gutterClickModels()" class="app-base">
-                  <as-split-area [size]="this.modelleft">
-                    <app-model-list></app-model-list>
-                  </as-split-area>
-
-                  <as-split-area [size]="this.modelright">
-                    <div *ngIf="(this.model.name != undefined)">
-                        <app-validations [name] = this.model.name [version] = this.model.version></app-validations>
+                 <as-split-area [size]="this.spaceright">
+                    <div class="col p-0 info scrollable" >
+                      <div *ngIf="(this.space.spaceName != undefined) && (this.globals.mainTabActive=='#similarity')">
+                          <app-search [spaceName] = this.space.spaceName [spaceVersion] = this.space.spaceVersion ></app-search>
+                      </div>
                     </div>
-                  </as-split-area>
+                 </as-split-area>
+               </as-split>
+          </div>
+      </div>
 
-                </as-split>
-            </div>
-        </div>
+      <div class="tab-pane fade " id="configuration" role="tabpanel" aria-labelledby="configuration-tab" >
+          <app-configuration></app-configuration>
+      </div>
 
-        <div class="tab-pane fade" id="predict" role="tabpanel" aria-labelledby="predict-tab" >
-            <div style="height:90vh">                
-                <as-split direction="horizontal" (gutterClick)="this.gutterClickPredictions()">
-                   <as-split-area [size]="this.predictleft">
-                    <app-prediction-list></app-prediction-list>
-                   </as-split-area>
- 
-                   <as-split-area [size]="this.predictright">
-                      <div class="col p-0 info scrollable" >
-                        <div *ngIf="(this.prediction.name != undefined) && (this.globals.mainTabActive=='#predict')">
-                            <app-prediction [predictionName]=this.prediction.name></app-prediction>
-                        </div>
-                      </div>
-                   </as-split-area>
-                 </as-split>
-            </div>
-        </div>
-        
-        
-        <div class="tab-pane fade" id="similarity" role="tabpanel" aria-labelledby="similarity-tab" >
-            <div style="height:90vh">                
-                <as-split direction="horizontal" (gutterClick)="this.gutterClickSpaces()">
-                   <as-split-area [size]="this.spaceleft">
-                    <app-space-list></app-space-list>
-                   </as-split-area>
- 
-                   <as-split-area [size]="this.spaceright">
-                      <div class="col p-0 info scrollable" >
-                        <div *ngIf="(this.space.spaceName != undefined) && (this.globals.mainTabActive=='#similarity')">
-                            <app-search [spaceName] = this.space.spaceName [spaceVersion] = this.space.spaceVersion ></app-search>
-                        </div>
-                      </div>
-                   </as-split-area>
-                 </as-split>
-            </div>
-        </div>
-
-        <div class="tab-pane fade " id="configuration" role="tabpanel" aria-labelledby="configuration-tab" >
-            <app-configuration></app-configuration>
-        </div>
-
-    </div>
+  </div>
 
 </div>

@@ -147,7 +147,7 @@ tr.selected {
   color:#e59300;
 }
 
-.spinner-border {
+/* .spinner-border {
   display: block;
   position: absolute; 
   right: 45%; 
@@ -165,7 +165,7 @@ tr.selected {
   opacity: 0.7;
   z-index: 2;
   cursor: pointer;
-}
+} */
 
 .page-link:focus {
   box-shadow: none !important;

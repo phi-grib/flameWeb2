@@ -1,0 +1,286 @@
+<div class="row" *ngIf="this.model.secret">
+    <div class="card w-100">
+        <div class="card-body">
+            <div class="alert alert-info text-center" role="alert">
+                Secret mode model. No training series data has been imported.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+
+    <div class="card w-100" style="min-height: 600px">
+
+        <div id="overlay" *ngIf="!this.modelVisible">
+            <div class="spinner-border text-etransafe" style="width: 10rem; height: 10rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+        <!--NAVS tables-->
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-summary-selector-tab" data-toggle="tab" href="#pills-summary-selector" role="tab" aria-controls="pills-summary-selector" aria-selected="true">Summary</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-prediction-selector-tab" data-toggle="tab" href="#pills-prediction-selector" role="tab" aria-controls="pills-prediction-selector" aria-selected="false">Prediction</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-fitting-tab" data-toggle="tab" href="#pills-fitting-selector" role="tab" aria-controls="pills-fitting" aria-selected="false">Fitting</a>
+            </li>
+            <li class="nav-item" *ngIf="!this.model.secret">
+                <a class="nav-link" id="pills-series-tab" data-toggle="tab" href="#pills-series-selector" role="tab" aria-controls="pills-series" aria-selected="false">Series</a>
+            </li>
+            <li class="nav-item" *ngIf="!this.model.secret">
+                <a class="nav-link" id="pills-other-tab" data-toggle="tab" href="#pills-other-selector" role="tab" aria-controls="pills-other" aria-selected="false">Other</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="pills-tabContent" [hidden]="!this.modelVisible">
+
+            <!--SUMMARY TAB-->
+            <div class="tab-pane fade show active" id="pills-summary-selector" role="tabpanel" aria-labelledby="pills-summary-tab">
+                <div class="card-body">
+                    <div id="container">
+                        <div class="col-2" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
+                            <div class="model_name">{{modelName}} ver.{{modelVersion}}</div>
+                            <table class="table table-sm">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelBuildInfo['model'][0]}}"><strong>Type</strong></td>
+                                        <td class="text-right text-capitalize">{{this.modelBuildInfo['model'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelBuildInfo['nobj'][0]}}"><strong>Molecules</strong></td>
+                                        <td class="text-right text-capitalize">{{this.modelBuildInfo['nobj'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelBuildInfo['nvarx'][0]}}"><strong>Variables</strong></td>
+                                        <td class="text-right text-capitalize">{{this.modelBuildInfo['nvarx'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelTypeInfo['quantitative'][0]}}"><strong>Quantitative</strong></td>
+                                        <td class="text-right text-capitalize">{{this.modelTypeInfo['quantitative'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelTypeInfo['conformal'][0]}}"><strong>Conformal</strong></td>
+                                        <td class="text-right text-capitalize">{{this.modelTypeInfo['conformal'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelTypeInfo['ensemble'][0]}}"><strong>Ensemble</strong></td>
+                                        <td class="text-right text-capitalize">{{this.modelTypeInfo['ensemble'][1]}}</td>
+                                    </tr>
+                                    <tr *ngIf="this.modelTypeInfo.confidential">
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelTypeInfo['confidential'][0]}}"><strong>Confidential</strong></td>
+                                        <td class="text-right text-capitalize">{{this.modelTypeInfo['confidential'][1]}}</td>
+                                    </tr>
+                                    <!-- <tr *ngIf="this.modelTypeInfo['ensemble'][1]">
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelTypeInfo['ensemble_names'][0]}}"><strong>Ensemble models</strong></td>
+                                        <td class="text-right text-capitalize">{{this.modelTypeInfo['ensemble_names'][1]}}</td>
+                                    </tr>
+                                    <tr *ngIf="this.modelTypeInfo['ensemble'][1]">
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelTypeInfo['ensemble_versions'][0]}}"><strong>Ensemble versions</strong></td>
+                                        <td class="text-right text-capitalize">{{this.modelTypeInfo['ensemble_versions'][1]}}</td>
+                                    </tr> -->
+                                </tbody>
+                            </table>
+                            <br>
+                        </div>
+
+                        <!-- add coupled bars with Sensitivity, Specificity and MCC -->
+                        <plotly-plot [data]="plotSummary.data" [layout]="plotSummary.layout" [config]="plotSummary.config">
+                        </plotly-plot>
+
+                        <!-- pie plot with positive and negative -->
+                        <plotly-plot [data]="plotPie.data" [layout]="plotPie.layout" [config]="plotPie.config">
+                        </plotly-plot>
+                    </div>
+                </div>
+            </div>
+            <!--SUMMARY TAB END-->
+
+            <!--PREDICTION TAB-->
+            <div class="tab-pane fade" id="pills-prediction-selector" role="tabpanel" aria-labelledby="pills-prediction-tab">
+                <div class="card-body">
+                    <div id="container">
+                        <!-- <div class="row justify-content-between"> -->
+                        <div class="col-3" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
+                            <div class="model_name">{{modelName}} ver.{{modelVersion}}</div>
+                            <table class="table table-sm">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity'][0]}}"><strong>Sensitivity</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['Sensitivity'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Specificity'][0]}}"><strong>Specificity</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['Specificity'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCC'][0]}}"><strong>MCC</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['MCC'][1]}}</td>
+                                    </tr>
+
+                                    <tr *ngIf="modelValidationInfo['Conformal_coverage']">
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Conformal_coverage'][0]}}"><strong>Conformal coverage</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['Conformal_coverage'][1]}}</td>
+                                    </tr>
+                                    <tr *ngIf="modelValidationInfo['Conformal_accuracy']">
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Conformal_accuracy'][0]}}"><strong>Conformal accuracy</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['Conformal_accuracy'][1]}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-4" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
+                            <!--CONFUSION MATRIX-->
+                            <app-confusion-matrix [TP]="this.modelValidationInfo['TP'][1]" [FP]="this.modelValidationInfo['FP'][1]" [FN]="this.modelValidationInfo['FN'][1]" [TN]="this.modelValidationInfo['TN'][1]"> </app-confusion-matrix>
+                        </div>
+                        <div class="col-4">
+                            <plotly-plot [data]="predictData" [layout]="plotCommon.layout" [config]="plotCommon.config">
+                            </plotly-plot>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--PREDICTION TAB END-->
+
+            <!--FITTING-->
+            <div class="tab-pane fade" id="pills-fitting-selector" role="tabpanel" aria-labelledby="pills-fitting-tab">
+                <div class="card-body">
+                    <div id="container">
+                        <!-- <div class="row justify-content-between"> -->
+
+                        <div class="col-3" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
+                            <div class="model_name">{{modelName}} ver.{{modelVersion}}</div>
+                            <table class="table table-sm">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Sensitivity_f'][0]}}"><strong>Sensitivity</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['Sensitivity_f'][1]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Specificity_f'][0]}}"><strong>Specificity</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['Specificity_f'][1]}}</td>
+                                    </tr>
+                                    <tr *ngIf="modelValidationInfo['MCC_f']">
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['MCC_f'][0]}}"><strong>MCC</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['MCC_f'][1]}}</td>
+                                    </tr>
+
+                                    <tr *ngIf="modelValidationInfo['Conformal_coverage_f']">
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Conformal_coverage_f'][0]}}"><strong>Conformal coverage</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['Conformal_coverage_f'][1]}}</td>
+                                    </tr>
+                                    <tr *ngIf="modelValidationInfo['Conformal_accuracy_f']">
+                                        <td class="text-left text-capitalize" data-toggle="tooltip" data-placement="left" title="{{modelValidationInfo['Conformal_accuracy_f'][0]}}"><strong>Conformal accuracy</strong></td>
+                                        <td class="text-right text-capitalize">{{modelValidationInfo['Conformal_accuracy_f'][1]}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-4" *ngIf="objectKeys(this.modelValidationInfo).length > 0">
+                            <app-confusion-matrix [TP]="this.modelValidationInfo['TP_f'][1]" [FP]="this.modelValidationInfo['FP_f'][1]" [FN]="this.modelValidationInfo['FN_f'][1]" [TN]="this.modelValidationInfo['TN_f'][1]"> </app-confusion-matrix>
+                        </div>
+                        <div class="col-4">
+                            <plotly-plot [data]="fittingData" [layout]="plotCommon.layout" [config]="plotCommon.config">
+                            </plotly-plot>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--FITTING TAB END --->
+
+            <!--SERIES TAB-->
+            <div class="tab-pane fade" id="pills-series-selector" role="tabpanel" aria-labelledby="pills-series-tab">
+                <div class="card-body" *ngIf="this.model.secret">
+                    Nothing to show for secret models
+                    <canvas id="scores_canvas-select"></canvas>
+                    <div id="scoresDIV-select"></div>
+                </div>
+
+                <div class="card-body" *ngIf="!this.model.secret">
+                    <div class="row justify-content-between">
+                        <div class="col">
+                            <div id="scoresDIV-select"></div>
+                            <div class="form-group col-md-8">
+                                <label class="bmd-label-static pr-2">Training series: show as</label>
+                                <select class="form-select" id="projectStyleTrainingMarker" (change)="changeProjectStyleMark($event)">
+                                <option value='dots'>dots</option>
+                                <option value='density'>density</option>
+                                <option value='both'>both</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <canvas class="fixed_canvas" id="scores_canvas-select"></canvas>
+
+                            <table id="tableSelections" class="minitable compact">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%">Name</th>
+                                        <th class="align-middle text-center" style="width: 70%">Structure</th>
+                                        <th class="align-right" style="width: 10%">Activity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                            <!-- <plotly-plot 
+                                    [data]="plotPie.data" 
+                                    [layout]="plotPie.layout" 
+                                    [config]="plotPie.config">
+                                </plotly-plot>   -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--SERIES TAB END-->
+
+            <!--OTHER TAB-->
+            <div class="tab-pane fade" id="pills-other-selector" role="tabpanel" aria-labelledby="pills-other-tab">
+                <div class="card-body" *ngIf="this.model.secret">
+                    Nothing to show for secret models
+                </div>
+                <div class="card-body" *ngIf="!this.model.secret">
+                    <!-- <div class="row justify-content-between"> -->
+                    <div class="col" *ngIf="this.features">
+                        <plotly-plot [data]="plotFeatures.data" [layout]="plotFeatures.layout" [config]="plotFeatures.config">
+                        </plotly-plot>
+                        <div class="btn-toolbar mt-3 mb-3 ml-4 justify-content-between" role="toolbar" aria-label="Toolbar plot import/export">
+                            <p class="method_description ">Feature importances computed using {{this.features_method}} method</p>
+                            <button type="button" class="btn btn-ets-ext" data-toggle="modal" (click)="downloadFeatures()">Download</button>
+                        </div>
+                    </div>
+                    <div class="card-body" *ngIf="!this.features">
+                        <div class="alert alert-info text-center" role="alert">
+                            No additional model information
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <!--OTHER TAB END-->
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+<div class="row" *ngIf="this.modelWarning!='' ">
+    <div class="card w-100">
+        <div class="card-body">
+            <div class="alert alert-danger text-center" role="alert">
+                {{this.modelWarning}}
+            </div>
+        </div>
+    </div>
+</div>

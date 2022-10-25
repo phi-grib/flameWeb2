@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { Model, Prediction, Space, Globals } from './Globals';
+import { PredictorService } from './predictor/predictor.service';
 declare var $: any;
 
 @Injectable({
@@ -14,7 +15,8 @@ export class CommonFunctions {
     public model: Model,
     public globals: Globals,
     public prediction: Prediction,
-    public space: Space) { }
+    public space: Space,
+    private predictorService: PredictorService) { }
 
   objectKeys = Object.keys;
 
@@ -227,6 +229,43 @@ export class CommonFunctions {
 
                 // console.log('refresh')
                 let me = this;
+                const tableSelector = $('#dataTableModelsSelector').DataTable({
+                  autoWidth: false,
+                  destroy: true,
+                  pageLength: this.model.pagelen,
+
+                  // this code adds selectors to all columns
+                  initComplete: function () {
+                    var icol = 0;
+                    this.api().columns().every( function () {
+                        var column = this;
+                        // example on how you can remove col 0 (quali/cuanti)
+                        if (icol!=0 && icol!=3) {
+                          // class "model_selector" was used to customize font size
+                          var select = $('<select class="model_selector" ><option value=""></option></select>')
+                              .appendTo( $(column.footer()).empty() )
+                              .on( 'change', function () {
+                                  var val = $.fn.dataTable.util.escapeRegex(
+                                      $(this).val()
+                                  );
+                                  column
+                                      .search( val ? '^'+val+'$' : '', true, false )
+                                      .draw();
+                              } );
+                          column.data().unique().sort().each( function ( d, j ) {
+                              select.append( '<option value="'+d+'">'+d+'</option>' )
+                          } );
+                        }
+                        icol++;
+                    });
+                  }
+                })
+                .on( 'length.dt', function () {
+                  me.model.pagelen =tableSelector.page.len()
+                });
+                if (currentPage != 0) {
+                  tableSelector.page(currentPage).draw('page');
+                }
                 const table = $('#dataTableModels').DataTable({
                   autoWidth: false,
                   destroy: true,
@@ -289,7 +328,7 @@ export class CommonFunctions {
   }
 
   getPredictionList() {
-    this.commonService.getPredictionList().subscribe(
+    this.predictorService.getPredictionList().subscribe(
       result => {
         if (result[0]) {
           this.prediction.predictions = result[1];
@@ -306,29 +345,6 @@ export class CommonFunctions {
                 order: [[4, 'desc']],
                 destroy: true
               });
-
-              if (this.prediction.predictions.length > 0) {
-                this.prediction.name = $('#dataTablePredictions tbody tr:first td:first').text();
-                for (var i=0; i < this.prediction.predictions.length; i++ ) {
-                    const ipred = this.prediction.predictions[i];
-                    if (ipred[0] === this.prediction.name) {
-                      this.prediction.modelName = ipred[1];
-                      this.prediction.modelVersion = ipred[2];
-                      this.prediction.date = ipred[3];
-                      this.prediction.modelID = ipred[5];
-                      // console.log ('found: ', this.prediction)
-                    }
-                }
-                // this.prediction.modelName = $('#dataTablePredictions tbody tr:first td:eq(1)').text();
-                // this.prediction.modelVersion = $('#dataTablePredictions tbody tr:first td:eq(2)').text();
-                // this.prediction.date = $('#dataTablePredictions tbody tr:first td:eq(4)').text();
-              }
-              // $('#dataTablePredictions tbody').on( 'click', 'tr', function () {
-              //   $('tr').removeClass('selected'); // removes all highlights from tr's
-              //   $(this).addClass('selected'); // adds the highlight to this row
-              // });
-
-              this.globals.tablePredictionVisible = true;
             }, 10);
           } 
           else {

@@ -1,7 +1,8 @@
 import { Component, OnInit} from '@angular/core';
 import { CommonFunctions } from '../common.functions';
-import { Model, Prediction, Globals } from '../Globals';
+import { Model, Prediction, Profile } from '../Globals';
 import 'datatables.net-bs4';
+import { CommonService } from '../common.service';
 declare var $: any;
 
 @Component({
@@ -14,12 +15,15 @@ export class PredictionListComponent implements OnInit {
   objectKeys = Object.keys;
 
   constructor(private func: CommonFunctions,
-              public globals: Globals,
               public prediction: Prediction,
-              private model: Model) {}
+              private model: Model,
+              private profile: Profile,
+              private service: CommonService,)
+              {}
 
   ngOnInit() {
     this.prediction.name = undefined;
+    this.prediction.result = undefined;
     this.model.name = undefined;
     this.model.version = undefined;
     this.model.trained = false;
@@ -27,11 +31,17 @@ export class PredictionListComponent implements OnInit {
   }
 
   selectPrediction(name: string, modelName: string, modelVersion: string, date: any, modelID: string) {
+    this.prediction.result = undefined;
+    this.profile.summary = undefined
+    this.profile.item = undefined;
     this.prediction.name = name;
     this.prediction.modelName = modelName;
     this.prediction.modelVersion = modelVersion;
     this.prediction.date = date;
     this.prediction.modelID = modelID;
+    this.service.setPredictName(name);
+    let closebtn = document.getElementById('headingPrediction')
+    closebtn.click();
   }
 
 }

@@ -1,0 +1,18 @@
+.title {
+    background: whitesmoke;
+    border: 2px solid transparent;
+    border-bottom-color: #0076a3;
+    color: #22577A;
+    font-weight: bold;
+}
+
+
+button {
+    background-color: #22577A;
+    color: white;
+}
+
+button:hover{
+    color: white;
+    background-color: #16394e;
+}
