@@ -1,4 +1,4 @@
-table {
+/* table {
     max-height: 400px;
         overflow: auto;
         color: black;
@@ -12,7 +12,7 @@ table  thead tr:nth-child(1) th {
 
 tbody tr {
     height: 50px;
-}
+} */
 .table {
     background-color: white;
     background: white;
@@ -31,6 +31,7 @@ tbody tr {
     border-bottom: 1px solid #B8DCED;
     vertical-align: middle;
 }
+
 .table tr {
     cursor: pointer;
 }
