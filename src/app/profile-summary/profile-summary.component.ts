@@ -208,7 +208,7 @@ export class ProfileSummaryComponent implements OnInit {
       auxData.push(compound, smiles)
       for (let y = 0; y < this.profile.summary['endpoint'].length; y++) {
 
-        var value = this.profile.summary['values'][i][y]
+        var value = this.profile.summary['values'][i][y].toFixed(2)
         if(pdf){
         if (!this.profile.summary['quantitative'][y]) {
           switch (value) {
