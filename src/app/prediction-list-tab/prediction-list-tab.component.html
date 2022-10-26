@@ -52,8 +52,9 @@
       <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
         
         <div class="card-body" *ngIf="this.prediction.result != undefined  && this.prediction.result['external-validation']"> 
-            <div id="container">
-            <div class="col-3">
+          
+            <div class="row">
+            <div class="col">
               <table class="table table-sm">
                 <tbody>
                   <tr *ngFor = "let key of objectKeys(modelValidationInfo)">
@@ -63,7 +64,7 @@
                 </tbody>
               </table> 
             </div>
-            <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
+            <div  class="col pt-4" *ngIf="this.modelValidationInfo['TP']">
               <app-confusion-matrix 
               [TP] = "this.modelValidationInfo['TP'][1]"
               [FP] = "this.modelValidationInfo['FP'][1]"
@@ -71,16 +72,18 @@
               [TN] = "this.modelValidationInfo['TN'][1]"
               ></app-confusion-matrix>                 
             </div>
-            <div class="col-4" *ngIf="this.modelValidationInfo['TP']">
+
+          </div>
+          <!-- <div class="row">
+            <div style="margin-left: 350px" class="col" *ngIf="this.modelValidationInfo['TP']">
               <plotly-plot 
               [data]="predictData" 
               [layout]="plotCommon.layout"
               [config]="plotCommon.config">
               </plotly-plot> 
             </div>
+          </div> -->
           </div>
-        </div>
-        
         <div class="card-body" >
           <table id="prediction" class="table m-0">
             <thead>
