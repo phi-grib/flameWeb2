@@ -20,6 +20,7 @@ export class QuantitConformalComponent implements OnChanges {
     @Input() modelName;
     @Input() modelVersion;
     @Input() modelID;
+    @Input() documentation;
 
     objectKeys = Object.keys;
     modelValidationInfo = {};

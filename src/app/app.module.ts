@@ -56,9 +56,6 @@ import { ManageActionsComponent } from './manage-actions/manage-actions.componen
 import { PredictButtonComponent } from './predict-button/predict-button.component';
 import { ProfilingButtonComponent } from './profiling-button/profiling-button.component';
 import { CurrentSelectionComponent } from './current-selection/current-selection.component';
-import { ValidationsSelectorComponent } from './validations-selector/validations-selector.component';
-import { QualitConformalSelectorComponent } from './qualit-conformal-selector/qualit-conformal-selector.component';
-import { QuantitConformalSelectorComponent } from './quantit-conformal-selector/quantit-conformal-selector.component';
 import { ProfileListComponent } from './profile-list/profile-list.component';
 import { ProfileSummaryComponent } from './profile-summary/profile-summary.component';
 import { ProfileItemComponent } from './profile-item/profile-item.component';
@@ -113,9 +110,6 @@ PlotlyModule.plotlyjs = PlotlyJS;
     PredictButtonComponent,
     ProfilingButtonComponent,
     CurrentSelectionComponent,
-    ValidationsSelectorComponent,
-    QualitConformalSelectorComponent,
-    QuantitConformalSelectorComponent,
     ProfileListComponent,
     ProfileSummaryComponent,
     ProfileItemComponent

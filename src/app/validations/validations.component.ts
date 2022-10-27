@@ -11,6 +11,7 @@ export class ValidationsComponent {
 
   @Input() name;
   @Input() version;
+  @Input() showDocumentation;
 
   constructor(public model: Model) { }
 
