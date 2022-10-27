@@ -1,73 +1,59 @@
-<app-manage-models></app-manage-models>
-
-<div  id="overlay" *ngIf="!this.globals.tableModelVisible">
-  <div class="spinner-border text-etransafe"  style="width: 10rem; height: 10rem;"  role="status">
-    <span class="sr-only">Loading...</span>
+<div id="overlay" *ngIf="!this.globals.tableModelVisible">
+  <div class="spinner-border text-etransafe" style="width: 10rem; height: 10rem;" role="status">
+      <span class="sr-only">Loading...</span>
   </div>
 </div>
 
-<!-- <div class ="ml-3 mr-3" [hidden] = "!this.globals.tableModelVisible"> -->
-<div [hidden] = "!this.globals.tableModelVisible">
-  <div class="col scrolltable">
-    <table id ="dataTableModels" class="table display compact" style="width:100%">
-      <thead>
-        <tr>
+<app-manage-models *ngIf="!this.chkbox"></app-manage-models>
+
+<table   [id]="this.DTID" class="table display compact" style="width:100%">
+  <thead>
+      <tr>
+          <th *ngIf="this.chkbox" style="width: 5%"><input class="ml-2" type="checkbox" (click)='selectAll($event)' /></th>
           <th style="width: 10%"></th>
-          <th >Name</th>
-          <th style="width: 5%" class="text-center">Ver</th>
+          <th>Name</th>
+          <th style="width: 5%">Ver</th>
           <th style="width: 5%"></th>
           <th style="width: 20%">Type</th>
           <!-- <th style="width: 12%">Subtype</th> -->
           <th style="width: 20%">Endpoint</th>
           <th style="width: 10%">Species</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let key of objectKeys(model.listModels).sort()" 
-          [ngClass]="{'selected': (model.listModels[key].name===this.model.name) && (model.listModels[key].version===this.model.version),
-                      'version': model.listModels[key].version > 0}"
-          (click)= "this.func.selectModel(model.listModels[key].name, model.listModels[key].version, model.listModels[key].modelID, model.listModels[key].trained,model.listModels[key].type,model.listModels[key].quantitative
-          , model.listModels[key].conformal, model.listModels[key].confidential, model.listModels[key].secret, model.listModels[key].ensemble, model.listModels[key].error)"
-          
-          title="{{model.listModels[key].quantitative ? 'quantitative' : 'qualitative'}} | {{model.listModels[key].type}} {{model.listModels[key].conformal ? 'conformal' : ''}} | {{model.listModels[key].numMols}} mols | {{model.listModels[key].variables}} vars ">
-          
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let key of objectKeys(model.listModels).sort()" [ngClass]="{'selected': (model.listModels[key].name===this.model.name) && (model.listModels[key].version===this.model.version),
+                            'version': model.listModels[key].version > 0}" (click)="this.func.selectModel(model.listModels[key].name, model.listModels[key].version, model.listModels[key].modelID, model.listModels[key].trained,model.listModels[key].type,model.listModels[key].quantitative
+                , model.listModels[key].conformal, model.listModels[key].confidential, model.listModels[key].secret, model.listModels[key].ensemble, model.listModels[key].error)" title="{{model.listModels[key].quantitative ? 'quantitative' : 'qualitative'}} | {{model.listModels[key].type}} {{model.listModels[key].conformal ? 'conformal' : ''}} | {{model.listModels[key].numMols}} mols | {{model.listModels[key].variables}} vars ">
+          <td *ngIf="this.chkbox"><input class="form-check-input" type="checkbox" (change)="onChange(model.listModels[key].name,model.listModels[key].version,$event)" id="flexCheckDefault" /></td>
           <td>
-            <i class = "fas" 
-                        [ngClass]="{
-                          'fa-grip-lines': !model.listModels[key].quantitative,
-                          'fa-circle': model.listModels[key].quantitative,
-                          'fa-times-circle': model.listModels[key].type == '-',
-                          'faa-flash animated': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version)}"
-                        [ngStyle]="{'color': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version) ? '#E69400' : (model.listModels[key].trained ? '#51cf66' : 'red' ) }" 
-                        aria-hidden="true"></i> 
-            <i class = "fas"
-                        [ngClass] = "{
-                          'fa-lock': model.listModels[key].secret,
-                          'fa-lock-open': model.listModels[key].confidential && !model.listModels[key].secret
-                        }"
-                        
-                        aria-hidden="true"></i>
-                        
+              <i class="fas" [ngClass]="{
+                                'fa-grip-lines': !model.listModels[key].quantitative,
+                                'fa-circle': model.listModels[key].quantitative,
+                                'fa-times-circle': model.listModels[key].type == '-',
+                                'faa-flash animated': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version)}" [ngStyle]="{'color': this.model.trainig_models.includes(model.listModels[key].name + '-' + model.listModels[key].version) ? '#E69400' : (model.listModels[key].trained ? '#51cf66' : 'red' ) }"
+                  aria-hidden="true"></i>
+              <i class="fas" [ngClass]="{
+                                'fa-lock': model.listModels[key].secret,
+                                'fa-lock-open': model.listModels[key].confidential && !model.listModels[key].secret
+                              }" aria-hidden="true"></i>
+
           </td>
           <td>{{model.listModels[key].name}}</td>
-          <td class="text-center">{{model.listModels[key].version}}</td>
-          <td class="text-center" >
-            <i class = "fas"
-            [ngClass] = "{
-              'fa-check': model.listModels[key].maturity=='mature',
-              'fa-certificate': model.listModels[key].maturity=='validated'
-            }"
-            aria-hidden="true"></i>     
-
+          <td>{{model.listModels[key].version}}</td>
+          <td class="text-center">
+              <i class="fas" [ngClass]="{
+                                'fa-check': model.listModels[key].maturity=='mature',
+                                'fa-certificate': model.listModels[key].maturity=='validated'
+                              }" aria-hidden="true"></i>
+          </td>
           <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_type}}</td>
           <!-- <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_subtype}}</td> -->
-          <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_endpoint}} </td>
+          <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_endpoint}}</td>
           <td class="text-truncate iffyTip hideText">{{model.listModels[key].bio_species}}</td>
-
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
+      </tr>
+  </tbody>
+  <tfoot>
+      <tr>
           <th></th>
           <th>Name</th>
           <th>Ver</th>
@@ -77,15 +63,10 @@
           <!-- <th>Subtype</th> -->
           <th>Endpoint</th>
           <th>Species</th>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
+      </tr>
+  </tfoot>
+</table>
+<div *ngIf="this.chkbox">
+  <app-save-profile-button></app-save-profile-button>
+  <app-load-profile-button></app-load-profile-button>
 </div>
-
-
-
- 
-
-
-

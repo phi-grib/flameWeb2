@@ -50,7 +50,6 @@ import { SelectCompoundComponent } from './select-compound/select-compound.compo
 import { InputFileComponent } from './input-file/input-file.component';
 import { SketchStructureComponent } from './sketch-structure/sketch-structure.component';
 import { InputListComponent } from './input-list/input-list.component';
-import { ModelListSelectorComponent } from './model-list-selector/model-list-selector.component';
 import { SaveProfileButtonComponent } from './save-profile-button/save-profile-button.component';
 import { LoadProfileButtonComponent } from './load-profile-button/load-profile-button.component';
 import { ManageActionsComponent } from './manage-actions/manage-actions.component';
@@ -108,7 +107,6 @@ PlotlyModule.plotlyjs = PlotlyJS;
     InputFileComponent,
     SketchStructureComponent,
     InputListComponent,
-    ModelListSelectorComponent,
     SaveProfileButtonComponent,
     LoadProfileButtonComponent,
     ManageActionsComponent,
