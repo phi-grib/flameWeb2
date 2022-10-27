@@ -2,7 +2,6 @@ i {
     margin-right: 5px;
     cursor: pointer;
 }
-
 .table {
     background-color: white;
     background: white;
@@ -10,12 +9,10 @@ i {
     /* table-layout: fixed; */
     width: 100%;
 }
-.table th {
-
+.table th{
     padding-left: 1px;
     padding-right: 1px;
-    color: #0076a3;;
-
+    color:#0076a3;
 }
 .table td {
     padding: 5px;
@@ -23,15 +20,12 @@ i {
     border-bottom: 1px solid #B8DCED;
     vertical-align: middle;
 }
-.table tr {
+tr {
     cursor: pointer;
 }
-
-.table tr.selected {
-        background: #f7f9ea;
+tr.selected {
+    background: #f7f9ea;
 }
-
-
 .table tbody tr:hover {
     background: #f7f9ea;
 }
@@ -41,20 +35,20 @@ i {
     max-height: 350px;
 }
 
-.scrolltable {
+.scrolltable{
     max-height: 90vh;
     overflow: auto;
 }
 
 .text-etransafe {
-    color: #e59300
+    color:#e59300;
 }
 
 .spinner-border {
-    position: absolute;
+    position: absolute; 
     display: block;
-    right: 45%;
-    top: 200%;
+    right: 45%; 
+    top: 200%; 
     z-index: 1031;
 }
 
@@ -71,15 +65,13 @@ i {
 }
 
 .iffyTip {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
 }
-
-.hideText {
-    max-width: 150px;
+.hideText{
+  max-width:150px;
 }
-
 .form-check-input {
     position: relative;
     margin-left: 3px; 

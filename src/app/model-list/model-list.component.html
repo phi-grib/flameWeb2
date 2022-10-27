@@ -5,7 +5,8 @@
 </div>
 
 <app-manage-models *ngIf="!this.chkbox"></app-manage-models>
-
+<div [hidden] = "!this.globals.tableModelVisible">
+  <div class="col scrolltable">
 <table   [id]="this.DTID" class="table display compact" style="width:100%">
   <thead>
       <tr>
@@ -66,6 +67,8 @@
       </tr>
   </tfoot>
 </table>
+</div>
+</div>
 <div *ngIf="this.chkbox">
   <app-save-profile-button></app-save-profile-button>
   <app-load-profile-button></app-load-profile-button>
