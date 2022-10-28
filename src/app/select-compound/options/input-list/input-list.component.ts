@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonService } from '../common.service';
-import { Compound } from '../Globals';
-import { PredictorService } from '../predictor/predictor.service';
+import { CommonService } from '../../../common.service';
+import { Compound } from '../../../Globals';
+import { PredictorService } from '../../../predictor/predictor.service';
 import * as SmilesDrawer from 'smiles-drawer';
 
 @Component({

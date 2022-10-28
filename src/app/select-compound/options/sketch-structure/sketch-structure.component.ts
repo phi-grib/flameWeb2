@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { CommonService } from '../common.service';
-import { Compound, Globals } from '../Globals';
+import { CommonService } from '../../../common.service';
+import { Compound, Globals } from '../../../Globals';
 
 @Component({
   selector: 'app-sketch-structure',

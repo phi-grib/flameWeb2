@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonService } from '../common.service';
-import { Compound, Model } from '../Globals';
+import { CommonService } from '../../../common.service';
+import { Compound, Model } from '../../../Globals';
 
 @Component({
   selector: 'app-input-file',
