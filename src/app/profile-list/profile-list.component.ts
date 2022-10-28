@@ -17,6 +17,7 @@ export class ProfileListComponent implements OnInit {
     paging: true,
     ordering: true,
     destroy: true,
+    order:[[1,'desc']],
     info: true,
   }
   constructor(public profile: Profile,
