@@ -458,7 +458,7 @@ export class ProfileItemComponent implements OnInit {
         
         setTimeout(() => {
           this.setScoresPlot(result,this.molIndex)
-        },40)
+        },100)
       }
     }, error => {
       console.log(error);
