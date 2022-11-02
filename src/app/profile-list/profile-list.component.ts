@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SplitComponent } from 'angular-split';
+import { CommonFunctions } from '../common.functions';
 import { CommonService } from '../common.service';
 import { Globals, Prediction, Profile } from '../Globals';
 import { ProfilingService } from '../profiling.service';
@@ -22,21 +23,15 @@ export class ProfileListComponent implements OnInit {
   }
   constructor(public profile: Profile,
     private prediction: Prediction,
+    private func: CommonFunctions,
     private global: Globals,
     private profiling: ProfilingService,
     private commonService:CommonService) { }
 
   ngOnInit() {
-    this.getProfileList();
-    /**
-     * when create a new profile refresh list.
-     */
-    this.commonService.predictionExec$.subscribe(() => {
-      setTimeout(() => {
-        this.getProfileList();
-      }, 500)
-    })
+    this.func.getProfileList();
   }
+  
   @ViewChild('mySplit') mySplitEl: SplitComponent
   // area size
   _size1 = 100;
@@ -62,21 +57,6 @@ export class ProfileListComponent implements OnInit {
         this.size2 = 0;
       }
     }
-  }
-  getProfileList() {
-    this.profile.profileList = []
-    this.profile.summary = undefined
-    $('#dataTableProfiles').DataTable().destroy();
-    $('#dataTableProfiles').DataTable().clear().draw();
-    this.profiling.profileList().subscribe(res => {
-      this.profile.profileList = res;
-      setTimeout(() => {
-        $('#dataTableProfiles').DataTable(this.opt2)
-      }, 20);
-    },
-      error => {
-        console.log(error)
-      })
   }
 
   selectProfile(profile,tr){
