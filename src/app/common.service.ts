@@ -34,6 +34,9 @@ export class CommonService {
   // communicates to the component containing the list of models, which models should be selected
   private loadCollection = new Subject<{}>();
   loadCollection$ = this.loadCollection.asObservable();
+  //reports that a prediction has been launched
+  private predictionExec = new Subject<boolean>();
+  predictionExec$ = this.predictionExec.asObservable();
   //control the pagination
   private controlPagination = new Subject<boolean[]>();
   controlPagination$ = this.controlPagination.asObservable();
@@ -146,6 +149,10 @@ export class CommonService {
   setPredictName(predictName: any){
     this.predictionActive.next(predictName)
   }
+  setPredictionExec(pred: boolean){
+    this.predictionExec.next(pred)
+  }
+
   setStatusModelTab(status: boolean){
     this.statusModelTab.next(status)
   }

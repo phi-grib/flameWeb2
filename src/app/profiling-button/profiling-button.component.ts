@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { CommonFunctions } from '../common.functions';
 import { CommonService } from '../common.service';
 import { Compound, Model, Prediction, Profile } from '../Globals';
 import { PredictorService } from '../predictor/predictor.service';
@@ -22,7 +21,6 @@ export class ProfilingButtonComponent implements OnInit {
   constructor(
     public commonService: CommonService,
     public compound: Compound,
-    public commonFunc: CommonFunctions,
     private service: PredictorService,
     public prediction: Prediction,
     private toastr: ToastrService,
@@ -191,7 +189,7 @@ export class ProfilingButtonComponent implements OnInit {
          else {
             this.toastr.success('Profile ' + name + ' created' , 'PROFILE COMPLETED', {
              timeOut: 5000, positionClass: 'toast-top-right'});
-             this.commonFunc.getProfileList();
+             this.commonService.setPredictionExec(true);
          }
          clearInterval(intervalId);
        }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { CommonFunctions } from '../common.functions';
 import { CommonService } from '../common.service';
 import { Compound, Model, Prediction, Profile } from '../Globals';
 import { PredictorService } from '../predictor/predictor.service';
@@ -22,7 +21,6 @@ export class PredictButtonComponent implements OnInit {
   constructor(
     public commonService: CommonService,
     public compound: Compound,
-    private commonFunc: CommonFunctions,
     private service: PredictorService,
     public prediction: Prediction,
     public model: Model,
@@ -103,6 +101,10 @@ export class PredictButtonComponent implements OnInit {
       disableTimeOut: true, positionClass: 'toast-top-right'});
     this.service.predict(this.model.name, this.model.version,this.compound.input_file['result'], this.predictName).subscribe(
       result => {
+
+        // return as result the predictionID which will be used in checkPrediction, instead of the predictName
+        // console.log(result);
+
         let iter = 0;
         const intervalId = setInterval(() => {
           if (iter < 500) {
@@ -114,6 +116,8 @@ export class PredictButtonComponent implements OnInit {
             this.toastr.warning( 'Prediction ' + this.predictName + ' \n Time Out' , 'Warning', {
                                   timeOut: 10000, positionClass: 'toast-top-right'});
             delete this.prediction.predicting[this.predictName];
+            $('#dataTablePredictions').DataTable().destroy();
+            this.service.getPredictionList();
           }
           iter += 1;
         }, 2000); // every two seconds
@@ -121,6 +125,8 @@ export class PredictButtonComponent implements OnInit {
       error => {
         this.toastr.clear(inserted.toastId);
         delete this.prediction.predicting[this.predictName];
+        $('#dataTablePredictions').DataTable().destroy();
+        this.service.getPredictionList();
         alert('Error prediction: '+error.error.error);
       }
     );
@@ -144,6 +150,8 @@ export class PredictButtonComponent implements OnInit {
             this.toastr.warning( 'Prediction ' + this.predictName + ' \n Time Out' , 'Warning', {
                                   timeOut: 10000, positionClass: 'toast-top-right'});
             delete this.prediction.predicting[this.predictName];
+            $('#dataTablePredictions').DataTable().destroy();
+            this.service.getPredictionList();
           }
           iter += 1;
         }, 2000);
@@ -151,6 +159,8 @@ export class PredictButtonComponent implements OnInit {
       error => {
         this.toastr.clear(inserted.toastId);
         delete this.prediction.predicting[this.predictName];
+        $('#dataTablePredictions').DataTable().destroy();
+        this.service.getPredictionList();
         alert('Error processing input molecule: '+error.error.error);
       }
     );
@@ -175,6 +185,8 @@ export class PredictButtonComponent implements OnInit {
             this.toastr.warning( 'Prediction ' + this.predictName + ' \n Time Out' , 'Warning', {
                                   timeOut: 10000, positionClass: 'toast-top-right'});
             delete this.prediction.predicting[this.predictName];
+            $('#dataTablePredictions').DataTable().destroy();
+            this.service.getPredictionList();
           }
           iter += 1;
         }, 2000);
@@ -182,6 +194,8 @@ export class PredictButtonComponent implements OnInit {
       error => {
         this.toastr.clear(inserted.toastId);
         delete this.prediction.predicting[this.predictName];
+        $('#dataTablePredictions').DataTable().destroy();
+        this.service.getPredictionList();
         alert('Error processing input molecule: '+error.error.error);
       }
     );
@@ -191,6 +205,8 @@ export class PredictButtonComponent implements OnInit {
   checkPrediction(name, inserted, intervalId) {
     this.commonService.getPrediction(name).subscribe(
       result => {
+        // console.log(result);
+
         if (result['aborted']) {
           this.toastr.clear(inserted.toastId);
           this.toastr.error("Prediction \"" + name + "\" task has not completed. Check the browser console for more information", 
@@ -199,7 +215,8 @@ export class PredictButtonComponent implements OnInit {
           console.log(result['aborted']);
           clearInterval(intervalId);
           delete this.prediction.predicting[this.predictName];
-          this.commonFunc.getPredictionList();
+          $('#dataTablePredictions').DataTable().destroy();
+          this.service.getPredictionList();
           return;
         }
 
@@ -215,7 +232,8 @@ export class PredictButtonComponent implements OnInit {
           }
           clearInterval(intervalId);
           delete this.prediction.predicting[this.predictName];
-          this.commonFunc.getPredictionList();
+          $('#dataTablePredictions').DataTable().destroy();
+          this.service.getPredictionList();
         }
       },
       error => { 
@@ -224,7 +242,8 @@ export class PredictButtonComponent implements OnInit {
           timeOut: 10000, positionClass: 'toast-top-right'});
         clearInterval(intervalId);
         delete this.prediction.predicting[this.predictName];
-        this.commonFunc.getPredictionList();
+        $('#dataTablePredictions').DataTable().destroy();
+        this.service.getPredictionList();
       }
     );
   }

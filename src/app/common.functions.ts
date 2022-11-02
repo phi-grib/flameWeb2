@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
-import { Model, Prediction, Space, Globals, Profile } from './Globals';
+import { Model, Prediction, Space, Globals } from './Globals';
 import { PredictorService } from './predictor/predictor.service';
-import { ProfilingService } from './profiling.service';
 declare var $: any;
 
 @Injectable({
@@ -17,19 +16,8 @@ export class CommonFunctions {
     public globals: Globals,
     public prediction: Prediction,
     public space: Space,
-    public profile: Profile,
-    private profiling: ProfilingService,
     private predictorService: PredictorService) { }
-    
 
-    opt2 = {
-      deferRender: true,
-      paging: true,
-      ordering: true,
-      destroy: true,
-      order:[[1,'desc']],
-      info: true,
-  } 
   objectKeys = Object.keys;
 
   selectModel(name: string, version: string, modelID: string, trained: boolean, type: string, quantitative: boolean,
@@ -340,12 +328,9 @@ export class CommonFunctions {
   }
 
   getPredictionList() {
-    this.prediction.predictions = []
-    $('#dataTablePredictions').DataTable().destroy();
     this.predictorService.getPredictionList().subscribe(
       result => {
         if (result[0]) {
-          console.log(result[1])
           this.prediction.predictions = result[1];
           this.globals.tablePredictionVisible = false;
           
@@ -370,21 +355,6 @@ export class CommonFunctions {
           alert(error.message);
         }
     );
-  }
-  getProfileList() {
-    this.profile.profileList = []
-    this.profile.summary = undefined
-    $('#dataTableProfiles').DataTable().destroy();
-    $('#dataTableProfiles').DataTable().clear().draw();
-    this.profiling.profileList().subscribe(res => {
-      this.profile.profileList = res;
-      setTimeout(() => {
-        $('#dataTableProfiles').DataTable(this.opt2)
-      }, 20);
-    },
-      error => {
-        console.log(error)
-      })
   }
 
   getSpaceList() {
