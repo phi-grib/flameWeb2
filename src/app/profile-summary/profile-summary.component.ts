@@ -11,6 +11,7 @@ import { SplitComponent } from 'angular-split';
 import { ProfilingService } from '../profiling.service';
 import * as XLSX from 'xlsx';
 import { ClipboardService } from 'ngx-clipboard';
+import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 @Component({
   selector: 'app-profile-summary',
@@ -46,13 +47,14 @@ export class ProfileSummaryComponent implements OnInit {
   constructor(
     public prediction: Prediction,
     public commonService: CommonService,
-    public commonFunctions: CommonFunctions,
+    public func: CommonFunctions,
     public globals: Globals,
     private model: Model,
     private renderer2: Renderer2,
     public profile: Profile,
     private profiling: ProfilingService,
     private clipboard: ClipboardService,
+    private toastr: ToastrService,
   ) { }
   ngOnInit(): void {
     this.profiling.summaryActive$.subscribe(pname => {
@@ -91,22 +93,6 @@ export class ProfileSummaryComponent implements OnInit {
     this.prevSelection = event.target;
     event.target.classList.add('pselected');
 
-  }
-  getProfileList() {
-    this.profile.profileList = []
-    this.profile.summary = undefined
-
-    $('#dataTableProfiles').DataTable().destroy();
-    $('#dataTableProfiles').DataTable().clear().draw();
-    this.profiling.profileList().subscribe(res => {
-      this.profile.profileList = res;
-      setTimeout(() => {
-        $('#dataTableProfiles').DataTable(this.opt2)
-      }, 20);
-    },
-      error => {
-        console.log(error)
-      })
   }
   @ViewChild('mySplit') mySplitEl: SplitComponent
   // area size
@@ -166,7 +152,10 @@ export class ProfileSummaryComponent implements OnInit {
         this.profile.name = undefined;
         this.profile.summary = undefined;
         this.profile.item = undefined;
-        this.getProfileList();
+        this.toastr.success( 'Profile "' + this.profile.name + '" deleted', 'DELETED' , {
+          timeOut: 500, positionClass: 'toast-top-right', progressBar: false});
+
+        this.func.getProfileList();
       },
       error => {
         alert('Delete ERROR');
