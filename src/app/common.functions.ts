@@ -345,7 +345,6 @@ export class CommonFunctions {
     this.predictorService.getPredictionList().subscribe(
       result => {
         if (result[0]) {
-          console.log(result[1])
           this.prediction.predictions = result[1];
           this.globals.tablePredictionVisible = false;
           
@@ -380,7 +379,7 @@ export class CommonFunctions {
       this.profile.profileList = res;
       setTimeout(() => {
         $('#dataTableProfiles').DataTable(this.opt2)
-      }, 20);
+      }, 10);
     },
       error => {
         console.log(error)

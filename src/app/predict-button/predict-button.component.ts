@@ -49,9 +49,6 @@ export class PredictButtonComponent implements OnInit {
     if (this.compound.input_list) {
       this.predictInputList();
     }
-    setTimeout(() => {
-      this.defaultPredictionName();
-    },3000)
   }
   defaultPredictionName(){
     this.service.getPredictionList().subscribe(
@@ -212,10 +209,15 @@ export class PredictButtonComponent implements OnInit {
           else {
              this.toastr.success('Prediction ' + name + ' created' , 'PREDICTION COMPLETED', {
               timeOut: 5000, positionClass: 'toast-top-right'});
+             
+           
           }
           clearInterval(intervalId);
           delete this.prediction.predicting[this.predictName];
           this.commonFunc.getPredictionList();
+          //name for the next prediction 
+          this.defaultPredictionName();
+          
         }
       },
       error => { 

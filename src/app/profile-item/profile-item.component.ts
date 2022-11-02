@@ -343,7 +343,6 @@ export class ProfileItemComponent implements OnInit {
       this.getInfo();
       this.getValidation();
       this.getProfileItem(index[1]);
-      this.renderData();   
     });
   }
   // angular-split function
@@ -459,10 +458,13 @@ export class ProfileItemComponent implements OnInit {
         setTimeout(() => {
           this.setScoresPlot(result,this.molIndex)
         },40)
+
+        this.renderData();
       }
     }, error => {
       console.log(error);
     })
+
   }
 
   drawReportHeader() {
@@ -500,19 +502,13 @@ export class ProfileItemComponent implements OnInit {
               this.showConcentration = true;
             }
           }
-
           //update plots with "Activity" and replace with units
         }
-
-
       },error => {
         console.log(error)
       })
-      setTimeout(() => {
         this.drawReportHeader();
         this.drawSimilars();
-      }, 150);
-      
     },50)
   }
 
@@ -693,7 +689,7 @@ export class ProfileItemComponent implements OnInit {
         this.modelPresent = true;
 
         this.modelMatch = (this.modelBuildInfo['modelID'] === this.prediction.modelID);
-        console.log(this.modelMatch)
+        
 
         this.isQuantitative = this.modelBuildInfo['quantitative'];
         this.isMajority = this.modelBuildInfo['model'] == 'combination:majority voting' || 
@@ -938,7 +934,6 @@ export class ProfileItemComponent implements OnInit {
     }
     PlotlyJS.restyle('scoresPreDIV', update0, 0);
     PlotlyJS.restyle('scoresPreDIV', update1, 1);
-    // console.log(update0);
   }
 
 

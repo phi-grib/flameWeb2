@@ -53,9 +53,6 @@ export class ProfilingButtonComponent implements OnInit {
     if (this.compound.input_list) {
       this.predictInputList();
     }
-    setTimeout(() => {
-      this.defaultProfileName();
-    },3000)
   }
   defaultProfileName(){
     for(const name of this.profile.profileList[1]){
@@ -190,10 +187,14 @@ export class ProfilingButtonComponent implements OnInit {
          }
          else {
             this.toastr.success('Profile ' + name + ' created' , 'PROFILE COMPLETED', {
-             timeOut: 5000, positionClass: 'toast-top-right'});
-             this.commonFunc.getProfileList();
+             timeOut: 5000, positionClass: 'toast-top-right'}); 
+             
          }
          clearInterval(intervalId);
+         this.commonFunc.getProfileList();
+         setTimeout(() => {
+          this.defaultProfileName();
+         }, 100);
        }
       }
     )}
