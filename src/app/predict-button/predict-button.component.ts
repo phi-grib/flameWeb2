@@ -32,6 +32,9 @@ export class PredictButtonComponent implements OnInit {
 
   ngOnInit(): void {
     this.defaultPredictionName();
+    this.commonService.defaultName$.subscribe(()=> {
+      this.defaultPredictionName();
+    })
     $(function () {
       $('[data-toggle="popover"]').popover();
     });

@@ -168,7 +168,7 @@ export class PredictorComponent implements OnInit {
                                     timeOut: 10000, positionClass: 'toast-top-right'});
               delete this.prediction.predicting[this.predictName];
               $('#dataTablePredictions').DataTable().destroy();
-              this.func.getPredictionList();
+              this.func.getPredictionList();      
             }
             iter += 1;
           }, 2000);
@@ -185,6 +185,8 @@ export class PredictorComponent implements OnInit {
     else {
       alert('Model name undefined!')
     }
+
+    
 
   }
 
@@ -315,6 +317,10 @@ export class PredictorComponent implements OnInit {
           delete this.prediction.predicting[this.predictName];
           $('#dataTablePredictions').DataTable().destroy();
           this.func.getPredictionList();
+          // notifying the selector element that the default name of the prediction has changed.
+          setTimeout(() => {
+            this.commonService.checkDefaultName()
+          },20);
         }
       },
       error => { 

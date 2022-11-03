@@ -14,6 +14,8 @@ import { environment } from "../environments/environment";
 export class CommonService {
   constructor(private http: HttpClient) {}
 
+  private defaultName = new Subject<any>();
+  defaultName$ = this.defaultName.asObservable()
   //communicates to the component in charge of displaying the prediction, which molecule should present and which model 
   private idxmodelmol = new Subject<any>();
   idxmodelmol$ = this.idxmodelmol.asObservable();
@@ -161,5 +163,8 @@ export class CommonService {
   }
   setPagination(noPreviousMol:boolean,noNextMol:boolean){
     this.controlPagination.next([noPreviousMol,noNextMol])
+  }
+  checkDefaultName(){
+    this.defaultName.next()
   }
 }
