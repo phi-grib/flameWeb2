@@ -47,10 +47,6 @@ export class InputListComponent implements OnInit {
         this.compound.listCompoundsSelected.push(compound.name)
       })
       this.commonService.setIsvalidCompound(true);
-      this.commonService.setCurrentSelection({
-        option: 'Input List',
-        name: this.inputListName,
-      });
       this.cleanOtherOptions();
     }
   }

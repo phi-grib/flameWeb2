@@ -46,10 +46,6 @@ export class SketchStructureComponent implements OnInit {
     //check name
     if (this.isvalidSketch && this.sketchSmiles) {
       this.commonService.setIsvalidCompound(true);
-      this.commonService.setCurrentSelection({
-        option: 'Sketch structure',
-        name: this.sketchName,
-      });
       this.compound.sketchstructure = {
         name: this.sketchName,
         result: this.sketchSmiles,

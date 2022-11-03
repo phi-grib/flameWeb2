@@ -26,8 +26,6 @@ export class CommonService {
   //observables to communicate to components without parent-child or sibling relationship, on current values
   private currentCompoundTab = new Subject<string>();
   currentCompoundTab$ = this.currentCompoundTab.asObservable();
-  private currentSelection = new Subject<{}>();
-  currentSelection$ = this.currentSelection.asObservable();
   // check if the selected compound is valid
   private isValidCompound = new BehaviorSubject<boolean>(false);
   isValidCompound$ = this.isValidCompound.asObservable();
@@ -154,9 +152,6 @@ export class CommonService {
   }
   setIsvalidCompound(valid: boolean) {
     this.isValidCompound.next(valid);
-  }
-  setCurrentSelection(selection: {}) {
-    this.currentSelection.next(selection);
   }
   setMolAndModelIndex(molidx:number,modelidx:number) {
     this.idxmodelmol.next([molidx,modelidx]);

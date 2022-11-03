@@ -21,7 +21,6 @@ export class InputFileComponent implements OnInit {
 
   Save(){
     this.commonService.setIsvalidCompound(true);
-    this.commonService.setCurrentSelection({'option':'Input File','name':this.compound.file_info['name']});
     this.compound.input_file = {'name': this.compound.file_info['name'] ,'result':this.file}
     this.cleanOtherOptions();
    }
