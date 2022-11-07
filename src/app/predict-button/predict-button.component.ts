@@ -18,6 +18,8 @@ export class PredictButtonComponent implements OnInit {
   predictName: string = '';
   isvalidPrediction: boolean = false;
   predictionsNames = {};
+  predictions = undefined;
+  
 
   constructor(
     public commonService: CommonService,
@@ -57,12 +59,12 @@ export class PredictButtonComponent implements OnInit {
     this.service.getPredictionList().subscribe(
       result => {
         if(result[0]){
-          this.prediction.predictions = result[1]
+          this.predictions = result[1]
         }
       }
     )
     setTimeout(() => {
-      for (const name of this.prediction.predictions) {
+      for (const name of this.predictions) {
         this.predictionsNames[name[0]] = true;
       }
       let i=1;
@@ -82,7 +84,6 @@ export class PredictButtonComponent implements OnInit {
         }
         i=i+1;
       }
-      
     }, 200);
   }
   predictNameChange() {
