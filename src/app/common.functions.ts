@@ -21,15 +21,6 @@ export class CommonFunctions {
     private profiling: ProfilingService,
     private predictorService: PredictorService) { }
     
-
-    opt2 = {
-      deferRender: true,
-      paging: true,
-      ordering: true,
-      destroy: true,
-      order:[[1,'desc']],
-      info: true,
-  } 
   objectKeys = Object.keys;
 
   selectModel(name: string, version: string, modelID: string, trained: boolean, type: string, quantitative: boolean,
@@ -351,7 +342,6 @@ export class CommonFunctions {
             setTimeout(() => {
               const table = $('#dataTablePredictions').DataTable({
                 /*Ordering by date */
-                // autoWidth: false,
                 deferRender: true,
                 ordering: true,
                 pageLength: 10,
@@ -378,7 +368,15 @@ export class CommonFunctions {
     this.profiling.profileList().subscribe(res => {
       this.profile.profileList = res;
       setTimeout(() => {
-        $('#dataTableProfiles').DataTable(this.opt2)
+        $('#dataTableProfiles').DataTable({
+            deferRender: true,
+            paging: true,
+            ordering: true,
+            destroy: true,
+            columnDefs: [{ 'type': 'date-euro', 'targets': 1 }],
+            order:[[1,'desc']],
+            info: true,
+          });
       }, 10);
     },
       error => {
