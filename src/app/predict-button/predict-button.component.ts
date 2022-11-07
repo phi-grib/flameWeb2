@@ -18,7 +18,7 @@ export class PredictButtonComponent implements OnInit {
   predictName: string = '';
   isvalidPrediction: boolean = false;
   predictionsNames = {};
-  predictions = undefined;
+  predictions = [];
   
 
   constructor(
