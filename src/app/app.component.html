@@ -8,7 +8,7 @@
             <a class="nav-link active" id="build-tab-line" *ngIf="!this.globals.read_only" data-toggle="tab" href="#build" role="tab" aria-controls="build-tab" aria-selected="true">Models</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-disabled="true" id="selector-tab-line" data-toggle="tab" href="#selector" role="tab" aria-controls="selector-tab" aria-selected="false">Selector</a>
+            <a class="nav-link"  id="selector-tab-line" data-toggle="tab" href="#selector" role="tab" aria-controls="selector-tab" aria-selected="false">Selector</a>
         </li>
           <li class="nav-item">
             <a class="nav-link" id="predict-tab-line" data-toggle="tab" href="#predict" role="tab" aria-controls="predict-tab" aria-selected="false">Predictions</a>
@@ -37,7 +37,7 @@
     
   <div class="tab-content">
 
-      <div class="tab-pane fade show active" id="build" role="tabpanel" aria-labelledby="build-tab">
+      <div *ngIf="!this.globals.read_only" class="tab-pane fade show active" id="build" role="tabpanel" aria-labelledby="build-tab">
           <div style="height:90vh">                
              <as-split direction="horizontal" (gutterClick)="this.gutterClickModels()" class="app-base">
                 <as-split-area [size]="this.modelleft">

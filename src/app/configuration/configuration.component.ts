@@ -27,16 +27,20 @@ export class ConfigurationComponent implements OnInit {
   ngOnInit(): void {
     this.modelRoot = 'enter a path';
     this.getConfiguration();
+     if (this.globals.read_only) {
+       $('#selector-tab-line').click()
+     }
   }
-
+  
   changeUserProfile (profile) {
     this.globals.read_only = (profile=='basic');
     //removes the "active" class when models tab reappears
     setTimeout(() => {
       if(!this.globals.read_only){
-       $('#build-tab-line').removeClass("active")
+       $('#build-tab-line').removeClass("active");
+       $('#build').removeClass("active");
       }    
-    },10)
+    },1)
  
     this.model.listModels = {};
     this.model.listModelsSelected = [];
@@ -60,6 +64,7 @@ export class ConfigurationComponent implements OnInit {
   getConfiguration (){
     this.confservice.getConfiguration().subscribe(
       result => {
+        console.log(result)
           this.modelRoot = result[0];
           this.flameConf = result[1];
       },
