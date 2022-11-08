@@ -353,7 +353,7 @@ export class PredictionComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.whatname();
+      this.getPlotScoresData();
     }, 100);
     this.commonService.controlPagination$.subscribe(pagination => {
       this.noPreviousMol = pagination[0]
@@ -361,7 +361,7 @@ export class PredictionComponent implements OnInit {
     })
   }
   
-  whatname(){
+  getPlotScoresData(){
     this.isQuantitative = this.prediction.modelBuildInfo['quantitative'];
     if ('PC1proj' in this.prediction.result) {
 
@@ -371,7 +371,6 @@ export class PredictionComponent implements OnInit {
       this.activity_val = this.prediction.result['values']
 
       if (!this.isQuantitative){
-        console.log("entro papi")
         for (var i=0; i<this.activity_val.length; i++){
           if (this.activity_val[i]<0.0) {
             this.activity_val[i]=0.5;
@@ -391,8 +390,7 @@ export class PredictionComponent implements OnInit {
           this.plotScores.data[1].marker.color[i] = 0.0;
           this.dmodx_val[i] = 0.0;
         }
-      }
-
+      };
     };
   }
 
