@@ -67,7 +67,6 @@ export class PredictorComponent implements OnInit {
       this.predictionsNames[name[0]] = true;
     }
 
-
     let i=1;
     let nameFound = false;
     while (!nameFound) {
@@ -97,8 +96,6 @@ export class PredictorComponent implements OnInit {
     $('#basket-list').on('change', function () {
       here.show_basket();
     });
-
-
   }
 
   public change(fileList: FileList): void {
@@ -134,7 +131,6 @@ export class PredictorComponent implements OnInit {
       this.isvalidSeries = false;
     }
   }
-
 
   predict_structure () {
     var span = document.getElementById("molclipboard");
@@ -185,9 +181,6 @@ export class PredictorComponent implements OnInit {
     else {
       alert('Model name undefined!')
     }
-
-    
-
   }
 
   predict_list() {

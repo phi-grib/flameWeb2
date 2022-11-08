@@ -348,8 +348,6 @@ export class PredictionComponent implements OnInit {
       modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
     }
   }
-
-
   
   constructor(public prediction: Prediction,public model: Model, public global: Globals,private commonService:CommonService, public compound: Compound) { }
 
@@ -367,6 +365,7 @@ export class PredictionComponent implements OnInit {
       this.noPreviousModel = true;
     }
   }
+
   PreviousMol() {
     this.compound.molidx -= 1
 
@@ -383,6 +382,7 @@ export class PredictionComponent implements OnInit {
     this.drawSimilars();
     this.updatePlotCombo();
   }
+
   NextMol() {
     /*compartir molindex */
     this.compound.molidx += 1
@@ -400,6 +400,7 @@ export class PredictionComponent implements OnInit {
     this.drawSimilars();
     this.updatePlotCombo();
   }
+
   NextModel() {
     this.submodelsIndex++;
     this.noPreviousModel = false;
@@ -407,6 +408,7 @@ export class PredictionComponent implements OnInit {
       this.noNextModel = true;
     }
   }
+
   public changeProjectStyleTrainingMark (target:any) {
     var update: any = {'visible':[true, true, false]}
     if (target.value == 'density') {
@@ -417,6 +419,7 @@ export class PredictionComponent implements OnInit {
     }
     PlotlyJS.restyle('scoresPreDIV', update);
   }
+
   public changeProjectStyleTrainingColor (target:any) {
     var update0 = {};
 
@@ -582,6 +585,7 @@ export class PredictionComponent implements OnInit {
         }
       }
     }
+
     // Qualitative
     // TODO: show ensemble prediction
     else {
@@ -649,6 +653,7 @@ export class PredictionComponent implements OnInit {
   isInteger(value: any) {
     return value % 1 == 0;
   }
+
   drawSimilars () {
     setTimeout(() => {
       // draw similar compounds (if applicable)
@@ -669,11 +674,12 @@ export class PredictionComponent implements OnInit {
       };
     },0);
   }
+
   backConc(value: any) {
     return (Math.pow(10,6-value).toFixed(4))
   }
-  castValue(value: any) {
 
+  castValue(value: any) {
     if (this.prediction.modelBuildInfo['quantitative']) {
       return value.toFixed(3);
     } else {
@@ -697,6 +703,4 @@ export class PredictionComponent implements OnInit {
         console.log(err);
     });
   }
-
-
 }

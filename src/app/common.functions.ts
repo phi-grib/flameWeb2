@@ -360,6 +360,7 @@ export class CommonFunctions {
         }
     );
   }
+  
   getProfileList() {
     this.profile.profileList = []
     this.profile.summary = undefined

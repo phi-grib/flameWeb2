@@ -654,6 +654,7 @@ export class PredictionListTabComponent implements OnChanges {
       }
     )
   }
+  
   getPrediction() {
     this.predictionVisible = false;
     this.prediction.result = undefined;
