@@ -354,10 +354,44 @@ export class PredictionComponent implements OnInit {
   constructor(public prediction: Prediction,public model: Model, public global: Globals,private commonService:CommonService, public compound: Compound) { }
 
   ngOnInit(): void {
+    this.whatname();
     this.commonService.controlPagination$.subscribe(pagination => {
       this.noPreviousMol = pagination[0]
       this.noNextMol = pagination[1]
     })
+  }
+  
+  whatname(){
+    if ('PC1proj' in this.prediction.result) {
+
+      this.plotScores.data[1].x = this.prediction.result['PC1proj'];
+      this.plotScores.data[1].y = this.prediction.result['PC2proj'];
+      this.plotScores.data[1].text = this.prediction.result['obj_nam'];
+      this.activity_val = this.prediction.result['values']
+
+      if (!this.isQuantitative){
+        for (var i=0; i<this.activity_val.length; i++){
+          if (this.activity_val[i]<0.0) {
+            this.activity_val[i]=0.5;
+          }
+        }
+      }
+      
+      this.plotScores.data[1].meta = this.activity_val;
+      if ('PCDMODX' in this.prediction.result) {
+        this.dmodx = true;
+        this.plotScores.data[1].marker.color = this.prediction.result['PCDMODX'];
+        this.dmodx_val = this.prediction.result['PCDMODX'];
+      }
+      else {
+        this.dmodx = false;
+        for (var i=0; i<this.prediction.result['obj_nam'].length; i++) {
+          this.plotScores.data[1].marker.color[i] = 0.0;
+          this.dmodx_val[i] = 0.0;
+        }
+      }
+
+    };
   }
 
   PreviousModel() {
