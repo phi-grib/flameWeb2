@@ -42,3 +42,15 @@
 tbody tr:hover{
     background: #f7f9ea;
 }
+
+.text-etransafe {
+    color: #E9A933;
+}
+
+.spinner-border {
+    position: absolute;
+    display: block;
+    right: 35%;
+    top: 60%;
+    z-index: 1032;
+}

@@ -28,6 +28,7 @@ export class ProfileItemComponent implements OnInit {
   dmodx_val = [];
   activity_val = [];
   showConcentration = false;
+  projectionVisible = false;
 
   predictData = [{
     offset: 45, 
@@ -421,6 +422,7 @@ export class ProfileItemComponent implements OnInit {
   }
 
   getProfileItem(idxModel:number){
+    this.projectionVisible = false;
     this.profiling.profileItem(this.profile.name,idxModel).subscribe(result => {
       if(result) {
         this.profile.item = result;
@@ -454,10 +456,9 @@ export class ProfileItemComponent implements OnInit {
         }
       
         this.updatePlotCombo();
-        
         setTimeout(() => {
           this.setScoresPlot(result,this.molIndex)
-        },40)
+        },1000)
 
         this.renderData();
       }
@@ -1035,6 +1036,7 @@ export class ProfileItemComponent implements OnInit {
         }
       }  
     });
+    this.projectionVisible = true;
   }
 
 }
