@@ -38,12 +38,12 @@
                     <td *ngIf="!this.profile.summary.quantitative[pos]" id="values" class="text-center result border"
                         (click)="showPrediction($event,i,td)"
                         [ngStyle]="{background: value == 1 ? 'rgb(255,0,0)': value == -1 ? '#95a5a6': 'rgb(0,0,255)'}">
-                        <span style="visibility: hidden;">{{value}}</span>
+                        <span style="visibility: hidden;">{{value}} </span>
                     </td>
                     <td *ngIf="this.profile.summary.quantitative[pos]" id="values" (click)="showPrediction($event,i,td)"
                         class="text-center text-dark result border"
                         [ngStyle]="{background: value > 0 ? 'rgb('+this.profile.summary.escaleColor[i][pos][0]+','+this.profile.summary.escaleColor[i][pos][1]+','+this.profile.summary.escaleColor[i][pos][2]+')' : '#95a5a6'}">
-                        {{value | number: '1.0-2'}}
+                        {{value | number: '1.0-2'}} {{this.profile.summary.endpoint_unit[pos]}} 
                     </td>
                 </ng-container>
             </tr>

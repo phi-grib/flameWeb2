@@ -129,6 +129,7 @@ export class ProfileSummaryComponent implements OnInit {
         (res) => {
           if (res) {
             this.profile.summary = res;
+            this.setUnit();
             this.escaleColor();
             $('#dataTablePrediction').DataTable().destroy();
             $('#dataTablePrediction').DataTable().clear().draw();
@@ -146,6 +147,21 @@ export class ProfileSummaryComponent implements OnInit {
       );
     }, 500)
   }
+  
+  setUnit(){
+    var array = []
+    for (let i = 0; i < this.profile.summary['endpoint'].length; i++) {
+      var name = this.profile.summary['endpoint'][i]
+      var version = this.profile.summary['version'][i]
+       this.commonService.getDocumentation(name,version, 'JSON').subscribe(
+        result => {
+          array[i] =  result['Endpoint_units'].value
+        }
+       )
+    }
+    this.profile.summary['endpoint_unit'] = array;
+  }
+
   deleteProfile() {
     this.profiling.deleteProfile(this.profile.name).subscribe(
       result => {
@@ -166,8 +182,6 @@ export class ProfileSummaryComponent implements OnInit {
     var options = { width: 100, height: 75 }
     const smilesDrawer = new SmilesDrawer.Drawer(options);
 
-    console.log("here")
-    console.log(this.profile.summary["obj_num"])
     for (let i = 0; i < this.profile.summary["obj_num"]; i++) {
       let td = document.getElementById("canvas" + i)
       const icanvas = document.createElement('canvas');

@@ -1067,16 +1067,9 @@ export class PredictionListTabComponent implements OnChanges {
     }
     this.commonService.setPagination(this.noPreviousMol,this.noNextMol)
 
-    //marcar la mol seleccionada en amarillito.
-
-    // actualizar los datos para el report
-    
-    // $('#pills-one').addClass('show'); 
-    
     this.drawReportHeader();
     this.drawSimilars();
     this.updatePlotCombo();
-
   }
 
   drawReportHeader () {
@@ -1089,6 +1082,7 @@ export class PredictionListTabComponent implements OnChanges {
         console.log(err);
     });
   }
+  
   drawSimilars () {
     setTimeout(() => {
       // draw similar compounds (if applicable)
