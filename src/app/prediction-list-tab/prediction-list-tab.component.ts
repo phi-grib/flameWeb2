@@ -55,6 +55,7 @@ export class PredictionListTabComponent implements OnChanges {
 }
 
   objectKeys = Object.keys;
+  prevRow = undefined;
   predictionVisible = false;
   modelMatch = true;
   modelPresent = true;
@@ -405,7 +406,7 @@ export class PredictionListTabComponent implements OnChanges {
               // const self = this;
               $('td', row).unbind('click');
               $('td', row).bind('click', () => {
-                this.tabClickHandler(data);
+                this.tabClickHandler(row,data);
               });
               return row;
             },
@@ -528,8 +529,12 @@ export class PredictionListTabComponent implements OnChanges {
     return value % 1 == 0;
   }
 
-  tabClickHandler(info: any): void {
-    
+  tabClickHandler(row,info: any): void {
+
+    $(row).addClass("selected");
+    if(this.prevRow) this.prevRow.removeClass('selected')
+    this.prevRow = $(row)
+
     // prevents the selection of a molecule when you are on projection tab.
     var projectTab = $('#pills-two-tab').attr("aria-selected")
     if(projectTab == "false"){

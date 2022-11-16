@@ -41,6 +41,9 @@ ul li.nav-item a {
     background: #f7f9ea;
   }
   
+  .selected {
+    background: #f7f9ea;
+  }
   tr.selected {
     background: #f7f9ea;
   }
