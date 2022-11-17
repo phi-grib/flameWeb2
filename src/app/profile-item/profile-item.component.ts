@@ -456,9 +456,10 @@ export class ProfileItemComponent implements OnInit {
         }
       
         this.updatePlotCombo();
+        
         setTimeout(() => {
-          this.setScoresPlot(result,this.molIndex)
-        },1000)
+        this.setScoresPlot(result,this.molIndex)  
+        },1);
 
         this.renderData();
       }
@@ -941,102 +942,102 @@ export class ProfileItemComponent implements OnInit {
 
 
   setScoresPlot (result,molIndex) {
-    const options = {'width': 400, 'height': 250};
-    const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
-
-    // const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
-    // const context_ref = canvas_ref.getContext('2d');
-
-    const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
-    const context = canvas.getContext('2d');
-    PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
     
-    let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
-    
-    // on hover, draw the molecule
-    
-    myPlot.on('plotly_hover', function(eventdata){ 
-      var points = eventdata.points[0];
-      if (points.curveNumber === 1) {
-        SmilesDrawer.parse(result['SMILES'][molIndex], function(tree) {
-          smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
-          // smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
-        });   
-        // context_ref.font = "30px Barlow Semi Condensed";
-        // context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
-      }
-      else {
-        SmilesDrawer.parse(points.meta, function(tree) {
-          smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
-        });
-      }
-    });
-
-    // on onhover, clear the canvas
-    myPlot.on('plotly_unhover', function(eventdata){
-      var points = eventdata.points[0];
-      if (points.curveNumber === 0) {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-      }
-    });
-
-    // myPlot.on('plotly_click', function(eventdata){
-    //   var points = eventdata.points[0];
-    //   if (points.curveNumber === 1) {
-    //     context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
-    //   }
-    // });
-    
-    const sel_options = {'width': 200, 'height': 125};
-    const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);   
-
-    myPlot.on('plotly_selected', function(eventdata){
-      var tbl = <HTMLTableElement>document.getElementById('tablePredictionSelections');
-      if (eventdata != null && 'points' in eventdata) {
-        var points = eventdata.points;
-        points.forEach(function(pt) {
-          const tr = tbl.insertRow();
-
-          var ismiles = '';
-          var iactiv = ''; 
-          var canvasid = '';
-          if (pt.curveNumber === 0) {
-            ismiles = pt.meta;
-            iactiv = pt["marker.color"];
-            canvasid = 'reference'+pt.pointNumber;
-          }
-          else {
-            tr.setAttribute('style', 'background: #f7f9ea');
-            ismiles = result['SMILES'][pt.pointNumber];
-            iactiv = pt.meta.toFixed(2);
-            canvasid = 'prediction'+pt.pointNumber;
-          }
-          const tdname = tr.insertCell();
-          tdname.appendChild(document.createTextNode(pt.text));
-          tdname.setAttribute('style', 'max-width:100px')
-
-          const tdsmiles = tr.insertCell();
-          tdsmiles.setAttribute('class', 'align-middle text-center' )
-          const icanvas = document.createElement('canvas')
-          icanvas.setAttribute('id', canvasid);
-          tdsmiles.appendChild(icanvas);
-          SmilesDrawer.parse(ismiles, function(tree) {
-            smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
-          });
-
-          const tdactiv = tr.insertCell();
-          tdactiv.setAttribute('class', 'align-right' )
-          tdactiv.appendChild(document.createTextNode(iactiv));
-
-        });
-      }
-      else {
-        for(var i = 1;i<tbl.rows.length;){
-          tbl.deleteRow(i);
+      const options = {'width': 400, 'height': 250};
+      const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
+  
+      // const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
+      // const context_ref = canvas_ref.getContext('2d');
+  
+      const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
+      const context = canvas.getContext('2d');
+      PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+      
+      let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
+      
+      // on hover, draw the molecule
+      
+      myPlot.on('plotly_hover', function(eventdata){ 
+        var points = eventdata.points[0];
+        if (points.curveNumber === 1) {
+          SmilesDrawer.parse(result['SMILES'][molIndex], function(tree) {
+            smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
+            // smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
+          });   
+          // context_ref.font = "30px Barlow Semi Condensed";
+          // context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
         }
-      }  
-    });
-    this.projectionVisible = true;
+        else {
+          SmilesDrawer.parse(points.meta, function(tree) {
+            smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
+          });
+        }
+      });
+  
+      // on onhover, clear the canvas
+      myPlot.on('plotly_unhover', function(eventdata){
+        var points = eventdata.points[0];
+        if (points.curveNumber === 0) {
+          context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      });
+  
+      // myPlot.on('plotly_click', function(eventdata){
+      //   var points = eventdata.points[0];
+      //   if (points.curveNumber === 1) {
+      //     context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
+      //   }
+      // });
+      
+      const sel_options = {'width': 200, 'height': 125};
+      const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);   
+  
+      myPlot.on('plotly_selected', function(eventdata){
+        var tbl = <HTMLTableElement>document.getElementById('tablePredictionSelections');
+        if (eventdata != null && 'points' in eventdata) {
+          var points = eventdata.points;
+          points.forEach(function(pt) {
+            const tr = tbl.insertRow();
+  
+            var ismiles = '';
+            var iactiv = ''; 
+            var canvasid = '';
+            if (pt.curveNumber === 0) {
+              ismiles = pt.meta;
+              iactiv = pt["marker.color"];
+              canvasid = 'reference'+pt.pointNumber;
+            }
+            else {
+              tr.setAttribute('style', 'background: #f7f9ea');
+              ismiles = result['SMILES'][pt.pointNumber];
+              iactiv = pt.meta.toFixed(2);
+              canvasid = 'prediction'+pt.pointNumber;
+            }
+            const tdname = tr.insertCell();
+            tdname.appendChild(document.createTextNode(pt.text));
+            tdname.setAttribute('style', 'max-width:100px')
+  
+            const tdsmiles = tr.insertCell();
+            tdsmiles.setAttribute('class', 'align-middle text-center' )
+            const icanvas = document.createElement('canvas')
+            icanvas.setAttribute('id', canvasid);
+            tdsmiles.appendChild(icanvas);
+            SmilesDrawer.parse(ismiles, function(tree) {
+              smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
+            });
+  
+            const tdactiv = tr.insertCell();
+            tdactiv.setAttribute('class', 'align-right' )
+            tdactiv.appendChild(document.createTextNode(iactiv));
+  
+          });
+        }
+        else {
+          for(var i = 1;i<tbl.rows.length;){
+            tbl.deleteRow(i);
+          }
+        }  
+      });  
+      this.projectionVisible = true;
   }
-
 }
