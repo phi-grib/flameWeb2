@@ -149,6 +149,7 @@ export class ProfileSummaryComponent implements OnInit {
   }
   
   setUnit(){
+    console.log(this.profile.summary)
     var array = []
     for (let i = 0; i < this.profile.summary['endpoint'].length; i++) {
       var name = this.profile.summary['endpoint'][i]
