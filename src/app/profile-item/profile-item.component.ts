@@ -28,7 +28,7 @@ export class ProfileItemComponent implements OnInit {
   dmodx_val = [];
   activity_val = [];
   showConcentration = false;
-  projectionVisible = false;
+  projectionVisible = true;
 
   predictData = [{
     offset: 45, 
