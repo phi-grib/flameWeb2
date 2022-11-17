@@ -21,7 +21,7 @@ export class ProfileItemComponent implements OnInit {
   isConfidential: boolean = false;
   modelBuildInfo = {};
   submodels = [];
-  modelPresent: boolean = true;
+  modelPresent: boolean = false;
   modelMatch: boolean;
   isQuantitative: any;
   isMajority: boolean;
