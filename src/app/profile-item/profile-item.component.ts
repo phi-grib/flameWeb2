@@ -456,9 +456,9 @@ export class ProfileItemComponent implements OnInit {
         }
       
         this.updatePlotCombo();
-        setTimeout(() => {
-          this.setScoresPlot(result,this.molIndex)
-        },1000)
+        
+        this.setScoresPlot(result,this.molIndex)
+        
 
         this.renderData();
       }
