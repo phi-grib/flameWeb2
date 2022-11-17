@@ -28,7 +28,7 @@ export class ProfileItemComponent implements OnInit {
   dmodx_val = [];
   activity_val = [];
   showConcentration = false;
-  projectionVisible = false;
+  projectionVisible = true;
 
   predictData = [{
     offset: 45, 
@@ -456,10 +456,9 @@ export class ProfileItemComponent implements OnInit {
         }
       
         this.updatePlotCombo();
-        
         setTimeout(() => {
-        this.setScoresPlot(result,this.molIndex)  
-        },1);
+          this.setScoresPlot(result,this.molIndex)
+        },1000)
 
         this.renderData();
       }
