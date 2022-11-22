@@ -19,7 +19,7 @@ We are grateful to all developers and will do our best to give them proper credi
 | Ngx-clipboard | Sam Lin | MIT |
 | Plotly | Alex Johnson, Jack Parmer | MIT | 
 | Smiles-drawer | GDB / Reymond Research Group | MIT |
-| xlsx |  | Apache-2.0 |
+| Xlsx |  | Apache-2.0 |
 
 
 
