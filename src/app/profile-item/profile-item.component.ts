@@ -29,6 +29,7 @@ export class ProfileItemComponent implements OnInit {
   activity_val = [];
   showConcentration = false;
   projectionVisible = false;
+  prevModelIndex = undefined;
 
   predictData = [{
     offset: 45, 
@@ -340,10 +341,22 @@ export class ProfileItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.commonService.idxmodelmol$.subscribe((index) => {
+      // index[0] --> molIndex | index[1] --> modelIndex
       this.molIndex = index[0];
-      this.getInfo();
-      this.getValidation();
-      this.getProfileItem(index[1]);
+      this.prediction.molSelected = this.profile.summary.obj_nam[this.molIndex]; //obtain name of mol
+      
+     // only makes requests to the server when changing model.
+      if(this.prevModelIndex == undefined || this.prevModelIndex != index[1]){
+        this.getInfo();
+        this.getValidation();
+        this.getProfileItem(index[1]);
+        this.prevModelIndex = index[1];
+      }else {
+        this.setDataItem(this.profile.item);
+        this.updatePlotCombo();
+        this.setScoresPlot(this.profile.item,index[0])
+        this.renderData();
+      }
     });
   }
   // angular-split function
@@ -420,52 +433,49 @@ export class ProfileItemComponent implements OnInit {
       }
     )
   }
-
   getProfileItem(idxModel:number){
     this.projectionVisible = false;
     this.profiling.profileItem(this.profile.name,idxModel).subscribe(result => {
       if(result) {
         this.profile.item = result;
-        this.plotScores.data[1].x = [result['PC1proj'][this.molIndex]];
-        this.plotScores.data[1].y = [result['PC2proj'][this.molIndex]];
-
-        this.plotScores.data[1].text = [this.prediction.molSelected];
-        
-        this.activity_val = this.profile.item.values[this.molIndex]
-
-        if (!this.isQuantitative){
-          for (var i=0; i<this.activity_val.length; i++){
-            if (this.activity_val[i]<0.0) {
-              this.activity_val[i]=0.5;
-            }
-          }
-        }
-        this.plotScores.data[1].meta = [this.activity_val];
-
-
-
-        if ('PCDMODX' in result) {
-          this.dmodx = true;
-          this.plotScores.data[1].marker.color = result['PCDMODX'];
-          this.dmodx_val = result['PCDMODX'];
-        }
-        else {
-          this.dmodx = false;
-            this.plotScores.data[1].marker.color[0] = 0.0;
-            this.dmodx_val[0] = 0.0;
-        }
-      
+        this.setDataItem(result)
         this.updatePlotCombo();
         setTimeout(() => {
-          this.setScoresPlot(result,this.molIndex)
-        },1000)
-
+          this.setScoresPlot(result,idxModel)
+        },1)
+        this.setUnit();
         this.renderData();
       }
     }, error => {
       console.log(error);
     })
+  }
+  setDataItem(result){
+    this.plotScores.data[1].x = [result['PC1proj'][this.molIndex]];
+    this.plotScores.data[1].y = [result['PC2proj'][this.molIndex]];
+    this.plotScores.data[1].text = [this.prediction.molSelected];
 
+    this.activity_val = this.profile.item.values[this.molIndex];
+
+    if (!this.isQuantitative){
+      for (var i=0; i<this.activity_val.length; i++){
+        if (this.activity_val[i]<0.0) {
+          this.activity_val[i]=0.5;
+        }
+      }
+    }
+    this.plotScores.data[1].meta = [this.activity_val];
+
+    if ('PCDMODX' in result) {
+      this.dmodx = true;
+      this.plotScores.data[1].marker.color = result['PCDMODX'];
+      this.dmodx_val = result['PCDMODX'];
+    }
+    else {
+      this.dmodx = false;
+        this.plotScores.data[1].marker.color[0] = 0.0;
+        this.dmodx_val[0] = 0.0;
+    }
   }
 
   drawReportHeader() {
@@ -487,27 +497,29 @@ export class ProfileItemComponent implements OnInit {
     return (Math.pow(10,6-value).toFixed(4))
   }
 
-  renderData() {
-    this.prediction.molSelected = this.profile.summary.obj_nam[this.molIndex];
-    setTimeout(() => {
-      this.showConcentration = false;
-      this.commonService.getDocumentation(this.prediction.modelName ,this.prediction.modelVersion,'JSON').subscribe((res) => {
-        this.prediction.modelDocumentation = res;
-        let unit = this.prediction.modelDocumentation['Endpoint_units'].value;
-        if (unit != null) {
-          if (unit.slice(-3)=='(M)') {
-            if (unit.slice(0,1)=='p') {
-              this.showConcentration = true;
-            }
-            if (unit.slice(0,4)=='-log') {
-              this.showConcentration = true;
-            }
+
+  setUnit(){
+    this.showConcentration = false;
+    this.commonService.getDocumentation(this.prediction.modelName ,this.prediction.modelVersion,'JSON').subscribe((res) => {
+      this.prediction.modelDocumentation = res;
+      let unit = this.prediction.modelDocumentation['Endpoint_units'].value;
+      if (unit != null) {
+        if (unit.slice(-3)=='(M)') {
+          if (unit.slice(0,1)=='p') {
+            this.showConcentration = true;
           }
-          //update plots with "Activity" and replace with units
+          if (unit.slice(0,4)=='-log') {
+            this.showConcentration = true;
+          }
         }
-      },error => {
-        console.log(error)
-      })
+      }
+    },error => {
+      console.log(error)
+    })
+  }
+
+  renderData() {
+    setTimeout(() => {
         this.drawReportHeader();
         this.drawSimilars();
     },50)
@@ -949,8 +961,11 @@ export class ProfileItemComponent implements OnInit {
 
     const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
     const context = canvas.getContext('2d');
+  
+
+   
     PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
-    
+      
     let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
     
     // on hover, draw the molecule
