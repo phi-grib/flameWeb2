@@ -30,6 +30,7 @@ export class ProfileItemComponent implements OnInit {
   showConcentration = false;
   projectionVisible = false;
   prevModelIndex = undefined;
+  showSpinner = false;
 
   predictData = [{
     offset: 45, 
@@ -347,6 +348,7 @@ export class ProfileItemComponent implements OnInit {
       
      // only makes requests to the server when changing model.
       if(this.prevModelIndex == undefined || this.prevModelIndex != index[1]){
+        this.showSpinner = true;
         this.getInfo();
         this.getValidation();
         this.getProfileItem(index[1]);
@@ -356,6 +358,7 @@ export class ProfileItemComponent implements OnInit {
         this.updatePlotCombo();
         this.setScoresPlot(this.profile.item,index[0])
         this.renderData();
+       
       }
     });
   }
@@ -956,14 +959,9 @@ export class ProfileItemComponent implements OnInit {
     const options = {'width': 400, 'height': 250};
     const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
 
-    // const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
-    // const context_ref = canvas_ref.getContext('2d');
-
     const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
     const context = canvas.getContext('2d');
   
-
-   
     PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
       
     let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
@@ -994,13 +992,6 @@ export class ProfileItemComponent implements OnInit {
         context.clearRect(0, 0, canvas.width, canvas.height);
       }
     });
-
-    // myPlot.on('plotly_click', function(eventdata){
-    //   var points = eventdata.points[0];
-    //   if (points.curveNumber === 1) {
-    //     context_ref.clearRect(0, 0, canvas_ref.width, canvas_ref.height);
-    //   }
-    // });
     
     const sel_options = {'width': 200, 'height': 125};
     const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);   
@@ -1051,7 +1042,7 @@ export class ProfileItemComponent implements OnInit {
         }
       }  
     });
-    this.projectionVisible = true;
+    this.showSpinner = false;
   }
 
 }
