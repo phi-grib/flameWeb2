@@ -31,7 +31,6 @@ export class PredictionListComponent implements OnInit {
   }
 
   selectPrediction(name: string, modelName: string, modelVersion: string, date: any, modelID: string) {
-    this.prediction.result = undefined;
     this.profile.summary = undefined
     this.profile.item = undefined;
     this.prediction.name = name;
