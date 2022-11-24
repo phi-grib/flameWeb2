@@ -31,6 +31,7 @@ export class ProfileItemComponent implements OnInit {
   projectionVisible = false;
   prevModelIndex = undefined;
   showSpinner = false;
+  modelIndex = undefined;
 
   predictData = [{
     offset: 45, 
@@ -344,6 +345,7 @@ export class ProfileItemComponent implements OnInit {
     this.commonService.idxmodelmol$.subscribe((index) => {
       // index[0] --> molIndex | index[1] --> modelIndex
       this.molIndex = index[0];
+      this.modelIndex = index[1]
       this.prediction.molSelected = this.profile.summary.obj_nam[this.molIndex]; //obtain name of mol
       
      // only makes requests to the server when changing model.
@@ -351,7 +353,6 @@ export class ProfileItemComponent implements OnInit {
         this.showSpinner = true;
         this.getInfo();
         this.getValidation();
-        this.getProfileItem(index[1]);
         this.prevModelIndex = index[1];
       }else {
         this.setDataItem(this.profile.item);
@@ -432,6 +433,7 @@ export class ProfileItemComponent implements OnInit {
             }
         }
         console.log("getValidation done!")
+        this.getProfileItem(this.modelIndex);
       },error => {
         this.modelPresent = false;
       }
