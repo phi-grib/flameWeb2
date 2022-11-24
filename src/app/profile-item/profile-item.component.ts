@@ -956,6 +956,8 @@ export class ProfileItemComponent implements OnInit {
 
 
   setScoresPlot (result,molIndex) {
+    console.log("data:")
+    console.log(result)
     const options = {'width': 400, 'height': 250};
     const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
 
