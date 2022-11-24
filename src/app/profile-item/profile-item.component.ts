@@ -454,6 +454,8 @@ export class ProfileItemComponent implements OnInit {
     })
   }
   setDataItem(result){
+    console.log("Model:")
+    console.log(result['meta']['endpoint'])
     this.plotScores.data[1].x = [result['PC1proj'][this.molIndex]];
     this.plotScores.data[1].y = [result['PC2proj'][this.molIndex]];
     this.plotScores.data[1].text = [this.prediction.molSelected];
@@ -957,7 +959,7 @@ export class ProfileItemComponent implements OnInit {
 
   setScoresPlot (result,molIndex) {
     console.log("data:")
-    console.log(result)
+    console.log(this.plotScores.data)
     const options = {'width': 400, 'height': 250};
     const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
 
