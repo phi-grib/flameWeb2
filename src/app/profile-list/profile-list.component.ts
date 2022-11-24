@@ -60,6 +60,7 @@ export class ProfileListComponent implements OnInit {
   }
 
   selectProfile(profile,tr){
+    this.profile.prevModelIndex = undefined;
     this.prediction.name = undefined;
     this.prediction.result = undefined;
     this.prediction.date = profile[3];

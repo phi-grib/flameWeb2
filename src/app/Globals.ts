@@ -53,6 +53,7 @@ export class Profile {
       summary: any = undefined;
       item = undefined;
       profileList: any  = []; 
+      prevModelIndex = undefined;
   }
 @Injectable()
 export class Space {
@@ -115,6 +116,7 @@ export class Globals {
     tableSpaceVisible = false;
     mainTabActive: string = undefined;
     read_only = environment.read_only;
+     
 }
 
 @Injectable()

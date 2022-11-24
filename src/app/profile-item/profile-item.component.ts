@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonService } from '../common.service';
-import { CustomHTMLElement, Prediction, Profile } from '../Globals';
+import { CustomHTMLElement, Globals, Prediction, Profile } from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonFunctions } from '../common.functions';
 import * as PlotlyJS from 'plotly.js-dist-min';
@@ -29,7 +29,6 @@ export class ProfileItemComponent implements OnInit {
   activity_val = [];
   showConcentration = false;
   projectionVisible = false;
-  prevModelIndex = undefined;
   showSpinner = false;
   modelIndex = undefined;
 
@@ -337,6 +336,7 @@ export class ProfileItemComponent implements OnInit {
     private commonService: CommonService,
     public commonFunctions: CommonFunctions,
     private service: PredictorService,
+    public global: Globals,
     public profile: Profile,
     private profiling : ProfilingService,
   ) {}
@@ -349,17 +349,16 @@ export class ProfileItemComponent implements OnInit {
       this.prediction.molSelected = this.profile.summary.obj_nam[this.molIndex]; //obtain name of mol
       
      // only makes requests to the server when changing model.
-      if(this.prevModelIndex == undefined || this.prevModelIndex != index[1]){
+      if(this.profile.prevModelIndex == undefined || this.profile.prevModelIndex != index[1]){
         this.showSpinner = true;
         this.getInfo();
         this.getValidation();
-        this.prevModelIndex = index[1];
+        this.profile.prevModelIndex = index[1]; // save last model 
       }else {
         this.setDataItem(this.profile.item);
         this.updatePlotCombo();
         this.setScoresPlot(this.profile.item,index[0])
         this.renderData();
-       
       }
     });
   }
@@ -432,7 +431,6 @@ export class ProfileItemComponent implements OnInit {
               this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
             }
         }
-        console.log("getValidation done!")
         this.getProfileItem(this.modelIndex);
       },error => {
         this.modelPresent = false;
@@ -458,8 +456,6 @@ export class ProfileItemComponent implements OnInit {
     })
   }
   setDataItem(result){
-    console.log("Model:")
-    console.log(result['meta']['endpoint'])
     this.plotScores.data[1].x = [result['PC1proj'][this.molIndex]];
     this.plotScores.data[1].y = [result['PC2proj'][this.molIndex]];
     this.plotScores.data[1].text = [this.prediction.molSelected];
@@ -962,8 +958,6 @@ export class ProfileItemComponent implements OnInit {
 
 
   setScoresPlot (result,molIndex) {
-    console.log("data:")
-    console.log(this.plotScores.data)
     const options = {'width': 400, 'height': 250};
     const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
 
