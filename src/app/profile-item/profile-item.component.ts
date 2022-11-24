@@ -431,10 +431,12 @@ export class ProfileItemComponent implements OnInit {
               this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
             }
         }
+        console.log("getValidation done!")
       },error => {
         this.modelPresent = false;
       }
     )
+    
   }
   getProfileItem(idxModel:number){
     this.projectionVisible = false;
@@ -965,13 +967,11 @@ export class ProfileItemComponent implements OnInit {
 
     const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
     const context = canvas.getContext('2d');
-  
+    
     PlotlyJS.react('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
-      
     let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
     
     // on hover, draw the molecule
-    
     myPlot.on('plotly_hover', function(eventdata){ 
       var points = eventdata.points[0];
       if (points.curveNumber === 1) {
