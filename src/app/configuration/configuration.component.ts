@@ -64,7 +64,6 @@ export class ConfigurationComponent implements OnInit {
   getConfiguration (){
     this.confservice.getConfiguration().subscribe(
       result => {
-        console.log(result)
           this.modelRoot = result[0];
           this.flameConf = result[1];
       },
