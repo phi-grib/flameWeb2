@@ -962,7 +962,7 @@ export class ProfileItemComponent implements OnInit {
     const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
     const context = canvas.getContext('2d');
   
-    PlotlyJS.newPlot('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+    PlotlyJS.react('scoresPreDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
       
     let myPlot = <CustomHTMLElement>document.getElementById('scoresPreDIV');
     
