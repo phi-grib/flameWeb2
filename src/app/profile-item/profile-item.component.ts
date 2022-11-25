@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonService } from '../common.service';
-import { CustomHTMLElement, Globals, Prediction, Profile } from '../Globals';
+import { CustomHTMLElement, Globals, Model, Prediction, Profile } from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import { CommonFunctions } from '../common.functions';
 import * as PlotlyJS from 'plotly.js-dist-min';
@@ -339,6 +339,7 @@ export class ProfileItemComponent implements OnInit {
     public global: Globals,
     public profile: Profile,
     private profiling : ProfilingService,
+    private model: Model
   ) {}
 
   ngOnInit(): void {
@@ -347,17 +348,28 @@ export class ProfileItemComponent implements OnInit {
       this.molIndex = index[0];
       this.modelIndex = index[1]
       this.prediction.molSelected = this.profile.summary.obj_nam[this.molIndex]; //obtain name of mol
+
+      if(!this.model.listModels.hasOwnProperty(this.prediction.modelName+'-'+this.prediction.modelVersion)){
+        this.modelPresent = false;
+      }else{
+        this.modelPresent = true;
+      }
       
      // only makes requests to the server when changing model.
       if(this.profile.prevModelIndex == undefined || this.profile.prevModelIndex != index[1]){
         this.showSpinner = true;
-        this.getInfo();
-        this.getValidation();
+        if(this.modelPresent){
+          this.getInfo();
+          this.getValidation();
+        }else{
+          this.getProfileItem(this.modelIndex);
+        }
         this.profile.prevModelIndex = index[1]; // save last model 
       }else {
+       
         this.setDataItem(this.profile.item);
         this.updatePlotCombo();
-        this.setScoresPlot(this.profile.item,index[0])
+        if(this.modelPresent) this.setScoresPlot(this.profile.item,index[0])
         this.renderData();
       }
     });
@@ -445,10 +457,12 @@ export class ProfileItemComponent implements OnInit {
         this.profile.item = result;
         this.setDataItem(result)
         this.updatePlotCombo();
-        setTimeout(() => {
-          this.setScoresPlot(result,idxModel)
-        },1)
-        this.setUnit();
+        if(this.modelPresent){
+          setTimeout(() => {
+            this.setScoresPlot(result,idxModel)
+          },1)
+          this.setUnit();
+        }
         this.renderData();
       }
     }, error => {
