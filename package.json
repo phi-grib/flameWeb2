@@ -42,7 +42,7 @@
         "file-saver": "^2.0.5",
         "font-awesome": "^4.7.0",
         "font-awesome-animation": "^0.2.1",
-        "jquery": "^3.4.1",
+        "jquery": "^3.6.1",
         "jspdf": "^2.5.1",
         "jspdf-autotable": "^3.2.11",
         "keycloak-angular": "^7.1.0",
