@@ -149,22 +149,32 @@ export class ProfileSummaryComponent implements OnInit {
   }
   
   setUnit(){
+    
     var array = []
     for (let i = 0; i < this.profile.summary['endpoint'].length; i++) {
+      var index = 2;
       var name = this.profile.summary['endpoint'][i]
       var version = this.profile.summary['version'][i]
        this.commonService.getDocumentation(name,version, 'JSON').subscribe(
         result => {
           array[i] =  result['Endpoint_units'].value
         },error => {
+          index +=i
+          this.alertIcon(index)
           this.toastr.warning('Model ' + name + '.v' + version + ' \n ', 'Not in your repository', {
             timeOut: 4000, positionClass: 'toast-top-right',progressBar: true 
           });
-
         }
        )
     }
     this.profile.summary['endpoint_unit'] = array;
+  }
+  //function add alert  icon
+  alertIcon(index: number){
+    var table = document.getElementById('dataTablePrediction')
+    const alertIcon = document.createElement("i")
+    alertIcon.classList.add('fas','mt-1','float-right','d-inline','text-warning','fa-exclamation-triangle')
+    table.childNodes[0].childNodes[0].childNodes[index].appendChild(alertIcon)
   }
 
   deleteProfile() {
