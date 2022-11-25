@@ -156,6 +156,11 @@ export class ProfileSummaryComponent implements OnInit {
        this.commonService.getDocumentation(name,version, 'JSON').subscribe(
         result => {
           array[i] =  result['Endpoint_units'].value
+        },error => {
+          this.toastr.warning('Model ' + name + '.v' + version + ' \n ', 'Not in your repository', {
+            timeOut: 4000, positionClass: 'toast-top-right',progressBar: true 
+          });
+
         }
        )
     }
