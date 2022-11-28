@@ -31,6 +31,7 @@ export class QuantitConformalComponent implements OnChanges {
     optimization = false;
     features_method = '';
     featuresTSV = '';
+    scores = '';
 
     plotFitted = {
       data: [{ x: [], 
@@ -435,6 +436,7 @@ export class QuantitConformalComponent implements OnChanges {
       this.optimization = false;
       this.features_method = '';
       this.modelWarning = '';
+      this.scores = '';
       this.plotFitted.data[0].x = [];
       this.plotFitted.data[0].y = [];
       this.plotFitted.data[0].error_y.array = [];
@@ -558,6 +560,7 @@ export class QuantitConformalComponent implements OnChanges {
 
             // PCA scores plot
             if ('PC1' in info) {
+              this.scores='training';
 
               // define appropriate labels extracting from manifest
               const manifest = info['manifest'];

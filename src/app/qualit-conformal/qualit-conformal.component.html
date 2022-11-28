@@ -27,7 +27,7 @@
             <li class="nav-item">
               <a class="nav-link" id="pills-fitting-tab" data-toggle="tab" href="#pills-fitting" role="tab" aria-controls="pills-fitting" aria-selected="false">Fitting</a>
             </li>
-            <li class="nav-item" *ngIf="!this.model.secret">
+            <li class="nav-item" *ngIf="!this.model.secret && this.scores!=''">
                 <a class="nav-link" id="pills-series-tab" data-toggle="tab" href="#pills-series" role="tab" aria-controls="pills-series" aria-selected="false">Series</a>
             </li>
             <li class="nav-item" *ngIf="!this.model.secret">
@@ -228,7 +228,7 @@
 
                 <!-- <div class="card-body" *ngIf="this.model.secret"> -->
                 <div class="card-body" *ngIf="this.scores==''">
-                    Nothing to show for secret models
+                    No series plot available
                     <canvas id="scores_canvas"></canvas>
                     <div id="scoresDIV"></div>
                 </div>
