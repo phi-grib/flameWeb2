@@ -55,7 +55,6 @@ export class PredictionListTabComponent implements OnChanges {
 }
 
   objectKeys = Object.keys;
-  prevRow = undefined;
   predictionVisible = false;
   modelMatch = true;
   modelPresent = true;
@@ -406,7 +405,7 @@ export class PredictionListTabComponent implements OnChanges {
               // const self = this;
               $('td', row).unbind('click');
               $('td', row).bind('click', () => {
-                this.tabClickHandler(row,data);
+                this.tabClickHandler(data);
               });
               return row;
             },
@@ -530,14 +529,7 @@ export class PredictionListTabComponent implements OnChanges {
     return value % 1 == 0;
   }
   
-  tabClickHandler(row,info: any): void {
-    // prevents the selection of a molecule when you are on projection tab.
-    var projectTab = $('#pills-two-tab').attr("aria-selected")
-
-    if(projectTab == "false"){
-    $(row).addClass("selected");
-    if(this.prevRow) this.prevRow.removeClass('selected')
-    this.prevRow = $(row)
+  tabClickHandler(info: any): void {
 
     this.compound.molidx=parseInt(info[0])-1;
     this.noPreviousMol = false;
@@ -552,7 +544,7 @@ export class PredictionListTabComponent implements OnChanges {
 
     this.drawReportHeader();
     this.drawSimilars();
-  }
+  
     // this.updatePlotCombo();
   }
 
