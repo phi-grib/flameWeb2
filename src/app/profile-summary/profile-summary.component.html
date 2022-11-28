@@ -25,7 +25,7 @@
                 <th></th>
                 <th #thmodel (click)="renderSort(thmodel)" class="text-center border"
                     *ngFor="let model of this.profile.summary['endpoint']; let x = index">
-                    {{model}} <span class="text-muted">v.{{this.profile.summary['version'][x]}}</span><i
+                    {{model}} <span class="text-muted">v.{{this.profile.summary['version'][x]}} {{this.profile.summary.endpoint_unit[x]}}</span><i
                         class="fas fa-xs d-inline text-secondary fa-caret-up ml-2"></i> <i
                         class="fas d-inline fa-xs text-secondary fa-caret-down"></i></th>
             </tr>
