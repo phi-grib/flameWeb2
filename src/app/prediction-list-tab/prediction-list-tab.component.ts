@@ -55,6 +55,7 @@ export class PredictionListTabComponent implements OnChanges {
 }
 
   objectKeys = Object.keys;
+  prevRow = undefined;
   predictionVisible = false;
   modelMatch = true;
   modelPresent = true;
@@ -766,7 +767,7 @@ export class PredictionListTabComponent implements OnChanges {
               // const self = this;
               $('td', row).unbind('click');
               $('td', row).bind('click', () => {
-                this.tabClickHandler(data);
+                this.tabClickHandler(row,data);
               });
               return row;
             },
@@ -1061,7 +1062,13 @@ export class PredictionListTabComponent implements OnChanges {
     }
   }
 
-  tabClickHandler(info: any): void {
+  tabClickHandler(row,info: any): void {
+    $(row).addClass("selected");
+    if(this.prevRow) this.prevRow.removeClass('selected')
+    this.prevRow = $(row)
+
+    
+
     this.compound.molidx=parseInt(info[0])-1;
     this.noPreviousMol = false;
     this.noNextMol = false;
