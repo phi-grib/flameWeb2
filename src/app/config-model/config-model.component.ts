@@ -38,7 +38,7 @@ export class ConfigModelComponent implements AfterContentChecked {
     model_ensemble: ['RF', 'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM', 'mean', 'median', 'majority', 'logicalOR', 'matrix'],
     combo_models: ['mean', 'median', 'majority', 'logicalOR', 'matrix'],
     // no_conformal: ['PLSDA', 'majority', 'logicalOR']
-    no_conformal: ['majority', 'logicalOR']
+    no_conformal: ['majority', 'logicalOR', 'mean', 'median']
   };
 
   conformal_settings = ['aggregated', 'normalizing_model', 'KNN_NN', 'conformal_predictors', 'ACP_sampler', 'aggregation_function'];
@@ -99,7 +99,7 @@ export class ConfigModelComponent implements AfterContentChecked {
     // }
     if (this.model.parameters['model'].value === 'mean' || this.model.parameters['model'].value === 'median') {
       this.model.parameters['quantitative'].value = true;
-      // this.model.parameters['conformal'].value = false;
+      this.model.parameters['conformal'].value = false;
     }
     if (this.model.parameters['model'].value === 'majority') {
       this.model.parameters['quantitative'].value = false;
