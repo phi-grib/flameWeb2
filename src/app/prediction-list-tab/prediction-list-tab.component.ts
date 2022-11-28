@@ -17,7 +17,7 @@ export class PredictionListTabComponent implements OnChanges {
     private service: PredictorService,
     public prediction: Prediction,
     private commonService: CommonService,
-    private profile: Profile,
+    // private profile: Profile,
     private compound: Compound,
     private toastr: ToastrService,
     public globals: Globals,
@@ -702,7 +702,7 @@ export class PredictionListTabComponent implements OnChanges {
         // }, 100);
 
         this.prediction.result = result;
-        this.updatePlotCombo();
+        // this.updatePlotCombo();
 
         if ('external-validation' in this.prediction.result) {
           for (const modelInfo of this.prediction.result['external-validation']) {
@@ -886,140 +886,143 @@ export class PredictionListTabComponent implements OnChanges {
     });
   }
 
-  updatePlotCombo() {
-    const xi = this.prediction.result.xmatrix[this.compound.molidx];
-    // console.log (xi);
+  // updatePlotCombo() {
+  //   const xi = this.prediction.result.xmatrix[this.compound.molidx];
+  //   // console.log (xi);
      
-    // the results are shown using plotComboQ but in the case
-    // of majority. only in this case we are using qualitative low level models
-    // as qualitative variables
-    if (!this.isMajority) {
-      this.plotComboQ.data[0].x = [];
-      this.plotComboQ.data[1].x = [];
-      this.plotComboQ.data[2].x = [];
-      this.plotComboQ.data[0].y = [];
-      this.plotComboQ.data[1].y = [];
-      this.plotComboQ.data[2].y = [];
-      this.plotComboQ.data[0].error_x.array = [];
-      this.plotComboQ.data[0].error_x.arrayminus = [];
+  //   // the results are shown using plotComboQ but in the case
+  //   // of majority. only in this case we are using qualitative low level models
+  //   // as qualitative variables
+  //   if (!this.isMajority) {
+  //     this.plotComboQ.data[0].x = [];
+  //     this.plotComboQ.data[1].x = [];
+  //     this.plotComboQ.data[2].x = [];
+  //     this.plotComboQ.data[0].y = [];
+  //     this.plotComboQ.data[1].y = [];
+  //     this.plotComboQ.data[2].y = [];
+  //     this.plotComboQ.data[0].error_x.array = [];
+  //     this.plotComboQ.data[0].error_x.arrayminus = [];
 
-      this.plotComboQ.data[0].x = xi;
-      for (let i=0; i<this.prediction.result.var_nam.length; i++) {
-        const varlist=String(this.prediction.result.var_nam[i]).split(':');
-        this.plotComboQ.data[0].y[i] = varlist[1]+'.v'+varlist[2];
+  //     this.plotComboQ.data[0].x = xi;
+  //     for (let i=0; i<this.prediction.result.var_nam.length; i++) {
+  //       const varlist=String(this.prediction.result.var_nam[i]).split(':');
+  //       this.plotComboQ.data[0].y[i] = varlist[1]+'.v'+varlist[2];
 
-        if (this.isQuantitative){
-          this.plotComboQ.data[1].y[i] = varlist[1]+'.v'+varlist[2];
-          this.plotComboQ.data[1].x[i] = this.prediction.result.values[this.compound.molidx];
-        }
+  //       if (this.isQuantitative){
+  //         this.plotComboQ.data[1].y[i] = varlist[1]+'.v'+varlist[2];
+  //         this.plotComboQ.data[1].x[i] = this.prediction.result.values[this.compound.molidx];
+  //       }
 
-      }
-      var drawCI = false;
-      if (this.prediction.result['ensemble_ci']){
-        drawCI = true
-        var cilist = this.prediction.result.ensemble_ci[this.compound.molidx];
-      }
-      else {  // support for legacy models where we used ensemble_confidence
-         if (this.prediction.result['ensemble_confidence']){
-          drawCI = true
-          var cilist = this.prediction.result.ensemble_confidence[this.compound.molidx];
-         }
-      }
-      if (drawCI){
-        for (let i=0; i<this.prediction.result.var_nam.length; i++) {
-          var cia = cilist[1+(i*2)] - xi[i];
-          var cib = xi[i] - cilist[i*2];
+  //     }
+  //     var drawCI = false;
+  //     if (this.prediction.result['ensemble_ci']){
+  //       drawCI = true
+  //       var cilist = this.prediction.result.ensemble_ci[this.compound.molidx];
+  //     }
+  //     else {  // support for legacy models where we used ensemble_confidence
+  //        if (this.prediction.result['ensemble_confidence']){
+  //         drawCI = true
+  //         var cilist = this.prediction.result.ensemble_confidence[this.compound.molidx];
+  //        }
+  //     }
+  //     if (drawCI){
+  //       for (let i=0; i<this.prediction.result.var_nam.length; i++) {
+  //         var cia = cilist[1+(i*2)] - xi[i];
+  //         var cib = xi[i] - cilist[i*2];
 
-          // avoid using c0 and c1 as CI ranges. c0/c1 are integers -1, 0 or 1
-          if (!this.isInteger(cia) && !this.isInteger(cib) ) {
-            this.plotComboQ.data[0].error_x.array[i] = cia;
-            this.plotComboQ.data[0].error_x.arrayminus[i] = cib;
-          }
-        }
+  //         // avoid using c0 and c1 as CI ranges. c0/c1 are integers -1, 0 or 1
+  //         if (!this.isInteger(cia) && !this.isInteger(cib) ) {
+  //           this.plotComboQ.data[0].error_x.array[i] = cia;
+  //           this.plotComboQ.data[0].error_x.arrayminus[i] = cib;
+  //         }
+  //       }
 
-        if (this.isQuantitative && this.prediction.result['upper_limit']){
-          for (let i=0; i<this.prediction.result.var_nam.length; i++) {
-            const varlist=String(this.prediction.result.var_nam[i]).split(':');
-            this.plotComboQ.data[2].y[i] = varlist[1]+'.v'+varlist[2];
-            this.plotComboQ.data[2].x[i] = this.prediction.result.upper_limit[this.compound.molidx];
-          }
-          let j = this.prediction.result.var_nam.length;
-          for (let i=this.prediction.result.var_nam.length-1; i>-1; i--) {
-            const varlist=String(this.prediction.result.var_nam[i]).split(':');
-            this.plotComboQ.data[2].y[j] = varlist[1]+'.v'+varlist[2];
-            this.plotComboQ.data[2].x[j] = this.prediction.result.lower_limit[this.compound.molidx];
-            j++;
-          }
-        }
-      }
-    }
-    // Qualitative
-    // TODO: show ensemble prediction
-    else {
-      this.plotComboC.data[0].x = [];
-      this.plotComboC.data[1].x = [];
-      this.plotComboC.data[0].y = [];
-      this.plotComboC.data[1].y = [];
+  //       if (this.isQuantitative && this.prediction.result['upper_limit']){
+  //         for (let i=0; i<this.prediction.result.var_nam.length; i++) {
+  //           const varlist=String(this.prediction.result.var_nam[i]).split(':');
+  //           this.plotComboQ.data[2].y[i] = varlist[1]+'.v'+varlist[2];
+  //           this.plotComboQ.data[2].x[i] = this.prediction.result.upper_limit[this.compound.molidx];
+  //         }
+  //         let j = this.prediction.result.var_nam.length;
+  //         for (let i=this.prediction.result.var_nam.length-1; i>-1; i--) {
+  //           const varlist=String(this.prediction.result.var_nam[i]).split(':');
+  //           this.plotComboQ.data[2].y[j] = varlist[1]+'.v'+varlist[2];
+  //           this.plotComboQ.data[2].x[j] = this.prediction.result.lower_limit[this.compound.molidx];
+  //           j++;
+  //         }
+  //       }
+  //     }
+  //   }
+  //   // Qualitative
+  //   // TODO: show ensemble prediction
+  //   else {
+  //     this.plotComboC.data[0].x = [];
+  //     this.plotComboC.data[1].x = [];
+  //     this.plotComboC.data[0].y = [];
+  //     this.plotComboC.data[1].y = [];
 
-      // Conformal, add classes
-      var drawCI = false;
-      if (this.prediction.result['ensemble_ci']){
-        drawCI = true
-        var class_list = this.prediction.result.ensemble_ci[this.compound.molidx];
-      }
-      else {  // support for legacy models where we used ensemble_confidence
-         if (this.prediction.result['ensemble_confidence']){
-          drawCI = true
-          var class_list = this.prediction.result.ensemble_confidence[this.compound.molidx];
-         }
-      }
+  //     // Conformal, add classes
+  //     var drawCI = false;
+  //     if (this.prediction.result['ensemble_ci']){
+  //       drawCI = true
+  //       var class_list = this.prediction.result.ensemble_ci[this.compound.molidx];
+  //     }
+  //     else {  // support for legacy models where we used ensemble_confidence
+  //        if (this.prediction.result['ensemble_confidence']){
+  //         drawCI = true
+  //         var class_list = this.prediction.result.ensemble_confidence[this.compound.molidx];
+  //        }
+  //     }
 
-      if (drawCI) {
+  //     if (drawCI) {
 
-        for (let i=0; i<this.prediction.result.var_nam.length; i++) {
-          const varlist=String(this.prediction.result.var_nam[i]).split(':');
-          this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
-          this.plotComboC.data[1].y[i] = varlist[1]+'.v'+varlist[2];
+  //       for (let i=0; i<this.prediction.result.var_nam.length; i++) {
+  //         const varlist=String(this.prediction.result.var_nam[i]).split(':');
+  //         this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
+  //         this.plotComboC.data[1].y[i] = varlist[1]+'.v'+varlist[2];
           
-          this.plotComboC.data[0].x[i] = 0;
-          this.plotComboC.data[1].x[i] = 0;
-        }
-        for (let i=0; i<this.prediction.result.var_nam.length; i++) {
-          if (class_list[i*2]===1) {
-            this.plotComboC.data[0].x[i] += -1;
-          }
-          if (class_list[1+(i*2)]===1) {
-            this.plotComboC.data[1].x[i] += 1;
-          }
-        }
+  //         this.plotComboC.data[0].x[i] = 0;
+  //         this.plotComboC.data[1].x[i] = 0;
+  //       }
+  //       for (let i=0; i<this.prediction.result.var_nam.length; i++) {
+  //         if (class_list[i*2]===1) {
+  //           this.plotComboC.data[0].x[i] += -1;
+  //         }
+  //         if (class_list[1+(i*2)]===1) {
+  //           this.plotComboC.data[1].x[i] += 1;
+  //         }
+  //       }
 
-      }
-      // non-conformal, just show final result (including uncertain)
-      else {
+  //     }
+  //     // non-conformal, just show final result (including uncertain)
+  //     else {
 
-        for (let i=0; i<this.prediction.result.var_nam.length; i++) {
-          const varlist=String(this.prediction.result.var_nam[i]).split(':');
-          this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
-          this.plotComboC.data[1].y[i] = varlist[1]+'.v'+varlist[2];
+  //       for (let i=0; i<this.prediction.result.var_nam.length; i++) {
+  //         const varlist=String(this.prediction.result.var_nam[i]).split(':');
+  //         this.plotComboC.data[0].y[i] = varlist[1]+'.v'+varlist[2];
+  //         this.plotComboC.data[1].y[i] = varlist[1]+'.v'+varlist[2];
   
-          if (xi[i]===0) {
-            this.plotComboC.data[0].x[i] = 0;
-            this.plotComboC.data[1].x[i] = 0;
-          } else if (xi[i]===1) {
-            this.plotComboC.data[0].x[i] = 0;
-            this.plotComboC.data[1].x[i] = 1;
-          } else {
-            this.plotComboC.data[0].x[i] = -1;
-            this.plotComboC.data[1].x[i] = 0;
-          }
-        }
-      }
-    }
+  //         if (xi[i]===0) {
+  //           this.plotComboC.data[0].x[i] = 0;
+  //           this.plotComboC.data[1].x[i] = 0;
+  //         } else if (xi[i]===1) {
+  //           this.plotComboC.data[0].x[i] = 0;
+  //           this.plotComboC.data[1].x[i] = 1;
+  //         } else {
+  //           this.plotComboC.data[0].x[i] = -1;
+  //           this.plotComboC.data[1].x[i] = 0;
+  //         }
+  //       }
+  //     }
+  //   }
    
-  }
+  // }
+
+
   isInteger(value) {
     return value % 1 == 0;
   }
+
   NextMol() {
     this.compound.molidx++;
     this.noPreviousMol = false;
@@ -1028,8 +1031,9 @@ export class PredictionListTabComponent implements OnChanges {
     }
     this.drawReportHeader();
     this.drawSimilars();
-    this.updatePlotCombo();
+    // this.updatePlotCombo();
   }
+  
   PreviousMol() {
     this.compound.molidx--;
     this.noNextMol = false;
@@ -1038,8 +1042,9 @@ export class PredictionListTabComponent implements OnChanges {
     }
     this.drawReportHeader();
     this.drawSimilars();
-    this.updatePlotCombo();
+    // this.updatePlotCombo();
   }
+  
   NextModel() {
     this.submodelsIndex++;
     this.noPreviousModel = false;
@@ -1047,6 +1052,7 @@ export class PredictionListTabComponent implements OnChanges {
       this.noNextModel = true;
     }
   }
+  
   PreviousModel() {
     this.submodelsIndex--;
     this.noNextModel = false;
@@ -1069,7 +1075,7 @@ export class PredictionListTabComponent implements OnChanges {
 
     this.drawReportHeader();
     this.drawSimilars();
-    this.updatePlotCombo();
+    // this.updatePlotCombo();
   }
 
   drawReportHeader () {
@@ -1160,6 +1166,7 @@ export class PredictionListTabComponent implements OnChanges {
   backConc(value: any) {
     return (Math.pow(10,6-value).toFixed(4))
   }
+
   castValue(value: any) {
     if (this.prediction.modelBuildInfo['quantitative']) {
       return value.toFixed(3);

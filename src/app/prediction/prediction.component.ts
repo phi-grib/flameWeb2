@@ -352,12 +352,17 @@ export class PredictionComponent implements OnInit {
   constructor(public prediction: Prediction,public model: Model, public global: Globals,private commonService:CommonService, public compound: Compound) { }
 
   ngOnInit(): void {
+    
     setTimeout(() => {
       this.getPlotScoresData();
+      this.updatePlotCombo();
+      console.log('quantitative:',this.isQuantitative, 'majority:', this.isMajority);
     }, 100);
     this.commonService.controlPagination$.subscribe(pagination => {
-      this.noPreviousMol = pagination[0]
-      this.noNextMol = pagination[1]
+      this.noPreviousMol = pagination[0];
+      this.noNextMol = pagination[1];
+      console.log('LOCAL UPDATE');
+      this.updatePlotCombo();
     })
   }
   
@@ -557,7 +562,8 @@ export class PredictionComponent implements OnInit {
 
   updatePlotCombo() {
     const xi = this.prediction.result.xmatrix[this.compound.molidx];
-    // console.log (xi);S
+    this.isMajority = this.prediction.modelBuildInfo['model']=='combination:majority voting' || this.prediction.modelBuildInfo['model']=='combination:logical OR'
+
     // the results are shown using plotComboQ but in the case
     // of majority. only in this case we are using qualitative low level models
     // as qualitative variables
