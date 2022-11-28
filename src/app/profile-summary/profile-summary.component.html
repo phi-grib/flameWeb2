@@ -25,7 +25,7 @@
                 <th></th>
                 <th #thmodel (click)="renderSort(thmodel)" class="text-center border"
                     *ngFor="let model of this.profile.summary['endpoint']; let x = index">
-                    {{model}} <span class="text-muted">v.{{this.profile.summary['version'][x]}}</span><i
+                    {{model}} <span class="text-muted">v.{{this.profile.summary['version'][x]}} {{this.profile.summary.endpoint_unit[x]}}</span><i
                         class="fas fa-xs d-inline text-secondary fa-caret-up ml-2"></i> <i
                         class="fas d-inline fa-xs text-secondary fa-caret-down"></i></th>
             </tr>
@@ -43,7 +43,7 @@
                     <td *ngIf="this.profile.summary.quantitative[pos]" id="values" (click)="showPrediction($event,i,td)"
                         class="text-center text-dark result border"
                         [ngStyle]="{background: value > 0 ? 'rgb('+this.profile.summary.escaleColor[i][pos][0]+','+this.profile.summary.escaleColor[i][pos][1]+','+this.profile.summary.escaleColor[i][pos][2]+')' : '#95a5a6'}">
-                        {{value | number: '1.0-2'}} {{this.profile.summary.endpoint_unit[pos]}} 
+                        {{value | number: '1.0-2'}}
                     </td>
                 </ng-container>
             </tr>

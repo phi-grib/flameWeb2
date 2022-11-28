@@ -459,7 +459,7 @@ export class ProfileItemComponent implements OnInit {
         this.updatePlotCombo();
         if(this.modelPresent){
           setTimeout(() => {
-            this.setScoresPlot(result,idxModel)
+            this.setScoresPlot(result,this.molIndex)
           },1)
           this.setUnit();
         }
@@ -972,6 +972,9 @@ export class ProfileItemComponent implements OnInit {
 
 
   setScoresPlot (result,molIndex) {
+    console.log(result)
+    console.log("Molindex")
+    console.log(molIndex)
     const options = {'width': 400, 'height': 250};
     const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
 
