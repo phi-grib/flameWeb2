@@ -79,6 +79,8 @@ export class Prediction {
     modelVersion: string = undefined;
     modelParameters: any;
     modelDocumentation: any = undefined;
+    modelMatch: boolean = true;
+    modelPresent: boolean = true;
     predictions = [];
     predicting = {};
     conformal = false;

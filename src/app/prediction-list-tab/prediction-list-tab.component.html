@@ -24,26 +24,9 @@
   </div>
 </div>
 
-<div class="row" *ngIf="!this.modelMatch">
-  <div class="card w-100">
-    <div class="card-body">
-      <div class="alert alert-danger text-center" role="alert">
-        Model ID mismatch (predicted with model ID '{{this.prediction.modelID}}' but local model ID is
-        '{{this.prediction.modelBuildInfo['modelID']}}'). Model info not shown
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="row" *ngIf="!this.modelPresent">
-  <div class="card w-100">
-    <div class="card-body">
-      <div class="alert alert-danger text-center" role="alert">
-        Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} not found. Model info not shown
-      </div>
-    </div>
-  </div>
-</div>
+
+
 
 <div class="col" *ngIf="this.prediction.result != undefined && this.predictionError == ''">
   <!-- <div class="tab-content" id="pills-tabContent" [hidden]="!this.predictionVisible"> -->

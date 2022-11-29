@@ -56,8 +56,6 @@ export class PredictionListTabComponent implements OnChanges {
 
   objectKeys = Object.keys;
   predictionVisible = false;
-  modelMatch = true;
-  modelPresent = true;
   dmodx = false;
   q_measures = ['TP', 'FP', 'TN', 'FN'];
   table: any = undefined;
@@ -289,8 +287,9 @@ export class PredictionListTabComponent implements OnChanges {
         }
       },
       error => {
-        this.modelPresent = false;
-        this.modelMatch = true; // prevent showing also this error!
+        console.log("el modelo no existe")
+        this.prediction.modelPresent = false;
+        this.prediction.modelMatch = true; // prevent showing also this error!
       }
     )
   }
@@ -427,7 +426,7 @@ export class PredictionListTabComponent implements OnChanges {
           report.click();
           // Series tab
           // scores plot requires to define interactive behaviour
-          if (this.modelMatch){
+          if (this.prediction.modelMatch){
              this.setScoresPlot(result)
           }
           }, 1000); // timeout
@@ -530,6 +529,12 @@ export class PredictionListTabComponent implements OnChanges {
   }
   
   tabClickHandler(info: any): void {
+    // prevents the selection of a molecule when you are on projection tab.
+    var projectTab = $('#pills-two-tab').attr("aria-selected")
+    console.log("projectTab")
+    console.log(projectTab)
+
+
 
     this.compound.molidx=parseInt(info[0])-1;
     this.noPreviousMol = false;
@@ -592,9 +597,9 @@ export class PredictionListTabComponent implements OnChanges {
           this.prediction.modelBuildInfo['conformal_confidence'] = 1.0 - this.prediction.modelBuildInfo["conformal_significance"];
         }
 
-        this.modelPresent = true;
+        this.prediction.modelPresent = true;
 
-        this.modelMatch = (this.prediction.modelBuildInfo['modelID'] == this.prediction.modelID);
+        this.prediction.modelMatch = (this.prediction.modelBuildInfo['modelID'] == this.prediction.modelID);
 
         this.isQuantitative = this.prediction.modelBuildInfo['quantitative'];
         this.isMajority = this.prediction.modelBuildInfo['model'] == 'combination:majority voting' || 
@@ -627,8 +632,8 @@ export class PredictionListTabComponent implements OnChanges {
         }
       },
       error => {
-        this.modelPresent = false;
-        this.modelMatch = true; // prevent showing also this error!
+        this.prediction.modelPresent = false;
+        this.prediction.modelMatch = true; // prevent showing also this error!
       }
     );   
   }
