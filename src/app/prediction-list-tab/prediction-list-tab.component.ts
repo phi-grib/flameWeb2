@@ -73,7 +73,6 @@ export class PredictionListTabComponent implements OnChanges {
   showConcentration = false;
   activity_val = [];
   dmodx_val = [];
-  prevRow = undefined;
 
   predictData = [{
     offset: 45, 
@@ -499,7 +498,7 @@ export class PredictionListTabComponent implements OnChanges {
           }
           const tdname = tr.insertCell();
           tdname.appendChild(document.createTextNode(pt.text));
-          tdname.setAttribute('style', 'max-width:100px')
+          tdname.setAttribute('style', 'max-width:100px');
 
           const tdsmiles = tr.insertCell();
           tdsmiles.setAttribute('class', 'align-middle text-center' )
@@ -511,7 +510,7 @@ export class PredictionListTabComponent implements OnChanges {
           });
 
           const tdactiv = tr.insertCell();
-          tdactiv.setAttribute('class', 'align-right' )
+          tdactiv.setAttribute('class', 'align-right' );
           tdactiv.appendChild(document.createTextNode(iactiv));
 
         });
@@ -534,20 +533,20 @@ export class PredictionListTabComponent implements OnChanges {
     
     
     if(projectTab == "false" || projectTab == undefined){
+
+      $('#prediction tr.selected').removeClass('selected');
       $(row).addClass("selected");
-      if(this.prevRow) this.prevRow.removeClass('selected')
-      this.prevRow = $(row)
-      
+
       this.compound.molidx=parseInt(info[0])-1;
       this.noPreviousMol = false;
       this.noNextMol = false;
       if (this.compound.molidx == 0) {
-        this.noPreviousMol = true
+        this.noPreviousMol = true;
       }
       if (this.compound.molidx == (this.prediction.result.SMILES.length - 1)) {
         this.noNextMol = true;
       }
-      this.commonService.setPagination(this.noPreviousMol,this.noNextMol)
+      this.commonService.setPagination(this.noPreviousMol,this.noNextMol);
   
       this.drawReportHeader();
       this.drawSimilars();

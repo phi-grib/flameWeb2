@@ -409,7 +409,7 @@ export class PredictionComponent implements OnInit {
 
   PreviousMol() {
     this.compound.molidx -= 1
-
+    
     this.noNextMol = false;
     this.noPreviousMol = false;
     this.noNextMol = false;
@@ -419,13 +419,14 @@ export class PredictionComponent implements OnInit {
     if (this.compound.molidx == (this.prediction.result.SMILES.length - 1)) {
       this.noNextMol = true;
     }
+
+    $('#prediction tr.selected').removeClass('selected');
     this.drawReportHeader();
     this.drawSimilars();
     this.updatePlotCombo();
   }
 
   NextMol() {
-    /*compartir molindex */
     this.compound.molidx += 1
 
     this.noPreviousMol = false;
@@ -437,9 +438,11 @@ export class PredictionComponent implements OnInit {
       this.noNextMol = true;
     }
     
-    this.drawReportHeader();
-    this.drawSimilars();
-    this.updatePlotCombo();
+    $('#prediction tr.selected').removeClass('selected');
+
+     this.drawReportHeader();
+     this.drawSimilars();
+     this.updatePlotCombo();
   }
 
   NextModel() {
@@ -449,7 +452,7 @@ export class PredictionComponent implements OnInit {
       this.noNextModel = true;
     }
   }
-
+  
   public changeProjectStyleTrainingMark (target:any) {
     var update: any = {'visible':[true, true, false]}
     if (target.value == 'density') {
