@@ -17,7 +17,6 @@ export class PredictionListTabComponent implements OnChanges {
     private service: PredictorService,
     public prediction: Prediction,
     private commonService: CommonService,
-    // private profile: Profile,
     private compound: Compound,
     private toastr: ToastrService,
     public globals: Globals,
@@ -38,7 +37,7 @@ export class PredictionListTabComponent implements OnChanges {
     this.prediction.modelBuildInfo = {};
     this.predictData[0].r = [0, 0, 0, 0];
     this.predictionError = '';
-
+    
     this.activity_val = [];
     this.dmodx_val = [];
     this.plotScores.data = [
@@ -74,6 +73,7 @@ export class PredictionListTabComponent implements OnChanges {
   showConcentration = false;
   activity_val = [];
   dmodx_val = [];
+  prevRow = undefined;
 
   predictData = [{
     offset: 45, 
@@ -404,7 +404,7 @@ export class PredictionListTabComponent implements OnChanges {
               // const self = this;
               $('td', row).unbind('click');
               $('td', row).bind('click', () => {
-                this.tabClickHandler(data);
+                this.tabClickHandler(row,data);
               });
               return row;
             },
@@ -528,28 +528,30 @@ export class PredictionListTabComponent implements OnChanges {
     return value % 1 == 0;
   }
   
-  tabClickHandler(info: any): void {
+  tabClickHandler(row,info: any): void {
     // prevents the selection of a molecule when you are on projection tab.
     var projectTab = $('#pills-two-tab').attr("aria-selected")
-    console.log("projectTab")
-    console.log(projectTab)
-
-
-
-    this.compound.molidx=parseInt(info[0])-1;
-    this.noPreviousMol = false;
-    this.noNextMol = false;
-    if (this.compound.molidx == 0) {
-      this.noPreviousMol = true
-    }
-    if (this.compound.molidx == (this.prediction.result.SMILES.length - 1)) {
-      this.noNextMol = true;
-    }
-    this.commonService.setPagination(this.noPreviousMol,this.noNextMol)
-
-    this.drawReportHeader();
-    this.drawSimilars();
+    
+    
+    if(projectTab == "false" || projectTab == undefined){
+      $(row).addClass("selected");
+      if(this.prevRow) this.prevRow.removeClass('selected')
+      this.prevRow = $(row)
+      
+      this.compound.molidx=parseInt(info[0])-1;
+      this.noPreviousMol = false;
+      this.noNextMol = false;
+      if (this.compound.molidx == 0) {
+        this.noPreviousMol = true
+      }
+      if (this.compound.molidx == (this.prediction.result.SMILES.length - 1)) {
+        this.noNextMol = true;
+      }
+      this.commonService.setPagination(this.noPreviousMol,this.noNextMol)
   
+      this.drawReportHeader();
+      this.drawSimilars();
+    }
     // this.updatePlotCombo();
   }
 
