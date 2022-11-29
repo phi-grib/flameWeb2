@@ -219,6 +219,7 @@ export class ProfileSummaryComponent implements OnInit {
    */
   formatData(pdf: boolean): Array<[]> {
     var data = [];
+
     for (let i = 0; i < this.profile.summary['obj_nam'].length; i++) {
       var auxData = []
       const compound = this.profile.summary['obj_nam'][i];
@@ -227,6 +228,7 @@ export class ProfileSummaryComponent implements OnInit {
       for (let y = 0; y < this.profile.summary['endpoint'].length; y++) {
 
         var value = this.profile.summary['values'][i][y].toFixed(2)
+        // if select pdf option
         if(pdf){
         if (!this.profile.summary['quantitative'][y]) {
           switch (value) {
@@ -240,12 +242,8 @@ export class ProfileSummaryComponent implements OnInit {
               value = "Uncertain"
               break;
           }
-
         }
       }
-        else {
-          if (value > 1 || value < 0) value = value.toFixed(2)
-        }
 
         auxData.push(value)
       }
@@ -256,8 +254,19 @@ export class ProfileSummaryComponent implements OnInit {
   savePDF() {
     const doc = new jsPDF();
     var data = this.formatData(true);
+    var header = []
+
+    for (let i  = 0; i < this.profile.summary.endpoint.length; i++) {
+      var name_unit = this.profile.summary.endpoint[i] + ' ' + this.profile.summary['endpoint_unit'][i]
+
+      if(this.profile.summary['endpoint_unit'][i]){
+        header.push(name_unit)
+      }else{
+        header.push(this.profile.summary.endpoint[i])
+      } 
+      }
     autoTable(doc, {
-      head: [['Compound', 'Structure', ...this.profile.summary.endpoint]],
+      head: [['Compound', 'Structure',...header]],
       body: data,
       columnStyles: {
         0: { cellWidth: 30 },
@@ -274,7 +283,18 @@ export class ProfileSummaryComponent implements OnInit {
   saveEXCEL() {
     var data = this.formatData(false)
     const xls = Object.assign([], data);
-    var head = [['Compound'], ['Structure'], ...this.profile.summary.endpoint]
+    var header = []
+
+    for (let i  = 0; i < this.profile.summary.endpoint.length; i++) {
+      var name_unit = this.profile.summary.endpoint[i] + ' ' + this.profile.summary['endpoint_unit'][i]
+      if(this.profile.summary['endpoint_unit'][i]){
+        header.push(name_unit)
+      }else{
+        header.push(this.profile.summary.endpoint[i])
+      } 
+      }
+      
+    var head = [['Compound'], ['Structure'], ...header]
     xls.splice(0, 0, head);
     /* generate worksheet */
     const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(xls);
