@@ -374,8 +374,8 @@ export class CommonFunctions {
             paging: true,
             ordering: true,
             destroy: true,
-            columnDefs: [{ 'type': 'date-euro', 'targets': 1 }],
-            order:[[1,'desc']],
+            columnDefs: [{ 'type': 'date-euro', 'targets': 3 }],
+            order:[[3,'desc']],
             info: true,
           });
       }, 10);
