@@ -16,12 +16,16 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>Models</th>
+                                <th>Series</th>
                                 <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr #tr (click)="this.selectProfile(profile,tr)" *ngFor="let profile of this.profile.profileList[1]">
                                 <td>{{profile[0]}}</td>
+                                <td title="{{profile[1]}}">{{profile[1].length}}</td>
+                                <td>{{profile[4]}}</td>
                                 <td>{{profile[3]}}</td>
                             </tr>
                         </tbody>
