@@ -16,7 +16,6 @@
                         <strong> Model {{this.prediction.modelName}} version {{this.prediction.modelVersion}} (ID:{{this.prediction.modelID}})</strong>
                     </div>
                     <div class="col-3 border">
-                        <!--fake date -->
                         <strong> Date {{this.prediction.date}}</strong>
                     </div>
                 </div>
@@ -80,46 +79,56 @@
                 </div>
                 <div class="row " *ngIf="this.modelBuildInfo['ensemble']">
                     <div class="col-3 border">
-                        <strong>Combined Model </strong>
-                    </div>
-                    <div class="col-9 border">
+                        <strong >Combined Model </strong>
+                      </div>
+                      <div class="col-9 border">
                         <span class="text-capitalize">{{this.modelBuildInfo['model'].replace('combination:','')}}</span><span> using {{this.modelBuildInfo['nvarx']}} models</span>
                         <br><br>
                         <!--SUBMODEL RESULTS-->
-                        <div class="row" *ngIf="this.isMajority == false">
-                            <plotly-plot [data]="this.plotComboQ.data" [layout]="this.plotComboQ.layout" [config]="this.plotComboQ.config">
+            
+                          <div class="row" *ngIf="this.isMajority == false">
+                            <plotly-plot 
+                            [data]="this.plotComboQ.data" 
+                            [layout]="this.plotComboQ.layout" 
+                            [config]="this.plotComboQ.config">
                             </plotly-plot>
-                        </div>
-                        <div class="row" *ngIf="this.isMajority">
-                            <plotly-plot [data]="this.plotComboC.data" [layout]="this.plotComboC.layout" [config]="this.plotComboC.config">
+                          </div>      
+                          
+                          <div class="row" *ngIf="this.isMajority">
+                            <plotly-plot 
+                            [data]="this.plotComboC.data" 
+                            [layout]="this.plotComboC.layout" 
+                            [config]="this.plotComboC.config">
                             </plotly-plot>
-                        </div>
-                        <!-- <div class="row" *ngIf="this.modelBuildInfo['quantitative'] == false" >
-                  <table class="table table-striped w-auto">
-                    <thead>
-                      <tr>
-                        <th class="pl-0 pb-2 pt-2 pr-2 text-left" scope="col">Model</th>
-                        <th class="p-2 text-center" scope="col">Version</th>
-                        <th class="pr-0 pl-2 pb-2 pt-2 text-right" scope="col">Result</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let model of this.profile.item.var_nam; let j = index">
-                        <td class="p-0 text-left">{{model.split(":")[1]}}</td>
-                        <td class="p-0 text-center">{{model.split(":")[2]}}</td>
-                        <td class="p-0 text-right">{{castValue(this.profile.item.xmatrix[this.molIndex][j])}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>                    -->
-
-
+                          </div>   
+            
+                          <!-- <div class="row" *ngIf="this.prediction.modelBuildInfo['quantitative'] == false" >
+                            <table class="table table-striped w-auto">
+                              <thead>
+                                <tr>
+                                  <th class="pl-0 pb-2 pt-2 pr-2 text-left" scope="col">Model</th>
+                                  <th class="p-2 text-center" scope="col">Version</th>
+                                  <th class="pr-0 pl-2 pb-2 pt-2 text-right" scope="col">Result</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let model of this.prediction.result.var_nam; let j = index">
+                                  <td class="p-0 text-left">{{model.split(":")[1]}}</td>
+                                  <td class="p-0 text-center">{{model.split(":")[2]}}</td>
+                                  <td class="p-0 text-right">{{castValue(this.prediction.result.xmatrix[this.this.compound.molidx][j])}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>                    -->
+            
+            
                         <!--END SUBMODEL RESULTS-->
-
+                          
                         <br>
-                        <!-- <a href="javascript:void(0);">QMRF report</a> -->
-
-                    </div>
+                          <!-- <a href="javascript:void(0);">QMRF report</a> -->
+                          
+                      </div>
+             
                 </div>
                 <div class="row " *ngIf="this.profile.item['search_results']">
                     <div class="col-3 border">
@@ -206,7 +215,7 @@
             </div>
         </as-split-area>
         <!--PROJECT PREDICTIONS-->
-        <as-split-area class="split-area-project" *ngIf="this.modelPresent" [order]="2" [size]="size2">
+        <as-split-area class="split-area-project" *ngIf="this.modelPresent && !this.modelBuildInfo['ensemble']" [order]="2" [size]="size2">
             <div id="overlay" *ngIf="this.showSpinner">
                 <div class="spinner-border text-etransafe" style="width: 10rem; height: 10rem;" role="status">
                     <span class="sr-only">Loading...</span>

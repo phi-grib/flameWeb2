@@ -286,7 +286,6 @@ export class PredictionListTabComponent implements OnChanges {
         }
       },
       error => {
-        console.log("el modelo no existe")
         this.prediction.modelPresent = false;
         this.prediction.modelMatch = true; // prevent showing also this error!
       }

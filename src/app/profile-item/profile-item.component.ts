@@ -369,7 +369,7 @@ export class ProfileItemComponent implements OnInit {
        
         this.setDataItem(this.profile.item);
         this.updatePlotCombo();
-        if(this.modelPresent) this.setScoresPlot(this.profile.item,index[0])
+        if(this.modelPresent  && !this.modelBuildInfo['ensemble']) this.setScoresPlot(this.profile.item,index[0])
         this.renderData();
       }
     });
@@ -457,12 +457,13 @@ export class ProfileItemComponent implements OnInit {
         this.profile.item = result;
         this.setDataItem(result)
         this.updatePlotCombo();
-        if(this.modelPresent){
+        
+        if(this.modelPresent && !this.modelBuildInfo['ensemble']){
           setTimeout(() => {
             this.setScoresPlot(result,this.molIndex)
           },1)
-          this.setUnit();
         }
+        if(this.modelPresent) this.setUnit();
         this.renderData();
       }
     }, error => {
@@ -470,10 +471,10 @@ export class ProfileItemComponent implements OnInit {
     })
   }
   setDataItem(result){
+    if ('PC1proj' in result) {
     this.plotScores.data[1].x = [result['PC1proj'][this.molIndex]];
     this.plotScores.data[1].y = [result['PC2proj'][this.molIndex]];
     this.plotScores.data[1].text = [this.prediction.molSelected];
-
     this.activity_val = this.profile.item.values[this.molIndex];
 
     if (!this.isQuantitative){
@@ -494,6 +495,7 @@ export class ProfileItemComponent implements OnInit {
       this.dmodx = false;
         this.plotScores.data[1].marker.color[0] = 0.0;
         this.dmodx_val[0] = 0.0;
+    }
     }
   }
 
@@ -565,7 +567,7 @@ export class ProfileItemComponent implements OnInit {
 
   updatePlotCombo() {
     const xi = this.profile.item.xmatrix[this.molIndex];
-    // console.log (xi);
+    this.isMajority = this.profile.item['model']=='combination:majority voting' || this.prediction.modelBuildInfo['model']=='combination:logical OR'
     // the results are shown using plotComboQ but in the case
     // of majority. only in this case we are using qualitative low level models
     // as qualitative variables
@@ -728,7 +730,6 @@ export class ProfileItemComponent implements OnInit {
                           this.modelBuildInfo['model'] == 'combination:logical OR' ;
 
         if (this.modelBuildInfo['ensemble']) {
-
           let version = '0';
           this.submodels = [];
           this.modelBuildInfo['ensemble_names'].forEach((submodel, index) => {
@@ -972,9 +973,6 @@ export class ProfileItemComponent implements OnInit {
 
 
   setScoresPlot (result,molIndex) {
-    console.log(result)
-    console.log("Molindex")
-    console.log(molIndex)
     const options = {'width': 400, 'height': 250};
     const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
 
