@@ -35,10 +35,9 @@ export class ConfigModelComponent implements AfterContentChecked {
   type_models = {
     data: ['RF',  'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
     molecule: ['RF',  'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM'],
-    model_ensemble: ['RF', 'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM', 'mean', 'median', 'majority', 'logicalOR', 'matrix'],
-    combo_models: ['mean', 'median', 'majority', 'logicalOR', 'matrix'],
-    // no_conformal: ['PLSDA', 'majority', 'logicalOR']
-    no_conformal: ['majority', 'logicalOR', 'mean', 'median']
+    model_ensemble: ['RF', 'XGBOOST', 'PLSDA', 'PLSR', 'GNB', 'SVM', 'mean', 'median', 'majority', 'logicalOR', 'logicalAND','matrix'],
+    combo_models: ['mean', 'median', 'majority', 'logicalOR', 'logicalAND', 'matrix'],
+    no_conformal: ['majority', 'logicalOR', 'logicalAND', 'mean', 'median']
   };
 
   conformal_settings = ['aggregated', 'normalizing_model', 'KNN_NN', 'conformal_predictors', 'ACP_sampler', 'aggregation_function'];
@@ -106,6 +105,10 @@ export class ConfigModelComponent implements AfterContentChecked {
       this.model.parameters['conformal'].value = false;
     }
     if (this.model.parameters['model'].value === 'logicalOR') {
+      this.model.parameters['quantitative'].value = false;
+      this.model.parameters['conformal'].value = false;
+    }
+    if (this.model.parameters['model'].value === 'logicalAND') {
       this.model.parameters['quantitative'].value = false;
       this.model.parameters['conformal'].value = false;
     }
