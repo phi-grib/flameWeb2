@@ -420,7 +420,7 @@ export class QuantitConformalSelectorComponent implements OnChanges {
       if (value == 'both') {
         update = {'visible':[true, true]}
       }
-      PlotlyJS.restyle('scoresDIV', update);
+      PlotlyJS.restyle('scoresDIV_sel', update);
     }
 
     ngOnChanges(): void {
@@ -597,18 +597,18 @@ export class QuantitConformalSelectorComponent implements OnChanges {
             const smilesDrawer = new SmilesDrawer.Drawer(options);
 
             // scores plot                 
-            const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
+            const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_sel');
             const context = canvas.getContext('2d');
 
-            PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+            PlotlyJS.newPlot('scoresDIV_sel', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
             
-            let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
+            let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV_sel');
             
             // on hover, draw the molecule
             myPlot.on('plotly_hover', function(eventdata){ 
               var points = eventdata.points[0];
               SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
+                smilesDrawer.draw(tree, 'scores_canvas_sel', 'light', false);
               });
             });
 
@@ -812,18 +812,18 @@ export class QuantitConformalSelectorComponent implements OnChanges {
 
             const me = this;
             // predicted plot                 
-            const canvas_pred = <HTMLCanvasElement>document.getElementById('scatter_pred_canvas');
+            const canvas_pred = <HTMLCanvasElement>document.getElementById('scatter_pred_canvas_sel');
             const context_pred = canvas_pred.getContext('2d');
 
-            PlotlyJS.newPlot('scatterPredDIV', this.plotPredicted.data, this.plotScatter.layout, this.plotScatter.config);
+            PlotlyJS.newPlot('scatterPredDIV_sel', this.plotPredicted.data, this.plotScatter.layout, this.plotScatter.config);
             
-            let myPlotPred = <CustomHTMLElement>document.getElementById('scatterPredDIV');
+            let myPlotPred = <CustomHTMLElement>document.getElementById('scatterPredDIV_sel');
 
             // on hover, draw the molecule
             myPlotPred.on('plotly_hover', function(eventdata){ 
               var points = eventdata.points[0];
               SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                smilesDrawer.draw(tree, 'scatter_pred_canvas', 'light', false);
+                smilesDrawer.draw(tree, 'scatter_pred_canvas_sel', 'light', false);
               });
             });
 
@@ -833,18 +833,18 @@ export class QuantitConformalSelectorComponent implements OnChanges {
             });
 
             // fitted plott
-            const canvas_fit = <HTMLCanvasElement>document.getElementById('scatter_fit_canvas');
+            const canvas_fit = <HTMLCanvasElement>document.getElementById('scatter_fit_canvas_sel');
             const context_fit = canvas_fit.getContext('2d');
 
-            PlotlyJS.newPlot('scatterFitDIV', this.plotFitted.data, this.plotScatter.layout, this.plotScatter.config);
+            PlotlyJS.newPlot('scatterFitDIV_sel', this.plotFitted.data, this.plotScatter.layout, this.plotScatter.config);
             
-            let myPlotFit = <CustomHTMLElement>document.getElementById('scatterFitDIV');
+            let myPlotFit = <CustomHTMLElement>document.getElementById('scatterFitDIV_sel');
             
             // on hover, draw the molecule
             myPlotFit.on('plotly_hover', function(eventdata){ 
               var points = eventdata.points[0];
               SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                smilesDrawer.draw(tree, 'scatter_fit_canvas', 'light', false);
+                smilesDrawer.draw(tree, 'scatter_fit_canvas_sel', 'light', false);
               });
             });
             // on onhover, clear the canvas

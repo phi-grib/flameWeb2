@@ -153,9 +153,9 @@
 
                                 </tbody>
                             </table>    
-                            <canvas id="scatter_pred_canvas"></canvas>
+                            <canvas id="scatter_pred_canvas_sel"></canvas>
                         </div>
-                        <div id="scatterPredDIV" *ngIf="!this.model.secret"></div>
+                        <div id="scatterPredDIV_sel" *ngIf="!this.model.secret"></div>
                     </div>
                 </div>
             </div>
@@ -194,9 +194,9 @@
 
                                 </tbody>
                             </table>
-                            <canvas id="scatter_fit_canvas" ></canvas>    
+                            <canvas id="scatter_fit_canvas_sel" ></canvas>    
                         </div>
-                        <div id="scatterFitDIV" *ngIf="!this.model.secret"></div>
+                        <div id="scatterFitDIV_sel" *ngIf="!this.model.secret"></div>
                     </div>
                 </div>
             </div>
@@ -211,7 +211,7 @@
                 <div class="card-body"  *ngIf="!this.model.secret">
                     <div class="row justify-content-between">
                         <div class="col">
-                            <div id="scoresDIV"></div>
+                            <div id="scoresDIV_sel"></div>
                             <div class="form-group col-md-8">
                                 <label class="bmd-label-static pr-2">Training series: show as</label>
                                 <select class="form-select" id="projectStyleTrainingMarker" (change)="changeProjectStyleMark($event.target.value)">
@@ -222,7 +222,7 @@
                             </div>
                         </div>
                         <div class="col">
-                            <canvas class="fixed_canvas"  id="scores_canvas"></canvas>
+                            <canvas class="fixed_canvas"  id="scores_canvas_sel"></canvas>
 
                             <table id ="tableSelections" class="minitable compact">
                                 <thead>
