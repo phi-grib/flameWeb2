@@ -9,24 +9,25 @@ import * as PlotlyJS from 'plotly.js-dist-min';
   styleUrls: ['./quantit-conformal-selector.component.css']
 })
 export class QuantitConformalSelectorComponent implements OnChanges {
-
-  constructor(  private commonService: CommonService,
+  constructor(
+    private commonService: CommonService,
     public model: Model) { }
 
     @Input() modelName;
     @Input() modelVersion;
     @Input() modelID;
+
     objectKeys = Object.keys;
     modelValidationInfo = {};
-    modelTypeInfo: any = {};
+    modelTypeInfo = {};
     modelBuildInfo = {};
     modelWarning = '';
     modelVisible = false;
     features = false;
+    optimization = false;
     features_method = '';
     featuresTSV = '';
-
-
+    scores = '';
 
     plotFitted = {
       data: [{ x: [], 
@@ -108,7 +109,6 @@ export class QuantitConformalSelectorComponent implements OnChanges {
         margin: { r: 10, t: 30, pad: 10 },
         showlegend: false,
         showtitle: false,
-        
 
         xaxis: {
           range: [],
@@ -119,8 +119,8 @@ export class QuantitConformalSelectorComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'Experimental',
-          titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-          tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+          titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+          tickfont: { family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         },
         yaxis: {
           range: [],
@@ -132,8 +132,8 @@ export class QuantitConformalSelectorComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'Model',
-          titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+          titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         },
       },
       config: {
@@ -165,8 +165,8 @@ export class QuantitConformalSelectorComponent implements OnChanges {
             cauto: true,
             size: 10,
             colorbar: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
               titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
               title: 'Activity'
             }
           },
@@ -196,7 +196,7 @@ export class QuantitConformalSelectorComponent implements OnChanges {
         margin: { r: 10, t: 30, pad: 0  },
         showlegend: false,
         showtitle: true,
-        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+        titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
         title: 'Training series (using model X matrix)', 
         xaxis: {
           zeroline: true,
@@ -206,8 +206,8 @@ export class QuantitConformalSelectorComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'PCA PC1',
-          titlefont: {family: 'Barlow Semi Condensed, sans-serif',size: 18},
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif',size: 16},
+          titlefont: {family: 'Barlow Semi Condensed, sans-serif',size: 16},
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif',size: 14},
         },
         yaxis: {
           zeroline: true,
@@ -217,8 +217,8 @@ export class QuantitConformalSelectorComponent implements OnChanges {
           linecolor: 'rgb(200,200,200)',
           linewidth: 2,
           title: 'PCA PC2',
-          titlefont: {family: 'Barlow Semi Condensed, sans-serif',size: 18},
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif',size: 16},
+          titlefont: {family: 'Barlow Semi Condensed, sans-serif',size: 16},
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif',size: 14},
         },
       },
       config: {
@@ -246,7 +246,7 @@ export class QuantitConformalSelectorComponent implements OnChanges {
         hoveron: "violins+points",
         box: { visible: true },
         boxpoints: true,
-        hoverlabel: { bgcolor: "#22577"},
+        // hoverlabel: { bgcolor: "#22577"},
         line: {color: '#22577'},
         hovertemplate: '<b>%{text}</b><br>%{y:.2f}<extra></extra>',
         fillcolor: "#B8DCED",
@@ -255,13 +255,13 @@ export class QuantitConformalSelectorComponent implements OnChanges {
         name: 'Activity'
       }],
       layout : {
-        width: 300,
-        height: 250,
+        width: 200,
+        height: 200,
         hovermode: 'closest',
-        margin: {r: 10, t: 30, b: 0, l:10, pad: 0},
+        margin: {r: 10, t: 50, b: 0, l:10, pad: 0},
         xaxis: {
           zeroline: false,
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif' },
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size:14 },
         }
       },
       config: {
@@ -269,8 +269,8 @@ export class QuantitConformalSelectorComponent implements OnChanges {
         toImageButtonOptions: {
           format: 'svg', // one of png, svg, jpeg, webp
           filename: 'flame_violin',
-          width: 600,
-          height: 500,
+          width: 500,
+          height: 400,
           scale: 2 // Multiply title/legend/axis/canvas sizes by this factor
         },
         modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
@@ -278,14 +278,62 @@ export class QuantitConformalSelectorComponent implements OnChanges {
       
     }
     
+    plotOptimization= {
+      data : [{
+        type: 'bar',
+        x: [],
+        y: [],
+        // orientation: 'h', 
+        error_y: {
+          type: 'data',
+          array: []
+        },
+        marker: {
+          color: []
+        },
+        hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>'
+      }],
+      layout : {
+        title: 'Optimization results (scorer mean +/- sd)',
+        font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        width: 900,
+        height: 600,
+        hovermode: 'closest',
+        margin: {b:10, t:50, pad: 10},
+        xaxis: {
+          showticklabels: false, 
+          // ticklabeloverflow: 'allow',
+          // tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
+        },
+        yaxis: {
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
+        },
+      },
+      config: {
+        displaylogo: false,
+        showtitle: true, 
+        showlegend: false, 
+        toImageButtonOptions: {
+          format: 'svg', // one of png, svg, jpeg, webp
+          filename: 'optimization_results',
+          width: 900,
+          height: 600,
+          scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+        },
+        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+      }
+    }
+
     plotFeatures= {
       data : [{
         type: 'bar',
         y: [],
         x: [],
-        hoverlabel: { bgcolor: "#22577"},
+        hoverlabel: { bgcolor: "#0076a3"},
         hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>',
-        fillcolor: "#B8DCED",
+        marker: {
+          color: "#0076a3"
+        }
       }],
       layout : {
         title: 'Feature importances (top 50)',
@@ -301,7 +349,7 @@ export class QuantitConformalSelectorComponent implements OnChanges {
           tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
         },
         yaxis: {
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         },
       },
       config: {
@@ -327,9 +375,9 @@ export class QuantitConformalSelectorComponent implements OnChanges {
             type: 'bar',
             texttemplate: "%{y:.2f}",
             textposition: 'auto',
-            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             marker: {
-              color: 'rgba(70,143,184,0.8)',
+              color: 'rgba(70,143,184,0.8)', 
             }
           },{
             x: ['R2/Q2', 'Conformal accuracy'],
@@ -338,7 +386,7 @@ export class QuantitConformalSelectorComponent implements OnChanges {
             type: 'bar',
             texttemplate: "%{y:.2f}",
             textposition: 'auto',
-            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             marker: {
               color: 'rgba(156,198,221,0.8)',
             }
@@ -346,13 +394,14 @@ export class QuantitConformalSelectorComponent implements OnChanges {
       layout: {
             yaxis: {
               range: [0.0,1.0],
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             },
             xaxis: {
-              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+              tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
             },
-            width: 600,
-            height: 400,
+            width: 400,
+            height: 300,
+            margin: {r: 5, t: 20, b: 20, l:30},
             showlegend: true,
             barmode: 'group'
       },
@@ -363,8 +412,7 @@ export class QuantitConformalSelectorComponent implements OnChanges {
       }
     }
 
-    public changeProjectStyleMark (event) {
-      const value = event.target.value
+    public changeProjectStyleMark (value:string) {
       var update = {'visible':[true, false]}
       if (value == 'density') {
         update = {'visible':[false, true]}
@@ -372,7 +420,7 @@ export class QuantitConformalSelectorComponent implements OnChanges {
       if (value == 'both') {
         update = {'visible':[true, true]}
       }
-      PlotlyJS.restyle('scoresDIV-selector', update);
+      PlotlyJS.restyle('scoresDIV_sel', update);
     }
 
     ngOnChanges(): void {
@@ -381,8 +429,10 @@ export class QuantitConformalSelectorComponent implements OnChanges {
       this.modelValidationInfo = {};
       this.modelBuildInfo = {};
       this.features = false;
+      this.optimization = false;
       this.features_method = '';
       this.modelWarning = '';
+      this.scores = '';
       this.plotFitted.data[0].x = [];
       this.plotFitted.data[0].y = [];
       this.plotFitted.data[0].error_y.array = [];
@@ -406,386 +456,414 @@ export class QuantitConformalSelectorComponent implements OnChanges {
       this.plotViolin.data[0].text =[];
       this.plotFeatures.data[0].y =[];
       this.plotFeatures.data[0].x =[];
+      this.plotOptimization.data[0].y =[];
+      this.plotOptimization.data[0].x =[];
+      this.plotOptimization.data[0].error_y.array =[];
+      this.plotOptimization.data[0].marker.color =[];
       this.plotSummary.data[0].y = [];
       this.plotSummary.data[1].y = [];
       this.featuresTSV = '';
       
       this.getValidation();
       this.getDocumentation();
-
-  }
-  isObject(val) {
-    if (val === null) {
-      return false;
     }
-    return typeof val === 'object';
-  }
-  getDocumentation() {
-    this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
-      result => {
-        let label_units = '';
-        if (result['Endpoint_units'].value != undefined) {
-          label_units = ': '+ result['Endpoint_units'].value;
-        }
-        this.plotScatter.layout.xaxis.title= 'Experimental'+label_units;
-        this.plotScatter.layout.xaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 };
-        this.plotScatter.layout.yaxis.title= 'Model'+label_units;
-        this.plotScatter.layout.yaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 };
+
+    isObject(val) {
+      if (val === null) {
+        return false;
       }
-    );
-  }
-  downloadFeatures () {
-    var element = document.createElement("a");
-    element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(this.featuresTSV));
-    element.setAttribute('download', 'feature_importances'+this.modelName+'v'+this.modelVersion+'.tsv');
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-  }
-  getValidation() {
-    this.commonService.getValidation(this.modelName, this.modelVersion).subscribe(
-      result => {
-        const info = result;
-        
-        this.model.input_type = info.meta.input_type;
-        
-        // process warnings
-        if (info.warning){
-          this.modelWarning = info.warning;
+      return typeof val === 'object';
+    }
+
+    getDocumentation() {
+      this.commonService.getDocumentation(this.modelName, this.modelVersion, 'JSON').subscribe(
+        result => {
+          let label_units = '';
+          if (result['Endpoint_units'].value != undefined) {
+            label_units = ': '+ result['Endpoint_units'].value;
+          }
+          this.plotScatter.layout.xaxis.title= 'Experimental'+label_units;
+          this.plotScatter.layout.xaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 };
+          this.plotScatter.layout.yaxis.title= 'Model'+label_units;
+          this.plotScatter.layout.yaxis.titlefont = { family: 'Barlow Semi Condensed, sans-serif', size: 18 };
         }
-        
-        for (const modelInfo of info['model_valid_info']) {
-          if (typeof modelInfo[2] === 'number') {
-            modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
-          }
-          if (typeof modelInfo[2] !== 'object') {
-            this.modelValidationInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
-          } 
-          
-          // translation for back_compatibility
-          if (modelInfo[0]==='Conformal_accuracy_fitting') {
-            this.modelValidationInfo ['Conformal_accuracy_f'] = [modelInfo[1], modelInfo[2]];
-          }
-          
-          // translation for back_compatibility
-          if (modelInfo[0]==='Conformal_mean_interval_fitting') {
-            this.modelValidationInfo ['Conformal_mean_interval_f'] = [modelInfo[1], modelInfo[2]];
-          }
-          
-        }
-
-        for (let ielement of info['model_build_info']) {
-          this.modelBuildInfo[ielement[0]]=[ielement[1], ielement[2]]
-        }
-        for (let ielement of info['model_type_info']) {
-          this.modelTypeInfo[ielement[0]]=[ielement[1], ielement[2]]
-        }
-
-        // if (this.modelTypeInfo['secret'][1]) {
-        if (this.model.secret) {
-
-            this.model.secret = true;
-            this.plotSummary.data[1].y = [
-              this.modelValidationInfo['Q2'][1]];
-            this.plotSummary.data[0].y = [
-              this.modelValidationInfo['R2'][1]];
-              
-            this.modelVisible = true;
-            return;
-        }
-
-        setTimeout(() => {
-
-          // PCA scores plot
-          if ('PC1' in info) {
-
-            // define appropriate labels extracting from manifest
-            const manifest = info['manifest'];
-            var labelX = 'PCA PC1';
-            var labelY = 'PCA PC2';
-            for (var iman in manifest) {
-              if (manifest[iman]['key'] == 'PC1') {
-                labelX = manifest[iman]['label'];
-              }
-              if (manifest[iman]['key'] == 'PC2') {
-                labelY = manifest[iman]['label'];
-              }
-            }
-
-            this.plotScores.data[0].x = info['PC1'];
-            this.plotScores.data[0].y = info['PC2'];
-            this.plotScores.data[1].x = info['PC1'];
-            this.plotScores.data[1].y = info['PC2'];
-            this.plotScores.data[0].text = info['obj_nam'];
-            this.plotScores.data[0].meta = info['SMILES'];
-            this.plotScores.data[0].marker.color = info['ymatrix'];
-
-            if ('SSX' in info) {
-              this.plotScores.layout.xaxis.title = labelX + ' ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
-              this.plotScores.layout.yaxis.title = labelY + ' ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
-              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
-              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
-            } else {
-              this.plotScores.layout.xaxis.title = labelX;
-              this.plotScores.layout.yaxis.title = labelY;
-              this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
-              this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
-            }
-          }
-
-          // common to all plots in this component
-          const options = {'width': 400, 'height': 250};
-          const smilesDrawer = new SmilesDrawer.Drawer(options);
-
-          // scores plot                 
-          const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas-selector');
-          const context = canvas.getContext('2d');
-
-          PlotlyJS.newPlot('scoresDIV-selector', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
-          
-          let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV-selector');
-          
-          // on hover, draw the molecule
-          myPlot.on('plotly_hover', function(eventdata){ 
-            var points = eventdata.points[0];
-            SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-              smilesDrawer.draw(tree, 'scores_canvas-selector', 'light', false);
-            });
-          });
-
-          // on onhover, clear the canvas
-          myPlot.on('plotly_unhover', function(data){
-            context.clearRect(0, 0, canvas.width, canvas.height);
-          });
-
-          const sel_options = {'width': 200, 'height': 125};
-          const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);  
-
-          myPlot.on('plotly_selected', function(eventdata){
-            var tbl = <HTMLTableElement>document.getElementById('tableSelections');
-            if (eventdata != null && 'points' in eventdata) {
-              var points = eventdata.points;
-              // console.log(points);
-              points.forEach(function(pt) {
-                const tr = tbl.insertRow();
-      
-                var ismiles = info['SMILES'][pt.pointNumber];
-                var iactiv = pt["marker.color"];
-                var canvasid = 'qtseries'+pt.pointNumber;
-
-                // iactiv = pt.meta.toFixed(2);
-
-                const tdname = tr.insertCell();
-                tdname.appendChild(document.createTextNode(pt.text));
-                tdname.setAttribute('style', 'max-width:100px')
-      
-                const tdsmiles = tr.insertCell();
-                tdsmiles.setAttribute('class', 'align-middle text-center' )
-                const icanvas = document.createElement('canvas')
-                icanvas.setAttribute('id', canvasid);
-                tdsmiles.appendChild(icanvas);
-                SmilesDrawer.parse(ismiles, function(tree) {
-                  smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
-                });
-      
-                const tdactiv = tr.insertCell();
-                tdactiv.setAttribute('class', 'align-right' )
-                tdactiv.appendChild(document.createTextNode(iactiv));
-      
-              });
-            }
-            else {
-              for(var i = 1;i<tbl.rows.length;){
-                tbl.deleteRow(i);
-              }
-            }  
-          });
-
-          // violin plot with activity values
-          this.plotViolin.data[0].y = info['ymatrix'];
-          this.plotViolin.data[0].text = info['obj_nam'];
-          
-          // bar plot with feature importances 
-          if ('feature_importances' in info && info['feature_importances']!= null) {
-            const fval = info['feature_importances'];
-            const fnam = info['var_nam'];
-
-            for (let i = 0; i<fval.length; i++){
-              this.featuresTSV+= fnam[i] + '\t' + fval[i].toFixed(4) + '\n';
-            }
-            
-            // sort the values and select the 50 top 
-            const indices = Array.from(fval.keys());
-            indices.sort((a:number, b:number) => fval[b] - fval[a]);
-
-            const sortedFval = indices.map(function(num:number) {return fval[num]});
-            const sortedFnam = indices.map(function(num:number) {return fnam[num]});
-
-            const nfeatures = Math.min(fval.length, 50);
-
-            this.plotFeatures.data[0].y = sortedFval.slice(0,nfeatures);
-            this.plotFeatures.data[0].x = sortedFnam.slice(0,nfeatures);
-            this.features = true;
-          }
-          this.features_method = info['feature_importances_method'];
-          
-          if (this.modelValidationInfo['Conformal_accuracy'] && this.modelValidationInfo['Conformal_accuracy_f']) {
-            this.plotSummary.data[1].y = [
-              this.modelValidationInfo['Q2'][1],
-              this.modelValidationInfo['Conformal_accuracy'][1]];
-            
-            this.plotSummary.data[0].y = [
-              this.modelValidationInfo['R2'][1],
-              this.modelValidationInfo['Conformal_accuracy_f'][1]];
-          }
-          else {
-            this.plotSummary.data[1].y = [
-              this.modelValidationInfo['Q2'][1]];
-            this.plotSummary.data[0].y = [
-              this.modelValidationInfo['R2'][1]];
-          }
-
-          // predicted data
-          if ('Y_pred' in info) {
-            this.plotPredicted.data[0].x = info['ymatrix'] ;
-            this.plotPredicted.data[0].y = info['Y_pred'];
-            
-            if (('upper_limit' in info) && ('lower_limit' in info)) {
-              for (const i in info['ymatrix']) {
-                this.plotPredicted.data[0].error_y.array[i] = info['upper_limit'][i]- info['Y_pred'][i];
-                this.plotPredicted.data[0].error_y.arrayminus[i] = info['Y_pred'][i] - info['lower_limit'][i];
-              }
-            }
-            else {
-              if (this.model.conformal) {
-
-                // const yintpred  = this.modelConformal['Conformal_prediction_ranges']; // (min, max)
-                if ('Conformal_prediction_ranges' in info){
-                  const yintpred  = info['Conformal_prediction_ranges']; // (min, max)
-                  for (const i in info['ymatrix']) {
-                    this.plotPredicted.data[0].error_y.array[i] = yintpred[i][1] - info['Y_pred'][i];
-                    this.plotPredicted.data[0].error_y.arrayminus[i] = info['Y_pred'][i] - yintpred[i][0];
-                  }
-                }
-                else {
-                  console.log('CI prediction info not found, please update your model');
-                }
-              }
-            }
-            
-            this.plotPredicted.data[0].text = info['obj_nam'];
-            const plot_min = Math.min ( Math.min.apply(Math, info['ymatrix']), Math.min.apply(Math, info['Y_pred'])); 
-            const plot_max = Math.max ( Math.max.apply(Math, info['ymatrix']), Math.max.apply(Math, info['Y_pred'])); 
-            this.plotPredicted.data[1].x = [ plot_min, plot_max];
-            this.plotPredicted.data[1].y = [ plot_min, plot_max];
-
-            let low_range;
-            let high_range;
-            if (plot_min>0) {
-              low_range = plot_min - (plot_min/10.0);
-              high_range = plot_max + (plot_max/10.0)
-            } else {
-              low_range = plot_min + (plot_min/10.0);
-              high_range = plot_max - (plot_max/10.0);
-            }
-
-            this.plotScatter.layout.yaxis.range = [low_range, high_range];
-
-            // this.plotPredicted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
-            // this.plotPredicted.data[1].y = [ Math.min.apply(Math, info['Y_pred']), Math.max.apply(Math, info['Y_pred'])];
-          }
-
-          // ajusted data
-          if ('Y_adj' in info) {
-            this.plotFitted.data[0].x = info['ymatrix'] ;
-            this.plotFitted.data[0].y = info['Y_adj'];
-            
-            if (('upper_limit' in info) && ('lower_limit' in info)) {
-              for (const i in info['ymatrix']) {
-                this.plotFitted.data[0].error_y.array[i] = info['upper_limit'][i]- info['Y_adj'][i];
-                this.plotFitted.data[0].error_y.arrayminus[i] = info['Y_adj'][i] - info['lower_limit'][i];
-              }
-            }
-            else {
-              if (this.model.conformal) {
-                if ('Conformal_prediction_ranges_fitting' in info){
-                  // const yintfit  = this.modelConformal['Conformal_prediction_ranges_fitting']; // (min, max)
-                  const yintfit  = info['Conformal_prediction_ranges_fitting']; // (min, max)
-                  for (const i in info['ymatrix']) {
-                    this.plotFitted.data[0].error_y.array[i] = yintfit[i][1] - info['Y_adj'][i];
-                    this.plotFitted.data[0].error_y.arrayminus[i] = info['Y_adj'][i] - yintfit[i][0];
-                  }
-                }
-                else {
-                  console.log('CI fitting info not found, please update your model');
-                }
-              }
-            }
-            
-            this.plotFitted.data[0].text = info['obj_nam'];
-            const plot_min = Math.min ( Math.min.apply(Math, info['ymatrix']), Math.min.apply(Math, info['Y_adj'])); 
-            const plot_max = Math.max ( Math.max.apply(Math, info['ymatrix']), Math.max.apply(Math, info['Y_adj'])); 
-            this.plotFitted.data[1].x = [ plot_min, plot_max];
-            this.plotFitted.data[1].y = [ plot_min, plot_max];
-
-            // this.plotFitted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
-            // this.plotFitted.data[1].y = [ Math.min.apply(Math, info['Y_adj']),Math.max.apply(Math, info['Y_adj'])];
-          }
-
-          const me = this;
-          // predicted plot                 
-          const canvas_pred = <HTMLCanvasElement>document.getElementById('scatter_pred_canvas-selector');
-          const context_pred = canvas_pred.getContext('2d');
-
-          PlotlyJS.newPlot('scatterPredDIV-selector', this.plotPredicted.data, this.plotScatter.layout, this.plotScatter.config);
-          
-          let myPlotPred = <CustomHTMLElement>document.getElementById('scatterPredDIV-selector');
-
-          // on hover, draw the molecule
-          myPlotPred.on('plotly_hover', function(eventdata){ 
-            var points = eventdata.points[0];
-            SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-              smilesDrawer.draw(tree, 'scatter_pred_canvas-selector', 'light', false);
-            });
-          });
-
-          // on onhover, clear the canvas
-          myPlotPred.on('plotly_unhover', function(data){
-            context_pred.clearRect(0, 0, canvas_pred.width, canvas_pred.height);
-          });
-
-          // fitted plott
-          const canvas_fit = <HTMLCanvasElement>document.getElementById('scatter_fit_canvas-selector');
-          const context_fit = canvas_fit.getContext('2d');
-
-          PlotlyJS.newPlot('scatterFitDIV-selector', this.plotFitted.data, this.plotScatter.layout, this.plotScatter.config);
-          
-          let myPlotFit = <CustomHTMLElement>document.getElementById('scatterFitDIV-selector');
-          
-          // on hover, draw the molecule
-          myPlotFit.on('plotly_hover', function(eventdata){ 
-            var points = eventdata.points[0];
-            SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-              smilesDrawer.draw(tree, 'scatter_fit_canvas-selector', 'light', false);
-            });
-          });
-          // on onhover, clear the canvas
-          myPlotFit.on('plotly_unhover', function(data){
-            context_fit.clearRect(0, 0, canvas_fit.width, canvas_fit.height);
-          });
-
-          myPlotFit.on ('plotly_afterplot', function(data){
-            me.modelVisible = true;
-          });
-        }, 100);
-      },
-      error => {
-        this.model.trained = false;
-        this.model.listModels[this.modelName+ '-' + this.modelVersion].trained = false;
-        // alert('Error getting model information');
-      }
       );
-      };
+    }
 
-}
+    downloadFeatures () {
+      var element = document.createElement("a");
+      element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(this.featuresTSV));
+      element.setAttribute('download', 'feature_importances'+this.modelName+'v'+this.modelVersion+'.tsv');
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
+
+    getValidation() {
+      this.commonService.getValidation(this.modelName, this.modelVersion).subscribe(
+        result => {
+          const info = result;
+          
+          this.model.input_type = info.meta.input_type;
+          
+          // process warnings
+          if (info.warning){
+            this.modelWarning = info.warning;
+          }
+          
+          for (const modelInfo of info['model_valid_info']) {
+            if (typeof modelInfo[2] === 'number') {
+              modelInfo[2] = parseFloat(modelInfo[2].toFixed(3));
+            }
+            if (typeof modelInfo[2] !== 'object') {
+              this.modelValidationInfo [modelInfo[0]] = [modelInfo[1], modelInfo[2]];
+            } 
+            
+            // translation for back_compatibility
+            if (modelInfo[0]==='Conformal_accuracy_fitting') {
+              this.modelValidationInfo ['Conformal_accuracy_f'] = [modelInfo[1], modelInfo[2]];
+            }
+            
+            // translation for back_compatibility
+            if (modelInfo[0]==='Conformal_mean_interval_fitting') {
+              this.modelValidationInfo ['Conformal_mean_interval_f'] = [modelInfo[1], modelInfo[2]];
+            }
+            
+          }
+
+          for (let ielement of info['model_build_info']) {
+            this.modelBuildInfo[ielement[0]]=[ielement[1], ielement[2]]
+          }
+          for (let ielement of info['model_type_info']) {
+            this.modelTypeInfo[ielement[0]]=[ielement[1], ielement[2]]
+          }
+
+          // if (this.modelTypeInfo['secret'][1]) {
+          if (this.model.secret) {
+
+              this.model.secret = true;
+              this.plotSummary.data[1].y = [
+                this.modelValidationInfo['Q2'][1]];
+              this.plotSummary.data[0].y = [
+                this.modelValidationInfo['R2'][1]];
+                
+              this.modelVisible = true;
+              return;
+          }
+
+          setTimeout(() => {
+
+            // PCA scores plot
+            if ('PC1' in info) {
+              this.scores='training';
+
+              // define appropriate labels extracting from manifest
+              const manifest = info['manifest'];
+              var labelX = 'PCA PC1';
+              var labelY = 'PCA PC2';
+              for (var iman in manifest) {
+                if (manifest[iman]['key'] == 'PC1') {
+                  labelX = manifest[iman]['label'];
+                }
+                if (manifest[iman]['key'] == 'PC2') {
+                  labelY = manifest[iman]['label'];
+                }
+              }
+
+              this.plotScores.data[0].x = info['PC1'];
+              this.plotScores.data[0].y = info['PC2'];
+              this.plotScores.data[1].x = info['PC1'];
+              this.plotScores.data[1].y = info['PC2'];
+              this.plotScores.data[0].text = info['obj_nam'];
+              this.plotScores.data[0].meta = info['SMILES'];
+              this.plotScores.data[0].marker.color = info['ymatrix'];
+
+              if ('SSX' in info) {
+                this.plotScores.layout.xaxis.title = labelX + ' ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
+                this.plotScores.layout.yaxis.title = labelY + ' ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
+                this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+                this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+              } else {
+                this.plotScores.layout.xaxis.title = labelX;
+                this.plotScores.layout.yaxis.title = labelY;
+                this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+                this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+              }
+            }
+
+            // common to all plots in this component
+            const options = {'width': 400, 'height': 250};
+            const smilesDrawer = new SmilesDrawer.Drawer(options);
+
+            // scores plot                 
+            const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_sel');
+            const context = canvas.getContext('2d');
+
+            PlotlyJS.newPlot('scoresDIV_sel', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+            
+            let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV_sel');
+            
+            // on hover, draw the molecule
+            myPlot.on('plotly_hover', function(eventdata){ 
+              var points = eventdata.points[0];
+              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                smilesDrawer.draw(tree, 'scores_canvas_sel', 'light', false);
+              });
+            });
+
+            // on onhover, clear the canvas
+            myPlot.on('plotly_unhover', function(data){
+              context.clearRect(0, 0, canvas.width, canvas.height);
+            });
+
+            const sel_options = {'width': 200, 'height': 125};
+            const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);  
+
+            myPlot.on('plotly_selected', function(eventdata){
+              var tbl = <HTMLTableElement>document.getElementById('tableSelections');
+              if (eventdata != null && 'points' in eventdata) {
+                var points = eventdata.points;
+                // console.log(points);
+                points.forEach(function(pt) {
+                  const tr = tbl.insertRow();
+        
+                  var ismiles = info['SMILES'][pt.pointNumber];
+                  var iactiv = pt["marker.color"];
+                  var canvasid = 'qtseries'+pt.pointNumber;
+
+                  // iactiv = pt.meta.toFixed(2);
+
+                  const tdname = tr.insertCell();
+                  tdname.appendChild(document.createTextNode(pt.text));
+                  tdname.setAttribute('style', 'max-width:100px')
+        
+                  const tdsmiles = tr.insertCell();
+                  tdsmiles.setAttribute('class', 'align-middle text-center' )
+                  const icanvas = document.createElement('canvas')
+                  icanvas.setAttribute('id', canvasid);
+                  tdsmiles.appendChild(icanvas);
+                  SmilesDrawer.parse(ismiles, function(tree) {
+                    smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
+                  });
+        
+                  const tdactiv = tr.insertCell();
+                  tdactiv.setAttribute('class', 'align-right' )
+                  tdactiv.appendChild(document.createTextNode(iactiv));
+        
+                });
+              }
+              else {
+                for(var i = 1;i<tbl.rows.length;){
+                  tbl.deleteRow(i);
+                }
+              }  
+            });
+
+            // violin plot with activity values
+            this.plotViolin.data[0].y = info['ymatrix'];
+            this.plotViolin.data[0].text = info['obj_nam'];
+            
+            // bar plot with feature importances 
+            if ('feature_importances' in info && info['feature_importances']!= null) {
+              const fval = info['feature_importances'];
+              const fnam = info['var_nam'];
+
+              for (let i = 0; i<fval.length; i++){
+                this.featuresTSV+= fnam[i] + '\t' + fval[i].toFixed(4) + '\n';
+              }
+              
+              // sort the values and select the 50 top 
+              const indices = Array.from(fval.keys());
+              indices.sort((a:number, b:number) => fval[b] - fval[a]);
+
+              const sortedFval = indices.map(function(num:number) {return fval[num]});
+              const sortedFnam = indices.map(function(num:number) {return fnam[num]});
+  
+              const nfeatures = Math.min(fval.length, 50);
+  
+              this.plotFeatures.data[0].y = sortedFval.slice(0,nfeatures);
+              this.plotFeatures.data[0].x = sortedFnam.slice(0,nfeatures);
+              this.features = true;
+            }
+            this.features_method = info['feature_importances_method'];
+
+            if ('optimization_results' in info && 
+              info['optimization_results']['means']!= null &&
+              info['optimization_results']['labels']!= null) {
+              this.plotOptimization.data[0].y = info['optimization_results']['means'];
+              this.plotOptimization.data[0].x = info['optimization_results']['labels'];
+              this.plotOptimization.data[0].error_y.array = info['optimization_results']['stds'];
+              for (let i = 0; i<info['optimization_results']['labels'].length; i++){
+                if (info['optimization_results']['labels'][i]!= info['optimization_results']['best']) {
+                  this.plotOptimization.data[0].marker.color[i] = "#0076a3";
+                }
+                else {
+                  this.plotOptimization.data[0].marker.color[i] = "#e59300";
+                }
+              }
+              this.plotOptimization.layout.title= info['optimization_results']['scorer'];
+
+              this.optimization = true;
+            }
+            
+            if (this.modelValidationInfo['Conformal_accuracy'] && this.modelValidationInfo['Conformal_accuracy_f']) {
+              this.plotSummary.data[1].y = [
+                this.modelValidationInfo['Q2'][1],
+                this.modelValidationInfo['Conformal_accuracy'][1]];
+              
+              this.plotSummary.data[0].y = [
+                this.modelValidationInfo['R2'][1],
+                this.modelValidationInfo['Conformal_accuracy_f'][1]];
+            }
+            else {
+              this.plotSummary.data[1].y = [
+                this.modelValidationInfo['Q2'][1]];
+              this.plotSummary.data[0].y = [
+                this.modelValidationInfo['R2'][1]];
+            }
+
+            // predicted data
+            if ('Y_pred' in info) {
+              this.plotPredicted.data[0].x = info['ymatrix'] ;
+              this.plotPredicted.data[0].y = info['Y_pred'];
+              
+              if (('upper_limit' in info) && ('lower_limit' in info)) {
+                for (const i in info['ymatrix']) {
+                  this.plotPredicted.data[0].error_y.array[i] = info['upper_limit'][i]- info['Y_pred'][i];
+                  this.plotPredicted.data[0].error_y.arrayminus[i] = info['Y_pred'][i] - info['lower_limit'][i];
+                }
+              }
+              else {
+                if (this.model.conformal) {
+  
+                  // const yintpred  = this.modelConformal['Conformal_prediction_ranges']; // (min, max)
+                  if ('Conformal_prediction_ranges' in info){
+                    const yintpred  = info['Conformal_prediction_ranges']; // (min, max)
+                    for (const i in info['ymatrix']) {
+                      this.plotPredicted.data[0].error_y.array[i] = yintpred[i][1] - info['Y_pred'][i];
+                      this.plotPredicted.data[0].error_y.arrayminus[i] = info['Y_pred'][i] - yintpred[i][0];
+                    }
+                  }
+                  else {
+                    console.log('CI prediction info not found, please update your model');
+                  }
+                }
+              }
+              
+              this.plotPredicted.data[0].text = info['obj_nam'];
+              const plot_min = Math.min ( Math.min.apply(Math, info['ymatrix']), Math.min.apply(Math, info['Y_pred'])); 
+              const plot_max = Math.max ( Math.max.apply(Math, info['ymatrix']), Math.max.apply(Math, info['Y_pred'])); 
+              this.plotPredicted.data[1].x = [ plot_min, plot_max];
+              this.plotPredicted.data[1].y = [ plot_min, plot_max];
+
+              let low_range;
+              let high_range;
+              if (plot_min>0) {
+                low_range = plot_min - (plot_min/10.0);
+                high_range = plot_max + (plot_max/10.0)
+              } else {
+                low_range = plot_min + (plot_min/10.0);
+                high_range = plot_max - (plot_max/10.0);
+              }
+
+              this.plotScatter.layout.yaxis.range = [low_range, high_range];
+
+              // this.plotPredicted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
+              // this.plotPredicted.data[1].y = [ Math.min.apply(Math, info['Y_pred']), Math.max.apply(Math, info['Y_pred'])];
+            }
+
+            // ajusted data
+            if ('Y_adj' in info) {
+              this.plotFitted.data[0].x = info['ymatrix'] ;
+              this.plotFitted.data[0].y = info['Y_adj'];
+              
+              if (('upper_limit' in info) && ('lower_limit' in info)) {
+                for (const i in info['ymatrix']) {
+                  this.plotFitted.data[0].error_y.array[i] = info['upper_limit'][i]- info['Y_adj'][i];
+                  this.plotFitted.data[0].error_y.arrayminus[i] = info['Y_adj'][i] - info['lower_limit'][i];
+                }
+              }
+              else {
+                if (this.model.conformal) {
+                  if ('Conformal_prediction_ranges_fitting' in info){
+                    // const yintfit  = this.modelConformal['Conformal_prediction_ranges_fitting']; // (min, max)
+                    const yintfit  = info['Conformal_prediction_ranges_fitting']; // (min, max)
+                    for (const i in info['ymatrix']) {
+                      this.plotFitted.data[0].error_y.array[i] = yintfit[i][1] - info['Y_adj'][i];
+                      this.plotFitted.data[0].error_y.arrayminus[i] = info['Y_adj'][i] - yintfit[i][0];
+                    }
+                  }
+                  else {
+                    console.log('CI fitting info not found, please update your model');
+                  }
+                }
+              }
+              
+              this.plotFitted.data[0].text = info['obj_nam'];
+              const plot_min = Math.min ( Math.min.apply(Math, info['ymatrix']), Math.min.apply(Math, info['Y_adj'])); 
+              const plot_max = Math.max ( Math.max.apply(Math, info['ymatrix']), Math.max.apply(Math, info['Y_adj'])); 
+              this.plotFitted.data[1].x = [ plot_min, plot_max];
+              this.plotFitted.data[1].y = [ plot_min, plot_max];
+
+              // this.plotFitted.data[1].x = [ Math.min.apply(Math, info['ymatrix']), Math.max.apply(Math, info['ymatrix'])];
+              // this.plotFitted.data[1].y = [ Math.min.apply(Math, info['Y_adj']),Math.max.apply(Math, info['Y_adj'])];
+            }
+
+            const me = this;
+            // predicted plot                 
+            const canvas_pred = <HTMLCanvasElement>document.getElementById('scatter_pred_canvas_sel');
+            const context_pred = canvas_pred.getContext('2d');
+
+            PlotlyJS.newPlot('scatterPredDIV_sel', this.plotPredicted.data, this.plotScatter.layout, this.plotScatter.config);
+            
+            let myPlotPred = <CustomHTMLElement>document.getElementById('scatterPredDIV_sel');
+
+            // on hover, draw the molecule
+            myPlotPred.on('plotly_hover', function(eventdata){ 
+              var points = eventdata.points[0];
+              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                smilesDrawer.draw(tree, 'scatter_pred_canvas_sel', 'light', false);
+              });
+            });
+
+            // on onhover, clear the canvas
+            myPlotPred.on('plotly_unhover', function(data){
+              context_pred.clearRect(0, 0, canvas_pred.width, canvas_pred.height);
+            });
+
+            // fitted plott
+            const canvas_fit = <HTMLCanvasElement>document.getElementById('scatter_fit_canvas_sel');
+            const context_fit = canvas_fit.getContext('2d');
+
+            PlotlyJS.newPlot('scatterFitDIV_sel', this.plotFitted.data, this.plotScatter.layout, this.plotScatter.config);
+            
+            let myPlotFit = <CustomHTMLElement>document.getElementById('scatterFitDIV_sel');
+            
+            // on hover, draw the molecule
+            myPlotFit.on('plotly_hover', function(eventdata){ 
+              var points = eventdata.points[0];
+              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
+                smilesDrawer.draw(tree, 'scatter_fit_canvas_sel', 'light', false);
+              });
+            });
+            // on onhover, clear the canvas
+            myPlotFit.on('plotly_unhover', function(data){
+              context_fit.clearRect(0, 0, canvas_fit.width, canvas_fit.height);
+            });
+
+            myPlotFit.on ('plotly_afterplot', function(data){
+              me.modelVisible = true;
+            });
+          }, 100);
+        },
+        error => {
+          this.model.trained = false;
+          this.model.listModels[this.modelName+ '-' + this.modelVersion].trained = false;
+          // alert('Error getting model information');
+        }
+        );
+        };
+    }
+
+

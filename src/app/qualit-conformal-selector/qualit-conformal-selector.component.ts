@@ -11,22 +11,32 @@ import * as PlotlyJS from 'plotly.js-dist-min';
   styleUrls: ['./qualit-conformal-selector.component.css']
 })
 export class QualitConformalSelectorComponent implements OnChanges {
+    
+  constructor(
+    private commonService: CommonService,
+    public model: Model) { }
+    
   @Input() modelName;
   @Input() modelVersion;
   @Input() modelID;
-
-  constructor(private commonService: CommonService,public model: Model) { }
+  
   objectKeys = Object.keys;
   modelValidationInfo = {};
-  modelTypeInfo: any = {};
+  modelTypeInfo = {};
   modelBuildInfo = {};
   modelWarning = '';
   modelVisible = false;
   features = false;
+  scores = '';
+  scoresLabelX:string;
+  scoresLabelY:string;
+  ensembleNames = [];
+  optimization = false;
   features_method = '';
   featuresTSV = '';
-
- predictData = [{
+  innerPCA = {};
+  
+  predictData = [{
       offset: 45, 
       r: [],
       theta: ["TP", "FN", "TN", "FP"],
@@ -54,8 +64,8 @@ export class QualitConformalSelectorComponent implements OnChanges {
 
   plotCommon = {
     layout :{
-      width: 350,
-      // height: 300,
+      width: 300,
+      height: 300,
       // margin: {r: 10, t: 30, b:30, pad: 0 },
       polar: {
         bargap: 0,
@@ -73,7 +83,6 @@ export class QualitConformalSelectorComponent implements OnChanges {
       }
     },
     config: {
-      // responsive: true,
       displayModeBar: false
     }
   };  
@@ -98,7 +107,7 @@ export class QualitConformalSelectorComponent implements OnChanges {
           //   width: 2
           // },
           colorbar: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 }
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 }
           }
         },
         hovertemplate:'<b>%{text}</b><br>%{marker.color:.2f}<extra></extra>',
@@ -118,6 +127,29 @@ export class QualitConformalSelectorComponent implements OnChanges {
         //   showlines: false,
         //   coloring: 'heatmap' 
         // }
+      },
+      {
+        x: [],
+        y: [],
+        // text: [],
+        type: 'scatter', 
+        mode: 'markers', 
+        marker: {
+          symbol: 'circle',
+          color: '#009999',
+          opacity: 0.5,
+          size: 20,
+          // symbol: 'diamond-dot',
+          // color: '#42DE2F',
+          // opacity: 1.0,
+          // size: 10,
+          // line: {
+          //   color: 'black',
+          //   width: 1
+          // }
+        },
+        hoverinfo: 'skip',
+        // hovertemplate:'<b>%{text}</b><br>%{x:.2f}, %{y:.2f}<extra></extra>',
       }
 
     ],
@@ -125,8 +157,8 @@ export class QualitConformalSelectorComponent implements OnChanges {
       width: 700,
       height: 500,
       showtitle: true,
-      titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 18 },
       title: 'Training series (using model X matrix)', 
+      titlefont: { family: 'Barlow Semi Condensed, sans-serif', size: 16 },
       hovermode: 'closest',
           margin: {r: 10, t: 30, pad: 0 },
           showlegend: false,
@@ -139,8 +171,8 @@ export class QualitConformalSelectorComponent implements OnChanges {
             linecolor: 'rgb(200,200,200)',
             linewidth: 2,
             title: 'PCA PC1',
-            titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+            titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
           },
           yaxis: {
             hoverformat: '.2f',
@@ -151,8 +183,8 @@ export class QualitConformalSelectorComponent implements OnChanges {
             linecolor: 'rgb(200,200,200)',
             linewidth: 2,
             title: 'PCA PC2',
-            titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+            titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
           },
     },
     config: {
@@ -178,14 +210,61 @@ export class QualitConformalSelectorComponent implements OnChanges {
           type: 'pie'
     }],
     layout: {
-          width: 300,
+          width: 150,
           height: 200,
           showlegend: false,
-          margin: { r: 30, t: 30, b: 10, l: 30, pad: 0 },
+          // margin: { r: 30, t: 30, b: 10, l: 30, pad: 0 },
+          margin: { r: 0, t: 30, b: 0, l: 0, pad: 0 },
     },
     config: {
       displaylogo: false,
       modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d', 'hoverCompareCartesian']    
+    }
+  }
+
+  plotOptimization= {
+    data : [{
+      type: 'bar',
+      x: [],
+      y: [],
+      // orientation: 'h', 
+      error_y: {
+        type: 'data',
+        array: []
+      },
+      marker: {
+        color: []
+      },
+      hovertemplate: '<b>%{x}</b><br>%{y:.3f}<extra></extra>'
+    }],
+    layout : {
+      title: 'Optimization results (scorer mean +/- sd)',
+      font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+      width: 900,
+      height: 600,
+      hovermode: 'closest',
+      margin: {b:10, t:50, pad: 10},
+      xaxis: {
+        showticklabels: false, 
+        // ticklabeloverflow: 'allow',
+        // tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
+      },
+      yaxis: {
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
+      },
+    },
+    config: {
+      displaylogo: false,
+      showtitle: true, 
+      showlegend: false, 
+      toImageButtonOptions: {
+        format: 'svg', // one of png, svg, jpeg, webp
+        filename: 'optimization_results',
+        width: 900,
+        height: 600,
+        scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+      },
+      modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
     }
   }
 
@@ -212,7 +291,7 @@ export class QualitConformalSelectorComponent implements OnChanges {
         tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 12 },
       },
       yaxis: {
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
       },
     },
     config: {
@@ -238,7 +317,7 @@ export class QualitConformalSelectorComponent implements OnChanges {
           type: 'bar',
           texttemplate: "%{y:.2f}",
           textposition: 'auto',
-          textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+          textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
           marker: {
             color: 'rgba(70,143,184,0.8)',
           }
@@ -249,7 +328,7 @@ export class QualitConformalSelectorComponent implements OnChanges {
           type: 'bar',
           texttemplate: "%{y:.2f}",
           textposition: 'auto',
-          textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+          textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
           marker: {
             color: 'rgba(156,198,221,0.8)',
           }
@@ -258,13 +337,14 @@ export class QualitConformalSelectorComponent implements OnChanges {
           yaxis: {
             range: [0.0,1.0],
             // titlefont: {family: 'Barlow Semi Condensed, sans-serif', size: 24 },
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
           },
           xaxis: {
-            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 18 },
+            tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
           },
-          width: 600,
-          height: 400,
+          width: 500,
+          height: 300,
+          margin: {r: 5, t: 20, b: 20, l:30},
           showlegend: true,
           barmode: 'group'
     },
@@ -275,50 +355,89 @@ export class QualitConformalSelectorComponent implements OnChanges {
     }
   }
 
-public changeProjectStyleMark (event) {
-  const value = event.target.value
-  var update = {'visible':[true, false]}
-  if (value == 'density') {
-    update = {'visible':[false, true]}
+  public changeProjectStyleMark (value:string) {
+    var update = {'visible':[true, false]}
+    if (value == 'density') {
+      update = {'visible':[false, true]}
+    }
+    if (value == 'both') {
+      update = {'visible':[true, true]}
+    }
+    PlotlyJS.restyle('scoresDIV', update);
   }
-  if (value == 'both') {
-    update = {'visible':[true, true]}
-  }
-  PlotlyJS.restyle('scoresDIV-select', update);
-}
+ 
+  public setInnerModel (value) {
 
-ngOnChanges(): void {
+    var innerPCA = undefined;
+    for (let i in this.ensembleNames) {
+      if (value == this.ensembleNames[i]) {
+        innerPCA = this.innerPCA[i];
+        break;
+      } 
+    }
+    if (innerPCA == undefined) return;
+
+    this.plotScores.data[0].x = innerPCA['PCA1'];
+    this.plotScores.data[0].y = innerPCA['PCA2'];
+    this.plotScores.data[2].x = innerPCA['pointsx'];
+    this.plotScores.data[2].y = innerPCA['pointsy'];            
+    // this.plotScores.data[2].text = [innerPCA['label']];     
+    if ('explvar' in innerPCA) {
+      this.plotScores.layout.xaxis.title = this.scoresLabelX + ' ('+(100.0*(innerPCA['explvar'][0])).toFixed(1)+'% SSX)';
+      this.plotScores.layout.yaxis.title = this.scoresLabelY + ' ('+(100.0*(innerPCA['explvar'][1])).toFixed(1)+'% SSX)';
+    }
+    else {
+      this.plotScores.layout.xaxis.title = this.scoresLabelX;
+      this.plotScores.layout.yaxis.title = this.scoresLabelY;
+    }
+    PlotlyJS.react('scoresDIV',this.plotScores.data, this.plotScores.layout, this.plotScores.config );
+  }
+
+  ngOnChanges(): void {
     this.modelVisible = false;
     this.modelTypeInfo = {};
     this.modelValidationInfo = {};
     this.modelBuildInfo = {};
     this.features = false;
+    this.scores = '';
+    this.scoresLabelX = '';
+    this.scoresLabelY = '';
+    this.ensembleNames = [];
+    this.optimization = false;
     this.features_method = '';
     this.modelWarning = '';
     this.plotScores.data[0].x =[];
     this.plotScores.data[0].y =[];
     this.plotScores.data[1].x =[];
     this.plotScores.data[1].y =[];
+    this.plotScores.data[2].x =[];
+    this.plotScores.data[2].y =[];
     this.plotScores.data[0].text =[];
+    this.plotScores.data[2].text =[];
     this.plotScores.data[0].marker.color = [];
     this.predictData[0].r = [0, 0, 0, 0];
     this.fittingData[0].r = [0, 0, 0, 0];
     this.plotPie.data[0].values = [];
     this.plotFeatures.data[0].y =[];
     this.plotFeatures.data[0].x =[];
+    this.plotOptimization.data[0].y =[];
+    this.plotOptimization.data[0].x =[];
+    this.plotOptimization.data[0].error_y.array =[];
+    this.plotOptimization.data[0].marker.color =[];
     this.plotSummary.data[0].y = [];
     this.plotSummary.data[1].y = [];
     this.featuresTSV = '';
 
     this.getValidation();
-
   }
+  
   isObject(val) {
     if (val === null) {
       return false;
     }
     return typeof val === 'object';
   }
+    
   downloadFeatures () {
     var element = document.createElement("a");
     element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(this.featuresTSV));
@@ -328,6 +447,7 @@ ngOnChanges(): void {
     element.click();
     document.body.removeChild(element);
   }
+
   getValidation() {
     this.commonService.getValidation(this.modelName, this.modelVersion).subscribe(
       result => {
@@ -359,6 +479,7 @@ ngOnChanges(): void {
 
         // PCA scores plot
         if ('PC1' in info) {
+          this.scores = 'training';
 
           // define appropriate labels extracting from manifest
           const manifest = info['manifest'];
@@ -380,19 +501,64 @@ ngOnChanges(): void {
           this.plotScores.data[0].text = info['obj_nam'];
           this.plotScores.data[0].marker.color = info['ymatrix'];
 
+          // set title
+          this.plotScores.layout.title = 'Training series (using model X matrix)';
+          this.plotScores.layout.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
+
           if ('SSX' in info) {
             this.plotScores.layout.xaxis.title = labelX + ' ('+(100.0*(info['SSX'][0])).toFixed(1)+'% SSX)';
             this.plotScores.layout.yaxis.title = labelY + ' ('+(100.0*(info['SSX'][1])).toFixed(1)+'% SSX)';
-            this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
-            this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+            this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
+            this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
           } else {
             this.plotScores.layout.xaxis.title = labelX;
             this.plotScores.layout.yaxis.title = labelY;
-            this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
-            this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18}
+            this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
+            this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
           }
         }
+        
+        // Inner PCA scores plot
+        if ('InnerPCASet' in info) {
+          this.scores = 'ensemble';
 
+          // store the values for all models
+          this.innerPCA = info['InnerPCASet'];
+
+          // compile ensemble name models to use in the selector
+          this.ensembleNames = [];
+          for (let i in this.innerPCA) {
+            let imodel = this.innerPCA[i];
+            this.ensembleNames.push(imodel['label']);
+          }
+
+          // set fixed features for all models: molecule names and Y values
+          this.plotScores.data[0].text = info['obj_nam'];
+          this.plotScores.data[0].marker.color = info['ymatrix'];
+          
+          // define appropriate labels extracting from manifest
+          const manifest = info['manifest'];
+          this.scoresLabelX = 'PCA PC1';
+          this.scoresLabelY = 'PCA PC2';
+          for (var iman in manifest) {
+            if (manifest[iman]['key'] == 'PC1') {
+              this.scoresLabelX = manifest[iman]['label'];
+            }
+            if (manifest[iman]['key'] == 'PC2') {
+              this.scoresLabelY = manifest[iman]['label'];
+            }
+          }
+
+          // set title
+          this.plotScores.layout.title = 'Reference series (projected on low-level model)';
+          this.plotScores.layout.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
+
+          this.plotScores.layout.xaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
+          this.plotScores.layout.yaxis.titlefont = {family: 'Barlow Semi Condensed, sans-serif',size: 18};
+          
+          this.setInnerModel(this.ensembleNames[0]);
+        }
+        
 
         if ('feature_importances' in info && info['feature_importances']!= null) {
           
@@ -418,6 +584,25 @@ ngOnChanges(): void {
         }
         this.features_method = info['feature_importances_method'];
 
+        if ('optimization_results' in info && 
+          info['optimization_results']['means']!= null &&
+          info['optimization_results']['labels']!= null) {
+            this.plotOptimization.data[0].y = info['optimization_results']['means'];
+            this.plotOptimization.data[0].x = info['optimization_results']['labels'];
+            this.plotOptimization.data[0].error_y.array = info['optimization_results']['stds'];
+            for (let i = 0; i<info['optimization_results']['labels'].length; i++){
+              if (info['optimization_results']['labels'][i]!= info['optimization_results']['best']) {
+                this.plotOptimization.data[0].marker.color[i] = "#0076a3";
+              }
+              else {
+                this.plotOptimization.data[0].marker.color[i] = "#e59300";
+              }
+            }
+          this.plotOptimization.layout.title= info['optimization_results']['scorer'];
+
+          this.optimization = true;
+        }
+        
         setTimeout(() => {
           if (this.modelValidationInfo['TP']) {
             this.predictData[0].r = [this.modelValidationInfo['TP'][1], 
@@ -430,14 +615,11 @@ ngOnChanges(): void {
                                       this.modelValidationInfo['TN'][1]+
                                       this.modelValidationInfo['FP'][1]];
 
-                                                  // bar plot with feature importances 
-
             this.plotSummary.data[1].y = [
                                       this.modelValidationInfo['Sensitivity'][1],
                                       this.modelValidationInfo['Specificity'][1],
                                       this.modelValidationInfo['MCC'][1]];
             if (this.modelValidationInfo['Conformal_coverage']) {
-              // this.plotSummary.data[1].x.push('Coverage');
               this.plotSummary.data[1].y.push((this.modelValidationInfo['Conformal_coverage'][1]));
             }
           }
@@ -468,19 +650,20 @@ ngOnChanges(): void {
           const smilesDrawer = new SmilesDrawer.Drawer(options);
 
           // scores plot                 
-          const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas-select');
+          const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
           const context = canvas.getContext('2d');
 
-          if (!this.model.secret) {
-            PlotlyJS.newPlot('scoresDIV-select', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+          // if (!this.model.secret) {
+          if (this.scores != '') {
+            PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
             
-            let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV-select');
+            let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
             
             // on hover, draw the molecule
             myPlot.on('plotly_hover', function(eventdata){ 
               var points = eventdata.points[0];
               SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                smilesDrawer.draw(tree, 'scores_canvas-select', 'light', false);
+                smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
               });
             });
 
@@ -496,7 +679,6 @@ ngOnChanges(): void {
               var tbl = <HTMLTableElement>document.getElementById('tableSelections');
               if (eventdata != null && 'points' in eventdata) {
                 var points = eventdata.points;
-                console.log(points);
                 points.forEach(function(pt) {
                   const tr = tbl.insertRow();
         
@@ -549,3 +731,4 @@ ngOnChanges(): void {
   } 
 
 }
+
