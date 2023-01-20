@@ -31,8 +31,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let compound of this.profile.summary['obj_nam'];let i = index">
-                <td #td class="border text-center font-weight-bold">{{compound}}</td>
+            <tr *ngFor="let compound of this.profile.summary['obj_nam'];let i = index" title="{{compound}}">
+                <td #td class="border text-center font-weight-bold text-truncate iffyTip hideText">{{compound}}</td>
                 <td id="canvas{{i}}" class="border text-center"></td>
                 <ng-container *ngFor="let value of this.profile.summary['values'][i]; let pos = index">
                     <td *ngIf="!this.profile.summary.quantitative[pos]" id="values" class="text-center result border"

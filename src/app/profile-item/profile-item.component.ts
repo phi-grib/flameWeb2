@@ -567,7 +567,10 @@ export class ProfileItemComponent implements OnInit {
 
   updatePlotCombo() {
     const xi = this.profile.item.xmatrix[this.molIndex];
-    this.isMajority = this.profile.item['model']=='combination:majority voting' || this.prediction.modelBuildInfo['model']=='combination:logical OR'
+    this.isMajority = this.profile.item['model']=='combination:majority voting' || 
+                      this.prediction.modelBuildInfo['model']=='combination:logical OR' ||
+                      this.prediction.modelBuildInfo['model']=='combination:logical AND' ||
+                      this.prediction.modelBuildInfo['model']=='combination:logical TWO';
     // the results are shown using plotComboQ but in the case
     // of majority. only in this case we are using qualitative low level models
     // as qualitative variables

@@ -70,3 +70,11 @@ thead tr th {
 .uncertain-icon {
     color: #95a5a6;
 }
+.iffyTip {
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+.hideText{
+    max-width:150px;
+}

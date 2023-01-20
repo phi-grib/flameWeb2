@@ -603,7 +603,9 @@ export class PredictionListTabComponent implements OnChanges {
 
         this.isQuantitative = this.prediction.modelBuildInfo['quantitative'];
         this.isMajority = this.prediction.modelBuildInfo['model'] == 'combination:majority voting' || 
-                          this.prediction.modelBuildInfo['model'] == 'combination:logical OR' ;
+                          this.prediction.modelBuildInfo['model'] == 'combination:logical OR' ||
+                          this.prediction.modelBuildInfo['model'] == 'combination:logical AND' ||
+                          this.prediction.modelBuildInfo['model'] == 'combination:logical TWO' ;
 
         if (this.prediction.modelBuildInfo['ensemble']) {
 

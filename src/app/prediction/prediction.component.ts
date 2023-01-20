@@ -565,7 +565,10 @@ export class PredictionComponent implements OnInit {
 
   updatePlotCombo() {
     const xi = this.prediction.result.xmatrix[this.compound.molidx];
-    this.isMajority = this.prediction.modelBuildInfo['model']=='combination:majority voting' || this.prediction.modelBuildInfo['model']=='combination:logical OR'
+    this.isMajority = this.prediction.modelBuildInfo['model']=='combination:majority voting' || 
+                      this.prediction.modelBuildInfo['model']=='combination:logical OR' ||
+                      this.prediction.modelBuildInfo['model']=='combination:logical AND' ||
+                      this.prediction.modelBuildInfo['model']=='combination:logical TWO' ;
     // the results are shown using plotComboQ but in the case
     // of majority. only in this case we are using qualitative low level models
     // as qualitative variables
