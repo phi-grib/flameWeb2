@@ -218,8 +218,7 @@ export class ProfileItemComponent implements OnInit {
           color: 'black',
           width: 2
         },
-        textfont: {family: 'Barlow Semi Condensed, sans-serif', 
-                  size: 20 },
+        textfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
         texttemplate: '{x:.2f}'
       },
       error_x: {
@@ -251,16 +250,16 @@ export class ProfileItemComponent implements OnInit {
       },
     ],
     layout : {
-      width: 800,
+      width: 700,
       // height: 600,
       hovermode: 'x',
-      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 20 } },
+      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 14 } },
       xaxis: {
         zeroline: false,
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
       },
       yaxis: {
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         automargin: true
       },
       showlegend: false
@@ -299,23 +298,23 @@ export class ProfileItemComponent implements OnInit {
       },
     ],
     layout : {
-      width: 800,
+      width: 700,
       // height: 600,
       // margin: {r: 10, t: 30, b:0, pad: 0 },
       barmode: 'relative',
       hovermode: 'closest',
-      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 20 } },
+      hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 14 } },
       xaxis: {
         range: [-1.1, 1.1],
         zeroline: true,
         zerolinewidth: 4,
         zerolinecolor: 'black',
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         tickvals: [-1.1, 0, 1.1],
         ticktext: ['negative', 'undefined', 'positive']
       },
       yaxis: {
-        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 20 },
+        tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
         automargin: true
       },
       showlegend: false
@@ -567,10 +566,12 @@ export class ProfileItemComponent implements OnInit {
 
   updatePlotCombo() {
     const xi = this.profile.item.xmatrix[this.molIndex];
-    this.isMajority = this.profile.item['model']=='combination:majority voting' || 
-                      this.prediction.modelBuildInfo['model']=='combination:logical OR' ||
-                      this.prediction.modelBuildInfo['model']=='combination:logical AND' ||
-                      this.prediction.modelBuildInfo['model']=='combination:logical TWO';
+    // console.log(this.modelBuildInfo['model']);
+    this.isMajority = this.modelBuildInfo['model']=='combination:majority voting' || 
+                      this.modelBuildInfo['model']=='combination:logical OR' ||
+                      this.modelBuildInfo['model']=='combination:logical AND' ||
+                      this.modelBuildInfo['model']=='combination:logical TWO';
+
     // the results are shown using plotComboQ but in the case
     // of majority. only in this case we are using qualitative low level models
     // as qualitative variables
@@ -702,6 +703,7 @@ export class ProfileItemComponent implements OnInit {
     if (this.modelBuildInfo['quantitative']) return value.toFixed(3) 
     return value == 1 ? 'Positive' : value == 0 ? 'Negative' : 'Uncertain';
   }
+
   getInfo(): void {
     this.isConfidential = false;
     this.modelBuildInfo['confidential'] = false;
@@ -764,6 +766,7 @@ export class ProfileItemComponent implements OnInit {
       }
     );    
   }
+
   public changeProjectStyleTrainingMark (event:any) {
     var value = event.target.value;
     var update = {'visible':[true, true, false]}
