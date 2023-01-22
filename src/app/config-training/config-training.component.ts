@@ -46,6 +46,14 @@ export class ConfigTrainingComponent implements OnInit {
         }
         this.selectedItems.push(name + ' .v' + version);
       }
+
+      // back compatibility, these two options should be included only for new models which have these parameters
+      if (this.model.parameters['ensemble_reference'] !== undefined) {
+        this.infoSeries['model_ensemble'].push('ensemble_reference');
+      }
+      if (this.model.parameters['ensemble_reference_distance'] !== undefined) {
+        this.infoSeries['model_ensemble'].push('ensemble_reference_distance');
+      }
     }
   }
 
