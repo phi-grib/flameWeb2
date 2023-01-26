@@ -92,6 +92,7 @@ export class QualitConformalComponent implements OnChanges {
         { x: [], 
           y: [], 
           text: [],
+          meta: [],
           type: 'scatter', 
           mode: 'markers', 
           marker: {
@@ -408,6 +409,7 @@ export class QualitConformalComponent implements OnChanges {
       this.modelWarning = '';
       this.plotScores.data[0].x =[];
       this.plotScores.data[0].y =[];
+      this.plotScores.data[0].meta = [];
       this.plotScores.data[1].x =[];
       this.plotScores.data[1].y =[];
       this.plotScores.data[2].x =[];
@@ -499,6 +501,7 @@ export class QualitConformalComponent implements OnChanges {
             this.plotScores.data[1].x = info['PC1'];
             this.plotScores.data[1].y = info['PC2'];            
             this.plotScores.data[0].text = info['obj_nam'];
+            this.plotScores.data[0].meta = info['SMILES'];
             this.plotScores.data[0].marker.color = info['ymatrix'];
 
             // set title
@@ -729,5 +732,29 @@ export class QualitConformalComponent implements OnChanges {
         }
       );
     } 
+    downloadSelection(){
+      var listCompounds = 'Name' + '\t' + 'SMILES' + '\t' + 'Activity' + '\t' + "x" + "\t" + "y" + "\n";
+      let rows = document.getElementById("tableSelections").getElementsByTagName('tr');
+      for (let i = 1; i < rows.length; i++) {
+        const el = rows[i].getElementsByTagName('td')[0].textContent;
+        for (let y = 0; y < this.plotScores.data[0].text.length; y++) {
+          const element = this.plotScores.data[0].text[y];
+          if(el === element){
+           let smile = this.plotScores.data[0].meta[y]
+           let activity = this.plotScores.data[0].marker.color[y]
+           let x = this.plotScores.data[0].x[y]
+           let Y = this.plotScores.data[0].y[y]
+           listCompounds += el  + '\t' + smile + '\t' + activity + '\t' + x + '\t' + Y + '\n';
+          }
+        } 
+      }
+       var element = document.createElement("a");
+        element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(listCompounds));
+        element.setAttribute('download', 'series'+this.modelName+'v'+this.modelVersion+'.tsv');
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
 
 }

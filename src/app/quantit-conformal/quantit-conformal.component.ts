@@ -4,7 +4,6 @@ import * as SmilesDrawer from 'smiles-drawer';
 // import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { Model, CustomHTMLElement } from '../Globals';
-import { allowedNodeEnvironmentFlags } from 'process';
 
 @Component({
   selector: 'app-quantit-conformal',
@@ -607,7 +606,8 @@ export class QuantitConformalComponent implements OnChanges {
             PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
             
             let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
-            
+            console.log("info")
+            console.log(info)
             // on hover, draw the molecule
             myPlot.on('plotly_hover', function(eventdata){ 
               var points = eventdata.points[0];
@@ -623,15 +623,17 @@ export class QuantitConformalComponent implements OnChanges {
 
             const sel_options = {'width': 200, 'height': 125};
             const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);  
-
+            
             myPlot.on('plotly_selected', function(eventdata){
               var tbl = <HTMLTableElement>document.getElementById('tableSelections');
               if (eventdata != null && 'points' in eventdata) {
+
                 var points = eventdata.points;
-                // console.log(points);
+                console.log("points")
+                console.log(points)
                 points.forEach(function(pt) {
                   const tr = tbl.insertRow();
-        
+                  
                   var ismiles = info['SMILES'][pt.pointNumber];
                   var iactiv = pt["marker.color"];
                   var canvasid = 'qtseries'+pt.pointNumber;
@@ -658,12 +660,15 @@ export class QuantitConformalComponent implements OnChanges {
                 });
               }
               else {
+                console.log("sin seleccion")
                 for(var i = 1;i<tbl.rows.length;){
                   tbl.deleteRow(i);
                 }
-              }  
+              }   
             });
 
+     
+   
             // violin plot with activity values
             this.plotViolin.data[0].y = info['ymatrix'];
             this.plotViolin.data[0].text = info['obj_nam'];
@@ -868,6 +873,30 @@ export class QuantitConformalComponent implements OnChanges {
         }
         );
         };
+        downloadSelection(){
+          var listCompounds = 'Name' + '\t' + 'SMILES' + '\t' + 'Activity' + '\t' + "x" + "\t" + "y" + "\n";
+          let rows = document.getElementById("tableSelections").getElementsByTagName('tr');
+          for (let i = 1; i < rows.length; i++) {
+            const el = rows[i].getElementsByTagName('td')[0].textContent;
+            for (let y = 0; y < this.plotScores.data[0].text.length; y++) {
+              const element = this.plotScores.data[0].text[y];
+              if(el === element){
+               let smile = this.plotScores.data[0].meta[y]
+               let activity = this.plotScores.data[0].marker.color[y]
+               let x = this.plotScores.data[0].x[y]
+               let Y = this.plotScores.data[0].y[y]
+               listCompounds += el + '\t' + smile + '\t' + activity + '\t' + x + '\t' + Y + '\n';
+              }
+            } 
+          }
+          var element = document.createElement("a");
+           element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(listCompounds));
+           element.setAttribute('download', 'series'+this.modelName+'v'+this.modelVersion+'.tsv');
+           element.style.display = 'none';
+           document.body.appendChild(element);
+           element.click();
+           document.body.removeChild(element);
+        }
     }
 
 

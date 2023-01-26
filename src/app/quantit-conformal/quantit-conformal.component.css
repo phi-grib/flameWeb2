@@ -123,3 +123,19 @@ table td {
   background: #e59300 ;
   color: #ffffff;
 }
+
+.btn-ets-down {
+  background: #e9a933;
+  color: #ffffff;
+  border-width: 0;
+  font-family: 'Barlow Semi Condensed', 'Arial', 'Helvetica';
+  letter-spacing: 0.05em;
+  border-radius: 0;
+}
+
+.btn-ets-down:hover,
+.btn-ets-down:focus,
+.btn-ets-down.active {
+  background: #e59300;
+  color: #ffffff;
+}
