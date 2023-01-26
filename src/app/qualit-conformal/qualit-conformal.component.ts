@@ -748,13 +748,16 @@ export class QualitConformalComponent implements OnChanges {
           }
         } 
       }
-       var element = document.createElement("a");
+      if(rows.length > 1){
+        var element = document.createElement("a");
         element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(listCompounds));
         element.setAttribute('download', 'series'+this.modelName+'v'+this.modelVersion+'.tsv');
         element.style.display = 'none';
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
+      }
+
     }
 
 }

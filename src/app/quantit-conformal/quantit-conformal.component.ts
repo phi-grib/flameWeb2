@@ -889,6 +889,7 @@ export class QuantitConformalComponent implements OnChanges {
               }
             } 
           }
+          if(rows.length > 1){
           var element = document.createElement("a");
            element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(listCompounds));
            element.setAttribute('download', 'series'+this.modelName+'v'+this.modelVersion+'.tsv');
@@ -896,6 +897,7 @@ export class QuantitConformalComponent implements OnChanges {
            document.body.appendChild(element);
            element.click();
            document.body.removeChild(element);
+          }
         }
     }
 
