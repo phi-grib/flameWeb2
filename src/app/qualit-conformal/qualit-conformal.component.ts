@@ -732,7 +732,7 @@ export class QualitConformalComponent implements OnChanges {
         }
       );
     } 
-    downloadSelection(){
+    downloadCompoundsSelected(){
       var listCompounds = 'Name' + '\t' + 'SMILES' + '\t' + 'Activity' + '\t' + "x" + "\t" + "y" + "\n";
       let rows = document.getElementById("tableSelections").getElementsByTagName('tr');
       for (let i = 1; i < rows.length; i++) {
