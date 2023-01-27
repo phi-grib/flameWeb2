@@ -54,12 +54,20 @@ export class ConfigTrainingComponent implements OnInit {
       if (this.model.parameters['ensemble_reference_distance'] !== undefined) {
         this.infoSeries['model_ensemble'].push('ensemble_reference_distance');
       }
+
     }
   }
 
   // in this dialogue we must avoid selecting substructureFP, which are used only for space building
   filterSpaceFingerprints (list:Array<string>){
      return list.filter(x => x != 'substructureFP');
+  }
+
+  check_key(key) {
+    if (key in this.model.parameters) {
+      return true;
+    }
+    return false;
   }
 
   saveModelsSelected () {
