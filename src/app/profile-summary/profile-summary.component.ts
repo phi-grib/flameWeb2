@@ -226,16 +226,16 @@ export class ProfileSummaryComponent implements OnInit {
       const smiles = this.profile.summary['SMILES'][i];
       auxData.push(compound, smiles)
       for (let y = 0; y < this.profile.summary['endpoint'].length; y++) {
-
+        
         var value = this.profile.summary['values'][i][y].toFixed(2)
         // if select pdf option
         if(pdf){
         if (!this.profile.summary['quantitative'][y]) {
-          switch (value) {
-            case 0:
+          switch (value[0]) {
+            case '0':
               value = "Negative"
               break;
-            case 1:
+            case '1':
               value = 'Positive'
               break;
             default:
