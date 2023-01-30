@@ -14,6 +14,9 @@ import { environment } from "../environments/environment";
 export class CommonService {
   constructor(private http: HttpClient) {}
 
+  //
+  private activeDownload = new Subject<boolean>();
+  activeDownload$ = this.activeDownload.asObservable();
   private defaultName = new Subject<any>();
   defaultName$ = this.defaultName.asObservable()
   //communicates to the component in charge of displaying the prediction, which molecule should present and which model 
@@ -166,5 +169,8 @@ export class CommonService {
   }
   checkDefaultName(){
     this.defaultName.next()
+  }
+  ActiveDownload(){
+    this.activeDownload.next(true)
   }
 }

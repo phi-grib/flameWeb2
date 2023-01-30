@@ -750,4 +750,7 @@ export class PredictionComponent implements OnInit {
         console.log(err);
     });
   }
+  downloadCompoundsSelected(){
+    this.commonService.ActiveDownload()
+  }
 }
