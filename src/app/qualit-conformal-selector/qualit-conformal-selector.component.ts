@@ -92,6 +92,7 @@ export class QualitConformalSelectorComponent implements OnChanges {
       { x: [], 
         y: [], 
         text: [],
+        meta: [],
         type: 'scatter', 
         mode: 'markers', 
         marker: {
@@ -363,7 +364,7 @@ export class QualitConformalSelectorComponent implements OnChanges {
     if (value == 'both') {
       update = {'visible':[true, true]}
     }
-    PlotlyJS.restyle('scoresDIV', update);
+    PlotlyJS.restyle('scoresDIV_sel', update);
   }
  
   public setInnerModel (value) {
@@ -390,7 +391,7 @@ export class QualitConformalSelectorComponent implements OnChanges {
       this.plotScores.layout.xaxis.title = this.scoresLabelX;
       this.plotScores.layout.yaxis.title = this.scoresLabelY;
     }
-    PlotlyJS.react('scoresDIV',this.plotScores.data, this.plotScores.layout, this.plotScores.config );
+    PlotlyJS.react('scoresDIV_sel',this.plotScores.data, this.plotScores.layout, this.plotScores.config );
   }
 
   ngOnChanges(): void {
@@ -408,6 +409,7 @@ export class QualitConformalSelectorComponent implements OnChanges {
     this.modelWarning = '';
     this.plotScores.data[0].x =[];
     this.plotScores.data[0].y =[];
+    this.plotScores.data[0].meta = [];
     this.plotScores.data[1].x =[];
     this.plotScores.data[1].y =[];
     this.plotScores.data[2].x =[];
@@ -499,6 +501,7 @@ export class QualitConformalSelectorComponent implements OnChanges {
           this.plotScores.data[1].x = info['PC1'];
           this.plotScores.data[1].y = info['PC2'];            
           this.plotScores.data[0].text = info['obj_nam'];
+          this.plotScores.data[0].meta = info['SMILES'];
           this.plotScores.data[0].marker.color = info['ymatrix'];
 
           // set title
@@ -650,20 +653,20 @@ export class QualitConformalSelectorComponent implements OnChanges {
           const smilesDrawer = new SmilesDrawer.Drawer(options);
 
           // scores plot                 
-          const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
+          const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_sel');
           const context = canvas.getContext('2d');
 
           // if (!this.model.secret) {
           if (this.scores != '') {
-            PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
+            PlotlyJS.newPlot('scoresDIV_sel', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
             
-            let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
+            let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV_sel');
             
             // on hover, draw the molecule
             myPlot.on('plotly_hover', function(eventdata){ 
               var points = eventdata.points[0];
               SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
+                smilesDrawer.draw(tree, 'scores_canvas_sel', 'light', false);
               });
             });
 
@@ -676,7 +679,7 @@ export class QualitConformalSelectorComponent implements OnChanges {
             const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);  
 
             myPlot.on('plotly_selected', function(eventdata){
-              var tbl = <HTMLTableElement>document.getElementById('tableSelections');
+              var tbl = <HTMLTableElement>document.getElementById('tableSelectionsSelector');
               if (eventdata != null && 'points' in eventdata) {
                 var points = eventdata.points;
                 points.forEach(function(pt) {
@@ -729,6 +732,32 @@ export class QualitConformalSelectorComponent implements OnChanges {
       }
     );
   } 
+  downloadCompoundsSelected(){
+    var listCompounds = 'Name' + '\t' + 'SMILES' + '\t' + 'Activity' + '\t' + "x" + "\t" + "y" + "\n";
+    let rows = document.getElementById("tableSelectionsSelector").getElementsByTagName('tr');
+    for (let i = 1; i < rows.length; i++) {
+      const el = rows[i].getElementsByTagName('td')[0].textContent;
+      for (let y = 0; y < this.plotScores.data[0].text.length; y++) {
+        const element = this.plotScores.data[0].text[y];
+        if(el === element){
+         let smile = this.plotScores.data[0].meta[y]
+         let activity = this.plotScores.data[0].marker.color[y]
+         let x = this.plotScores.data[0].x[y]
+         let Y = this.plotScores.data[0].y[y]
+         listCompounds += el + '\t' + smile + '\t' + activity + '\t' + x + '\t' + Y + '\n';
+        }
+      } 
+    }
+    if(rows.length > 1){
+    var element = document.createElement("a");
+     element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(listCompounds));
+     element.setAttribute('download', 'series'+this.modelName+'v'+this.modelVersion+'.tsv');
+     element.style.display = 'none';
+     document.body.appendChild(element);
+     element.click();
+     document.body.removeChild(element);
+    }
+  }
 
 }
 

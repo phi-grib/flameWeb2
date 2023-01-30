@@ -687,7 +687,7 @@ export class QualitConformalComponent implements OnChanges {
           
                     var ismiles = info['SMILES'][pt.pointNumber];
                     var iactiv = pt["marker.color"];
-                    var canvasid = 'qlseries'+pt.pointNumber;
+                    var canvasid = 'Qlseries'+pt.pointNumber;
 
                     // iactiv = pt.meta.toFixed(2);
 

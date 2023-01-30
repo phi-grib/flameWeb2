@@ -629,14 +629,12 @@ export class QuantitConformalComponent implements OnChanges {
               if (eventdata != null && 'points' in eventdata) {
 
                 var points = eventdata.points;
-                console.log("points")
-                console.log(points)
                 points.forEach(function(pt) {
                   const tr = tbl.insertRow();
                   
                   var ismiles = info['SMILES'][pt.pointNumber];
                   var iactiv = pt["marker.color"];
-                  var canvasid = 'qtseries'+pt.pointNumber;
+                  var canvasid = 'Qtseries'+pt.pointNumber;
 
                   // iactiv = pt.meta.toFixed(2);
 
