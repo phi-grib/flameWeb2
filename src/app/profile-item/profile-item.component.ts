@@ -1066,4 +1066,30 @@ export class ProfileItemComponent implements OnInit {
     this.showSpinner = false;
   }
 
+  downloadCompoundsSelected(){
+    var listCompounds = 'Name' + '\t' + 'SMILES' + '\t' + 'Activity' + '\t' + "x" + "\t" + "y" + "\n";
+    let rows = document.getElementById("tablePredictionSelections").getElementsByTagName('tr');
+    for (let i = 1; i < rows.length; i++) {
+      const el = rows[i].getElementsByTagName('td')[0].textContent;
+      for (let y = 0; y < this.plotScores.data[0].text.length; y++) {
+        const element = this.plotScores.data[0].text[y];
+        if(el === element){
+         let smile = this.plotScores.data[0].meta[y]
+         let activity = this.plotScores.data[0].marker.color[y]
+         let x = this.plotScores.data[0].x[y]
+         let Y = this.plotScores.data[0].y[y]
+         listCompounds += el  + '\t' + smile + '\t' + activity + '\t' + x + '\t' + Y + '\n';
+        }
+      } 
+    }
+    if(rows.length > 1){
+      var element = document.createElement("a");
+      element.setAttribute('href', 'data:text/tab-separated-values;charset=utf-8,' + encodeURIComponent(listCompounds));
+      element.setAttribute('download', 'series'+this.prediction.modelName+'v'+this.prediction.modelVersion+'.tsv');
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
+  }
 }
