@@ -7,6 +7,7 @@ import * as PlotlyJS from 'plotly.js-dist-min';
 import { SplitComponent } from 'angular-split';
 import { ProfilingService } from '../profiling.service';
 import { PredictorService } from '../predictor/predictor.service';
+declare var $: any;
 @Component({
   selector: 'app-profile-item',
   templateUrl: './profile-item.component.html',
@@ -1020,6 +1021,7 @@ export class ProfileItemComponent implements OnInit {
     myPlot.on('plotly_selected', function(eventdata){
       var tbl = <HTMLTableElement>document.getElementById('tablePredictionSelections');
       if (eventdata != null && 'points' in eventdata) {
+        $('#btnCompoundsSelectedProf').prop('disabled', false);
         var points = eventdata.points;
         points.forEach(function(pt) {
           const tr = tbl.insertRow();
@@ -1058,6 +1060,7 @@ export class ProfileItemComponent implements OnInit {
         });
       }
       else {
+        $('#btnCompoundsSelectedProf').prop('disabled', true);
         for(var i = 1;i<tbl.rows.length;){
           tbl.deleteRow(i);
         }
