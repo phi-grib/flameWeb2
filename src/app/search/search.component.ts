@@ -128,12 +128,13 @@ export class SearchComponent implements AfterViewInit, OnChanges {
       this.plotRA.data[0].marker.cauto = false;
       this.plotRA.data[0].marker.cmin = 0;
       this.plotRA.data[0].marker.cmax = 1;
+      this.plotRA.layout.xaxis.range = [-1.2, 1.2];
     }
     else {
       this.plotRA.data[0].x = iresult.ymatrix;
       this.plotRA.data[0].marker.cauto = true;
       this.plotRA.layout.xaxis.range = [Math.min(iresult.ymatrix)*0.9,Math.max(iresult.ymatrix)*1.1];
-      this.plotRA.layout.xaxis.tickfont = {family: 'Barlow Semi Condensed, sans-serif', size: 16 };
+      // this.plotRA.layout.xaxis.tickfont = {family: 'Barlow Semi Condensed, sans-serif', size: 16 };
     }
 
     this.plotRA.data[0].y = iresult.distances;
@@ -164,10 +165,6 @@ export class SearchComponent implements AfterViewInit, OnChanges {
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
       });
-
-  
-
-
 
       }
     );
