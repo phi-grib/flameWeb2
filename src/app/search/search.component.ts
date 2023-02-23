@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, OnInit, Input } from '@angular/core';
+import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, OnChanges, Input } from '@angular/core';
 import * as SmilesDrawer from 'smiles-drawer';
 import { Search, Globals, Space } from '../Globals';
 import { CommonService } from '../common.service';
@@ -11,7 +11,7 @@ declare var $: any;
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements AfterViewInit, OnInit {
+export class SearchComponent implements AfterViewInit, OnChanges {
   
   @Input() spaceName;
   @Input() spaceVersion;
@@ -81,6 +81,9 @@ export class SearchComponent implements AfterViewInit, OnInit {
     }
 
   showDistance() {
+    if (this.search.result == undefined) {
+      return false;
+    }
     if (this.search.metric!='substructural' && this.search.metric!='smarts') {
       return true;
     }
@@ -88,6 +91,9 @@ export class SearchComponent implements AfterViewInit, OnInit {
   }
 
   showActivity() {
+    if (this.search.result == undefined) {
+      return false;
+    }
     if ('ymatrix' in this.search.result[0]) {
       return true;
     }
@@ -135,7 +141,7 @@ export class SearchComponent implements AfterViewInit, OnInit {
     this.plotRA.data[0].meta = iresult.SMILES;
   }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     
     this.commonService.searchCompleted$.subscribe(()=>{
       this.updateRA(0);  
@@ -159,6 +165,10 @@ export class SearchComponent implements AfterViewInit, OnInit {
         context.clearRect(0, 0, canvas.width, canvas.height);
       });
 
+  
+
+
+
       }
     );
              
@@ -168,6 +178,9 @@ export class SearchComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     
     this.components.changes.subscribe(() => {
+
+      console.log('updating table');
+
         $('#similarityTable').DataTable().destroy();
 
         if (this.components !== undefined) {
