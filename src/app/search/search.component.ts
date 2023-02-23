@@ -37,7 +37,9 @@ export class SearchComponent implements AfterViewInit, OnInit {
           color: [],
           colorscale: 'RdBu',
           showscale: true,
-          cauto: true,
+          cauto: false,
+          cmin: 0,
+          cmax: 1,
           size: 10
         },
         // hovertemplate:'%{y:.2f}<text></text>'
@@ -50,18 +52,18 @@ export class SearchComponent implements AfterViewInit, OnInit {
         // margin: {r: 10, t: 30, b:0, pad: 0 },
         barmode: 'relative',
         hovermode: 'closest',
-        hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 14 } },
+        hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 } },
         xaxis: {
           range: [-1.2, 1.2],
           zeroline: true,
-          zerolinewidth: 4,
+          zerolinewidth: 2,
           zerolinecolor: 'black',
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
           tickvals: [-1.0, 1.0],
           ticktext: ['negative', 'positive']
         },
         yaxis: {
-          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 14 },
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
           automargin: true
         },
         showlegend: false
@@ -106,9 +108,28 @@ export class SearchComponent implements AfterViewInit, OnInit {
     const iresult =this.search.result[i];
 
     this.plotRA.data[0].marker.color = iresult.ymatrix;
+    let isBinary = true;
     for (let i=0; i<iresult.ymatrix.length; i++) {
-        this.plotRA.data[0].x[i] = iresult.ymatrix[i] * 2 -1 ;
+      if (iresult.ymatrix[i]!==1.0 && iresult.ymatrix[i]!==0.0) {
+        isBinary = false;
+        break;
+      }
     }
+    if (isBinary) {
+      for (let i=0; i<iresult.ymatrix.length; i++) {
+          this.plotRA.data[0].x[i] = iresult.ymatrix[i] * 2 -1 ;
+      }
+      this.plotRA.data[0].marker.cauto = false;
+      this.plotRA.data[0].marker.cmin = 0;
+      this.plotRA.data[0].marker.cmax = 1;
+    }
+    else {
+      this.plotRA.data[0].x = iresult.ymatrix;
+      this.plotRA.data[0].marker.cauto = true;
+      this.plotRA.layout.xaxis.range = [Math.min(iresult.ymatrix)*0.9,Math.max(iresult.ymatrix)*1.1];
+      this.plotRA.layout.xaxis.tickfont = {family: 'Barlow Semi Condensed, sans-serif', size: 16 };
+    }
+
     this.plotRA.data[0].y = iresult.distances;
     this.plotRA.data[0].text = iresult.obj_nam;
     this.plotRA.data[0].meta = iresult.SMILES;
@@ -120,10 +141,9 @@ export class SearchComponent implements AfterViewInit, OnInit {
       this.updateRA(0);  
       const SMILES = this.search.result[0].SMILES;
       const canvas = <HTMLCanvasElement>document.getElementById('ra_canvas');
-      const context = canvas.getContext('2d');
       const options = {'width': 400, 'height': 250};
       const smilesDrawer = new SmilesDrawer.Drawer(options);
-  
+      
       PlotlyJS.newPlot('ra_plot', this.plotRA.data, this.plotRA.layout, this.plotRA.config);
       let myRAPlot = <CustomHTMLElement>document.getElementById('ra_plot');
       myRAPlot.on('plotly_hover', function(eventdata){ 
@@ -132,9 +152,10 @@ export class SearchComponent implements AfterViewInit, OnInit {
           smilesDrawer.draw(tree, 'ra_canvas', 'light', false);
         });
       });
-  
+      
       // on onhover, clear the canvas
       myRAPlot.on('plotly_unhover', function(data){
+        const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
       });
 
