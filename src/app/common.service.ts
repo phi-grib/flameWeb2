@@ -40,6 +40,9 @@ export class CommonService {
   //control the pagination
   private controlPagination = new Subject<boolean[]>();
   controlPagination$ = this.controlPagination.asObservable();
+  // search results completed
+  private searchCompleted = new Subject<boolean>();
+  searchCompleted$ = this.searchCompleted.asObservable();
   
   /**
    * Retrives the list of all models form the server
@@ -172,5 +175,8 @@ export class CommonService {
   }
   ActiveDownload(){
     this.activeDownload.next(true)
+  }
+  setSearchCompleted(){
+    this.searchCompleted.next(true)
   }
 }

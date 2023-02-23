@@ -24,7 +24,7 @@
 
       <div class="tab-content" id="pills-tabContent">
 
-        <!--REPORT PREDICTIONS-->
+        <!-- SEARCH REPORT -->
         <div class="tab-pane fade show active" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
           <div class="card-body">
             <div class="model_name"> Results in: {{this.search.spaceName}} v.{{this.search.spaceVersion}} using metric: {{this.search.metric}}</div>
@@ -59,10 +59,14 @@
           </div>
         </div>
 
-        <!--REPORT PROYECTION-->
+        <!--RA REPORT -->
         <div *ngIf="this.showActivity()" class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
           <div class="card-body">
-            hola
+            <plotly-plot 
+              [data]="this.plotRA.data" 
+              [layout]="this.plotRA.layout" 
+              [config]="this.plotRA.config">
+            </plotly-plot>
           </div>
         </div>
       </div>
