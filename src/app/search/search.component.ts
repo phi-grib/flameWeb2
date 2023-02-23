@@ -22,6 +22,20 @@ export class SearchComponent implements AfterViewInit {
 
   @ViewChildren('cmp') components: QueryList<ElementRef>;
 
+  showDistance() {
+    if (this.search.metric!='substructural' && this.search.metric!='smarts') {
+      return true;
+    }
+    return false;
+  }
+
+  showActivity() {
+    if ('ymatrix' in this.search.result[0]) {
+      return true;
+    }
+    return false;
+  }
+
   objID (i, j) {
     const iresult = this.search.result[i];
     if ('obj_id' in iresult) {
