@@ -61,15 +61,23 @@
 
         <!--RA REPORT -->
         <div *ngIf="this.showActivity()" class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
-          <div class="card-body">
-            <plotly-plot 
-              [data]="this.plotRA.data" 
-              [layout]="this.plotRA.layout" 
-              [config]="this.plotRA.config">
-            </plotly-plot>
+          <div class="card-body" >
+
+            <!-- <canvas id="ra_canvas"></canvas> -->
+            <!-- <div id="ra_plot">  </div> -->
+              
+              <!-- <plotly-plot 
+                [data]="this.plotRA.data" 
+                [layout]="this.plotRA.layout" 
+                [config]="this.plotRA.config">
+              </plotly-plot> -->
+            
           </div>
         </div>
       </div>
-
     </div>  
+    
+    <div id="ra_plot"></div>
+    <canvas id="ra_canvas"></canvas>
+
 </div>  

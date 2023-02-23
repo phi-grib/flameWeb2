@@ -2,10 +2,9 @@ import { Component, ViewChildren, QueryList, ElementRef, AfterViewInit, OnInit, 
 import * as SmilesDrawer from 'smiles-drawer';
 import { Search, Globals, Space } from '../Globals';
 import { CommonService } from '../common.service';
-// import * as PlotlyJS from 'plotly.js-dist-min';
+import { CustomHTMLElement } from '../Globals';
+import * as PlotlyJS from 'plotly.js-dist-min';
 declare var $: any;
-
-
 
 @Component({
   selector: 'app-search',
@@ -116,17 +115,32 @@ export class SearchComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
+    
     this.commonService.searchCompleted$.subscribe(()=>{
-      this.updateRA(0);
-      // this.plotRA.data[0].marker.color = this.search.result[0].ymatrix;
-      // for (let i=0; i<this.search.result[0].ymatrix.length; i++) {
-      //     this.plotRA.data[0].x[i] = this.search.result[0].ymatrix[i] * 2 -1 ;
-      // }
-      // this.plotRA.data[0].y = this.search.result[0].distances;
-      // this.plotRA.data[0].text = this.search.result[0].obj_nam;
-      // this.plotRA.data[0].meta = this.search.result[0].SMILES;
+      this.updateRA(0);  
+      const SMILES = this.search.result[0].SMILES;
+      const canvas = <HTMLCanvasElement>document.getElementById('ra_canvas');
+      const context = canvas.getContext('2d');
+      const options = {'width': 400, 'height': 250};
+      const smilesDrawer = new SmilesDrawer.Drawer(options);
+  
+      PlotlyJS.newPlot('ra_plot', this.plotRA.data, this.plotRA.layout, this.plotRA.config);
+      let myRAPlot = <CustomHTMLElement>document.getElementById('ra_plot');
+      myRAPlot.on('plotly_hover', function(eventdata){ 
+        var points = eventdata.points[0];
+        SmilesDrawer.parse(SMILES[points.pointNumber], function(tree) {
+          smilesDrawer.draw(tree, 'ra_canvas', 'light', false);
+        });
+      });
+  
+      // on onhover, clear the canvas
+      myRAPlot.on('plotly_unhover', function(data){
+        context.clearRect(0, 0, canvas.width, canvas.height);
+      });
+
       }
-    )
+    );
+             
   }
   
   
@@ -163,7 +177,7 @@ export class SearchComponent implements AfterViewInit, OnInit {
         
         $('#similarityTable').DataTable(settingsObj);
     });
-
+    
   }
 
 }
