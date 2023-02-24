@@ -26,8 +26,9 @@ export class SearchComponent implements AfterViewInit, OnChanges {
     @ViewChildren('cmp') components: QueryList<ElementRef>;
     
     noNextMol = false;
-    noPreviousMol = false;
+    noPreviousMol = true;
     molIndex = 0;
+    numMol = 1;
 
     plotRA = {
       data : [{
@@ -85,11 +86,28 @@ export class SearchComponent implements AfterViewInit, OnChanges {
     }
 
   NextMol() {
-    console.log('next mol');
+    if (this.molIndex == this.numMol-1) {
+      this.noNextMol=true;
+    }
+    else {
+      this.noNextMol=false;
+      this.noPreviousMol=false;
+      this.molIndex+=1;
+    }
+    this.updateRA(this.molIndex);
+
   }
 
   PreviousMol() {
-    console.log('previous mol');
+    if (this.molIndex == 0) {
+      this.noPreviousMol=true;
+    }
+    else {
+      this.noPreviousMol=false;
+      this.noNextMol=false;
+      this.molIndex-=1;
+    }
+    this.updateRA(this.molIndex);
   }
 
   showDistance() {
@@ -152,12 +170,18 @@ export class SearchComponent implements AfterViewInit, OnChanges {
     this.plotRA.data[0].y = iresult.distances;
     this.plotRA.data[0].text = iresult.obj_nam;
     this.plotRA.data[0].meta = iresult.SMILES;
+
+    PlotlyJS.react('ra_plot', this.plotRA.data, this.plotRA.layout, this.plotRA.config);
+
   }
 
   ngOnChanges(): void {
     
     this.commonService.searchCompleted$.subscribe(()=>{
-      this.updateRA(0);  
+      this.numMol = this.search.nameSrc.length;
+      this.molIndex = 0;
+      this.updateRA(this.molIndex);  
+
       const SMILES = this.search.result[0].SMILES;
       const canvas = <HTMLCanvasElement>document.getElementById('ra_canvas');
       const options = {'width': 400, 'height': 250};
@@ -178,47 +202,52 @@ export class SearchComponent implements AfterViewInit, OnChanges {
         context.clearRect(0, 0, canvas.width, canvas.height);
       });
 
+      // var update = {'visible':[true, false]}
+      // if (value == 'density') {
+      //   update = {'visible':[false, true]}
+      // }
+      // if (value == 'both') {
+      //   update = {'visible':[true, true]}
+      // }
+      // PlotlyJS.restyle('scoresDIV', update);
+
+
       }
     );
-             
   }
-  
   
   ngAfterViewInit() {
     
     this.components.changes.subscribe(() => {
 
-      console.log('updating table');
+      $('#similarityTable').DataTable().destroy();
+      if (this.components !== undefined) {
+        const options = {'width': 300, 'height': 150};
+        const smilesDrawer = new SmilesDrawer.Drawer(options);
+        this.components.forEach((child) => {
+          SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
+            smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
+            }, function (err) {
+              console.log(err);
+            });
+        });
+      }
 
-        $('#similarityTable').DataTable().destroy();
-
-        if (this.components !== undefined) {
-          const options = {'width': 300, 'height': 150};
-          const smilesDrawer = new SmilesDrawer.Drawer(options);
-          this.components.forEach((child) => {
-            SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
-              smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-              }, function (err) {
-                console.log(err);
-              });
-          });
-        }
-
-        const settingsObj: any = {
-          dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
-          '<"row"<"col-sm-12"tr>>' +
-          '<"row"<"col-sm-5"i><"col-sm-7"p>>',
-          buttons: [
-            { 'extend': 'copy', 'text': 'Copy', 'className': 'btn-primary' , title: ''},
-            { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary' , title: ''},
-            { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' , title: ''},
-            { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
-          ],
-          deferRender: true,
-          // autoWidth: true
-        };
-        
-        $('#similarityTable').DataTable(settingsObj);
+      const settingsObj: any = {
+        dom: '<"row"<"col-sm-6"B><"col-sm-6"f>>' +
+        '<"row"<"col-sm-12"tr>>' +
+        '<"row"<"col-sm-5"i><"col-sm-7"p>>',
+        buttons: [
+          { 'extend': 'copy', 'text': 'Copy', 'className': 'btn-primary' , title: ''},
+          { 'extend': 'excel', 'text': 'Excel', 'className': 'btn-primary' , title: ''},
+          { 'extend': 'pdf', 'text': 'Pdf', 'className': 'btn-primary' , title: ''},
+          { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
+        ],
+        deferRender: true,
+        // autoWidth: true
+      };
+      
+      $('#similarityTable').DataTable(settingsObj);
     });
     
   }

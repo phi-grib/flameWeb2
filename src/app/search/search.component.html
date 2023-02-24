@@ -6,13 +6,8 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <!-- this is only to show the spinner   -->
-    <div id="container" *ngIf="this.search.result == undefined">
-    </div>
 
-    <div  >
-    <!-- <div [hidden]="this.search.result==undefined" > -->
-
+    <div>
       <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
         <li class="nav-item">
           <a class="nav-link active" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="true">Results</a>
@@ -65,12 +60,10 @@
           <div class="card-body" >
 
             <!--PAGINATION-->
-            <div class="row align-items-center">
-              <div class="col-2 offset-5">
-                <!-- <span><strong>{{this.compound.molidx +1}} of {{this.prediction.result.SMILES.length}}</strong></span> -->
-                <span><strong>1 of 4</strong></span>
-              </div>
-              <div class="col-1  p-0 offset-4">
+            <div class="pagination">
+              <div >{{this.search.nameSrc[this.molIndex]}}</div>
+              <div ><span><strong>{{this.molIndex +1}} of {{this.numMol}}</strong></span></div>
+              <div class="col-1 p-0">
                 <nav aria-label="Page navigation example">
                   <ul class="pagination">
                     <li class="page-item" [ngClass]="{'disabled': this.noPreviousMol}">
@@ -90,16 +83,17 @@
               </div>
             </div>
             <!--END PAGINATION-->
+            <div class="row">
+              <div id="ra_plot"></div>
+              <div class="col">
+                <canvas id="ra_source" ></canvas>
+                <canvas id="ra_canvas"></canvas>
+              </div>
+            </div>
 
-            <div id="ra_plot"></div>
-            <canvas id="ra_canvas"></canvas>
             
           </div>
         </div>
       </div>
     </div>  
-    
-    <!-- <div id="ra_plot"></div>
-    <canvas id="ra_canvas"></canvas> -->
-
 </div>  

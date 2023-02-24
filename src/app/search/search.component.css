@@ -68,8 +68,15 @@ tr.selected {
     display: block;
     position: absolute; 
     right: 45%; 
-    top: 30%; 
+    top: 200%; 
     z-index: 1031;
+}
+
+.pagination { 
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    color:#0076a3;
+    display: flex; 
+    justify-content: space-between; 
 }
 
 #overlay {
