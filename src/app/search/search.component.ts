@@ -144,6 +144,7 @@ export class SearchComponent implements AfterViewInit, OnChanges {
     const iresult =this.search.result[i];
 
     this.SMILES = this.search.result[i].SMILES;
+    const SMILESsrc = this.search.smileSrc[i];
 
     this.plotRA.data[0].marker.color = iresult.ymatrix;
     let isBinary = true;
@@ -175,6 +176,11 @@ export class SearchComponent implements AfterViewInit, OnChanges {
 
     PlotlyJS.react('ra_plot', this.plotRA.data, this.plotRA.layout, this.plotRA.config);
 
+    const sourceSmilesDrawer = new SmilesDrawer.Drawer({'width': 300, 'height': 200});
+    SmilesDrawer.parse(SMILESsrc, function(tree) {
+      sourceSmilesDrawer.draw(tree, 'ra_source', 'light', false);
+    });
+
   }
 
   ngOnChanges(): void {
@@ -183,7 +189,8 @@ export class SearchComponent implements AfterViewInit, OnChanges {
       this.numMol = this.search.nameSrc.length;
       this.molIndex = 0;
       this.SMILES = [];
-      this.updateRA(this.molIndex);  
+
+      this.updateRA(0);  
 
       const canvas = <HTMLCanvasElement>document.getElementById('ra_canvas');
       const options = {'width': 300, 'height': 200};
@@ -220,6 +227,7 @@ export class SearchComponent implements AfterViewInit, OnChanges {
   }
   
   ngAfterViewInit() {
+    
     
     this.components.changes.subscribe(() => {
 
