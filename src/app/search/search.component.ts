@@ -24,6 +24,10 @@ export class SearchComponent implements AfterViewInit, OnChanges {
     ) { }
     
     @ViewChildren('cmp') components: QueryList<ElementRef>;
+    
+    noNextMol = false;
+    noPreviousMol = false;
+    molIndex = 0;
 
     plotRA = {
       data : [{
@@ -79,6 +83,14 @@ export class SearchComponent implements AfterViewInit, OnChanges {
         modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
       }
     }
+
+  NextMol() {
+    console.log('next mol');
+  }
+
+  PreviousMol() {
+    console.log('previous mol');
+  }
 
   showDistance() {
     if (this.search.result == undefined) {
