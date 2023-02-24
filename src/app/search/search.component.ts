@@ -29,6 +29,7 @@ export class SearchComponent implements AfterViewInit, OnChanges {
     noPreviousMol = true;
     molIndex = 0;
     numMol = 1;
+    SMILES = [];
 
     plotRA = {
       data : [{
@@ -52,7 +53,7 @@ export class SearchComponent implements AfterViewInit, OnChanges {
         }
       ],
       layout : {
-        width: 700,
+        width: 600,
         height: 500,
         // margin: {r: 10, t: 30, b:0, pad: 0 },
         barmode: 'relative',
@@ -95,7 +96,6 @@ export class SearchComponent implements AfterViewInit, OnChanges {
       this.molIndex+=1;
     }
     this.updateRA(this.molIndex);
-
   }
 
   PreviousMol() {
@@ -143,6 +143,8 @@ export class SearchComponent implements AfterViewInit, OnChanges {
   updateRA (i) {
     const iresult =this.search.result[i];
 
+    this.SMILES = this.search.result[i].SMILES;
+
     this.plotRA.data[0].marker.color = iresult.ymatrix;
     let isBinary = true;
     for (let i=0; i<iresult.ymatrix.length; i++) {
@@ -180,18 +182,19 @@ export class SearchComponent implements AfterViewInit, OnChanges {
     this.commonService.searchCompleted$.subscribe(()=>{
       this.numMol = this.search.nameSrc.length;
       this.molIndex = 0;
+      this.SMILES = [];
       this.updateRA(this.molIndex);  
 
-      const SMILES = this.search.result[0].SMILES;
       const canvas = <HTMLCanvasElement>document.getElementById('ra_canvas');
-      const options = {'width': 400, 'height': 250};
+      const options = {'width': 300, 'height': 200};
       const smilesDrawer = new SmilesDrawer.Drawer(options);
       
       PlotlyJS.newPlot('ra_plot', this.plotRA.data, this.plotRA.layout, this.plotRA.config);
       let myRAPlot = <CustomHTMLElement>document.getElementById('ra_plot');
+      let my =  this;
       myRAPlot.on('plotly_hover', function(eventdata){ 
         var points = eventdata.points[0];
-        SmilesDrawer.parse(SMILES[points.pointNumber], function(tree) {
+        SmilesDrawer.parse(my.SMILES[points.pointNumber], function(tree) {
           smilesDrawer.draw(tree, 'ra_canvas', 'light', false);
         });
       });

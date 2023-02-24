@@ -5,12 +5,12 @@ ul li.nav-item a {
 }
   
 ul li.nav-item a.active{
-background:white;
-color:#22577A;
-font-weight: bold;
-font-size: 1.2rem;
-border-bottom: 4px solid #e59300;
-border-radius: 0;
+    background:white;
+    color:#22577A;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-bottom: 4px solid #e59300;
+    border-radius: 0;
 }
 
 .table {
@@ -72,8 +72,14 @@ tr.selected {
     z-index: 1031;
 }
 
-.pagination { 
+.pagination_text { 
     font-family: 'Barlow Semi Condensed', sans-serif;
+    font-weight: bold;
+    font-size: 1.0rem;
+
+}
+
+.pagination { 
     color:#0076a3;
     display: flex; 
     justify-content: space-between; 

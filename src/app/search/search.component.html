@@ -61,10 +61,10 @@
 
             <!--PAGINATION-->
             <div class="pagination">
-              <div >{{this.search.nameSrc[this.molIndex]}}</div>
-              <div ><span><strong>{{this.molIndex +1}} of {{this.numMol}}</strong></span></div>
+              <div class="pagination_text">{{this.search.nameSrc[this.molIndex]}}</div>
+              <div class="pagination_text"><span><strong>{{this.molIndex +1}} of {{this.numMol}}</strong></span></div>
               <div class="col-1 p-0">
-                <nav aria-label="Page navigation example">
+                <nav aria-label="RA pagination">
                   <ul class="pagination">
                     <li class="page-item" [ngClass]="{'disabled': this.noPreviousMol}">
                       <a class="page-link" title="Previous molecule" href="javascript:void(0)" aria-label="Previous" (click) = "PreviousMol()">
