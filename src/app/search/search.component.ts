@@ -41,8 +41,9 @@ export class SearchComponent implements AfterViewInit, OnChanges {
         mode: 'markers', 
         marker: {
           color: [],
-          colorscale: 'RdBu',
-          showscale: true,
+          // colorscale: 'RdBu',
+          colorscale: 'Bluered', 
+          showscale: false,
           cauto: false,
           cmin: 0,
           cmax: 1,
@@ -53,9 +54,10 @@ export class SearchComponent implements AfterViewInit, OnChanges {
         }
       ],
       layout : {
-        width: 600,
-        height: 500,
+        width: 500,
+        height: 400,
         // margin: {r: 10, t: 30, b:0, pad: 0 },
+        margin: {r: 20, l:20, t: 0, b:20, pad: 0 },
         barmode: 'relative',
         hovermode: 'closest',
         hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 } },
@@ -76,13 +78,14 @@ export class SearchComponent implements AfterViewInit, OnChanges {
       },
       config: {
         displaylogo: false,
-        toImageButtonOptions: {
-          format: 'svg', // one of png, svg, jpeg, webp
-          filename: 'flame_combo',
-          width: 700,
-          height: 500,
-        },
-        modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+        displayModeBar: false
+        // toImageButtonOptions: {
+        //   format: 'svg', // one of png, svg, jpeg, webp
+        //   filename: 'flame_combo',
+        //   width: 700,
+        //   height: 500,
+        // },
+        // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
       }
     }
 
