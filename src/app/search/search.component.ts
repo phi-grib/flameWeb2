@@ -49,7 +49,7 @@ export class SearchComponent implements AfterViewInit, OnChanges {
           size: 10
         },
         // hovertemplate:'%{y:.2f}<text></text>'
-        hovertemplate:'<b>%{text}</b>'
+        hovertemplate:'<b>%{text}</b><extra></extra>'
         }
       ],
       layout : {
@@ -144,7 +144,7 @@ export class SearchComponent implements AfterViewInit, OnChanges {
     const iresult =this.search.result[i];
 
     this.SMILES = this.search.result[i].SMILES;
-    let SMILESsrc = this.search.smileSrc[i];
+    // let SMILESsrc = this.search.smileSrc[i];
 
     this.plotRA.data[0].marker.color = iresult.ymatrix;
     let isBinary = true;
@@ -154,6 +154,8 @@ export class SearchComponent implements AfterViewInit, OnChanges {
         break;
       }
     }
+
+    //TODO: change style depending if data is qualitative or quantitative
     if (isBinary) {
       for (let i=0; i<iresult.ymatrix.length; i++) {
           this.plotRA.data[0].x[i] = iresult.ymatrix[i] * 2 -1 ;
@@ -170,18 +172,22 @@ export class SearchComponent implements AfterViewInit, OnChanges {
       // this.plotRA.layout.xaxis.tickfont = {family: 'Barlow Semi Condensed, sans-serif', size: 16 };
     }
 
+    // var update = {'visible':[true, false]}
+    // if (value == 'density') {
+    //   update = {'visible':[false, true]}
+    // }
+    // if (value == 'both') {
+    //   update = {'visible':[true, true]}
+    // }
+    // PlotlyJS.restyle('scoresDIV', update);
+
     this.plotRA.data[0].y = iresult.distances;
     this.plotRA.data[0].text = iresult.obj_nam;
     this.plotRA.data[0].meta = iresult.SMILES;
 
-    this.drawSource(SMILESsrc);
-    
-    // const sourceSmilesDrawer = new SmilesDrawer.Drawer({'width': 300, 'height': 150});
-    // SmilesDrawer.parse(SMILESsrc, function(tree) {
-    //   sourceSmilesDrawer.draw(tree, 'ra_source', 'light', false);
-    // });
-
     PlotlyJS.react('ra_plot', this.plotRA.data, this.plotRA.layout, this.plotRA.config);
+
+    this.drawSource(this.search.smileSrc[i]);
 
   }
 
@@ -202,12 +208,14 @@ export class SearchComponent implements AfterViewInit, OnChanges {
       
       this.updateRA(0);  
       
+      PlotlyJS.newPlot('ra_plot', this.plotRA.data, this.plotRA.layout, this.plotRA.config);
+      
+      let myRAPlot = <CustomHTMLElement>document.getElementById('ra_plot');
+
       const canvas = <HTMLCanvasElement>document.getElementById('ra_canvas');
       const options = {'width': 300, 'height': 200};
       const smilesDrawer = new SmilesDrawer.Drawer(options);
       
-      PlotlyJS.newPlot('ra_plot', this.plotRA.data, this.plotRA.layout, this.plotRA.config);
-      let myRAPlot = <CustomHTMLElement>document.getElementById('ra_plot');
       let my =  this;
       myRAPlot.on('plotly_hover', function(eventdata){ 
         var points = eventdata.points[0];
@@ -222,14 +230,7 @@ export class SearchComponent implements AfterViewInit, OnChanges {
         context.clearRect(0, 0, canvas.width, canvas.height);
       });
       
-      // var update = {'visible':[true, false]}
-      // if (value == 'density') {
-      //   update = {'visible':[false, true]}
-      // }
-      // if (value == 'both') {
-      //   update = {'visible':[true, true]}
-      // }
-      // PlotlyJS.restyle('scoresDIV', update);
+
 
       // trick to show the screen after the tab change, when the canvas was already not rendered
       let me = this;
@@ -245,7 +246,6 @@ export class SearchComponent implements AfterViewInit, OnChanges {
   }
   
   ngAfterViewInit() {
-    
     
     this.components.changes.subscribe(() => {
 
