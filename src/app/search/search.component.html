@@ -8,20 +8,20 @@
     </div>
 
     <div>
-      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <ul class="nav nav-pills mb-3" id="pills-search" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" id="pills-one-tab" data-toggle="tab" href="#pills-one" role="tab" aria-controls="pills-one" aria-selected="true">Results</a>
+          <a class="nav-link active" id="pills-one-tab" data-toggle="tab" href="#pills-search-one" role="tab" aria-controls="pills-search-one" aria-selected="true">Results</a>
         </li>
 
         <li *ngIf="this.showActivity()" class="nav-item">
-          <a class="nav-link" id="pills-two-tab" data-toggle="tab" href="#pills-two" role="tab" aria-controls="pills-two" aria-selected="false">RA</a>
+          <a class="nav-link" id="pills-two-tab" data-toggle="tab" href="#pills-search-two" role="tab" aria-controls="pills-search-two" aria-selected="false">RA</a>
         </li>
       </ul>
 
       <div class="tab-content" id="pills-tabContent" >
 
         <!-- SEARCH REPORT -->
-        <div class="tab-pane fade show active" id="pills-one" role="tabpanel" aria-labelledby="pills-one-tab">
+        <div class="tab-pane fade show active" id="pills-search-one" role="tabpanel" aria-labelledby="pills-one-tab">
           <div class="card-body" *ngIf="this.search.result != undefined">
             <div class="model_name"> Results in: {{this.search.spaceName}} v.{{this.search.spaceVersion}} using metric: {{this.search.metric}}</div>
             <table id="similarityTable" class="table table-fixed table-bordered">
@@ -56,7 +56,7 @@
         </div>
 
         <!--RA REPORT -->
-        <div [hidden]="!this.showActivity()" class="tab-pane fade" id="pills-two" role="tabpanel" aria-labelledby="pills-two-tab">
+        <div [hidden]="!this.showActivity()" class="tab-pane fade" id="pills-search-two" role="tabpanel" aria-labelledby="pills-two-tab">
           <div class="card-body" >
 
             <!--PAGINATION-->

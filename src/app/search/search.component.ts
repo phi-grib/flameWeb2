@@ -91,9 +91,9 @@ export class SearchComponent implements AfterViewInit, OnChanges {
       this.noNextMol=true;
     }
     else {
-      this.noNextMol=false;
       this.noPreviousMol=false;
       this.molIndex+=1;
+      this.noNextMol= (this.molIndex == this.numMol -1 ) ;
     }
     this.updateRA(this.molIndex);
   }
@@ -103,9 +103,9 @@ export class SearchComponent implements AfterViewInit, OnChanges {
       this.noPreviousMol=true;
     }
     else {
-      this.noPreviousMol=false;
       this.noNextMol=false;
       this.molIndex-=1;
+      this.noPreviousMol=(this.molIndex == 0);
     }
     this.updateRA(this.molIndex);
   }
@@ -144,7 +144,7 @@ export class SearchComponent implements AfterViewInit, OnChanges {
     const iresult =this.search.result[i];
 
     this.SMILES = this.search.result[i].SMILES;
-    const SMILESsrc = this.search.smileSrc[i];
+    let SMILESsrc = this.search.smileSrc[i];
 
     this.plotRA.data[0].marker.color = iresult.ymatrix;
     let isBinary = true;
@@ -174,24 +174,34 @@ export class SearchComponent implements AfterViewInit, OnChanges {
     this.plotRA.data[0].text = iresult.obj_nam;
     this.plotRA.data[0].meta = iresult.SMILES;
 
+    this.drawSource(SMILESsrc);
+    
+    // const sourceSmilesDrawer = new SmilesDrawer.Drawer({'width': 300, 'height': 150});
+    // SmilesDrawer.parse(SMILESsrc, function(tree) {
+    //   sourceSmilesDrawer.draw(tree, 'ra_source', 'light', false);
+    // });
+
     PlotlyJS.react('ra_plot', this.plotRA.data, this.plotRA.layout, this.plotRA.config);
 
+  }
+
+  drawSource (SMILESsrc) {
     const sourceSmilesDrawer = new SmilesDrawer.Drawer({'width': 300, 'height': 200});
     SmilesDrawer.parse(SMILESsrc, function(tree) {
       sourceSmilesDrawer.draw(tree, 'ra_source', 'light', false);
     });
-
   }
 
   ngOnChanges(): void {
-    
     this.commonService.searchCompleted$.subscribe(()=>{
       this.numMol = this.search.nameSrc.length;
       this.molIndex = 0;
+      this.noNextMol = (this.numMol == 1);
+      this.noPreviousMol = true;
       this.SMILES = [];
-
+      
       this.updateRA(0);  
-
+      
       const canvas = <HTMLCanvasElement>document.getElementById('ra_canvas');
       const options = {'width': 300, 'height': 200};
       const smilesDrawer = new SmilesDrawer.Drawer(options);
@@ -211,7 +221,7 @@ export class SearchComponent implements AfterViewInit, OnChanges {
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
       });
-
+      
       // var update = {'visible':[true, false]}
       // if (value == 'density') {
       //   update = {'visible':[false, true]}
@@ -221,8 +231,16 @@ export class SearchComponent implements AfterViewInit, OnChanges {
       // }
       // PlotlyJS.restyle('scoresDIV', update);
 
-
-      }
+      // trick to show the screen after the tab change, when the canvas was already not rendered
+      let me = this;
+      $(document).on('shown.bs.tab', function (e) { 	
+        var target = $(e.target).attr("href");
+        if (target=='#pills-search-two') {
+          me.drawSource(me.search.smileSrc[0]);
+        }
+       });
+      
+    }
     );
   }
   
