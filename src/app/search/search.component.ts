@@ -29,6 +29,7 @@ export class SearchComponent implements AfterViewInit, OnChanges {
     noPreviousMol = true;
     molIndex = 0;
     numMol = 1;
+    isBinary = false;
     SMILES = [];
 
     plotRA = {
@@ -41,7 +42,6 @@ export class SearchComponent implements AfterViewInit, OnChanges {
         mode: 'markers', 
         marker: {
           color: [],
-          // colorscale: 'RdBu',
           colorscale: 'Bluered', 
           showscale: false,
           cauto: false,
@@ -49,14 +49,12 @@ export class SearchComponent implements AfterViewInit, OnChanges {
           cmax: 1,
           size: 10
         },
-        // hovertemplate:'%{y:.2f}<text></text>'
-        hovertemplate:'<b>%{text}</b><extra></extra>'
+        hovertemplate:'<b>%{text}</b>  sim:%{y:.2f}<extra></extra>'
         }
       ],
       layout : {
         width: 500,
         height: 400,
-        // margin: {r: 10, t: 30, b:0, pad: 0 },
         margin: {r: 20, l:20, t: 0, b:20, pad: 0 },
         barmode: 'relative',
         hovermode: 'closest',
@@ -71,6 +69,8 @@ export class SearchComponent implements AfterViewInit, OnChanges {
           ticktext: ['negative', 'positive']
         },
         yaxis: {
+          range: [-0.1, 1.1],
+          zeroline: true,
           tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
           automargin: true
         },
@@ -78,14 +78,51 @@ export class SearchComponent implements AfterViewInit, OnChanges {
       },
       config: {
         displaylogo: false,
-        displayModeBar: false
-        // toImageButtonOptions: {
-        //   format: 'svg', // one of png, svg, jpeg, webp
-        //   filename: 'flame_combo',
-        //   width: 700,
-        //   height: 500,
-        // },
-        // modeBarButtonsToRemove: ['lasso2d', 'select2d', 'autoScale2d','hoverCompareCartesian']    
+        displayModeBar: false 
+      }
+    }
+
+    plotRAQuantitative = {
+      data : [{
+        x: [],
+        y: [],
+        text: [],
+        meta: [],
+        type: 'scatter',
+        mode: 'markers', 
+        marker: {
+          color: [],
+          colorscale: 'RdBu',
+          showscale: false,
+          cauto: true,
+          size: 10
+        },
+        hovertemplate:'<b>%{text}</b>  act:%{x:.2f]} sim:%{y:.2f}<extra></extra>'
+        }
+      ],
+      layout : {
+        width: 500,
+        height: 400,
+        margin: {r: 20, l:20, t: 0, b:20, pad: 0 },
+        barmode: 'relative',
+        hovermode: 'closest',
+        hoverlabel: { font: {family: 'Barlow Semi Condensed, sans-serif', size: 16 } },
+        xaxis: {
+          zeroline: false,
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+          ticktext: ['negative', 'positive']
+        },
+        yaxis: {
+          range: [-0.1, 1.1],
+          tickfont: {family: 'Barlow Semi Condensed, sans-serif', size: 16 },
+          zeroline: true,
+          automargin: true
+        },
+        showlegend: false
+      },
+      config: {
+        displaylogo: false,
+        displayModeBar: false 
       }
     }
 
@@ -147,51 +184,28 @@ export class SearchComponent implements AfterViewInit, OnChanges {
     const iresult =this.search.result[i];
 
     this.SMILES = this.search.result[i].SMILES;
-    // let SMILESsrc = this.search.smileSrc[i];
-
-    this.plotRA.data[0].marker.color = iresult.ymatrix;
-    let isBinary = true;
-    for (let i=0; i<iresult.ymatrix.length; i++) {
-      if (iresult.ymatrix[i]!==1.0 && iresult.ymatrix[i]!==0.0) {
-        isBinary = false;
-        break;
-      }
-    }
-
-    //TODO: change style depending if data is qualitative or quantitative
-    if (isBinary) {
+    
+    if (this.isBinary) {
+      this.plotRA.data[0].x[i]=[];
       for (let i=0; i<iresult.ymatrix.length; i++) {
-          this.plotRA.data[0].x[i] = iresult.ymatrix[i] * 2 -1 ;
-      }
-      this.plotRA.data[0].marker.cauto = false;
-      this.plotRA.data[0].marker.cmin = 0;
-      this.plotRA.data[0].marker.cmax = 1;
-      this.plotRA.layout.xaxis.range = [-1.2, 1.2];
+        this.plotRA.data[0].x[i] = iresult.ymatrix[i] * 2 -1 ;
+      };
+      this.plotRA.data[0].marker.color = iresult.ymatrix;
+      this.plotRA.data[0].y = iresult.distances;
+      this.plotRA.data[0].text = iresult.obj_nam;
+      this.plotRA.data[0].meta = iresult.SMILES;
+      PlotlyJS.react('ra_plot', this.plotRA.data, this.plotRA.layout, this.plotRA.config);
     }
     else {
-      this.plotRA.data[0].x = iresult.ymatrix;
-      this.plotRA.data[0].marker.cauto = true;
-      this.plotRA.layout.xaxis.range = [Math.min(iresult.ymatrix)*0.9,Math.max(iresult.ymatrix)*1.1];
-      // this.plotRA.layout.xaxis.tickfont = {family: 'Barlow Semi Condensed, sans-serif', size: 16 };
+      this.plotRAQuantitative.data[0].marker.color = iresult.ymatrix;
+      this.plotRAQuantitative.data[0].x = iresult.ymatrix;
+      this.plotRAQuantitative.data[0].y = iresult.distances;
+      this.plotRAQuantitative.data[0].text = iresult.obj_nam;
+      this.plotRAQuantitative.data[0].meta = iresult.SMILES;
+      PlotlyJS.react('ra_plot', this.plotRAQuantitative.data, this.plotRAQuantitative.layout, this.plotRAQuantitative.config);
     }
 
-    // var update = {'visible':[true, false]}
-    // if (value == 'density') {
-    //   update = {'visible':[false, true]}
-    // }
-    // if (value == 'both') {
-    //   update = {'visible':[true, true]}
-    // }
-    // PlotlyJS.restyle('scoresDIV', update);
-
-    this.plotRA.data[0].y = iresult.distances;
-    this.plotRA.data[0].text = iresult.obj_nam;
-    this.plotRA.data[0].meta = iresult.SMILES;
-
-    PlotlyJS.react('ra_plot', this.plotRA.data, this.plotRA.layout, this.plotRA.config);
-
     this.drawSource(this.search.smileSrc[i]);
-
   }
 
   drawSource (SMILESsrc) {
@@ -203,15 +217,29 @@ export class SearchComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(): void {
     this.commonService.searchCompleted$.subscribe(()=>{
+
       this.numMol = this.search.nameSrc.length;
       this.molIndex = 0;
       this.noNextMol = (this.numMol == 1);
       this.noPreviousMol = true;
       this.SMILES = [];
       
+      // check if the activities are binary or quantitative
+      this.isBinary = true;
+      let found = false;
+      let val = 0;
+      for (let i=0; i<this.search.result.length; i++) {
+        for (let j=0; j<this.search.result[i].ymatrix.length; j++ ) {
+          val = this.search.result[i].ymatrix[j]
+          if (val!==1.0 && val!==0.0) {
+            this.isBinary = false;
+            found = true;
+          }
+        }
+        if (found) { break }
+      }
+
       this.updateRA(0);  
-      
-      PlotlyJS.newPlot('ra_plot', this.plotRA.data, this.plotRA.layout, this.plotRA.config);
       
       let myRAPlot = <CustomHTMLElement>document.getElementById('ra_plot');
 
@@ -232,8 +260,6 @@ export class SearchComponent implements AfterViewInit, OnChanges {
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
       });
-      
-
 
       // trick to show the screen after the tab change, when the canvas was already not rendered
       let me = this;
@@ -243,9 +269,7 @@ export class SearchComponent implements AfterViewInit, OnChanges {
           me.drawSource(me.search.smileSrc[0]);
         }
        });
-      
-    }
-    );
+    });
   }
   
   ngAfterViewInit() {
@@ -276,7 +300,6 @@ export class SearchComponent implements AfterViewInit, OnChanges {
           { 'extend': 'print', 'text': 'Print', 'className': 'btn-primary' , title: ''}
         ],
         deferRender: true,
-        // autoWidth: true
       };
       
       $('#similarityTable').DataTable(settingsObj);
