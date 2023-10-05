@@ -114,7 +114,7 @@
             <strong>Structure</strong>
           </div>
           <div class="col-9 border">
-            <canvas id="one_canvas"></canvas>
+            <img data-smiles-options="{ 'width': 400, 'height': 200 }" id="one_canvas" data-smiles=""/>
           </div>
         </div>
 
@@ -240,7 +240,7 @@
 
                 <tr *ngFor="let dist of this.prediction.result.search_results[this.compound.molidx].distances; let j = index">
                   <td class="p-0 text-left">{{dist.toFixed(2)}}</td>
-                  <td class="p-0 text-center"><canvas id="{{'one_canvas'+j}}"></canvas></td>
+                  <td class="p-0 text-center"><img id="{{'one_canvas'+j}}"  /></td>
                   <td class="p-0 text-left">{{this.prediction.result.search_results[this.compound.molidx].obj_nam[j]}}</td>
                   <td class="p-0 text-right">{{castValue(this.prediction.result.search_results[this.compound.molidx].ymatrix[j])}}</td>
                 </tr>
@@ -424,7 +424,8 @@
           </div>
           
           <div class="col">
-            <canvas class="fixed_canvas" id="scores_canvas_pre"></canvas>
+            <div>EL MENOL</div>
+            <img class="fixed_canvas" id="scores_canvas_pre" />
             
             <table id ="tablePredictionSelections" class="minitable compact">
               <thead>

@@ -361,10 +361,6 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
           this.modelValidationInfo['TN'][1], 
           this.modelValidationInfo['FP'][1]];
         }
-        
-        const options_list = {'width': 200, 'height': 125};
-        const smilesDrawer = new SmilesDrawer.Drawer(options_list);
-        
         // use a long timeout because this can take a lot of time
         setTimeout(() => {
 
@@ -436,7 +432,8 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
   }
   setScoresPlot (result) {
     const options = {'width': 400, 'height': 250};
-    const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
+    let reactionOptions = {};
+    let sd = new SmilesDrawer.SmiDrawer(options, reactionOptions);
 
     // const canvas_ref = <HTMLCanvasElement>document.getElementById('scores_canvas_ref');
     // const context_ref = canvas_ref.getContext('2d');
@@ -451,17 +448,11 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
     // on hover, draw the molecule
     myPlot.on('plotly_hover', function(eventdata){ 
       var points = eventdata.points[0];
-      if (points.curveNumber === 1) {
-        SmilesDrawer.parse(result['SMILES'][points.pointNumber], function(tree) {
-          smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
-        });   
-        // context_ref.font = "30px Barlow Semi Condensed";
-        // context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
+      if (points.curveNumber === 1) {  
+        sd.draw(result['SMILES'][points.pointNumber],"#scores_canvas_pre"); 
       }
       else {
-        SmilesDrawer.parse(points.meta, function(tree) {
-          smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
-        });
+          sd.draw(points.meta,"#scores_canvas_pre"); 
       }
     });
 
@@ -474,7 +465,8 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
     });
         
     const sel_options = {'width': 200, 'height': 125};
-    const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);   
+    
+    let smilesDrawerScoresSelected = new SmilesDrawer.SmiDrawer(sel_options,{})
 
     myPlot.on('plotly_selected', function(eventdata){
       var tbl = <HTMLTableElement>document.getElementById('tablePredictionSelections');
@@ -508,10 +500,8 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
           const icanvas = document.createElement('canvas')
           icanvas.setAttribute('id', canvasid);
           tdsmiles.appendChild(icanvas);
-          SmilesDrawer.parse(ismiles, function(tree) {
-            smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
-          });
-
+          smilesDrawerScoresSelected.draw(ismiles, canvasid, 'light', false);
+          
           const tdactiv = tr.insertCell();
           tdactiv.setAttribute('class', 'align-right' );
           tdactiv.appendChild(document.createTextNode(iactiv));
@@ -534,8 +524,6 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
   tabClickHandler(row,info: any): void {
     // prevents the selection of a molecule when you are on projection tab.
     var projectTab = $('#pills-two-tab').attr("aria-selected")
-    
-    
     if(projectTab == "false" || projectTab == undefined){
 
       $('#prediction tr.selected').removeClass('selected');
@@ -551,7 +539,6 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
         this.noNextMol = true;
       }
       this.commonService.setPagination(this.noPreviousMol,this.noNextMol);
-  
       this.drawReportHeader();
       this.drawSimilars();
     }
@@ -559,35 +546,31 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
   }
 
   drawReportHeader () {
-    const options = {'width': 400, 'height': 200};
-    const smilesDrawer = new SmilesDrawer.Drawer(options);
-    SmilesDrawer.parse(this.prediction.result.SMILES[this.compound.molidx], function(tree) {
-      // Draw to the canvas
-      smilesDrawer.draw(tree, 'one_canvas', 'light', false);
-      }, function (err) {
-        console.log(err);
-    });
+    const img = document.getElementById("one_canvas");
+    img.setAttribute(
+      "data-smiles",
+      this.prediction.result.SMILES[this.compound.molidx]
+    );
+    SmilesDrawer.SmiDrawer.apply();
   }
   
-  drawSimilars () {
+  drawSimilars() {
     setTimeout(() => {
       // draw similar compounds (if applicable)
-      if (this.prediction.result.hasOwnProperty('search_results')) {
-        const optionsA = {'width': 300, 'height': 200};
-        const smiles = this.prediction.result.search_results[this.compound.molidx].SMILES;
+      if (this.prediction.result.hasOwnProperty("search_results")) {
+        const optionsA = { width: 300, height: 200 };
+        let reactionOptions = {};
+        const smiles =
+          this.prediction.result.search_results[this.compound.molidx].SMILES;
         let iteratorCount = 0;
         for (var value of smiles) {
-          const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
-          SmilesDrawer.parse(value, function(tree) {
-            let canvasName = 'one_canvas';
-            smilesDrawer.draw(tree,  canvasName.concat(iteratorCount.toString()), 'light', false);
-          }, function (err) {
-            console.log(err);
-          });
+          const sd = new SmilesDrawer.SmiDrawer(optionsA, reactionOptions);
+          let canvasName = "#one_canvas";
+          sd.draw(value,canvasName.concat(iteratorCount.toString()))
           iteratorCount++;
-        };  
-      };
-    },0);
+        }
+      }
+    }, 0);
   }
 
   getInfo(): void {
