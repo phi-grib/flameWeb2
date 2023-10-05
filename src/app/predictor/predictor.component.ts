@@ -346,9 +346,7 @@ export class PredictorComponent implements OnInit {
         }
 
         this.compound_list = result.compounds;
-        const sel_options = {'width': 200, 'height': 125};
-        const smilesDrawerInputList = new SmilesDrawer.Drawer(sel_options);   
-        
+      
         var ismiles = '';
         var canvasid = '';
         var seq = 1;
@@ -364,22 +362,17 @@ export class PredictorComponent implements OnInit {
             
             const tdsmiles = tr.insertCell();
             tdsmiles.setAttribute('class', 'align-middle text-center' );
-            const icanvas = document.createElement('canvas');
+            const img = document.createElement('img');
 
-            tdsmiles.appendChild(icanvas);
-            icanvas.setAttribute('id', canvasid);
-            
-            SmilesDrawer.parse(ismiles, 
-              function(tree) {
-                smilesDrawerInputList.draw(tree, canvasid, 'light', false);
-              }, 
-              function (err) {
-                console.log(err);
-              }
-            );
+            tdsmiles.appendChild(img);
+            img.setAttribute('id', canvasid);
+            img.setAttribute('data-smiles',ismiles)
+            img.setAttribute('data-smiles-options','{ width: 200, height: 125 }')
+
             seq+=1;
-
         });
+        SmilesDrawer.SmiDrawer.apply();
+
       
       }
     );
