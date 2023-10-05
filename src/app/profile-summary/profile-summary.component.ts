@@ -194,23 +194,14 @@ export class ProfileSummaryComponent implements OnInit {
     );
   }
   addStructure() {
-    var options = { width: 100, height: 75 }
-    const smilesDrawer = new SmilesDrawer.Drawer(options);
-
     for (let i = 0; i < this.profile.summary["obj_num"]; i++) {
       let td = document.getElementById("canvas" + i)
-      const icanvas = document.createElement('canvas');
-      td.appendChild(icanvas)
-      SmilesDrawer.parse(
-        this.profile.summary['SMILES'][i],
-        function (tree) {
-          smilesDrawer.draw(tree, icanvas, 'light', false);
-        },
-        function (err) {
-          console.log(err);
-        }
-      );
+      const img = document.createElement('img');
+      td.appendChild(img);
+      img.setAttribute('data-smiles',this.profile.summary['SMILES'][i]);
+      img.setAttribute('data-smiles-option','{ width: 100, height: 75 }');
     }
+    SmilesDrawer.SmiDrawer.apply();
   }
 
   /**
