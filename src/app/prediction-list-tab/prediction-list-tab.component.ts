@@ -372,13 +372,10 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
           let istructure = 0;
           let alerted = false;
 
-          this.components.forEach((child) => {
+          this.components.forEach((child,i) => {
+            // this.prediction.result.SMILES[i]
             if (istructure < 200) {
-              SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
-                smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-              }, function (err) {
-                console.log(err);
-              });
+              child.nativeElement.setAttribute('data-smiles',this.prediction.result.SMILES[i])
               istructure++;
             } else {
               if (!alerted) {
@@ -388,6 +385,7 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
               }
             }
           });
+          SmilesDrawer.SmiDrawer.apply();
 
           // add buttons to table
           const settingsObj: any = {

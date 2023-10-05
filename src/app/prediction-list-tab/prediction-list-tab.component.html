@@ -25,9 +25,6 @@
 </div>
 
 
-
-
-
 <div class="col" *ngIf="this.prediction.result != undefined && this.predictionError == ''">
   <!-- <div class="tab-content" id="pills-tabContent" [hidden]="!this.predictionVisible"> -->
   <div class="tab-content" id="pills-tabContent">
@@ -99,7 +96,7 @@
               <td class="align-middle">{{i+1}}</td>
               <td class="align-middle">{{this.prediction.result.obj_nam[i]}}</td>
               <td class="align-middle text-center">
-                <canvas #cmp id="{{i}}">{{this.prediction.result.SMILES[i]}}</canvas>
+                <img #cmp id="{{i}}" data-smiles-options="{ 'width': 200, 'height': 125 }" data-smiles=""/>
               </td>
               <td class="align-middle text-center" *ngIf="this.prediction.result.ymatrix">
                 {{castValue(this.prediction.result.ymatrix[i])}}</td>
