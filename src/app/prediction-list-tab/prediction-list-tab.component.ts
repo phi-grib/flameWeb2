@@ -500,8 +500,8 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
           const icanvas = document.createElement('canvas')
           icanvas.setAttribute('id', canvasid);
           tdsmiles.appendChild(icanvas);
-          smilesDrawerScoresSelected.draw(ismiles, canvasid, 'light', false);
-          
+          smilesDrawerScoresSelected.draw(ismiles, canvasid);
+      
           const tdactiv = tr.insertCell();
           tdactiv.setAttribute('class', 'align-right' );
           tdactiv.appendChild(document.createTextNode(iactiv));

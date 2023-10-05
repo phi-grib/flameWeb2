@@ -32,7 +32,7 @@
                         <strong>Structure</strong>
                     </div>
                     <div class="col-9 border">
-                        <canvas id="one_canvas"></canvas>
+                        <img data-smiles-options="{ 'width': 600, 'height': 300 }" id="one_canvas" data-smiles=""/>
                     </div>
                 </div>
                 <div *ngIf="this.profile.item.values && this.showConcentration" class="row">
@@ -150,7 +150,7 @@
 
                                 <tr *ngFor="let dist of this.profile.item.search_results[this.molIndex].distances; let j = index">
                                     <td class="p-0 text-left">{{dist.toFixed(2)}}</td>
-                                    <td class="p-0 text-center"><canvas id="{{'one_canvas'+j}}"></canvas></td>
+                                    <td class="p-0 text-center"><img id="{{'one_canvas'+j}}"/></td>
                                     <td class="p-0 text-left">{{this.profile.item.search_results[this.molIndex].obj_nam[j]}}</td>
                                     <td class="p-0 text-right">{{this.castValue(this.profile.item.search_results[this.molIndex].ymatrix[j])}}</td>
                                 </tr>
@@ -278,7 +278,7 @@
                         </div>
                         <div class="col">
 
-                            <canvas class="fixed_canvas" id="scores_canvas_pre"></canvas>
+                            <img class="fixed_canvas" id="scores_canvas_pre"/>
 
                             <table id="tablePredictionSelections" class="minitable compact">
                                 <thead>

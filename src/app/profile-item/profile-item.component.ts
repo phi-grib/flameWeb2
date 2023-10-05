@@ -498,20 +498,16 @@ export class ProfileItemComponent implements OnInit {
     }
     }
   }
+  
+
 
   drawReportHeader() {
-    const options = { width: 600, height: 300 };
-    const smilesDrawer = new SmilesDrawer.Drawer(options);
-    SmilesDrawer.parse(
-      this.profile.summary.SMILES[this.molIndex],
-      function (tree) {
-        // Draw to the canvas
-        smilesDrawer.draw(tree, 'one_canvas', 'light', false);
-      },
-      function (err) {
-        console.log(err);
-      }
+    const img = document.getElementById("one_canvas");
+    img.setAttribute(
+      "data-smiles",
+      this.profile.summary.SMILES[this.molIndex]
     );
+    SmilesDrawer.SmiDrawer.apply();
   }
 
   backConc(value: any) {
@@ -546,20 +542,19 @@ export class ProfileItemComponent implements OnInit {
     },50)
   }
 
+  
   drawSimilars () {
       // draw similar compounds (if applicable)
       if (this.profile.item.hasOwnProperty('search_results')) {
         const optionsA = {'width': 400, 'height': 150};
+        let reactionOptions = {};
+
         const smiles = this.profile.item.search_results[this.molIndex].SMILES;
         let iteratorCount = 0;
         for (var value of smiles) {
-          const smilesDrawer = new SmilesDrawer.Drawer(optionsA);
-          SmilesDrawer.parse(value, function(tree) {
-            let canvasName = 'one_canvas';
-            smilesDrawer.draw(tree,  canvasName.concat(iteratorCount.toString()), 'light', false);
-          }, function (err) {
-            console.log(err);
-          });
+          const sd = new SmilesDrawer.SmiDrawer(optionsA, reactionOptions);
+          let canvasName = "#one_canvas";
+          sd.draw(value,canvasName.concat(iteratorCount.toString()))
           iteratorCount++;
         };  
       };
@@ -981,8 +976,9 @@ export class ProfileItemComponent implements OnInit {
 
   setScoresPlot (result,molIndex) {
     const options = {'width': 400, 'height': 250};
-    const smilesDrawerScores = new SmilesDrawer.Drawer(options);    
-
+    let reactionOptions = {};
+    let sd = new SmilesDrawer.SmiDrawer(options, reactionOptions);    
+    
     const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas_pre');
     const context = canvas.getContext('2d');
     
@@ -993,17 +989,10 @@ export class ProfileItemComponent implements OnInit {
     myPlot.on('plotly_hover', function(eventdata){ 
       var points = eventdata.points[0];
       if (points.curveNumber === 1) {
-        SmilesDrawer.parse(result['SMILES'][molIndex], function(tree) {
-          smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
-          // smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
-        });   
-        // context_ref.font = "30px Barlow Semi Condensed";
-        // context_ref.fillText(result['obj_nam'][points.pointNumber], 20, 50); 
+        sd.draw(result['SMILES'][molIndex],"#scores_canvas_pre");   
       }
       else {
-        SmilesDrawer.parse(points.meta, function(tree) {
-          smilesDrawerScores.draw(tree, 'scores_canvas_pre', 'light', false);
-        });
+        sd.draw(points.meta,"#scores_canvas_pre"); 
       }
     });
 
@@ -1015,8 +1004,8 @@ export class ProfileItemComponent implements OnInit {
       }
     });
     
-    const sel_options = {'width': 200, 'height': 125};
-    const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);   
+    const sel_options = {'width': 200, 'height': 125};  
+    const smilesDrawerScoresSelected = new SmilesDrawer.SmiDrawer(sel_options,{})
 
     myPlot.on('plotly_selected', function(eventdata){
       var tbl = <HTMLTableElement>document.getElementById('tablePredictionSelections');
@@ -1049,10 +1038,7 @@ export class ProfileItemComponent implements OnInit {
           const icanvas = document.createElement('canvas')
           icanvas.setAttribute('id', canvasid);
           tdsmiles.appendChild(icanvas);
-          SmilesDrawer.parse(ismiles, function(tree) {
-            smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
-          });
-
+          smilesDrawerScoresSelected.draw(ismiles, canvasid);
           const tdactiv = tr.insertCell();
           tdactiv.setAttribute('class', 'align-right' )
           tdactiv.appendChild(document.createTextNode(iactiv));
