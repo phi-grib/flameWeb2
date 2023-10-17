@@ -153,7 +153,7 @@
 
                                 </tbody>
                             </table>    
-                            <canvas id="scatter_pred_canvas_sel"></canvas>
+                            <img id="scatter_pred_canvas_sel"/>
                         </div>
                         <div id="scatterPredDIV_sel" *ngIf="!this.model.secret"></div>
                     </div>
@@ -194,7 +194,7 @@
 
                                 </tbody>
                             </table>
-                            <canvas id="scatter_fit_canvas_sel" ></canvas>    
+                            <img id="scatter_fit_canvas_sel"/>    
                         </div>
                         <div id="scatterFitDIV_sel" *ngIf="!this.model.secret"></div>
                     </div>
@@ -222,8 +222,9 @@
                             </div>
                         </div>
                         <div class="col">
-                            <canvas class="fixed_canvas"  id="scores_canvas_sel"></canvas>
-
+                            <div class="fixed_canvas">
+                                <img width="400px" height="250px" id="scores_canvas_sel"/>
+                            </div>
                             <table id ="tableSelectionsSelector" class="minitable compact">
                                 <thead>
                                   <tr>
