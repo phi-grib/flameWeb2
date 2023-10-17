@@ -608,7 +608,6 @@ export class QuantitConformalComponent implements OnChanges {
             // on hover, draw the molecule
             myPlot.on('plotly_hover', function(eventdata){
               img.style.display = "block";
-
               var points = eventdata.points[0];
               sd.draw(info['SMILES'][points.pointNumber],'#scores_canvas')
             });
@@ -619,7 +618,7 @@ export class QuantitConformalComponent implements OnChanges {
             });
 
             const sel_options = {'width': 200, 'height': 125};
-            const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);  
+            const smilesDrawerScoresSelected = new SmilesDrawer.SmiDrawer(sel_options);  
             
             myPlot.on('plotly_selected', function(eventdata){
               var tbl = <HTMLTableElement>document.getElementById('tableSelections');
@@ -632,7 +631,7 @@ export class QuantitConformalComponent implements OnChanges {
                   
                   var ismiles = info['SMILES'][pt.pointNumber];
                   var iactiv = pt["marker.color"];
-                  var canvasid = 'Qtseries'+pt.pointNumber;
+                  var imgId = '#Qtseries'+pt.pointNumber;
 
                   // iactiv = pt.meta.toFixed(2);
 
@@ -642,13 +641,10 @@ export class QuantitConformalComponent implements OnChanges {
         
                   const tdsmiles = tr.insertCell();
                   tdsmiles.setAttribute('class', 'align-middle text-center' )
-                  const icanvas = document.createElement('canvas')
-                  icanvas.setAttribute('id', canvasid);
-                  tdsmiles.appendChild(icanvas);
-                  SmilesDrawer.parse(ismiles, function(tree) {
-                    smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
-                  });
-        
+                  const img = document.createElement('img')
+                  img.setAttribute('id', imgId);
+                  tdsmiles.appendChild(img);
+                  smilesDrawerScoresSelected.draw(ismiles,imgId)        
                   const tdactiv = tr.insertCell();
                   tdactiv.setAttribute('class', 'align-right' )
                   tdactiv.appendChild(document.createTextNode(iactiv));
