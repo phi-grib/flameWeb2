@@ -650,12 +650,10 @@ export class QualitConformalComponent implements OnChanges {
             
             // common to all plots in this component
             const options = {'width': 400, 'height': 250};
-            const smilesDrawer = new SmilesDrawer.Drawer(options);
+            const sd = new SmilesDrawer.SmiDrawer(options,{})
 
             // scores plot                 
-            const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
-            const context = canvas.getContext('2d');
-
+            const img = <HTMLCanvasElement>document.getElementById('scores_canvas');
             // if (!this.model.secret) {
             if (this.scores != '') {
               PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
@@ -663,20 +661,21 @@ export class QualitConformalComponent implements OnChanges {
               let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
               
               // on hover, draw the molecule
-              myPlot.on('plotly_hover', function(eventdata){ 
+              myPlot.on('plotly_hover', function(eventdata){
+                img.style.display = "block";
                 var points = eventdata.points[0];
-                SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                  smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
-                });
+                sd.draw(info['SMILES'][points.pointNumber],'#scores_canvas')
+
               });
 
               // on onhover, clear the canvas
               myPlot.on('plotly_unhover', function(data){
-                context.clearRect(0, 0, canvas.width, canvas.height);
+                console.log("delete");
+                img.style.display = "none";
               });
 
               const sel_options = {'width': 200, 'height': 125};
-              const smilesDrawerScoresSelected = new SmilesDrawer.Drawer(sel_options);  
+              const sd2 = new SmilesDrawer.SmiDrawer(sel_options);  
 
               myPlot.on('plotly_selected', function(eventdata){
                 var tbl = <HTMLTableElement>document.getElementById('tableSelections');
@@ -688,7 +687,7 @@ export class QualitConformalComponent implements OnChanges {
           
                     var ismiles = info['SMILES'][pt.pointNumber];
                     var iactiv = pt["marker.color"];
-                    var canvasid = 'Qlseries'+pt.pointNumber;
+                    var imgId = '#Qlseries'+pt.pointNumber;
 
                     // iactiv = pt.meta.toFixed(2);
 
@@ -698,11 +697,12 @@ export class QualitConformalComponent implements OnChanges {
           
                     const tdsmiles = tr.insertCell();
                     tdsmiles.setAttribute('class', 'align-middle text-center' )
-                    const icanvas = document.createElement('canvas')
-                    icanvas.setAttribute('id', canvasid);
-                    tdsmiles.appendChild(icanvas);
+                    const img = document.createElement('img')
+                    img.setAttribute('id', imgId);
+                    tdsmiles.appendChild(img);
+
                     SmilesDrawer.parse(ismiles, function(tree) {
-                      smilesDrawerScoresSelected.draw(tree, canvasid, 'light', false);
+                      sd2.draw(ismiles,imgId)
                     });
           
                     const tdactiv = tr.insertCell();

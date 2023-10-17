@@ -225,11 +225,11 @@
 
             <!--SERIES TAB-->
             <div class="tab-pane fade" id="pills-series" role="tabpanel" aria-labelledby="pills-series-tab">
-
                 <!-- <div class="card-body" *ngIf="this.model.secret"> -->
                 <div class="card-body" *ngIf="this.scores==''">
                     No series plot available
-                    <canvas id="scores_canvas"></canvas>
+                    <img id="scores_canvas"/>
+
                     <div id="scoresDIV"></div>
                 </div>
 
@@ -250,7 +250,9 @@
                         </div>
                         
                         <div class="col">
-                            <canvas class= "fixed_canvas" id="scores_canvas"></canvas>
+                            <div class="fixed_canvas">
+                                <img width="400px" height="250px" id="scores_canvas"/>
+                            </div>
 
                             <table id ="tableSelections" class="minitable compact">
                                 <thead>
