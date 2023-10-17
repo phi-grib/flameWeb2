@@ -670,7 +670,6 @@ export class QualitConformalComponent implements OnChanges {
 
               // on onhover, clear the canvas
               myPlot.on('plotly_unhover', function(data){
-                console.log("delete");
                 img.style.display = "none";
               });
 
