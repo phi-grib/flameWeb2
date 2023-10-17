@@ -597,26 +597,25 @@ export class QuantitConformalComponent implements OnChanges {
 
             // common to all plots in this component
             const options = {'width': 400, 'height': 250};
-            const smilesDrawer = new SmilesDrawer.Drawer(options);
+            const sd = new SmilesDrawer.SmiDrawer(options,{});
 
             // scores plot                 
-            const canvas = <HTMLCanvasElement>document.getElementById('scores_canvas');
-            const context = canvas.getContext('2d');
+            const img = <HTMLCanvasElement>document.getElementById('scores_canvas');
 
             PlotlyJS.newPlot('scoresDIV', this.plotScores.data, this.plotScores.layout, this.plotScores.config);
             
             let myPlot = <CustomHTMLElement>document.getElementById('scoresDIV');
             // on hover, draw the molecule
-            myPlot.on('plotly_hover', function(eventdata){ 
+            myPlot.on('plotly_hover', function(eventdata){
+              img.style.display = "block";
+
               var points = eventdata.points[0];
-              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                smilesDrawer.draw(tree, 'scores_canvas', 'light', false);
-              });
+              sd.draw(info['SMILES'][points.pointNumber],'#scores_canvas')
             });
 
             // on onhover, clear the canvas
             myPlot.on('plotly_unhover', function(data){
-              context.clearRect(0, 0, canvas.width, canvas.height);
+              img.style.display = "none";
             });
 
             const sel_options = {'width': 200, 'height': 125};
@@ -816,8 +815,8 @@ export class QuantitConformalComponent implements OnChanges {
 
             const me = this;
             // predicted plot                 
-            const canvas_pred = <HTMLCanvasElement>document.getElementById('scatter_pred_canvas');
-            const context_pred = canvas_pred.getContext('2d');
+            const img_pred = <HTMLCanvasElement>document.getElementById('scatter_pred_canvas');
+            
 
             PlotlyJS.newPlot('scatterPredDIV', this.plotPredicted.data, this.plotScatter.layout, this.plotScatter.config);
             
@@ -825,35 +824,32 @@ export class QuantitConformalComponent implements OnChanges {
 
             // on hover, draw the molecule
             myPlotPred.on('plotly_hover', function(eventdata){ 
+              img_pred.style.display = "block";
               var points = eventdata.points[0];
-              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                smilesDrawer.draw(tree, 'scatter_pred_canvas', 'light', false);
-              });
+              sd.draw(info['SMILES'][points.pointNumber],'#scatter_pred_canvas');
             });
 
             // on onhover, clear the canvas
             myPlotPred.on('plotly_unhover', function(data){
-              context_pred.clearRect(0, 0, canvas_pred.width, canvas_pred.height);
+              img_pred.style.display = "none";
             });
 
             // fitted plott
-            const canvas_fit = <HTMLCanvasElement>document.getElementById('scatter_fit_canvas');
-            const context_fit = canvas_fit.getContext('2d');
+            const img_fit = <HTMLCanvasElement>document.getElementById('scatter_fit_canvas');
 
             PlotlyJS.newPlot('scatterFitDIV', this.plotFitted.data, this.plotScatter.layout, this.plotScatter.config);
             
             let myPlotFit = <CustomHTMLElement>document.getElementById('scatterFitDIV');
             
             // on hover, draw the molecule
-            myPlotFit.on('plotly_hover', function(eventdata){ 
+            myPlotFit.on('plotly_hover', function(eventdata){
+              img_fit.style.display = "block"; 
               var points = eventdata.points[0];
-              SmilesDrawer.parse(info['SMILES'][points.pointNumber], function(tree) {
-                smilesDrawer.draw(tree, 'scatter_fit_canvas', 'light', false);
-              });
+              sd.draw(info['SMILES'][points.pointNumber],"#scatter_fit_canvas");
             });
             // on onhover, clear the canvas
             myPlotFit.on('plotly_unhover', function(data){
-              context_fit.clearRect(0, 0, canvas_fit.width, canvas_fit.height);
+              img_fit.style.display = "none";
             });
 
             myPlotFit.on ('plotly_afterplot', function(data){
