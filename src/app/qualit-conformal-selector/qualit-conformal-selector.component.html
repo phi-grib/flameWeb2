@@ -230,7 +230,7 @@
                 <!-- <div class="card-body" *ngIf="this.model.secret"> -->
                 <div class="card-body" *ngIf="this.scores==''">
                     No series plot available
-                    <canvas id="scores_canvas_sel"></canvas>
+                    <img id="scores_canvas_sel"/>
                     <div id="scoresDIV_sel"></div>
                 </div>
 
@@ -251,8 +251,9 @@
                         </div>
                         
                         <div class="col">
-                            <canvas class= "fixed_canvas" id="scores_canvas_sel"></canvas>
-
+                            <div class="fixed_canvas">
+                                <img width="400px" height="250px" id="scores_canvas_sel"/>
+                            </div>
                             <table id ="tableSelectionsSelector" class="minitable compact">
                                 <thead>
                                     <tr>
@@ -291,8 +292,10 @@
                         </div>
                         
                         <div class="col">
-                            <canvas class= "fixed_canvas" id="scores_canvas_sel"></canvas>
-
+                            <div class="fixed_canvas">
+                                <img width="400px" height="250px" id="scores_canvas_sel"/>
+                            </div>
+                            
                             <table id ="tableSelectionsSelector" class="minitable compact">
                                 <thead>
                                     <tr>
