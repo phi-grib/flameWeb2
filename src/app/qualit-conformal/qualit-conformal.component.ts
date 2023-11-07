@@ -686,7 +686,7 @@ export class QualitConformalComponent implements OnChanges {
           
                     var ismiles = info['SMILES'][pt.pointNumber];
                     var iactiv = pt["marker.color"];
-                    var imgId = '#Qlseries'+pt.pointNumber;
+                    var imgId = 'Qlseries'+pt.pointNumber;
 
                     // iactiv = pt.meta.toFixed(2);
 
@@ -701,7 +701,7 @@ export class QualitConformalComponent implements OnChanges {
                     tdsmiles.appendChild(img);
 
                     SmilesDrawer.parse(ismiles, function(tree) {
-                      sd2.draw(ismiles,imgId)
+                      sd2.draw(ismiles,"#"+imgId)
                     });
           
                     const tdactiv = tr.insertCell();

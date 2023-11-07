@@ -253,7 +253,6 @@
                             <div class="fixed_canvas">
                                 <img width="400px" height="250px" id="scores_canvas"/>
                             </div>
-
                             <table id ="tableSelections" class="minitable compact">
                                 <thead>
                                     <tr>
@@ -266,13 +265,10 @@
                                 </tbody>
                             </table>
                             <button disabled id="btnCompoundsSelected" (click)="downloadCompoundsSelected()" class="ml-1 mt-1 btn btn-ets-down">Download</button>
-
                         </div>
                     </div>
                 </div>
-
                 <div class="card-body" *ngIf="this.scores=='ensemble'">
-
                     <div class="row justify-content-between">
                         <div class="col">
                             <div id="scoresDIV"></div>

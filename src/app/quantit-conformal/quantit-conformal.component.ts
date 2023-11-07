@@ -631,7 +631,7 @@ export class QuantitConformalComponent implements OnChanges {
                   
                   var ismiles = info['SMILES'][pt.pointNumber];
                   var iactiv = pt["marker.color"];
-                  var imgId = '#Qtseries'+pt.pointNumber;
+                  var imgId = 'Qtseries'+pt.pointNumber;
 
                   // iactiv = pt.meta.toFixed(2);
 
@@ -644,7 +644,12 @@ export class QuantitConformalComponent implements OnChanges {
                   const img = document.createElement('img')
                   img.setAttribute('id', imgId);
                   tdsmiles.appendChild(img);
-                  smilesDrawerScoresSelected.draw(ismiles,imgId)        
+                  // smilesDrawerScoresSelected.draw(ismiles,imgId)
+                  
+                  SmilesDrawer.parse(ismiles,function(tree){
+                    smilesDrawerScoresSelected.draw(ismiles,"#"+imgId)
+                  })
+
                   const tdactiv = tr.insertCell();
                   tdactiv.setAttribute('class', 'align-right' )
                   tdactiv.appendChild(document.createTextNode(iactiv));
