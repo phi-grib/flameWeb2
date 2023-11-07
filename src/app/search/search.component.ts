@@ -273,20 +273,15 @@ export class SearchComponent implements AfterViewInit, OnChanges {
   }
   
   ngAfterViewInit() {
-    
+    // {{this.search.smileSrc[i]}}
     this.components.changes.subscribe(() => {
-
       $('#similarityTable').DataTable().destroy();
       if (this.components !== undefined) {
-        const options = {'width': 300, 'height': 150};
-        const smilesDrawer = new SmilesDrawer.Drawer(options);
         this.components.forEach((child) => {
-          SmilesDrawer.parse(child.nativeElement.textContent, function (tree) {
-            smilesDrawer.draw(tree, child.nativeElement.id, 'light', false);
-            }, function (err) {
-              console.log(err);
-            });
+            let smile = child.nativeElement.getAttribute("id")
+            child.nativeElement.setAttribute('data-smiles',smile)
         });
+        SmilesDrawer.SmiDrawer.apply();
       }
 
       const settingsObj: any = {

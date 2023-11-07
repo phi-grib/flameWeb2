@@ -42,10 +42,10 @@
                   <tr *ngFor="let pred of this.search.result[i].obj_nam;let j=index">
                     <td class="align-middle" width="">{{i}}-{{j}}</td>
                     <td class="align-middle" >{{this.search.nameSrc[i]}}</td>
-                    <td class="align-middle"><canvas #cmp id="{{'query_' + i + '_' + j}}" width="300" height="150">{{this.search.smileSrc[i]}}</canvas></td>
+                    <td class="align-middle"><img #cmp data-smiles="" data-smiles-options="{ 'width': 300, 'height': 150 }"  [id]="this.search.smileSrc[i]"/></td>
                     <td class="align-middle">{{this.objID(i,j)}}</td>
                     <td class="align-middle">{{this.search.result[i].obj_nam[j]}}</td>
-                    <td class="align-middle"><canvas #cmp id="{{'ref_' + i + '_' + j}}" width="300" height="150">{{this.search.result[i].SMILES[j]}}</canvas></td>
+                    <td class="align-middle"><img #cmp id="{{this.search.result[i].SMILES[j]}}" data-smiles-options="{ 'width': 300, 'height': 150 }"/></td>
                     <td *ngIf="this.showDistance()" class="align-middle">{{this.search.result[i].distances[j].toFixed(3)}}</td>
                     <td *ngIf="this.showActivity()" class="align-middle">{{this.search.result[i].ymatrix[j].toFixed(3)}}</td>
                   </tr>
