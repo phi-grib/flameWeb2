@@ -3,7 +3,7 @@
       <span class="sr-only">Loading...</span>
     </div>
 </div>
-<div id="container-psummary"  class="col mt-3">    
+<div id="container-psummary"  class="col  mt-3">    
     <div *ngIf="this.profile.summary" class="btn-toolbar m-2 mt-1" role="toolbar"
         aria-label="Toolbar with button groups">
         <button type="button" class="btn btn-ets-delete" 
@@ -15,7 +15,9 @@
         <button type="button" (click)="savePDF()" class="btn btn-secondary">Pdf</button>
         <button type="button" (click)="print()" class="btn btn-secondary">Print</button>
     </div>
-    <table *ngIf="this.profile.summary" id="dataTablePrediction" style="width:100%;">
+    <div class="scrolltable">
+
+    <table *ngIf="this.profile.summary"  style="width: 100%"  id="dataTablePrediction">
         <thead>
             <tr>
                 <th class="text-center" #thname (click)="renderSort(thname)">
@@ -49,19 +51,20 @@
             </tr>
         </tbody>
     </table>
-    <div *ngIf="this.profile.summary" class="d-flex" id="container-caption">
-        <table style="width: 100%; margin-top: 1px;" id="caption">
-            <tr>
-                <td class="text-center text-white">3</td>
-                <td class="text-center">4</td>
-                <td class="text-center">5</td>
-                <td class="text-center">6</td>
-                <td class="text-center">7</td>
-                <td class="text-center">8</td>
-                <td class="text-center text-white">9</td>
-            </tr>
-        </table>
-    </div>
+</div>
+<div *ngIf="this.profile.summary" class="d-flex" id="container-caption">
+    <table style="width: 100%; margin-top: 1px;" id="caption">
+        <tr>
+            <td class="text-center text-white">3</td>
+            <td class="text-center">4</td>
+            <td class="text-center">5</td>
+            <td class="text-center">6</td>
+            <td class="text-center">7</td>
+            <td class="text-center">8</td>
+            <td class="text-center text-white">9</td>
+        </tr>
+    </table>
+</div>
 </div>
 <!-- Delete Profile modal -->
 <div class="modal fade" id="deleteProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

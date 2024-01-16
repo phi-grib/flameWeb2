@@ -6,6 +6,13 @@
     z-index: 1031;
     color:#e59300;
   }
+
+
+  .scrolltable {
+    max-width: 100%;
+    overflow: auto;
+}
+
   
   #overlay {
     position: absolute;
