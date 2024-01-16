@@ -202,6 +202,7 @@ export class SearcherComponent implements OnInit {
           this.toastr.clear(inserted.toastId);
           this.toastr.success('Search finished' , 'SEARCH COMPLETED', {
             timeOut: 2000, positionClass: 'toast-top-right'});
+          this.commonService.setSearchCompleted();
         }
         
       },

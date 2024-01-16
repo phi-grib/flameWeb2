@@ -3,7 +3,7 @@ import { CommonService } from '../common.service';
 import { CustomHTMLElement, Model } from '../Globals';
 import * as SmilesDrawer from 'smiles-drawer';
 import * as PlotlyJS from 'plotly.js-dist-min';
-
+declare var $:any;
 
 @Component({
   selector: 'app-qualit-conformal-selector',
@@ -681,6 +681,7 @@ export class QualitConformalSelectorComponent implements OnChanges {
             myPlot.on('plotly_selected', function(eventdata){
               var tbl = <HTMLTableElement>document.getElementById('tableSelectionsSelector');
               if (eventdata != null && 'points' in eventdata) {
+                $('#btnCompoundsSelectedSel').prop('disabled', false);
                 var points = eventdata.points;
                 points.forEach(function(pt) {
                   const tr = tbl.insertRow();
@@ -711,6 +712,7 @@ export class QualitConformalSelectorComponent implements OnChanges {
                 });
               }
               else {
+                $('#btnCompoundsSelectedSel').prop('disabled', true);
                 for(var i = 1;i<tbl.rows.length;){
                   tbl.deleteRow(i);
                 }

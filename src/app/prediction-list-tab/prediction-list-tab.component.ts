@@ -481,6 +481,7 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
     myPlot.on('plotly_selected', function(eventdata){
       var tbl = <HTMLTableElement>document.getElementById('tablePredictionSelections');
       if (eventdata != null && 'points' in eventdata) {
+        $('#btnCompoundsSelectedProj').prop('disabled', false);
         var points = eventdata.points;
         // console.log(points);
         points.forEach(function(pt) {
@@ -520,6 +521,7 @@ export class PredictionListTabComponent implements OnChanges , OnInit {
         });
       }
       else {
+        $('#btnCompoundsSelectedProj').prop('disabled', true);
         for(var i = 1;i<tbl.rows.length;){
           tbl.deleteRow(i);
         }
