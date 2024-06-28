@@ -9,11 +9,18 @@ Flame should have been already installed in this computer. Refer to the [flame](
 
 Flame_API should have been also installed and be running. Refer to to the [flame_API](https://github.com/phi-grib/flame_API) manual for full instructions of how install and run the API.
 
+Make sure you have **Nodejs** and the **Angular** **Command** **Line** **Interface** installed.
+
+to install the cli use the following command
+```shell
+npm install -g @angular/cli
+```
+
 Download the repository:
 
 ```bash
 git clone https://github.com/phi-grib/flameWeb2.git
-```
+```  
 
 Go to the source repository directory 
 
@@ -21,25 +28,19 @@ Go to the source repository directory
 cd flameWeb2
 ```
 
-For running the development server you must have Angular installed in your computer. Refer to [this page](https://angular.io/cli) for full instructions. Once Angular is installed, type
-
+Remember that if it is a new installation run the command
+```shell
+npm install --force
 ```
-ng serve
-```
 
-Open a web browser and enter `http://localhost:4200/`.
+## Execute Interface
 
-## Development server
+Run `ng serve` navigate to `http://localhost:4200/`.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+or
 
-## Code scaffolding
+Run `ng serve -o` (automatically open in your browser by default.)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Further help
 
